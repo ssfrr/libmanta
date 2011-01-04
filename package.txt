@@ -1,0 +1,8 @@
+NAME=manta
+BUILDTYPE=multi
+SRCDIR=src
+SRCS= main.cpp \
+      Manta.cpp \
+      MantaUSB_Linux.cpp
+HDRS= Manta.h \
+      MantaUSB.h
