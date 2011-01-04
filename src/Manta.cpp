@@ -2,9 +2,6 @@
 #include "Manta.h"
 
 Manta::Manta(int serialNumber) {
-   PadCallback = NULL;
-   SliderCallback = NULL;
-   ButtonCallback = NULL;
    LastInReport[0] = 0;
    for(int i = 1; i < 53; ++i)
    {
@@ -35,7 +32,7 @@ Manta::MantaStatus Manta::StartPoll(void)
       {
          if(buf[i] != LastInReport[i])
          {
-            PadCallback(i - 1, buf[i] + 128);
+            PadEvent(i - 1, buf[i] + 128);
          }
          LastInReport[i] = buf[i];
       }
@@ -43,17 +40,17 @@ Manta::MantaStatus Manta::StartPoll(void)
       {
          if(buf[i] != LastInReport[i])
          {
-            ButtonCallback(i - 49, buf[i] + 128);
+            ButtonEvent(i - 49, buf[i] + 128);
          }
          LastInReport[i] = buf[i];
       }
       if(buf[53] != LastInReport[53] || buf[54] != LastInReport[54])
       {
-         SliderCallback(0, (buf[53] + 128) | ((buf[54] + 128) << 8 ));
+         SliderEvent(0, (buf[53] + 128) | ((buf[54] + 128) << 8 ));
       }
       if(buf[55] != LastInReport[55] || buf[56] != LastInReport[56])
       {
-         SliderCallback(1, (buf[55] + 128) | ((buf[56] + 128) << 8 ));
+         SliderEvent(1, (buf[55] + 128) | ((buf[56] + 128) << 8 ));
       }
       for(int i = 53; i < 57; ++i)
       {
@@ -187,24 +184,6 @@ Manta::MantaStatus Manta::SetButtonLEDs(LEDColor color, int id, bool enabled)
    else
       CurrentOutReport[6] &= ~(0x01 << (id + shiftBase));
    Dev.WriteFrame(CurrentOutReport);
-}
-
-Manta::MantaStatus Manta::SetPadCallback(EventCallback callback)
-{
-   PadCallback = callback;
-   return Success;
-}
-
-Manta::MantaStatus Manta::SetSliderCallback(EventCallback callback)
-{
-   SliderCallback = callback;
-   return Success;
-}
-
-Manta::MantaStatus Manta::SetButtonCallback(EventCallback callback)
-{
-   ButtonCallback = callback;
-   return Success;
 }
 
 Manta::MantaStatus Manta::Recalibrate(void)

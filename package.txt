@@ -6,3 +6,4 @@ SRCS= main.cpp \
       MantaUSB_Linux.cpp
 HDRS= Manta.h \
       MantaUSB.h
+LIBS+= -lusb-1.0

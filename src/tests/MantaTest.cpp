@@ -1,30 +1,35 @@
-#include "Manta.h"
+#include "../Manta.h"
 #include <iostream>
 #include <cstring>
 
 using namespace std;
 
-void PadEvent(int id, int value)
+class MantaTester: public Manta
+{
+   private:
+      void PadEvent(int id, int value);
+      void SliderEvent(int id, int value);
+      void ButtonEvent(int id, int value);
+};
+
+void MantaTester::PadEvent(int id, int value)
 {
    cout << "Pad " << id << ": " << value << endl;
 }
 
-void SliderEvent(int id, int value)
+void MantaTester::SliderEvent(int id, int value)
 {
    cout << "Slider " << id << ": " << value << endl;
 }
 
-void ButtonEvent(int id, int value)
+void MantaTester::ButtonEvent(int id, int value)
 {
    cout << "Button " << id << ": " << value << endl;
 }
 
 int main()
 {
-   Manta manta;
-   manta.SetPadCallback(PadEvent);
-   manta.SetSliderCallback(SliderEvent);
-   manta.SetButtonCallback(ButtonEvent);
+   MantaTester manta;
    manta.SetLEDControl(Manta::PadAndButton, true);
    manta.SetLEDControl(Manta::Slider, true);
 

@@ -1,15 +1,3 @@
-/* 
-flext tutorial - threads 1
-
-Copyright (c) 2002,2003 Thomas Grill (xovo@gmx.net)
-For information on usage and redistribution, and for a DISCLAIMER OF ALL
-WARRANTIES, see the file, "license.txt," in this distribution.  
-
--------------------------------------------------------------------------
-
-This shows an example of a method running as a thread
-*/
-
 /* define FLEXT_THREADS for thread usage. Flext must also have been compiled with that defined!
 	it's even better to define that as a compiler flag (-D FLEXT_THREADS) for all files of the
 	flext external
@@ -19,65 +7,79 @@ This shows an example of a method running as a thread
 #endif
 
 #include <flext.h>
+#include "Manta.h"
 
 #if !defined(FLEXT_VERSION) || (FLEXT_VERSION < 400)
 #error You need at least flext version 0.4.0
 #endif
 
 
-class thread1:
-	public flext_base
+/* TODO:
+ * handler functions should be virtual functions of the Manta class,
+ * which manta should derive and implement
+ */
+class manta:
+	public flext_base,
+   public Manta
 {
-	FLEXT_HEADER(thread1,flext_base)
+	FLEXT_HEADER(manta,flext_base)
  
 public:
-	thread1(); 
+	manta(); 
 
 protected:
-	void m_start(); // method function
+	void m_startPoll();
+	void m_stopPoll();
+   void PadEvent(int id, int value);
+   void SliderEvent(int id, int value);
+   void ButtonEvent(int id, int value);
 
 private:
 	// define threaded callback for method m_start
 	// the same syntax as with FLEXT_CALLBACK is used here
-	FLEXT_THREAD(m_start)
+	FLEXT_THREAD(m_startPoll)
+   FLEXT_CALLBACK(m_stopPoll)
 };
 
-FLEXT_NEW("thread1",thread1)
+FLEXT_NEW("manta",manta)
 
-
-
-thread1::thread1()
+manta::manta()
 { 
 	AddInAnything();
-	AddOutInt(); 
+	AddOutAnything();
+	AddOutFloat();
+	AddOutFloat();
 
-	FLEXT_ADDBANG(0,m_start); // register method
+	FLEXT_ADDMETHOD_(0,"start", m_startPoll); // register method
+	FLEXT_ADDMETHOD_(0,"stop", m_stopPoll); // register method
 } 
 
-void thread1::m_start()
+void manta::m_startPoll()
 {
-	// Please note that this functions needs about 10 seconds to complete
-	// Without threads it would block the real-time system
-
-	// Okay, that functionality would be far more elegant with timers
-	// ... but hey, it's a demo!
-
-	for(int i = 0; i < 20 && !ShouldExit(); ++i) {
-		ToOutInt(0,i); // output loop count
-//		post("%i",i);
-
-		// wait for half a second
-		for(int j = 0; j < 5 && !ShouldExit(); ++j) Sleep(0.1f); 
-		// note: we shall not block a thread for a longer time.
-		// The system might want to destroy the object in the meantime and
-		// expects thread termination. In such a case flext waits
-		// for 1 second by default, then it aborts the thread brutally
-	}
-
-	// output a final zero
-	ToOutInt(0,0);
-//	post("end");
+   StartPoll();
 }
 
+void manta::m_stopPoll()
+{
+   StopPoll();
+}
+void manta::PadEvent(int id, int value)
+{
+   ToOutString(0, "pad");
+   ToOutFloat(1, id);
+   ToOutFloat(2, value);
+}
 
+void manta::SliderEvent(int id, int value)
+{
+   ToOutString(0, "slider");
+   ToOutFloat(1, id);
+   ToOutFloat(2, value);
+}
 
+void manta::ButtonEvent(int id, int value)
+{
+   ToOutString(0, "button");
+   ToOutFloat(1, id);
+   ToOutFloat(2, value);
+}
