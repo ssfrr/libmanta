@@ -1,0 +1,9 @@
+NAME=manta
+BUILDTYPE=multi
+SRCDIR=.
+SRCS= MantaFlext.cpp \
+      ../core/Manta.cpp \
+      ../core/MantaUSB_Linux.cpp
+HDRS= ../core/Manta.h \
+      ../core/MantaUSB.h
+LIBS+= -lusb-1.0
