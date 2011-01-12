@@ -3,15 +3,13 @@
 #include <cstring>
 #include <unistd.h>
 #include <stdio.h>
-extern "C" 
-{
-   void ErrorHandler(int num, const char *m, const char *path);
-   int LEDControlHandler(const char *path, const char *types,
-         lo_arg **argv, int argc, void *data, void *instancePointer);
-   int LEDRowAndColumnHandler(const char *path,
-         const char *types, lo_arg **argv, int argc, void *data,
-         void *instancePointer);
-}
+
+void ErrorHandler(int num, const char *m, const char *path);
+int LEDControlHandler(const char *path, const char *types,
+      lo_arg **argv, int argc, void *data, void *instancePointer);
+int LEDRowAndColumnHandler(const char *path,
+      const char *types, lo_arg **argv, int argc, void *data,
+      void *instancePointer);
 
 class MantaOSC : public Manta
 {
@@ -124,6 +122,23 @@ int LEDRowAndColumnHandler(const char *path, const char *types, lo_arg **argv, i
    else if(strcmp(&argv[0]->s, "column") == 0)
    {
       static_cast<MantaOSC *>(instancePointer)->SetLEDColumn(color, argv[1]->i,
+            static_cast<uint8_t>(argv[2]->i));
+   }
+   else if(strcmp(&argv[0]->s, "slider") == 0)
+   {
+      if(color == MantaOSC::Amber)
+      {
+         static_cast<MantaOSC *>(instancePointer)->SetSliderLEDs(argv[1]->i,
+               static_cast<uint8_t>(argv[2]->i));
+      }
+      else
+      {
+         return 1;
+      }
+   }
+   else if(strcmp(&argv[0]->s, "button") == 0)
+   {
+      static_cast<MantaOSC *>(instancePointer)->SetButtonLEDs(color, argv[1]->i,
             static_cast<uint8_t>(argv[2]->i));
    }
    else
