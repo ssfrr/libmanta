@@ -10,8 +10,7 @@ MantaUSB::MantaUSB(int serialNumber)
 
    OutPacketLen = 16;
    InPacketLen = 64;
-
-   Connect();
+   DeviceHandle = NULL;
 }
 
 MantaUSB::~MantaUSB(void)
@@ -41,7 +40,7 @@ void MantaUSB::ReadFrame(void *frame)
       throw(MantaCommunicationException());
 }
 
-bool MantaUSB::IsOpen(void)
+bool MantaUSB::IsConnected(void)
 {
    return DeviceHandle != NULL;
 }

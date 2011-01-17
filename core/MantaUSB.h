@@ -7,7 +7,7 @@ class MantaUSB
       ~MantaUSB(void);
       void WriteFrame(void *frame);
       void ReadFrame(void *frame);
-      bool IsOpen(void);
+      bool IsConnected(void);
       void Connect(void);
    private:
       int OutPacketLen;

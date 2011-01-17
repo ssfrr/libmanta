@@ -1,8 +1,10 @@
 #include "../core/Manta.h"
+#include "../core/MantaExceptions.h"
 #include <lo/lo.h>
 #include <cstring>
 #include <unistd.h>
 #include <stdio.h>
+#include <iostream>
 
 void ErrorHandler(int num, const char *m, const char *path);
 int LEDControlHandler(const char *path, const char *types,
@@ -68,7 +70,27 @@ void MantaOSC::ButtonEvent(int id, int value)
 int main(void)
 {
    MantaOSC manta;
-   manta.StartPoll();
+   do
+   {
+      try
+      {
+         manta.Connect();
+      }
+      catch(MantaNotFoundException &e)
+      {
+         std::cout << "Could not find an attached Manta. Retrying..." << std::endl;
+         sleep(1);
+      }
+   } while(! manta.IsConnected());
+   std::cout << "Manta Connected" << std::endl;
+   try
+   {
+      manta.StartPoll();
+   }
+   catch(MantaCommunicationException &e)
+   {
+      std::cout << "Communication with Manta interrupted, exiting..." << std::endl;
+   }
    return 0;
 }
 
@@ -98,7 +120,10 @@ int LEDRowAndColumnHandler(const char *path, const char *types, lo_arg **argv, i
       void *data, void *instancePointer)
 {
    MantaOSC::LEDColor color;
-   printf("LEDRowAndColumnHandler\n");
+#if 0
+   static unsigned int count = 0;
+   std::cout << "LEDRowAndColumnHandler " << count++ << std::endl;
+#endif
    if(strcmp(path, "/Manta/LED/Red") == 0)
    {
       color = MantaOSC::Red;
@@ -115,7 +140,6 @@ int LEDRowAndColumnHandler(const char *path, const char *types, lo_arg **argv, i
 
    if(strcmp(&argv[0]->s, "row") == 0)
    {
-      //printf("Setting Row %u to 0x%X\n", argv[0]
       static_cast<MantaOSC *>(instancePointer)->SetLEDRow(color, argv[1]->i,
             static_cast<uint8_t>(argv[2]->i));
    }
@@ -151,6 +175,6 @@ int LEDRowAndColumnHandler(const char *path, const char *types, lo_arg **argv, i
 
 void ErrorHandler(int num, const char *msg, const char *path)
 {
-   //printf("liblo server error %d in path %s: %s\n", num, path, msg);
-   //fflush(stdout);
+   std::cout << "liblo server error " << num << " in path " << path << 
+      ": " << msg << std::endl;
 }
