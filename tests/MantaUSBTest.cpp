@@ -4,6 +4,25 @@
 
 using namespace std;
 
+class MantaUSBTest : public MantaUSB
+{
+   virtual void FrameReceived(int8_t *frame)
+   {
+      for(int i = 1; i < 53; ++i)
+      {
+         cout << (frame[i] + 128) << " ";
+         if(i % 8 == 0)
+         {
+            cout << endl;
+         }
+      }
+      cout << endl;
+      cout << ((frame[53] + 128) | ((frame[54] + 128) << 8)) << endl;
+      cout << ((frame[55] + 128) | ((frame[56] + 128) << 8)) << endl;
+      cout << endl;
+   }
+}
+
 int main()
 {
    MantaUSB dev;
