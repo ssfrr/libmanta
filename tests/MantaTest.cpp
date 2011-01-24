@@ -46,53 +46,56 @@ int main()
    }
    manta.SetLEDFrame(Manta::Amber, effs);
    waitForTransmitComplete(manta);
-   usleep(400000);
-   manta.SetLEDFrame(Manta::Amber, zeros);
-   waitForTransmitComplete(manta);
-   usleep(400000);
+   usleep(200000);
    manta.SetLEDFrame(Manta::Red, effs);
    waitForTransmitComplete(manta);
-   usleep(400000);
-   manta.SetLEDFrame(Manta::Red, zeros);
+   usleep(200000);
+   manta.SetLEDFrame(Manta::Amber, effs);
    waitForTransmitComplete(manta);
-   usleep(400000);
-   //manta.SetLEDFrame(Manta::Amber, effs);
+   usleep(200000);
+   manta.SetLEDFrame(Manta::Amber, zeros);
    waitForTransmitComplete(manta);
-   //manta.SetLEDFrame(Manta::Red, effs);
-   waitForTransmitComplete(manta);
-   //usleep(400000);
-   //manta.SetLEDFrame(Manta::Amber, zeros);
-   waitForTransmitComplete(manta);
-   //manta.SetLEDFrame(Manta::Red, zeros);
-   waitForTransmitComplete(manta);
-   //usleep(400000);
+   usleep(200000);
+   for(int i = 0; i < 6; ++i)
+   {
+      manta.SetLEDRow(Manta::Amber, i, 0xFF);
+      waitForTransmitComplete(manta);
+      usleep(200000);
+      manta.SetLEDRow(Manta::Red, i, 0xFF);
+      waitForTransmitComplete(manta);
+      usleep(200000);
+      manta.SetLEDRow(Manta::Amber, i, 0xFF);
+      waitForTransmitComplete(manta);
+      usleep(200000);
+      manta.SetLEDRow(Manta::Amber, i, 0x00);
+      waitForTransmitComplete(manta);
+   }
    for(int i = 0; i < 8; ++i)
    {
       manta.SetLEDColumn(Manta::Amber, i, 0xFF);
       waitForTransmitComplete(manta);
+      usleep(200000);
       manta.SetLEDColumn(Manta::Red, i, 0xFF);
       waitForTransmitComplete(manta);
-      usleep(400000);
+      usleep(200000);
+      manta.SetLEDColumn(Manta::Amber, i, 0xFF);
+      waitForTransmitComplete(manta);
+      usleep(200000);
       manta.SetLEDColumn(Manta::Amber, i, 0x00);
       waitForTransmitComplete(manta);
-      manta.SetLEDColumn(Manta::Red, i, 0x00);
-      waitForTransmitComplete(manta);
    }
    for(int i = 0; i < 4; ++i)
    {
-      manta.SetButtonLEDs(Manta::Amber, i, true);
+      manta.SetButtonLED(Manta::Amber, i, true);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetButtonLEDs(Manta::Amber, i, false);
-      waitForTransmitComplete(manta);
-   }
-
-   for(int i = 0; i < 4; ++i)
-   {
-      manta.SetButtonLEDs(Manta::Red, i, true);
+      manta.SetButtonLED(Manta::Red, i, true);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetButtonLEDs(Manta::Red, i, false);
+      manta.SetButtonLED(Manta::Amber, i, true);
+      waitForTransmitComplete(manta);
+      usleep(200000);
+      manta.SetButtonLED(Manta::Amber, i, false);
       waitForTransmitComplete(manta);
    }
 

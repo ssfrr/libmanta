@@ -163,7 +163,7 @@ int LEDRowAndColumnHandler(const char *path, const char *types, lo_arg **argv, i
    }
    else if(strcmp(&argv[0]->s, "button") == 0)
    {
-      static_cast<MantaOSC *>(instancePointer)->SetButtonLEDs(color, argv[1]->i,
+      static_cast<MantaOSC *>(instancePointer)->SetButtonLED(color, argv[1]->i,
             static_cast<uint8_t>(argv[2]->i));
    }
    else

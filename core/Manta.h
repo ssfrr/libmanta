@@ -15,12 +15,12 @@ class Manta : public MantaUSB
       typedef uint8_t LEDFrame[6];
 
       Manta(void);
-      void SetLED(LEDColor color, int column, int row, bool enabled);
+      void SetLED(LEDColor color, int ledID, bool enabled);
       void SetLEDRow(LEDColor color, int row, uint8_t mask);
       void SetLEDColumn(LEDColor color, int column, uint8_t mask);
       void SetLEDFrame(LEDColor color, uint8_t mask[]);
       void SetSliderLEDs(int id, uint8_t mask);
-      void SetButtonLEDs(LEDColor color, int id, bool enabled);
+      void SetButtonLED(LEDColor color, int id, bool enabled);
       void Recalibrate(void);
       void SetLEDControl(LEDControlType control, bool state);
       void SetTurboMode(bool Enabled);
