@@ -1,10 +1,10 @@
-#include "MantaUSB.h"
+#include "../core/MantaUSB.h"
 #include <iostream>
 #include <cstring>
 
 using namespace std;
 
-class MantaUSBTest : public MantaUSB
+class MantaUSBTester : public MantaUSB
 {
    virtual void FrameReceived(int8_t *frame)
    {
@@ -21,20 +21,24 @@ class MantaUSBTest : public MantaUSB
       cout << ((frame[55] + 128) | ((frame[56] + 128) << 8)) << endl;
       cout << endl;
    }
-}
+};
 
 int main()
 {
-   MantaUSB dev;
-   uint8_t inbuf[64];
-   int8_t *signedBuf = reinterpret_cast<int8_t *>(inbuf);
+   MantaUSBTester dev;
    uint8_t outbuf[16];
+   
+   dev.Connect();
    memset(outbuf, 0, 16);
    outbuf[9] |= 0x01 | 0x02;
    for(int i = 0; i < 52; ++i)
    {
       outbuf[i / 8] |= (1 << (i % 8));
       dev.WriteFrame(outbuf);
+      while(dev.IsTransmitting())
+      {
+         dev.HandleEvents();
+      }
       usleep(100000);
       outbuf[i / 8] &= ~(1 << (i % 8));
    }
@@ -42,6 +46,10 @@ int main()
    {
       outbuf[i / 8 + 10] |= (1 << (i % 8));
       dev.WriteFrame(outbuf);
+      while(dev.IsTransmitting())
+      {
+         dev.HandleEvents();
+      }
       usleep(100000);
       outbuf[i / 8 + 10] &= ~(1 << (i % 8));
    }
@@ -49,6 +57,10 @@ int main()
    while(outbuf[7])
    {
       dev.WriteFrame(outbuf);
+      while(dev.IsTransmitting())
+      {
+         dev.HandleEvents();
+      }
       usleep(100000);
       outbuf[7] <<= 1;
    }
@@ -56,27 +68,23 @@ int main()
    while(outbuf[8])
    {
       dev.WriteFrame(outbuf);
+      while(dev.IsTransmitting())
+      {
+         dev.HandleEvents();
+      }
       usleep(100000);
       outbuf[8] <<= 1;
    }
    outbuf[9] = 0;
    dev.WriteFrame(outbuf);
+   while(dev.IsTransmitting())
+   {
+      dev.HandleEvents();
+   }
 
    while(1)
    {
-      dev.ReadFrame(inbuf);
-      for(int i = 1; i < 53; ++i)
-      {
-         cout << (signedBuf[i] + 128) << " ";
-         if(i % 8 == 0)
-         {
-            cout << endl;
-         }
-      }
-      cout << endl;
-      cout << ((signedBuf[53] + 128) | ((signedBuf[54] + 128) << 8)) << endl;
-      cout << ((signedBuf[55] + 128) | ((signedBuf[56] + 128) << 8)) << endl;
-      cout << endl;
+      dev.HandleEvents();
    }
    return 0;
 }

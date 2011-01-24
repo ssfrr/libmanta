@@ -1,6 +1,6 @@
 #include "MantaUSB.h"
 
-class Manta
+class Manta : public MantaUSB
 {
    public:
       enum LEDColor {
@@ -14,11 +14,7 @@ class Manta
       };
       typedef uint8_t LEDFrame[6];
 
-      Manta(int serialNumber = 0);
-      void Connect(void);
-      bool IsConnected(void);
-      void StartPoll(void);
-      void StopPoll(void);
+      Manta(void);
       void SetLED(LEDColor color, int column, int row, bool enabled);
       void SetLEDRow(LEDColor color, int row, uint8_t mask);
       void SetLEDColumn(LEDColor color, int column, uint8_t mask);
@@ -31,18 +27,17 @@ class Manta
       void SetRawMode(bool Enabled);
       void SetHiResMode(bool Enabled);
 
-   private:
-      void UpdateOutputReport(void);
-      static uint8_t byteReverse(uint8_t inByte);
-      virtual void PadEvent(int id, int value) {};
-      virtual void SliderEvent(int id, int value) {};
-      virtual void ButtonEvent(int id, int value) {};
+   protected:
+      /* declare callbacks */
+      virtual void PadEvent(int id, int value) = 0;
+      virtual void SliderEvent(int id, int value) = 0;
+      virtual void ButtonEvent(int id, int value) = 0;
+      /* declare callbacks implemented by this class */
+      virtual void FrameReceived(int8_t *frame);
       
-      MantaUSB Dev;
-      int8_t LastInReport[64];
-      uint8_t CurrentOutReport[16];
-      volatile bool polling;
-      volatile bool OutputReportDirty;
-      volatile bool IsBusy;
+   private:
+      static uint8_t byteReverse(uint8_t inByte);
+      int8_t LastInReport[InPacketLen];
+      uint8_t CurrentOutReport[OutPacketLen];
 };
 

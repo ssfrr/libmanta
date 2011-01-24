@@ -2,7 +2,7 @@
 #include "Manta.h"
 #include "MantaExceptions.h"
 
-Manta::Manta(int serialNumber) {
+Manta::Manta(void) {
    LastInReport[0] = 0;
    for(int i = 1; i < 53; ++i)
    {
@@ -16,76 +16,38 @@ Manta::Manta(int serialNumber) {
    {
       CurrentOutReport[i] = 0;
    }
-   polling = false;
-   OutputReportDirty = false;
-   IsBusy = false;
 }
 
-void Manta::Connect(void)
+void Manta::FrameReceived(int8_t *frame)
 {
-   Dev.Connect();
-}
-
-bool Manta::IsConnected(void)
-{
-   return Dev.IsConnected();
-}
-
-void Manta::StartPoll(void)
-{
-   int transferred;
-   int8_t buf[64];
-
-   /* check to see if we're already polling */
-   /* TODO: this is a race condition, should be protected */
-   if(polling)
-      return;
-
-   if(! IsConnected())
+   for(int i = 0; i < 49; ++i)
    {
-      throw MantaNotConnectedException();
+      if(frame[i] != LastInReport[i])
+      {
+         PadEvent(i - 1, frame[i] + 128);
+      }
+      LastInReport[i] = frame[i];
    }
-   
-   polling = 1;
-
-   while(polling == 1)
+   for(int i = 49; i < 53; ++i)
    {
-      Dev.ReadFrame(buf);
-
-      for(int i = 0; i < 49; ++i)
+      if(frame[i] != LastInReport[i])
       {
-         if(buf[i] != LastInReport[i])
-         {
-            PadEvent(i - 1, buf[i] + 128);
-         }
-         LastInReport[i] = buf[i];
+         ButtonEvent(i - 49, frame[i] + 128);
       }
-      for(int i = 49; i < 53; ++i)
-      {
-         if(buf[i] != LastInReport[i])
-         {
-            ButtonEvent(i - 49, buf[i] + 128);
-         }
-         LastInReport[i] = buf[i];
-      }
-      if(buf[53] != LastInReport[53] || buf[54] != LastInReport[54])
-      {
-         SliderEvent(0, (buf[53] + 128) | ((buf[54] + 128) << 8 ));
-      }
-      if(buf[55] != LastInReport[55] || buf[56] != LastInReport[56])
-      {
-         SliderEvent(1, (buf[55] + 128) | ((buf[56] + 128) << 8 ));
-      }
-      for(int i = 53; i < 57; ++i)
-      {
-         LastInReport[i] = buf[i];
-      }
+      LastInReport[i] = frame[i];
    }
-}
-
-void Manta::StopPoll(void)
-{
-   polling = 0;
+   if(frame[53] != LastInReport[53] || frame[54] != LastInReport[54])
+   {
+      SliderEvent(0, (frame[53] + 128) | ((frame[54] + 128) << 8 ));
+   }
+   if(frame[55] != LastInReport[55] || frame[56] != LastInReport[56])
+   {
+      SliderEvent(1, (frame[55] + 128) | ((frame[56] + 128) << 8 ));
+   }
+   for(int i = 53; i < 57; ++i)
+   {
+      LastInReport[i] = frame[i];
+   }
 }
 
 void Manta::SetLED(LEDColor color, int column, int row, bool enabled)
@@ -120,7 +82,7 @@ void Manta::SetLED(LEDColor color, int column, int row, bool enabled)
       CurrentOutReport[baseIndex + row] |= (1 << row);
    else
       CurrentOutReport[baseIndex + row] &= ~(1 << row);
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetLEDRow(LEDColor color, int row, uint8_t mask)
@@ -147,7 +109,7 @@ void Manta::SetLEDRow(LEDColor color, int row, uint8_t mask)
       throw std::invalid_argument("Invalid Row Index");
    }
    CurrentOutReport[baseIndex + row] = byteReverse(mask);
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetLEDColumn(LEDColor color, int column, uint8_t mask)
@@ -181,7 +143,7 @@ void Manta::SetLEDColumn(LEDColor color, int column, uint8_t mask)
       else
          CurrentOutReport[baseIndex + i] &= ~(0x01 << column);
    }
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetLEDFrame(LEDColor color, LEDFrame mask)
@@ -207,7 +169,7 @@ void Manta::SetLEDFrame(LEDColor color, LEDFrame mask)
    {
       CurrentOutReport[baseIndex + i] = byteReverse(mask[i]);
    }
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetSliderLEDs(int id, uint8_t mask)
@@ -222,7 +184,7 @@ void Manta::SetSliderLEDs(int id, uint8_t mask)
       throw std::invalid_argument("Invalid Slider Index");
    }
    CurrentOutReport[id + 7] = mask;
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetButtonLEDs(LEDColor color, int id, bool enabled)
@@ -252,7 +214,7 @@ void Manta::SetButtonLEDs(LEDColor color, int id, bool enabled)
       CurrentOutReport[6] |= (0x01 << (id + shiftBase));
    else
       CurrentOutReport[6] &= ~(0x01 << (id + shiftBase));
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::Recalibrate(void)
@@ -263,9 +225,9 @@ void Manta::Recalibrate(void)
    }
    
    CurrentOutReport[9] |= 0x40;
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
    CurrentOutReport[9] &= ~0x40;
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetLEDControl(LEDControlType control, bool state)
@@ -295,7 +257,7 @@ void Manta::SetLEDControl(LEDControlType control, bool state)
       CurrentOutReport[9] |= flag;
    else
       CurrentOutReport[9] &= ~flag;
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetTurboMode(bool Enabled)
@@ -309,7 +271,7 @@ void Manta::SetTurboMode(bool Enabled)
       CurrentOutReport[9] |= 0x04;
    else
       CurrentOutReport[9] &= ~0x04;
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetRawMode(bool Enabled)
@@ -323,7 +285,7 @@ void Manta::SetRawMode(bool Enabled)
       CurrentOutReport[9] |= 0x08;
    else
       CurrentOutReport[9] &= ~0x08;
-   UpdateOutputReport();
+   WriteFrame(CurrentOutReport);
 }
 
 void Manta::SetHiResMode(bool Enabled)
@@ -337,25 +299,7 @@ void Manta::SetHiResMode(bool Enabled)
       CurrentOutReport[9] |= 0x10;
    else
       CurrentOutReport[9] &= ~0x10;
-   UpdateOutputReport();
-}
-
-void Manta::UpdateOutputReport(void)
-{
-   if(IsBusy)
-   {
-      OutputReportDirty = true;
-   }
-   else
-   {
-      IsBusy = true;
-      do
-      {
-         OutputReportDirty = false;
-         Dev.WriteFrame(CurrentOutReport);
-      } while(OutputReportDirty);
-      IsBusy = false;
-   }
+   WriteFrame(CurrentOutReport);
 }
 
 uint8_t Manta::byteReverse(uint8_t inByte)

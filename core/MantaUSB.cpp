@@ -1,16 +1,24 @@
+#include <libusb-1.0/libusb.h>
 #include "MantaUSB.h"
 #include "MantaExceptions.h"
+
+/* declare the C-compatible callback functions */
+void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer);
+void MantaInTransferCompleteHandler(struct libusb_transfer *transfer);
 
 MantaUSB::MantaUSB(void)
 {
    if(DeviceCount++ == 0)
    {
-      libusb_init(&LibusbContext);
+      if(LIBUSB_SUCCESS != libusb_init(&LibusbContext))
+      {
+         throw(LibusbInitException());
+      }
    }
 
    DeviceHandle = NULL;
-   DeviceWriteTransfer = NULL;
    OutTransferInProgress = false;
+   OutTransferQueued = false;
 }
 
 MantaUSB::~MantaUSB(void)
@@ -24,9 +32,13 @@ MantaUSB::~MantaUSB(void)
    }
 }
 
-void MantaUSB::WriteFrame(void *frame)
+void MantaUSB::WriteFrame(uint8_t *frame)
 {
    int transferred;
+   if(NULL == DeviceHandle)
+   {
+      throw(MantaNotConnectedException());
+   }
    /* if a transfer is in progress, just updated the queued
     * transfer frame */
    /* TODO: need to wrap this in a mutex */
@@ -44,7 +56,7 @@ void MantaUSB::WriteFrame(void *frame)
       /* no transfer in progress, start a new one */
       struct libusb_transfer *transfer = libusb_alloc_transfer(0);
       libusb_fill_interrupt_transfer(transfer, DeviceHandle,
-            EndpointOut, frame, OutPacketLen, OutTransferCompleteHandler,
+            EndpointOut, frame, OutPacketLen, MantaOutTransferCompleteHandler,
             this, Timeout);
       if(LIBUSB_SUCCESS != libusb_submit_transfer(transfer))
       {
@@ -59,7 +71,7 @@ bool MantaUSB::IsConnected(void)
    return DeviceHandle != NULL;
 }
 
-void MantaUSB::Connect(int serialNumber = 0)
+void MantaUSB::Connect(int serialNumber)
 {
    DeviceHandle = libusb_open_device_with_vid_pid(LibusbContext, VendorID, ProductID);
    /*TODO create new types of exceptions */
@@ -73,8 +85,23 @@ void MantaUSB::Connect(int serialNumber = 0)
 
    /* start the first read transfer */
    struct libusb_transfer *transfer = libusb_alloc_transfer(0);
-   libusb_fill_interrupt_transfer(transfer, DeviceHandle,
-         EndpointIn, ReceivedFrame, InPacketLen, InTransferCompleteHandler,
+   BeginReadTransfer(transfer);
+}
+
+void MantaUSB::HandleEvents(void)
+{
+   libusb_handle_events(LibusbContext);
+}
+
+bool MantaUSB::IsTransmitting(void)
+{
+   return OutTransferInProgress;
+}
+
+void MantaUSB::BeginReadTransfer(libusb_transfer *transfer)
+{
+   libusb_fill_interrupt_transfer(transfer, DeviceHandle, EndpointIn,
+         ReceivedFrame, InPacketLen, MantaInTransferCompleteHandler,
          this, Timeout);
    if(LIBUSB_SUCCESS != libusb_submit_transfer(transfer))
    {
@@ -83,29 +110,11 @@ void MantaUSB::Connect(int serialNumber = 0)
    }
 }
 
-void MantaUSB::PollForEvents(void)
+void MantaUSB::BeginQueuedTransfer(struct libusb_transfer *transfer)
 {
-   libusb_handle_events(LibusbContext);
-}
-
-/* define static class members */
-int MantaUSB::DeviceCount = 0;
-libusb_context *MantaUSB::LibusbContext;
-
-/* define callback functions outside of the class */
-static void InTransferCompleteHandler(struct libusb_transfer *transfer)
-{
-   if(LIBUSB_TRANSFER_COMPLETED != transfer->status)
-   {
-      libusb_free_transfer(transfer);
-      throw(MantaCommunicationException());
-   }
-
-   static_cast<MantaUSB *>(transfer->user_data)->FrameReceived(transfer->buffer);
-
-   libusb_fill_interrupt_transfer(transfer, DeviceHandle,
-         EndpointIn, ReceivedFrame, OutPacketLen, OutTransferCompleteHandler,
-         transfer->user_data, Timeout);
+   libusb_fill_interrupt_transfer(transfer, DeviceHandle, EndpointOut,
+         QueuedOutFrame, OutPacketLen, MantaOutTransferCompleteHandler, this,
+         Timeout);
    if(LIBUSB_SUCCESS != libusb_submit_transfer(transfer))
    {
       libusb_free_transfer(transfer);
@@ -113,24 +122,34 @@ static void InTransferCompleteHandler(struct libusb_transfer *transfer)
    }
 }
 
-static void OutTransferCompleteHandler(struct libusb_transfer *transfer)
+/* define static class members */
+int MantaUSB::DeviceCount = 0;
+libusb_context *MantaUSB::LibusbContext;
+
+/* define callback functions outside of the class */
+void MantaInTransferCompleteHandler(struct libusb_transfer *transfer)
 {
-   libusb_free_transfer(transfer);
-   if(OutTransferQueued)
+   if(LIBUSB_TRANSFER_COMPLETED != transfer->status)
    {
-      struct libusb_transfer *transfer = libusb_alloc_transfer(0);
-      OutTransferQueued = 0;
-      libusb_fill_interrupt_transfer(transfer, DeviceHandle,
-            EndpointOut, QueuedOutFrame, OutPacketLen, OutTransferCompleteHandler,
-            NULL, Timeout);
-      if(LIBUSB_SUCCESS != libusb_submit_transfer(transfer))
-      {
-         libusb_free_transfer(transfer);
-         throw(MantaCommunicationException());
-      }
+      libusb_free_transfer(transfer);
+      throw(MantaCommunicationException());
+   }
+
+   static_cast<MantaUSB *>(transfer->user_data)->FrameReceived(
+         reinterpret_cast<int8_t *>(transfer->buffer));
+   static_cast<MantaUSB *>(transfer->user_data)->BeginReadTransfer(transfer);
+}
+
+void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer)
+{
+   if(static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued)
+   {
+      static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued = false;
+      static_cast<MantaUSB *>(transfer->user_data)->BeginQueuedTransfer(transfer);
    }
    else
    {
-      OutTransferInProgress = false;
+      libusb_free_transfer(transfer);
+      static_cast<MantaUSB *>(transfer->user_data)->OutTransferInProgress = false;
    }
 }

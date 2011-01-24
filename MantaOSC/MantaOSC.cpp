@@ -19,11 +19,9 @@ class MantaOSC : public Manta
       MantaOSC();
       ~MantaOSC();
    private:
-      void PadEvent(int id, int value);
-      void SliderEvent(int id, int value);
-      void ButtonEvent(int id, int value);
-      friend int PollingHandler(const char *path, const char *types,
-            lo_arg **argv, int argc, void *data, void *instancePointer);
+      virtual void PadEvent(int id, int value);
+      virtual void SliderEvent(int id, int value);
+      virtual void ButtonEvent(int id, int value);
       friend int LEDControlHandler(const char *path, const char *types,
             lo_arg **argv, int argc, void *data, void *instancePointer);
       friend int LEDRowAndColumnHandler(const char *path,
@@ -85,7 +83,10 @@ int main(void)
    std::cout << "Manta Connected" << std::endl;
    try
    {
-      manta.StartPoll();
+      while(1)
+      {
+         manta.HandleEvents();
+      }
    }
    catch(MantaCommunicationException &e)
    {

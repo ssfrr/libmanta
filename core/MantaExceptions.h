@@ -1,5 +1,14 @@
 #include <stdexcept>
 
+class LibusbInitException : public std::runtime_error
+{
+   public:
+      LibusbInitException() :
+            runtime_error("Error initializing libusb")
+         {
+         }
+};
+
 class MantaNotConnectedException : public std::runtime_error
 {
    public:
