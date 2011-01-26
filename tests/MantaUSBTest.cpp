@@ -6,6 +6,12 @@ using namespace std;
 
 class MantaUSBTester : public MantaUSB
 {
+   public:
+      void PublicWriteFrame(uint8_t *frame)
+      {
+         WriteFrame(frame);
+      }
+   private:
    virtual void FrameReceived(int8_t *frame)
    {
       for(int i = 1; i < 53; ++i)
@@ -34,7 +40,7 @@ int main()
    for(int i = 0; i < 52; ++i)
    {
       outbuf[i / 8] |= (1 << (i % 8));
-      dev.WriteFrame(outbuf);
+      dev.PublicWriteFrame(outbuf);
       while(dev.IsTransmitting())
       {
          dev.HandleEvents();
@@ -45,7 +51,7 @@ int main()
    for(int i = 0; i < 52; ++i)
    {
       outbuf[i / 8 + 10] |= (1 << (i % 8));
-      dev.WriteFrame(outbuf);
+      dev.PublicWriteFrame(outbuf);
       while(dev.IsTransmitting())
       {
          dev.HandleEvents();
@@ -56,7 +62,7 @@ int main()
    outbuf[7] = 1;
    while(outbuf[7])
    {
-      dev.WriteFrame(outbuf);
+      dev.PublicWriteFrame(outbuf);
       while(dev.IsTransmitting())
       {
          dev.HandleEvents();
@@ -67,7 +73,7 @@ int main()
    outbuf[8] = 1;
    while(outbuf[8])
    {
-      dev.WriteFrame(outbuf);
+      dev.PublicWriteFrame(outbuf);
       while(dev.IsTransmitting())
       {
          dev.HandleEvents();
@@ -76,7 +82,7 @@ int main()
       outbuf[8] <<= 1;
    }
    outbuf[9] = 0;
-   dev.WriteFrame(outbuf);
+   dev.PublicWriteFrame(outbuf);
    while(dev.IsTransmitting())
    {
       dev.HandleEvents();
