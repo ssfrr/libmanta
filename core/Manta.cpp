@@ -50,7 +50,7 @@ void Manta::FrameReceived(int8_t *frame)
    }
 }
 
-void Manta::SetLED(LEDColor color, int ledID, bool enabled)
+void Manta::SetPadLED(LEDState state, int ledID)
 {
    int baseIndex;
    int inverseIndex;
@@ -63,40 +63,116 @@ void Manta::SetLED(LEDColor color, int ledID, bool enabled)
       throw MantaNotConnectedException();
    }
    
-   switch(color)
+   if(ledID < 0 || ledID > 47)
+   {
+      throw std::invalid_argument("Invalid Pad Index");
+   }
+
+   switch(state)
    {
       case Amber:
-         baseIndex = 0;
-         inverseIndex = 10;
+         CurrentOutReport[AmberIndex + row] |= (1 << column);
+         CurrentOutReport[RedIndex + row] &= ~(1 << column);
          break;
       case Red:
-         baseIndex = 10;
-         inverseIndex = 0;
+         CurrentOutReport[RedIndex + row] |= (1 << column);
+         CurrentOutReport[AmberIndex + row] &= ~(1 << column);
+         break;
+      case Off:
+         CurrentOutReport[AmberIndex + row] &= ~(1 << column);
+         CurrentOutReport[RedIndex + row] &= ~(1 << column);
          break;
       default:
-         throw std::invalid_argument("Invalid Color");
+         throw std::invalid_argument("Invalid state");
    }
-   if(row >= 6)
+
+   WriteFrame(CurrentOutReport);
+}
+
+void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
+{
+   int baseIndex;
+   int inverseIndex;
+   if(! IsConnected())
+   {
+      throw MantaNotConnectedException();
+   }
+   if(row < 0 || row > 5)
    {
       throw std::invalid_argument("Invalid Row Index");
    }
-   if(column >= 8)
+
+   switch(state)
+   {
+      case Amber:
+         CurrentOutReport[AmberIndex + row] |= byteReverse(mask);
+         CurrentOutReport[RedIndex + row] &= ~byteReverse(mask);
+         break;
+      case Red:
+         CurrentOutReport[RedIndex + row] |= byteReverse(mask);
+         CurrentOutReport[AmberIndex + row] &= ~byteReverse(mask);
+         break;
+      case Off:
+         CurrentOutReport[RedIndex + row] &= ~byteReverse(mask);
+         CurrentOutReport[AmberIndex + row] &= ~byteReverse(mask);
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
+   WriteFrame(CurrentOutReport);
+}
+
+void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
+{
+   if(! IsConnected())
+   {
+      throw MantaNotConnectedException();
+   }
+   if(column < 0 || column > 7)
    {
       throw std::invalid_argument("Invalid Column Index");
    }
-
-   if(enabled)
+   
+   switch(state)
    {
-      CurrentOutReport[baseIndex + row] |= (1 << column);
-      /* turn off the opposite color LED */
-      CurrentOutReport[inverseIndex + row] &= ~(1 << column);
+      case Amber:
+         for(int i = 0; i < 6; ++i)
+         {
+            if((mask >> i) & 0x01)
+            {
+               CurrentOutReport[AmberIndex + i] |= (0x01 << column);
+               CurrentOutReport[RedIndex + i] &= ~(0x01 << column);
+            }
+         }
+         break;
+      case Red:
+         for(int i = 0; i < 6; ++i)
+         {
+            if((mask >> i) & 0x01)
+            {
+               CurrentOutReport[RedIndex + i] |= (0x01 << column);
+               CurrentOutReport[AmberIndex + i] &= ~(0x01 << column);
+            }
+         }
+         break;
+      case Off:
+         for(int i = 0; i < 6; ++i)
+         {
+            if((mask >> i) & 0x01)
+            {
+               CurrentOutReport[RedIndex + i] &= ~(0x01 << column);
+               CurrentOutReport[AmberIndex + i] &= ~(0x01 << column);
+            }
+         }
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
    }
-   else
-      CurrentOutReport[baseIndex + row] &= ~(1 << column);
+
    WriteFrame(CurrentOutReport);
 }
 
-void Manta::SetLEDRow(LEDColor color, int row, uint8_t mask)
+void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
 {
    int baseIndex;
    int inverseIndex;
@@ -105,147 +181,90 @@ void Manta::SetLEDRow(LEDColor color, int row, uint8_t mask)
       throw MantaNotConnectedException();
    }
    
-   switch(color)
+   switch(state)
    {
       case Amber:
-         baseIndex = 0;
-         inverseIndex = 10;
+         for(int i = 0; i < sizeof(LEDFrame); ++i)
+         {
+            CurrentOutReport[AmberIndex + i] = byteReverse(mask[i]);
+            CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
+         }
          break;
       case Red:
-         baseIndex = 10;
-         inverseIndex = 0;
+         for(int i = 0; i < sizeof(LEDFrame); ++i)
+         {
+            CurrentOutReport[RedIndex + i] = byteReverse(mask[i]);
+            CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
+         }
+         break;
+      case Off:
+         for(int i = 0; i < sizeof(LEDFrame); ++i)
+         {
+            CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
+            CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
+         }
          break;
       default:
-         throw std::invalid_argument("Invalid Color");
-   }
-   if(row >= 6)
-   {
-      throw std::invalid_argument("Invalid Row Index");
-   }
-   CurrentOutReport[baseIndex + row] = byteReverse(mask);
-   CurrentOutReport[inverseIndex + row] &= ~byteReverse(mask);
-   WriteFrame(CurrentOutReport);
-}
-
-void Manta::SetLEDColumn(LEDColor color, int column, uint8_t mask)
-{
-   int baseIndex;
-   int inverseIndex;
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
-   
-   switch(color)
-   {
-      case Amber:
-         baseIndex = 0;
-         inverseIndex = 10;
-         break;
-      case Red:
-         baseIndex = 10;
-         inverseIndex = 0;
-         break;
-      default:
-         throw std::invalid_argument("Invalid Color");
-   }
-   if(column >= 8)
-   {
-      throw std::invalid_argument("Invalid Column Index");
-   }
-
-   for(int i = 0; i < 6; ++i)
-   {
-      if((mask >> i) & 0x01)
-      {
-         CurrentOutReport[baseIndex + i] |= (0x01 << column);
-         CurrentOutReport[inverseIndex + i] &= ~(0x01 << column);
-      }
-      else
-         CurrentOutReport[baseIndex + i] &= ~(0x01 << column);
+         throw std::invalid_argument("Invalid state");
    }
    WriteFrame(CurrentOutReport);
 }
 
-void Manta::SetLEDFrame(LEDColor color, LEDFrame mask)
-{
-   int baseIndex;
-   int inverseIndex;
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
-   
-   switch(color)
-   {
-      case Amber:
-         baseIndex = 0;
-         inverseIndex = 10;
-         break;
-      case Red:
-         baseIndex = 10;
-         inverseIndex = 0;
-         break;
-      default:
-         throw std::invalid_argument("Invalid Color");
-   }
-   for(int i = 0; i < sizeof(LEDFrame); ++i)
-   {
-      CurrentOutReport[baseIndex + i] = byteReverse(mask[i]);
-      CurrentOutReport[inverseIndex + i] &= ~byteReverse(mask[i]);
-   }
-   WriteFrame(CurrentOutReport);
-}
-
-void Manta::SetSliderLEDs(int id, uint8_t mask)
+void Manta::SetSliderLED(LEDState state, int id, uint8_t mask)
 {
    if(! IsConnected())
    {
       throw MantaNotConnectedException();
    }
-   
-   if(id > 1)
+   if(id < 0 || id > 1)
    {
       throw std::invalid_argument("Invalid Slider Index");
    }
-   CurrentOutReport[id + 7] = mask;
+   switch(state)
+   {
+      case Amber:
+         CurrentOutReport[SliderIndex + id] |= byteReverse(mask);
+         break;
+      case Red:
+         /* no Red slider LEDs, do nothing */
+         break;
+      case Off:
+         CurrentOutReport[SliderIndex + id] &= ~byteReverse(mask);
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
    WriteFrame(CurrentOutReport);
 }
 
-void Manta::SetButtonLED(LEDColor color, int id, bool enabled)
+void Manta::SetButtonLED(LEDState state, int id)
 {
-   int shiftBase;
-   int shiftInverse;
    if(! IsConnected())
    {
       throw MantaNotConnectedException();
    }
-   
-   switch(color)
-   {
-      case Amber:
-         shiftBase = 0;
-         shiftInverse = 4;
-         break;
-      case Red:
-         shiftBase = 4;
-         shiftInverse = 0;
-         break;
-      default:
-         throw std::invalid_argument("Invalid Color");
-   }
-   if(id > 3)
+   if(id < 0 || id > 3)
    {
       throw std::invalid_argument("Invalid Button Index");
    }
-   if(enabled)
+   
+   switch(state)
    {
-      CurrentOutReport[6] |= (0x01 << (id + shiftBase));
-      CurrentOutReport[6] &= ~(0x01 << (id + shiftInverse));
+      case Amber:
+         CurrentOutReport[ButtonIndex] |= (0x01 << (id));
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id + 4));
+         break;
+      case Red:
+         CurrentOutReport[ButtonIndex] |= (0x01 << (id + 4));
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id));
+         break;
+      case Off:
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id + 4));
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id));
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
    }
-
-   else
-      CurrentOutReport[6] &= ~(0x01 << (id + shiftBase));
    WriteFrame(CurrentOutReport);
 }
 
@@ -256,9 +275,9 @@ void Manta::Recalibrate(void)
       throw MantaNotConnectedException();
    }
    
-   CurrentOutReport[9] |= 0x40;
+   CurrentOutReport[ConfigIndex] |= 0x40;
    WriteFrame(CurrentOutReport);
-   CurrentOutReport[9] &= ~0x40;
+   CurrentOutReport[ConfigIndex] &= ~0x40;
    WriteFrame(CurrentOutReport);
 }
 
@@ -286,9 +305,9 @@ void Manta::SetLEDControl(LEDControlType control, bool state)
    }
 
    if(state)
-      CurrentOutReport[9] |= flag;
+      CurrentOutReport[ConfigIndex] |= flag;
    else
-      CurrentOutReport[9] &= ~flag;
+      CurrentOutReport[ConfigIndex] &= ~flag;
    WriteFrame(CurrentOutReport);
 }
 
@@ -300,9 +319,9 @@ void Manta::SetTurboMode(bool Enabled)
    }
    
    if(Enabled)
-      CurrentOutReport[9] |= 0x04;
+      CurrentOutReport[ConfigIndex] |= 0x04;
    else
-      CurrentOutReport[9] &= ~0x04;
+      CurrentOutReport[ConfigIndex] &= ~0x04;
    WriteFrame(CurrentOutReport);
 }
 
@@ -314,9 +333,9 @@ void Manta::SetRawMode(bool Enabled)
    }
    
    if(Enabled)
-      CurrentOutReport[9] |= 0x08;
+      CurrentOutReport[ConfigIndex] |= 0x08;
    else
-      CurrentOutReport[9] &= ~0x08;
+      CurrentOutReport[ConfigIndex] &= ~0x08;
    WriteFrame(CurrentOutReport);
 }
 
@@ -328,9 +347,9 @@ void Manta::SetHiResMode(bool Enabled)
    }
    
    if(Enabled)
-      CurrentOutReport[9] |= 0x10;
+      CurrentOutReport[ConfigIndex] |= 0x10;
    else
-      CurrentOutReport[9] &= ~0x10;
+      CurrentOutReport[ConfigIndex] &= ~0x10;
    WriteFrame(CurrentOutReport);
 }
 

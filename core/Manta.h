@@ -3,9 +3,10 @@
 class Manta : public MantaUSB
 {
    public:
-      enum LEDColor {
+      enum LEDState {
+         Off,
          Amber,
-         Red
+         Red,
       };
       enum LEDControlType {
          PadAndButton,
@@ -15,12 +16,12 @@ class Manta : public MantaUSB
       typedef uint8_t LEDFrame[6];
 
       Manta(void);
-      void SetLED(LEDColor color, int ledID, bool enabled);
-      void SetLEDRow(LEDColor color, int row, uint8_t mask);
-      void SetLEDColumn(LEDColor color, int column, uint8_t mask);
-      void SetLEDFrame(LEDColor color, uint8_t mask[]);
-      void SetSliderLEDs(int id, uint8_t mask);
-      void SetButtonLED(LEDColor color, int id, bool enabled);
+      void SetPadLED(LEDState state, int ledID);
+      void SetPadLEDRow(LEDState state, int row, uint8_t mask);
+      void SetPadLEDColumn(LEDState state, int column, uint8_t mask);
+      void SetPadLEDFrame(LEDState state, uint8_t mask[]);
+      void SetSliderLED(LEDState state, int id, uint8_t mask);
+      void SetButtonLED(LEDState state, int id);
       void Recalibrate(void);
       void SetLEDControl(LEDControlType control, bool state);
       void SetTurboMode(bool Enabled);
@@ -37,6 +38,11 @@ class Manta : public MantaUSB
       
    private:
       static uint8_t byteReverse(uint8_t inByte);
+      static const int AmberIndex = 0;
+      static const int RedIndex = 10;
+      static const int SliderIndex = 7;
+      static const int ButtonIndex = 6;
+      static const int ConfigIndex = 9;
       int8_t LastInReport[InPacketLen];
       uint8_t CurrentOutReport[OutPacketLen];
 };

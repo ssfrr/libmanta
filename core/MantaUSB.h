@@ -40,6 +40,7 @@ class MantaUSB
       libusb_device_handle *DeviceHandle;
       volatile bool OutTransferInProgress;
       volatile bool OutTransferQueued;
+      bool TransferError;
       uint8_t QueuedOutFrame[OutPacketLen];
       uint8_t ReceivedFrame[InPacketLen];
       

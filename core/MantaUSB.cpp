@@ -19,6 +19,7 @@ MantaUSB::MantaUSB(void)
    DeviceHandle = NULL;
    OutTransferInProgress = false;
    OutTransferQueued = false;
+   TransferError = false;
 }
 
 MantaUSB::~MantaUSB(void)
@@ -90,6 +91,15 @@ void MantaUSB::Connect(int serialNumber)
 
 void MantaUSB::HandleEvents(void)
 {
+   if(! IsConnected())
+   {
+      throw(MantaNotConnectedException());
+   }
+   if(TransferError)
+   {
+      TransferError = false;
+      throw(MantaCommunicationException());
+   }
    libusb_handle_events(LibusbContext);
 }
 
@@ -98,6 +108,10 @@ bool MantaUSB::IsTransmitting(void)
    return OutTransferInProgress;
 }
 
+/* these Begin*Transfer functions shouldn't throw exceptions directly
+ * because they get called from the TransferComplete callbacks, which
+ * in turn are called by libusb and don't get to clean up properly
+ * if an exception is thrown */
 void MantaUSB::BeginReadTransfer(libusb_transfer *transfer)
 {
    libusb_fill_interrupt_transfer(transfer, DeviceHandle, EndpointIn,
@@ -106,7 +120,7 @@ void MantaUSB::BeginReadTransfer(libusb_transfer *transfer)
    if(LIBUSB_SUCCESS != libusb_submit_transfer(transfer))
    {
       libusb_free_transfer(transfer);
-      throw(MantaCommunicationException());
+      TransferError = true;
    }
 }
 
@@ -118,7 +132,7 @@ void MantaUSB::BeginQueuedTransfer(struct libusb_transfer *transfer)
    if(LIBUSB_SUCCESS != libusb_submit_transfer(transfer))
    {
       libusb_free_transfer(transfer);
-      throw(MantaCommunicationException());
+      TransferError = true;
    }
 }
 
@@ -132,24 +146,34 @@ void MantaInTransferCompleteHandler(struct libusb_transfer *transfer)
    if(LIBUSB_TRANSFER_COMPLETED != transfer->status)
    {
       libusb_free_transfer(transfer);
-      throw(MantaCommunicationException());
+      static_cast<MantaUSB *>(transfer->user_data)->TransferError = true;
    }
-
-   static_cast<MantaUSB *>(transfer->user_data)->FrameReceived(
-         reinterpret_cast<int8_t *>(transfer->buffer));
-   static_cast<MantaUSB *>(transfer->user_data)->BeginReadTransfer(transfer);
+   else
+   {
+      static_cast<MantaUSB *>(transfer->user_data)->FrameReceived(
+            reinterpret_cast<int8_t *>(transfer->buffer));
+      static_cast<MantaUSB *>(transfer->user_data)->BeginReadTransfer(transfer);
+   }
 }
 
 void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer)
 {
-   if(static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued)
+   if(LIBUSB_TRANSFER_COMPLETED != transfer->status)
    {
-      static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued = false;
-      static_cast<MantaUSB *>(transfer->user_data)->BeginQueuedTransfer(transfer);
+      libusb_free_transfer(transfer);
+      static_cast<MantaUSB *>(transfer->user_data)->TransferError = true;
    }
    else
    {
-      libusb_free_transfer(transfer);
-      static_cast<MantaUSB *>(transfer->user_data)->OutTransferInProgress = false;
+      if(static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued)
+      {
+         static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued = false;
+         static_cast<MantaUSB *>(transfer->user_data)->BeginQueuedTransfer(transfer);
+      }
+      else
+      {
+         libusb_free_transfer(transfer);
+         static_cast<MantaUSB *>(transfer->user_data)->OutTransferInProgress = false;
+      }
    }
 }

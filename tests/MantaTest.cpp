@@ -37,145 +37,90 @@ int main()
    manta.SetLEDControl(Manta::Slider, true);
    waitForTransmitComplete(manta);
 
-   uint8_t zeros[6];
    uint8_t effs[6];
    for(int i = 0; i < 6; ++i)
    {
-      zeros[i] = 0;
       effs[i] = 0xff;
    }
-   manta.SetLEDFrame(Manta::Amber, effs);
+   manta.SetPadLEDFrame(Manta::Amber, effs);
    waitForTransmitComplete(manta);
    usleep(200000);
-   manta.SetLEDFrame(Manta::Red, effs);
+   manta.SetPadLEDFrame(Manta::Red, effs);
    waitForTransmitComplete(manta);
    usleep(200000);
-   manta.SetLEDFrame(Manta::Amber, effs);
+   manta.SetPadLEDFrame(Manta::Amber, effs);
    waitForTransmitComplete(manta);
    usleep(200000);
-   manta.SetLEDFrame(Manta::Amber, zeros);
+   manta.SetPadLEDFrame(Manta::Off, effs);
    waitForTransmitComplete(manta);
    usleep(200000);
    for(int i = 0; i < 6; ++i)
    {
-      manta.SetLEDRow(Manta::Amber, i, 0xFF);
+      manta.SetPadLEDRow(Manta::Amber, i, 0xFF);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetLEDRow(Manta::Red, i, 0xFF);
+      manta.SetPadLEDRow(Manta::Red, i, 0xFF);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetLEDRow(Manta::Amber, i, 0xFF);
+      manta.SetPadLEDRow(Manta::Amber, i, 0xFF);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetLEDRow(Manta::Amber, i, 0x00);
+      manta.SetPadLEDRow(Manta::Off, i, 0xFF);
       waitForTransmitComplete(manta);
    }
    for(int i = 0; i < 8; ++i)
    {
-      manta.SetLEDColumn(Manta::Amber, i, 0xFF);
+      manta.SetPadLEDColumn(Manta::Amber, i, 0xFF);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetLEDColumn(Manta::Red, i, 0xFF);
+      manta.SetPadLEDColumn(Manta::Red, i, 0xFF);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetLEDColumn(Manta::Amber, i, 0xFF);
+      manta.SetPadLEDColumn(Manta::Amber, i, 0xFF);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetLEDColumn(Manta::Amber, i, 0x00);
+      manta.SetPadLEDColumn(Manta::Off, i, 0xFF);
       waitForTransmitComplete(manta);
    }
+   manta.SetPadLED(Manta::Red, 0);
+   waitForTransmitComplete(manta);
+   usleep(100000);
+   for(int i = 1; i < 48; ++i)
+   {
+      manta.SetPadLED(Manta::Red, i);
+      manta.SetPadLED(Manta::Amber, i - 1);
+      waitForTransmitComplete(manta);
+      usleep(100000);
+   }
+   manta.SetPadLEDFrame(Manta::Off, effs);
    for(int i = 0; i < 4; ++i)
    {
-      manta.SetButtonLED(Manta::Amber, i, true);
+      manta.SetButtonLED(Manta::Amber, i);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetButtonLED(Manta::Red, i, true);
+      manta.SetButtonLED(Manta::Red, i);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetButtonLED(Manta::Amber, i, true);
+      manta.SetButtonLED(Manta::Amber, i);
       waitForTransmitComplete(manta);
       usleep(200000);
-      manta.SetButtonLED(Manta::Amber, i, false);
+      manta.SetButtonLED(Manta::Off, i);
       waitForTransmitComplete(manta);
    }
 
    for(int i = 0x80, j = 0x01; i; i >>= 1, j <<= 1)
    {
-      manta.SetSliderLEDs(0, i);
-      waitForTransmitComplete(manta);
-      manta.SetSliderLEDs(1, j);
+      manta.SetSliderLED(Manta::Off, 0, 0xFF);
+      manta.SetSliderLED(Manta::Off, 1, 0xFF);
+      manta.SetSliderLED(Manta::Amber, 0, i);
+      manta.SetSliderLED(Manta::Amber, 1, j);
       waitForTransmitComplete(manta);
       usleep(100000);
    }
-   manta.SetSliderLEDs(0, 0);
-   waitForTransmitComplete(manta);
-   manta.SetSliderLEDs(1, 0);
+   manta.SetSliderLED(Manta::Off, 0, 0xFF);
+   manta.SetSliderLED(Manta::Off, 1, 0xFF);
    waitForTransmitComplete(manta);
 
-   for(int i = 0; i < 8; ++i)
-   {
-      manta.SetLEDColumn(Manta::Amber, i, 0xAA);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDColumn(Manta::Amber, i, 0x55);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDColumn(Manta::Amber, i, 0x00);
-      waitForTransmitComplete(manta);
-   }
-   for(int i = 0; i < 8; ++i)
-   {
-      manta.SetLEDColumn(Manta::Red, i, 0xAA);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDColumn(Manta::Red, i, 0x55);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDColumn(Manta::Red, i, 0x00);
-      waitForTransmitComplete(manta);
-   }
-   for(int i = 0; i < 0x40; ++i)
-   {
-      for(int j = 0; j < 8; ++j)
-         manta.SetLEDColumn(Manta::Red, j, i);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-   }
-   for(int j = 0; j < 8; ++j)
-      manta.SetLEDColumn(Manta::Red, j, 0x00);
-   waitForTransmitComplete(manta);
-   for(int i = 0; i < 6; ++i)
-   {
-      manta.SetLEDRow(Manta::Amber, i, 0xAA);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDRow(Manta::Amber, i, 0x55);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDRow(Manta::Amber, i, 0x00);
-      waitForTransmitComplete(manta);
-   }
-   for(int i = 0; i < 6; ++i)
-   {
-      manta.SetLEDRow(Manta::Red, i, 0xAA);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDRow(Manta::Red, i, 0x55);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-      manta.SetLEDRow(Manta::Red, i, 0x00);
-      waitForTransmitComplete(manta);
-   }
-   for(int i = 0; i < 256; ++i)
-   {
-      for(int j = 0; j < 6; ++j)
-         manta.SetLEDRow(Manta::Red, j, i);
-      waitForTransmitComplete(manta);
-      usleep(50000);
-   }
-   for(int j = 0; j < 6; ++j)
-      manta.SetLEDRow(Manta::Red, j, 0x00);
-   waitForTransmitComplete(manta);
 
    manta.SetLEDControl(Manta::PadAndButton, false);
    waitForTransmitComplete(manta);
