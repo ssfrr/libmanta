@@ -26,7 +26,6 @@ class Manta : public MantaUSB
       void SetLEDControl(LEDControlType control, bool state);
       void SetTurboMode(bool Enabled);
       void SetRawMode(bool Enabled);
-      void SetHiResMode(bool Enabled);
 
    protected:
       /* declare callbacks */

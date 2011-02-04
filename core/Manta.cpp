@@ -339,20 +339,6 @@ void Manta::SetRawMode(bool Enabled)
    WriteFrame(CurrentOutReport);
 }
 
-void Manta::SetHiResMode(bool Enabled)
-{
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
-   
-   if(Enabled)
-      CurrentOutReport[ConfigIndex] |= 0x10;
-   else
-      CurrentOutReport[ConfigIndex] &= ~0x10;
-   WriteFrame(CurrentOutReport);
-}
-
 uint8_t Manta::byteReverse(uint8_t inByte)
 {
    // Algorithm from Bit Twiddling Hacks
