@@ -16,14 +16,42 @@ Manta::Manta(void) {
    {
       CurrentOutReport[i] = 0;
    }
+   for(int i = 0; i < 48; ++i)
+   {
+      VelocityBuffer[i] = 0;
+   }
 }
 
 void Manta::FrameReceived(int8_t *frame)
 {
    for(int i = 0; i < 49; ++i)
    {
+      /* check to see if there's a previous sample waiting to have
+       * the velocity algorithm run */
+      /* TODO: this whole logic hasn't been thought through. draw
+       * a flow chart. */
+      if(0 != VelocityBuffer[i - 1])
+      {
+         if(VelocityBuffer[i-1] < frame[i])
+         {
+            VelocityEvent(i - 1, CalculateVelocity(VelocityBuffer[i], frame[i] + 128));
+         }
+         VelocityBuffer[i - 1] = 0;
+      }
+
       if(frame[i] != LastInReport[i])
       {
+         /* check to see if this is a release */
+         if(-128 == frame[i])
+         {
+            VelocityBuffer[i] = 0;
+            VelocityEvent(i - 1, 0);
+         }
+         /* check to see if this is the first nonzero sample */
+         else if(-128 == LastInReport[i])
+         {
+            VelocityBuffer[i] = frame[i] + 128;
+         }
          PadEvent(i - 1, frame[i] + 128);
       }
       LastInReport[i] = frame[i];
@@ -352,4 +380,73 @@ uint8_t Manta::byteReverse(uint8_t inByte)
       s--;
    }
    outByte <<= s; // shift when inByte's highest bits are zero
+}
+int manta_pf_calcvelocity(t_manta *x, int inputvalue, int pastvalue)
+{
+   float LOG1, LOG2;
+   float MAX;
+   float MIN;
+   float RELATIVE1, RELATIVE2;
+   float LOG_RELATIVE1, LOG_RELATIVE2;
+   float SUM_RAW;
+   float LOG_SUM_RAW;
+   float LOG_SUM_RELATIVE;
+   float UP1;
+   float VELOCITY = 0;
+   int VELint = 0;
+
+
+   // now do the velocity calculation
+   LOG1 = log(1.0 + (float)pastvalue);
+   LOG2 = log(1.0 + (float)inputvalue);
+
+   MIN = pastvalue;
+   if (inputvalue < MIN)
+   {
+      MIN = inputvalue;
+   }
+   MAX = pastvalue;
+   if (inputvalue > MAX)
+   {
+      MAX = inputvalue;
+   }
+   RELATIVE1 = pastvalue/MAX;
+   RELATIVE2 = inputvalue/MAX;
+   LOG_RELATIVE1 = log(1.0 + RELATIVE1);
+   LOG_RELATIVE2 = log(1.0 + RELATIVE2);
+   SUM_RAW = pastvalue+inputvalue;
+   LOG_SUM_RAW = log(1.0 + SUM_RAW);
+   LOG_SUM_RELATIVE = log(1.0 + SUM_RAW/MAX);
+   UP1 = 0;
+   if (inputvalue>pastvalue) { UP1 = 1; }
+   VELOCITY =
+      -14.997037  +
+      pastvalue      *  0.009361  +
+      MIN           * -0.014234  +
+      LOG1          *  1.099763  +
+      RELATIVE2     * -9.588311  +
+      LOG_RELATIVE1  *-27.595303  +
+      LOG_RELATIVE2  * -8.803761  +
+      LOG_SUM_RELATIVE * 44.013138  +
+      UP1           *  0.221622;
+   //Then trim value to [0.4] range:
+   if (VELOCITY < 0.)
+   {
+      VELOCITY = 0.;
+   }
+   if (VELOCITY > 4.)
+   {
+      VELOCITY = 4.;
+   }
+   //get it to 0. to 1. range
+   VELOCITY = VELOCITY / 4.;
+   // curve it exponentially
+   VELOCITY = VELOCITY * VELOCITY;
+   //get it to 0-126 range
+   VELOCITY = VELOCITY * 126;
+   //get it to 1-127 range
+   VELOCITY = VELOCITY+ 1;
+   //round to ints
+   VELint = (int)VELOCITY;
+   return VELint;
 }

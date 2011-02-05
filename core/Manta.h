@@ -32,11 +32,13 @@ class Manta : public MantaUSB
       virtual void PadEvent(int id, int value) = 0;
       virtual void SliderEvent(int id, int value) = 0;
       virtual void ButtonEvent(int id, int value) = 0;
+      virtual void VelocityEvent(int id, int velocity) = 0;
       /* declare callbacks implemented by this class */
       virtual void FrameReceived(int8_t *frame);
       
    private:
       static uint8_t byteReverse(uint8_t inByte);
+      static uint8_t calculateVelocity(int firstValue, int secondValue);
       static const int AmberIndex = 0;
       static const int RedIndex = 10;
       static const int SliderIndex = 7;
@@ -44,5 +46,6 @@ class Manta : public MantaUSB
       static const int ConfigIndex = 9;
       int8_t LastInReport[InPacketLen];
       uint8_t CurrentOutReport[OutPacketLen];
+      uint8_t VelocityBuffer[48];
 };
 
