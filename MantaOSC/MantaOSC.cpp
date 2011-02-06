@@ -16,6 +16,7 @@ class MantaOSC : public Manta
       virtual void PadEvent(int id, int value);
       virtual void SliderEvent(int id, int value);
       virtual void ButtonEvent(int id, int value);
+      virtual void VelocityEvent(int id, int value);
       friend int LEDControlHandler(const char *path, const char *types,
             lo_arg **argv, int argc, void *data, void *instancePointer);
       friend int LEDRowAndColumnHandler(const char *path,
@@ -85,6 +86,11 @@ void MantaOSC::SliderEvent(int id, int value)
 void MantaOSC::ButtonEvent(int id, int value)
 {
    lo_send(OSCAddress, "/Manta/Button", "ii", id, value);
+}
+
+void MantaOSC::VelocityEvent(int id, int value)
+{
+   lo_send(OSCAddress, "/Manta/Velocity", "ii", id, value);
 }
 
 int main(void)

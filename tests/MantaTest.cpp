@@ -19,6 +19,10 @@ class MantaTester: public Manta
       {
          cout << "Button " << id << ": " << value << endl;
       }
+      virtual void VelocityEvent(int id, int value)
+      {
+         cout << "Velocity " << id << ": " << value << endl;
+      }
 };
 
 static void waitForTransmitComplete(MantaUSB &manta)

@@ -1,4 +1,5 @@
 #include <libusb-1.0/libusb.h>
+#include <cmath>
 #include "Manta.h"
 #include "MantaExceptions.h"
 
@@ -18,25 +19,23 @@ Manta::Manta(void) {
    }
    for(int i = 0; i < 48; ++i)
    {
-      VelocityBuffer[i] = 0;
+      VelocityWaiting[i] = false;
    }
 }
 
 void Manta::FrameReceived(int8_t *frame)
 {
-   for(int i = 0; i < 49; ++i)
+   /* input frames have one reportID byte at the beginning */
+   for(int i = 1; i < 49; ++i)
    {
       /* check to see if there's a previous sample waiting to have
        * the velocity algorithm run */
       /* TODO: this whole logic hasn't been thought through. draw
        * a flow chart. */
-      if(0 != VelocityBuffer[i - 1])
+      if(true == VelocityWaiting[i])
       {
-         if(VelocityBuffer[i-1] < frame[i])
-         {
-            VelocityEvent(i - 1, CalculateVelocity(VelocityBuffer[i], frame[i] + 128));
-         }
-         VelocityBuffer[i - 1] = 0;
+         VelocityEvent(i - 1, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
+         VelocityWaiting[i] = false;
       }
 
       if(frame[i] != LastInReport[i])
@@ -44,13 +43,12 @@ void Manta::FrameReceived(int8_t *frame)
          /* check to see if this is a release */
          if(-128 == frame[i])
          {
-            VelocityBuffer[i] = 0;
             VelocityEvent(i - 1, 0);
          }
          /* check to see if this is the first nonzero sample */
          else if(-128 == LastInReport[i])
          {
-            VelocityBuffer[i] = frame[i] + 128;
+            VelocityWaiting[i] = true;
          }
          PadEvent(i - 1, frame[i] + 128);
       }
@@ -381,7 +379,7 @@ uint8_t Manta::byteReverse(uint8_t inByte)
    }
    outByte <<= s; // shift when inByte's highest bits are zero
 }
-int manta_pf_calcvelocity(t_manta *x, int inputvalue, int pastvalue)
+int Manta::CalculateVelocity(int LastValue, int CurrentValue)
 {
    float LOG1, LOG2;
    float MAX;
@@ -397,31 +395,31 @@ int manta_pf_calcvelocity(t_manta *x, int inputvalue, int pastvalue)
 
 
    // now do the velocity calculation
-   LOG1 = log(1.0 + (float)pastvalue);
-   LOG2 = log(1.0 + (float)inputvalue);
+   LOG1 = log(1.0 + (float)LastValue);
+   LOG2 = log(1.0 + (float)CurrentValue);
 
-   MIN = pastvalue;
-   if (inputvalue < MIN)
+   MIN = LastValue;
+   if (CurrentValue < MIN)
    {
-      MIN = inputvalue;
+      MIN = CurrentValue;
    }
-   MAX = pastvalue;
-   if (inputvalue > MAX)
+   MAX = LastValue;
+   if (CurrentValue > MAX)
    {
-      MAX = inputvalue;
+      MAX = CurrentValue;
    }
-   RELATIVE1 = pastvalue/MAX;
-   RELATIVE2 = inputvalue/MAX;
+   RELATIVE1 = LastValue/MAX;
+   RELATIVE2 = CurrentValue/MAX;
    LOG_RELATIVE1 = log(1.0 + RELATIVE1);
    LOG_RELATIVE2 = log(1.0 + RELATIVE2);
-   SUM_RAW = pastvalue+inputvalue;
+   SUM_RAW = LastValue+CurrentValue;
    LOG_SUM_RAW = log(1.0 + SUM_RAW);
    LOG_SUM_RELATIVE = log(1.0 + SUM_RAW/MAX);
    UP1 = 0;
-   if (inputvalue>pastvalue) { UP1 = 1; }
+   if (CurrentValue>LastValue) { UP1 = 1; }
    VELOCITY =
       -14.997037  +
-      pastvalue      *  0.009361  +
+      LastValue      *  0.009361  +
       MIN           * -0.014234  +
       LOG1          *  1.099763  +
       RELATIVE2     * -9.588311  +
