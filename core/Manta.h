@@ -32,7 +32,8 @@ class Manta : public MantaUSB
       virtual void PadEvent(int id, int value) = 0;
       virtual void SliderEvent(int id, int value) = 0;
       virtual void ButtonEvent(int id, int value) = 0;
-      virtual void VelocityEvent(int id, int velocity) = 0;
+      virtual void PadVelocityEvent(int id, int velocity) = 0;
+      virtual void ButtonVelocityEvent(int id, int velocity) = 0;
       /* declare superclass callbacks implemented by this class */
       virtual void FrameReceived(int8_t *frame);
       
@@ -46,6 +47,6 @@ class Manta : public MantaUSB
       static const int ConfigIndex = 9;
       int8_t LastInReport[InPacketLen];
       uint8_t CurrentOutReport[OutPacketLen];
-      bool VelocityWaiting[49];
+      bool VelocityWaiting[53];
 };
 

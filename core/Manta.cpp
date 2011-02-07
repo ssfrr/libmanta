@@ -17,7 +17,7 @@ Manta::Manta(void) {
    {
       CurrentOutReport[i] = 0;
    }
-   for(int i = 0; i < 48; ++i)
+   for(int i = 0; i < sizeof(VelocityWaiting) / sizeof(VelocityWaiting[0]); ++i)
    {
       VelocityWaiting[i] = false;
    }
@@ -26,7 +26,7 @@ Manta::Manta(void) {
 void Manta::FrameReceived(int8_t *frame)
 {
    /* input frames have one reportID byte at the beginning */
-   for(int i = 1; i < 49; ++i)
+   for(int i = 1; i < 53; ++i)
    {
       /* check to see if there's a previous sample waiting to have
        * the velocity algorithm run */
@@ -34,7 +34,10 @@ void Manta::FrameReceived(int8_t *frame)
        * a flow chart. */
       if(true == VelocityWaiting[i])
       {
-         VelocityEvent(i - 1, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
+         if(i < 49)
+            PadVelocityEvent(i - 1, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
+         else
+            ButtonVelocityEvent(i - 49, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
          VelocityWaiting[i] = false;
       }
 
@@ -43,22 +46,20 @@ void Manta::FrameReceived(int8_t *frame)
          /* check to see if this is a release */
          if(-128 == frame[i])
          {
-            VelocityEvent(i - 1, 0);
+            if(i < 49)
+               PadVelocityEvent(i - 1, 0);
+            else
+               ButtonVelocityEvent(i - 49, 0);
          }
          /* check to see if this is the first nonzero sample */
          else if(-128 == LastInReport[i])
          {
             VelocityWaiting[i] = true;
          }
-         PadEvent(i - 1, frame[i] + 128);
-      }
-      LastInReport[i] = frame[i];
-   }
-   for(int i = 49; i < 53; ++i)
-   {
-      if(frame[i] != LastInReport[i])
-      {
-         ButtonEvent(i - 49, frame[i] + 128);
+         if(i < 49)
+            PadEvent(i - 1, frame[i] + 128);
+         else
+            ButtonEvent(i - 49, frame[i] + 128);
       }
       LastInReport[i] = frame[i];
    }
