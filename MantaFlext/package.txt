@@ -2,9 +2,11 @@ NAME=manta
 BUILDTYPE=multi
 SRCDIR=.
 SRCS= MantaFlext.cpp \
+      MantaFlextEvents.cpp \
+      MantaFlextHandlers.cpp \
       ../core/Manta.cpp \
       ../core/MantaUSB.cpp
-HDRS= ../core/Manta.h \
+HDRS= MantaFlext.h \
+      ../core/Manta.h \
       ../core/MantaUSB.h
 LIBS+= -lusb-1.0 -lm
-CFLAGS+= -DFLEXT_THREADS
