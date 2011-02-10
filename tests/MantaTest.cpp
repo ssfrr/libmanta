@@ -19,9 +19,13 @@ class MantaTester: public Manta
       {
          cout << "Button " << id << ": " << value << endl;
       }
-      virtual void VelocityEvent(int id, int value)
+      virtual void PadVelocityEvent(int id, int value)
       {
-         cout << "Velocity " << id << ": " << value << endl;
+         cout << "Pad Velocity " << id << ": " << value << endl;
+      }
+      virtual void ButtonVelocityEvent(int id, int value)
+      {
+         cout << "Button Velocity " << id << ": " << value << endl;
       }
 };
 
