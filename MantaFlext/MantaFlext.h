@@ -19,13 +19,13 @@ protected:
    static void ClassSetup(t_classid c);
 	void StartThread();
    void SetPadLED(t_symbol *state, int ledID);
+   void SetPadLEDRow(t_symbol *state, int row, int mask);
+   void SetPadLEDColumn(t_symbol *state, int column, int mask);
+   //void SetPadLEDFrame(t_symbol *state, int mask[]);
+   void SetSliderLED(t_symbol *state, int id, int mask);
+   void SetButtonLED(t_symbol *state, int id);
    void SetLEDControl(t_symbol *control, int state);
    /*
-   void SetPadLEDRow(t_symbol state, int row, int mask);
-   void SetPadLEDColumn(t_symbol state, int column, int mask);
-   void SetPadLEDFrame(t_symbol state, int mask[]);
-   void SetSliderLED(t_symbol state, int id, int mask);
-   void SetButtonLED(t_symbol state, int id);
    void Recalibrate(void);
    void SetTurboMode(bool Enabled);
    void SetRawMode(bool Enabled);
@@ -37,11 +37,17 @@ private:
    void ButtonEvent(int id, int value);
    void PadVelocityEvent(int id, int value);
    void ButtonVelocityEvent(int id, int value);
+
+   LEDState ledStateFromSymbol(t_symbol *stateSymbol);
 	// declare threaded callback 
 	// the same syntax as with FLEXT_CALLBACK is used here
 	FLEXT_THREAD(StartThread)
    /* declare message handlers */
    FLEXT_CALLBACK_2(SetPadLED, t_symptr, int)
+   FLEXT_CALLBACK_3(SetPadLEDRow, t_symptr, int, int)
+   FLEXT_CALLBACK_3(SetPadLEDColumn, t_symptr, int, int)
+   FLEXT_CALLBACK_3(SetSliderLED, t_symptr, int, int)
+   FLEXT_CALLBACK_2(SetButtonLED, t_symptr, int)
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
 
    int lastSliderValue[2];
