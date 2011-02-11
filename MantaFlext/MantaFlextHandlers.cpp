@@ -19,29 +19,31 @@ manta::LEDState manta::ledStateFromSymbol(t_symbol *stateSymbol)
 
 void manta::StartThread()
 {
-start:
-   try
+   while(!shouldStop)
    {
-      Connect();
-      post("manta: Connected to Manta");
-      while(!ShouldExit() && !shouldStop)
+      try
       {
-         HandleEvents();
+         Connect();
+         post("manta: Connected to Manta");
+         while(!shouldStop)
+         {
+            HandleEvents();
+         }
+      }
+      catch(MantaNotFoundException e)
+      {
+         post("manta: No attached Mantas found. Retrying...");
+         Sleep(1);
+      }
+      catch(MantaCommunicationException e)
+      {
+         post("manta: Communication with Manta interrupted. Reconnecting...");
+         Sleep(1);
       }
    }
-   catch(MantaNotFoundException e)
-   {
-      post("manta: No attached Mantas found. Retrying...");
-      Sleep(1);
-      goto start;
-   }
-   catch(MantaCommunicationException e)
-   {
-      post("manta: Communication with Manta interrupted. Reconnecting...");
-      Sleep(1);
-      goto start;
-   }
+   Lock();
    cond.Signal();
+   Unlock();
 }
 
 /* TODO: other control types */

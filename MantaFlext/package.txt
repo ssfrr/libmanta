@@ -10,4 +10,4 @@ HDRS= MantaFlext.h \
       ../core/Manta.h \
       ../core/MantaUSB.h
 LIBS+= -lusb-1.0 -lm
-CXXFLAGS += -Wall
+CXXFLAGS += -Wall -g

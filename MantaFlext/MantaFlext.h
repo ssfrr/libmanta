@@ -52,7 +52,8 @@ private:
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
 
    int lastSliderValue[2];
-   /* thread conditional to stop polling */
+   /* thread conditional to wait on to make sure
+    * that the polling thread has stopped */
    ThrCond cond;
    volatile bool shouldStop;
 

@@ -27,8 +27,11 @@ manta::manta():
 
 manta::~manta()
 { 
+   Lock();
    shouldStop = true;
+   /* Wait() unlocks the lock while waiting */
    cond.Wait();
+   Unlock();
 } 
 
 void manta::ClassSetup(t_classid c)
