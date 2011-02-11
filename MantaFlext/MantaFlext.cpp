@@ -1,4 +1,6 @@
 #include "MantaFlext.h"
+#include <cstdarg>
+#include <cstdio>
 
 FLEXT_NEW("manta",manta)
 
@@ -46,6 +48,16 @@ void manta::ClassSetup(t_classid c)
    columnSymbol = MakeSymbol("column");
    frameSymbol = MakeSymbol("frame");
    padAndButtonSymbol = MakeSymbol("padandbutton");
+}
+
+void manta::DebugPrint(const char *fmt, ...)
+{
+   va_list args;
+   char string[256];
+   va_start(args, fmt);
+   vsprintf(string, fmt, args);
+   va_end (args);
+   post(string);
 }
 
 const t_symbol *manta::padSymbol;

@@ -37,6 +37,7 @@ private:
    void ButtonEvent(int id, int value);
    void PadVelocityEvent(int id, int value);
    void ButtonVelocityEvent(int id, int value);
+   void DebugPrint(const char *fmt, ...);
 
    LEDState ledStateFromSymbol(t_symbol *stateSymbol);
 	// declare threaded callback 
