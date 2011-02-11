@@ -5,8 +5,7 @@
 FLEXT_NEW("manta",manta)
 
 manta::manta():
-   shouldStop(false),
-   running(false)
+   shouldStop(false)
 { 
 	AddInAnything();
 	AddInAnything();
@@ -29,11 +28,7 @@ manta::manta():
 manta::~manta()
 { 
    shouldStop = true;
-   while(running)
-   {
-      cond.Wait();
-   }
-   shouldStop = false;
+   cond.Wait();
 } 
 
 void manta::ClassSetup(t_classid c)

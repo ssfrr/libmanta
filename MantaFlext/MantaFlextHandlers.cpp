@@ -1,4 +1,5 @@
 #include "MantaFlext.h"
+#include "../core/MantaExceptions.h"
 
 manta::LEDState manta::ledStateFromSymbol(t_symbol *stateSymbol)
 {
@@ -18,17 +19,28 @@ manta::LEDState manta::ledStateFromSymbol(t_symbol *stateSymbol)
 
 void manta::StartThread()
 {
-   Connect();
-   if(running)
+start:
+   try
    {
-      return;
+      Connect();
+      post("manta: Connected to Manta");
+      while(!ShouldExit() && !shouldStop)
+      {
+         HandleEvents();
+      }
    }
-   running = true;
-   while(!ShouldExit() && !shouldStop)
+   catch(MantaNotFoundException e)
    {
-      HandleEvents();
+      post("manta: No attached Mantas found. Retrying...");
+      Sleep(1);
+      goto start;
    }
-   running = false;
+   catch(MantaCommunicationException e)
+   {
+      post("manta: Communication with Manta interrupted. Reconnecting...");
+      Sleep(1);
+      goto start;
+   }
    cond.Signal();
 }
 

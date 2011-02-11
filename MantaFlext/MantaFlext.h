@@ -55,7 +55,6 @@ private:
    /* thread conditional to stop polling */
    ThrCond cond;
    volatile bool shouldStop;
-   volatile bool running;
 
    static const t_symbol *padSymbol;
    static const t_symbol *buttonSymbol;
