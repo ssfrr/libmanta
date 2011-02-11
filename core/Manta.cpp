@@ -30,8 +30,6 @@ void Manta::FrameReceived(int8_t *frame)
    {
       /* check to see if there's a previous sample waiting to have
        * the velocity algorithm run */
-      /* TODO: this whole logic hasn't been thought through. draw
-       * a flow chart. */
       if(true == VelocityWaiting[i])
       {
          if(i < 49)
@@ -131,6 +129,7 @@ void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
 
    DebugPrint("Called SetPadLEDRow(%s, %d, %X)",
          state == Off ? "Off" : state == Amber ? "Amber" : "Red", row, mask);
+   DebugPrint("ByteReverse(0x%X) = 0x%X", 0xA0, byteReverse(0xA0));
    switch(state)
    {
       case Amber:

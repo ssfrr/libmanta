@@ -1,6 +1,8 @@
 #include "../core/Manta.h"
 #include <iostream>
 #include <cstring>
+#include <cstdio>
+#include <cstdarg>
 
 using namespace std;
 
@@ -26,6 +28,14 @@ class MantaTester: public Manta
       virtual void ButtonVelocityEvent(int id, int value)
       {
          cout << "Button Velocity " << id << ": " << value << endl;
+      }
+      virtual void DebugPrint(const char *fmt, ...)
+      {
+         va_list args;
+         va_start(args, fmt);
+         vprintf(fmt, args);
+         printf("\n");
+         va_end (args);
       }
 };
 

@@ -1,4 +1,4 @@
-#N canvas 588 201 808 738 10;
+#N canvas 588 225 808 738 10;
 #X obj 275 709 dac~;
 #N canvas 8 73 402 472 slidernote 0;
 #X obj 93 253 osc~;
@@ -165,7 +165,7 @@
 #X obj 195 635 route pad;
 #X obj 195 611 r \$0-continuous;
 #X obj 286 634 r \$0-slider;
-#N canvas 49 209 571 575 basic 1;
+#N canvas 53 233 571 575 basic 1;
 #X msg 51 33 amber;
 #X msg 58 55 red;
 #X msg 64 77 off;
@@ -230,7 +230,6 @@
 #X restore 289 214 pd basic examples;
 #X obj 68 161 s \$0-control;
 #X msg 68 140 ledcontrol slider \$1;
-#X obj 397 414 print;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -255,7 +254,6 @@
 #X connect 21 3 29 0;
 #X connect 22 0 30 0;
 #X connect 24 0 21 1;
-#X connect 24 0 39 0;
 #X connect 25 0 21 0;
 #X connect 33 0 2 0;
 #X connect 34 0 33 0;
