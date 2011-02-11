@@ -1,4 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
+endif()
 project (Manta)
 add_library(Manta SHARED Manta.cpp MantaUSB.cpp)
 target_link_libraries(Manta usb-1.0 m)

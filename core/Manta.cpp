@@ -13,11 +13,11 @@ Manta::Manta(void) {
    {
       LastInReport[i] = 127;
    }
-   for(int i = 0; i < sizeof(CurrentOutReport); ++i)
+   for(unsigned int i = 0; i < sizeof(CurrentOutReport); ++i)
    {
       CurrentOutReport[i] = 0;
    }
-   for(int i = 0; i < sizeof(VelocityWaiting) / sizeof(VelocityWaiting[0]); ++i)
+   for(unsigned int i = 0; i < sizeof(VelocityWaiting) / sizeof(VelocityWaiting[0]); ++i)
    {
       VelocityWaiting[i] = false;
    }
@@ -77,9 +77,6 @@ void Manta::FrameReceived(int8_t *frame)
 
 void Manta::SetPadLED(LEDState state, int ledID)
 {
-   int baseIndex;
-   int inverseIndex;
-
    int row = ledID / 8;
    int column = ledID % 8;
 
@@ -116,8 +113,6 @@ void Manta::SetPadLED(LEDState state, int ledID)
 
 void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
 {
-   int baseIndex;
-   int inverseIndex;
    if(! IsConnected())
    {
       throw MantaNotConnectedException();
@@ -204,8 +199,6 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
 
 void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
 {
-   int baseIndex;
-   int inverseIndex;
    if(! IsConnected())
    {
       throw MantaNotConnectedException();
@@ -214,21 +207,21 @@ void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
    switch(state)
    {
       case Amber:
-         for(int i = 0; i < sizeof(LEDFrame); ++i)
+         for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
          {
             CurrentOutReport[AmberIndex + i] = byteReverse(mask[i]);
             CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
          }
          break;
       case Red:
-         for(int i = 0; i < sizeof(LEDFrame); ++i)
+         for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
          {
             CurrentOutReport[RedIndex + i] = byteReverse(mask[i]);
             CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
          }
          break;
       case Off:
-         for(int i = 0; i < sizeof(LEDFrame); ++i)
+         for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
          {
             CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
             CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
@@ -382,6 +375,7 @@ uint8_t Manta::byteReverse(uint8_t inByte)
       s--;
    }
    outByte <<= s; // shift when inByte's highest bits are zero
+   return outByte;
 }
 int Manta::CalculateVelocity(int LastValue, int CurrentValue)
 {
