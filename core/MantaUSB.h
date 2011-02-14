@@ -14,6 +14,7 @@ class MantaUSB
       virtual ~MantaUSB(void);
       bool IsConnected(void);
       void Connect(int serialNumber = 0);
+      void Disconnect();
       void HandleEvents(void);
       bool IsTransmitting(void);
 
@@ -32,15 +33,17 @@ class MantaUSB
       static const int VendorID = 0x2424;
       static const int ProductID = 0x2424;
 
-      void BeginReadTransfer(libusb_transfer *transfer);
-      void BeginQueuedTransfer(libusb_transfer *transfer);
+      void BeginReadTransfer(void);
+      void BeginQueuedTransfer(void);
+      void CancelEvents(void);
 
-      int SerialNumber;
       static int DeviceCount;
       static libusb_context *LibusbContext;
+      int SerialNumber;
       libusb_device_handle *DeviceHandle;
-      volatile bool OutTransferInProgress;
-      volatile bool OutTransferQueued;
+      libusb_transfer *CurrentInTransfer;
+      libusb_transfer *CurrentOutTransfer;
+      bool OutTransferQueued;
       bool TransferError;
       uint8_t QueuedOutFrame[OutPacketLen];
       uint8_t ReceivedFrame[InPacketLen];

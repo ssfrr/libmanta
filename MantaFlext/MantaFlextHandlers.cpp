@@ -11,7 +11,7 @@ manta::LEDState manta::ledStateFromSymbol(t_symbol *stateSymbol)
    {
       return Red;
    }
-   else if(stateSymbol == offSymbol)
+   else
    {
       return Off;
    }
