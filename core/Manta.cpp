@@ -21,10 +21,14 @@ Manta::Manta(void) {
    {
       VelocityWaiting[i] = false;
    }
+   MaximumPadValue = 0;
 }
 
 void Manta::FrameReceived(int8_t *frame)
 {
+   int maxID;
+   int maxValue = -128;
+   bool isMax = false;
    /* input frames have one reportID byte at the beginning */
    for(int i = 1; i < 53; ++i)
    {
@@ -37,6 +41,13 @@ void Manta::FrameReceived(int8_t *frame)
          else
             ButtonVelocityEvent(i - 49, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
          VelocityWaiting[i] = false;
+      }
+
+      if(frame[i] > maxValue)
+      {
+         maxValue = frame[i];
+         maxID = i;
+         isMax = true;
       }
 
       if(frame[i] != LastInReport[i])
@@ -60,6 +71,15 @@ void Manta::FrameReceived(int8_t *frame)
             ButtonEvent(i - 49, frame[i] + 128);
       }
       LastInReport[i] = frame[i];
+   }
+   if(maxValue != MaximumPadValue)
+   {
+      if(isMax)
+      {
+         MaximumPadID = maxID;
+      }
+      MaximumPadValue = maxValue;
+      MaximumEvent(MaximumPadID, MaximumPadValue + 128);
    }
    if(frame[53] != LastInReport[53] || frame[54] != LastInReport[54])
    {

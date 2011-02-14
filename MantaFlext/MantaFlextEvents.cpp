@@ -41,3 +41,11 @@ void manta::ButtonVelocityEvent(int id, int value)
    SetFloat(args[1], value);
    ToOutAnything(velocityOutlet, buttonSymbol, sizeof(args) / sizeof(t_atom), args);
 }
+
+void manta::MaximumEvent(int id, int value)
+{
+   t_atom args[2];
+   SetFloat(args[0], id);
+   SetFloat(args[1], value);
+   ToOutAnything(processedOutlet, maxSymbol, sizeof(args) / sizeof(t_atom), args);
+}

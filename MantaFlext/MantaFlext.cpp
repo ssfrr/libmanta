@@ -46,6 +46,7 @@ void manta::ClassSetup(t_classid c)
    columnSymbol = MakeSymbol("column");
    frameSymbol = MakeSymbol("frame");
    padAndButtonSymbol = MakeSymbol("padandbutton");
+   maxSymbol = MakeSymbol("max");
 }
 
 void manta::DebugPrint(const char *fmt, ...)
@@ -68,3 +69,4 @@ const t_symbol *manta::rowSymbol;
 const t_symbol *manta::columnSymbol;
 const t_symbol *manta::frameSymbol;
 const t_symbol *manta::padAndButtonSymbol;
+const t_symbol *manta::maxSymbol;

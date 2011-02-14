@@ -37,6 +37,7 @@ private:
    void ButtonEvent(int id, int value);
    void PadVelocityEvent(int id, int value);
    void ButtonVelocityEvent(int id, int value);
+   void MaximumEvent(int id, int value);
    void DebugPrint(const char *fmt, ...);
 
    LEDState ledStateFromSymbol(t_symbol *stateSymbol);
@@ -67,10 +68,10 @@ private:
    static const t_symbol *columnSymbol;
    static const t_symbol *frameSymbol;
    static const t_symbol *padAndButtonSymbol;
+   static const t_symbol *maxSymbol;
 
    static const int velocityOutlet = 0;
    static const int continuousOutlet = 1;
    static const int sliderOutlet = 2;
-   static const int maximumOutlet = 3;
-   static const int centroidOutlet = 4;
+   static const int processedOutlet = 3;
 };
