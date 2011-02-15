@@ -42,10 +42,17 @@ void manta::ButtonVelocityEvent(int id, int value)
    ToOutAnything(velocityOutlet, buttonSymbol, sizeof(args) / sizeof(t_atom), args);
 }
 
-void manta::MaximumEvent(int id, int value)
+void manta::FrameReceived(int8_t *frame)
 {
-   t_atom args[2];
-   SetFloat(args[0], id);
-   SetFloat(args[1], value);
-   ToOutAnything(processedOutlet, maxSymbol, sizeof(args) / sizeof(t_atom), args);
+   t_atom padValues[48];
+   for(unsigned int i = 0; i < (sizeof(padValues) / sizeof(padValues[0])); ++i)
+   {
+      SetFloat(padValues[i], frame[i+1] + 128);
+   }
+   ToOutList(frameOutlet, sizeof(padValues) / sizeof(padValues[0]),
+         padValues);
+   
+   /* call the parent class version, to make sure all the other handlers get
+    * called properly */
+   Manta::FrameReceived(frame);
 }

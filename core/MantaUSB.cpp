@@ -206,13 +206,13 @@ void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer)
       else
       {
          libusb_free_transfer(transfer);
-         static_cast<MantaUSB *>(transfer->user_data)->CurrentInTransfer = NULL;
+         static_cast<MantaUSB *>(transfer->user_data)->CurrentOutTransfer = NULL;
       }
    }
    else
    {
       libusb_free_transfer(transfer);
-      static_cast<MantaUSB *>(transfer->user_data)->CurrentInTransfer = NULL;
+      static_cast<MantaUSB *>(transfer->user_data)->CurrentOutTransfer = NULL;
       if(LIBUSB_TRANSFER_CANCELLED != transfer->status)
       {
          static_cast<MantaUSB *>(transfer->user_data)->TransferError = true;

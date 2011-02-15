@@ -11,11 +11,11 @@ class manta:
 {
 	FLEXT_HEADER_S(manta, flext_base, ClassSetup)
  
-public:
+   public:
 	manta(); 
 	~manta(); 
 
-protected:
+   protected:
    static void ClassSetup(t_classid c);
 	void StartThread();
    void SetPadLED(t_symbol *state, int ledID);
@@ -37,8 +37,10 @@ private:
    void ButtonEvent(int id, int value);
    void PadVelocityEvent(int id, int value);
    void ButtonVelocityEvent(int id, int value);
-   void MaximumEvent(int id, int value);
    void DebugPrint(const char *fmt, ...);
+   /* here we're actually co-opting the parent class's FrameReceived
+    * function, but it will call the parents version within */
+   void FrameReceived(int8_t *frame);
 
    LEDState ledStateFromSymbol(t_symbol *stateSymbol);
 	// declare threaded callback 
@@ -68,10 +70,9 @@ private:
    static const t_symbol *columnSymbol;
    static const t_symbol *frameSymbol;
    static const t_symbol *padAndButtonSymbol;
-   static const t_symbol *maxSymbol;
 
    static const int velocityOutlet = 0;
    static const int continuousOutlet = 1;
    static const int sliderOutlet = 2;
-   static const int processedOutlet = 3;
+   static const int frameOutlet = 3;
 };

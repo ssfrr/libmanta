@@ -34,8 +34,6 @@ class Manta : public MantaUSB
       virtual void ButtonEvent(int id, int value) = 0;
       virtual void PadVelocityEvent(int id, int velocity) = 0;
       virtual void ButtonVelocityEvent(int id, int velocity) = 0;
-      virtual void MaximumEvent(int id, int value) = 0;
-      //virtual void CentroidEvent(int x, int y, int mass) = 0;
       /* declare superclass callbacks implemented by this class */
       virtual void FrameReceived(int8_t *frame);
       
