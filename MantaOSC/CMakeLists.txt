@@ -1,7 +1,9 @@
 cmake_minimum_required (VERSION 2.6)
-find_path(LO_INCLUDE_DIR liblo.h)
+# add /opt/local to cmake search prefix to find MacPorts-installed libs on OSX
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /opt/local)
+find_path(LO_INCLUDE_DIR lo/lo.h)
 find_library(LO_LIBRARY lo)
-find_path(USB-1.0_INCLUDE_DIR libusb.h)
+find_path(USB-1.0_INCLUDE_DIR libusb-1.0/libusb.h)
 find_library(USB-1.0_LIBRARY usb-1.0)
 include_directories(${USB-1.0_INCLUDE_DIR} ${LO_INCLUDE_DIR})
 add_executable(MantaOSC MantaOSC.cpp ../core/Manta.cpp ../core/MantaUSB.cpp)
