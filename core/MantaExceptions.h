@@ -27,6 +27,15 @@ class MantaNotFoundException : public std::runtime_error
          }
 };
 
+class MantaOpenException : public std::runtime_error
+{
+   public:
+      MantaOpenException() :
+            runtime_error("Could not connect to attached Manta")
+         {
+         }
+};
+
 class MantaCommunicationException : public std::runtime_error
 {
    public:
@@ -35,3 +44,4 @@ class MantaCommunicationException : public std::runtime_error
          {
          }
 };
+

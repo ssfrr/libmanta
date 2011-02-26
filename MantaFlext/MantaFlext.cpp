@@ -50,12 +50,14 @@ void manta::ClassSetup(t_classid c)
 
 void manta::DebugPrint(const char *fmt, ...)
 {
+#if 0
    va_list args;
    char string[256];
    va_start(args, fmt);
    vsprintf(string, fmt, args);
    va_end (args);
    post(string);
+#endif
 }
 
 const t_symbol *manta::padSymbol;

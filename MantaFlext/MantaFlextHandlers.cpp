@@ -35,6 +35,11 @@ void manta::StartThread()
          post("manta: No attached Mantas found. Retrying...");
          Sleep(1);
       }
+      catch(MantaOpenException e)
+      {
+         post("manta: Could not connect to attached Manta");
+         shouldStop = true;
+      }
       catch(MantaCommunicationException e)
       {
          post("manta: Communication with Manta interrupted. Reconnecting...");

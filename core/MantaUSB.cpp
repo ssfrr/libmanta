@@ -79,9 +79,9 @@ void MantaUSB::Connect(int serialNumber)
       throw(MantaNotFoundException());
    libusb_detach_kernel_driver(DeviceHandle, 0);
    if(LIBUSB_SUCCESS != libusb_set_configuration(DeviceHandle, 1))
-      throw(MantaCommunicationException());
+      throw(MantaOpenException());
    if(LIBUSB_SUCCESS != libusb_claim_interface(DeviceHandle, 0))
-      throw(MantaCommunicationException());
+      throw(MantaOpenException());
 
    /* start the first read transfer */
    CurrentInTransfer = libusb_alloc_transfer(0);
