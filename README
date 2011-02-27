@@ -43,11 +43,11 @@ no other instruction.
 4. Navigate to the libusb directory
 5. './configure'
 6. 'sudo make install'
-7. copy the MantaDummyDriver.kext file found in platform/osx to
-   /System/Library/Extensions.
+7. run the mantaswitch.sh script found in platform/osx to install the dummy driver
+   that prevents the OSX hid driver from blocking our access to the manta
    NOTE: while this .kext file is installed you will be unable to use the
    non-libmanta-based manta Max object or OSC client. To switch back simply
-   remove the installed .kext file and reboot.
+   run the script again to uninstall it
 8. reboot
 9. Jump to 'Linux and OS X Common Instructions'
 
