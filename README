@@ -36,24 +36,26 @@ no other instruction.
 
 * OS X:
 
-1. Download the latest version of libusb-1.0 from
+1. Install XCode from your OS X CD.
+2. Download the latest version of libusb-1.0 from
    http://sourceforge.net/projects/libusb/files/libusb-1.0/
-2. Extract the libusb-1.0 tarball
-3. Navigate to the libusb directory
-4. './configure'
-5. 'sudo make install'
-6. copy the MantaDummyDriver.kext file found in platform/osx to
+3. Extract the libusb-1.0 tarball
+4. Navigate to the libusb directory
+5. './configure'
+6. 'sudo make install'
+7. copy the MantaDummyDriver.kext file found in platform/osx to
    /System/Library/Extensions.
    NOTE: while this .kext file is installed you will be unable to use the
    non-libmanta-based manta Max object or OSC client. To switch back simply
    remove the installed .kext file and reboot.
-7. reboot
-8. Jump to 'Linux and OS X Common Instructions'
+8. reboot
+9. Jump to 'Linux and OS X Common Instructions'
 
 * Linux:
 
-1. Install libusb-1.0 and liblo via your package manager
-2. Jump to 'Linux and OS X Common Instructions'
+1. Install libusb-1.0 via your package manager
+2. Install the "build-essential" package
+3. Jump to 'Linux and OS X Common Instructions'
 
 * Linux and OS X Common Instructions:
 (to build for Max instead of PD you should mostly just be able to replace
