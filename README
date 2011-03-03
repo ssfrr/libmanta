@@ -66,7 +66,7 @@ each instance of 'pd' with 'max')
 2. Navigate to extern/flext in the libmanta directory
 3. './build.sh pd gcc'
 4. Edit buildsys/config-lnx-pd-gcc.txt (or config-mac-pd-gcc.txt) and change:
-   a. the last line to OFLAGS+=-march=native
+   a. (Linux ONLY) the last line to OFLAGS+=-march=native
    b. PDPATH to point to the "pd" subdirectory of the pd source package you
       extracted in step 2
    c. INSTPATH to point to where your PD externals live
