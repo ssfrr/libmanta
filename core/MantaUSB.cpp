@@ -73,24 +73,27 @@ bool MantaUSB::IsConnected(void)
 
 void MantaUSB::Connect(int serialNumber)
 {
-   DeviceHandle = libusb_open_device_with_vid_pid(LibusbContext, VendorID, ProductID);
-   /*TODO create new types of exceptions */
-   if(NULL == DeviceHandle)
-      throw(MantaNotFoundException());
-   libusb_detach_kernel_driver(DeviceHandle, 0);
-   if(LIBUSB_SUCCESS != libusb_set_configuration(DeviceHandle, 1))
-      throw(MantaOpenException());
-   if(LIBUSB_SUCCESS != libusb_claim_interface(DeviceHandle, 0))
-      throw(MantaOpenException());
+   if(! IsConnected())
+   {
+      DeviceHandle = libusb_open_device_with_vid_pid(LibusbContext, VendorID, ProductID);
+      /*TODO create new types of exceptions */
+      if(NULL == DeviceHandle)
+         throw(MantaNotFoundException());
+      libusb_detach_kernel_driver(DeviceHandle, 0);
+      if(LIBUSB_SUCCESS != libusb_set_configuration(DeviceHandle, 1))
+         throw(MantaOpenException());
+      if(LIBUSB_SUCCESS != libusb_claim_interface(DeviceHandle, 0))
+         throw(MantaOpenException());
 
-   /* start the first read transfer */
-   CurrentInTransfer = libusb_alloc_transfer(0);
-   BeginReadTransfer();
+      /* start the first read transfer */
+      CurrentInTransfer = libusb_alloc_transfer(0);
+      BeginReadTransfer();
+   }
 }
 
 void MantaUSB::Disconnect(void)
 {
-   if(! IsConnected())
+   if(IsConnected())
    {
       CancelEvents();
       libusb_release_interface(DeviceHandle, 0);
