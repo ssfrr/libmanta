@@ -4,10 +4,13 @@ SRCDIR=.
 SRCS= MantaFlext.cpp \
       MantaFlextEvents.cpp \
       MantaFlextHandlers.cpp \
+      MantaFlextLibrary.cpp \
+      MantaFlextCentroid.cpp \
       ../core/Manta.cpp \
       ../core/MantaUSB.cpp
 HDRS= MantaFlext.h \
+      MantaFlextCentroid.h \
       ../core/Manta.h \
       ../core/MantaUSB.h
 LIBS+= -lusb-1.0 -lm
-CXXFLAGS += -Wall -g
+CXXFLAGS += -Wall

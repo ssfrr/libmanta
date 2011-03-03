@@ -2,7 +2,7 @@
 #include <cstdarg>
 #include <cstdio>
 
-FLEXT_NEW("manta",manta)
+FLEXT_LIB("manta",manta)
 
 manta::manta():
    shouldStop(false)
@@ -21,6 +21,18 @@ manta::manta():
    FLEXT_ADDMETHOD_3(1, "slider", SetSliderLED, t_symptr, int, int);
    FLEXT_ADDMETHOD_2(1, "button", SetButtonLED, t_symptr, int);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
+   
+   padSymbol = MakeSymbol("pad");
+   sliderSymbol = MakeSymbol("slider");
+   buttonSymbol = MakeSymbol("button");
+   amberSymbol = MakeSymbol("amber");
+   offSymbol = MakeSymbol("off");
+   redSymbol = MakeSymbol("red");
+   rowSymbol = MakeSymbol("row");
+   columnSymbol = MakeSymbol("column");
+   frameSymbol = MakeSymbol("frame");
+   padAndButtonSymbol = MakeSymbol("padandbutton");
+
    /* use flext to call the threaded method */
    FLEXT_CALLMETHOD(StartThread);
 } 
@@ -34,20 +46,6 @@ manta::~manta()
    Unlock();
 } 
 
-void manta::ClassSetup(t_classid c)
-{
-   padSymbol = MakeSymbol("pad");
-   sliderSymbol = MakeSymbol("slider");
-   buttonSymbol = MakeSymbol("button");
-   amberSymbol = MakeSymbol("amber");
-   offSymbol = MakeSymbol("off");
-   redSymbol = MakeSymbol("red");
-   rowSymbol = MakeSymbol("row");
-   columnSymbol = MakeSymbol("column");
-   frameSymbol = MakeSymbol("frame");
-   padAndButtonSymbol = MakeSymbol("padandbutton");
-}
-
 void manta::DebugPrint(const char *fmt, ...)
 {
 #if 0
@@ -60,6 +58,7 @@ void manta::DebugPrint(const char *fmt, ...)
 #endif
 }
 
+#if 0
 const t_symbol *manta::padSymbol;
 const t_symbol *manta::buttonSymbol;
 const t_symbol *manta::sliderSymbol;
@@ -70,3 +69,4 @@ const t_symbol *manta::rowSymbol;
 const t_symbol *manta::columnSymbol;
 const t_symbol *manta::frameSymbol;
 const t_symbol *manta::padAndButtonSymbol;
+#endif
