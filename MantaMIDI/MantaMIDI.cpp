@@ -1,12 +1,12 @@
-#include "MIDImanager.h"
-//#include "coremidimanager.h"
 #include "../core/Manta.h"
 #include "../core/MantaExceptions.h"
-#include <cstring>
-#include <unistd.h>
-#include <stdio.h>
+
+//#include "MIDImanager.h"
+#include "CoreMidiManager.h"
+//#include <cstring>
+//#include <unistd.h>
+//#include <stdio.h>
 #include <iostream>
-#include <stdexcept>
 
 class MantaMIDI : public Manta
 {
@@ -29,8 +29,8 @@ MantaMIDI::LEDState getLEDStateFromString(const char *stateString);
 
 MantaMIDI::MantaMIDI()
 {
-	//m_midiManager = new CoreMidiManager();
-	m_midiManager = new MidiManager();
+	m_midiManager = new CoreMidiManager();
+	//m_midiManager = new MidiManager();
 }
 
 MantaMIDI::~MantaMIDI()

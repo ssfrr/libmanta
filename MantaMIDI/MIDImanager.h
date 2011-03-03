@@ -1,6 +1,8 @@
 #ifndef _MIDIMANAGER_H
 #define _MIDIMANAGER_H
 
+#include <stdint.h>
+
 #define MAX_MIDI_NOTES	128		// 48 for the actual manta array...
 static int midi_channel = 3;
 
@@ -29,8 +31,8 @@ protected:
 	
 private:
 	void ComposeMIDIMessage(char actionType, int noteNum, int value, uint8_t *msg);
-	
+	 
 	MidiNote m_notes[MAX_MIDI_NOTES];
-}
+};
 
 #endif

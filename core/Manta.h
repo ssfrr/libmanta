@@ -1,3 +1,6 @@
+#ifndef _MANTA_H
+#define _MANTA_H
+
 #include "MantaUSB.h"
 
 class Manta : public MantaUSB
@@ -57,3 +60,4 @@ class Manta : public MantaUSB
       bool PadFrameEnabled;
 };
 
+#endif // _MANTA_H

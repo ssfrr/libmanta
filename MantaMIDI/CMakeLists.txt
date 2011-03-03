@@ -10,5 +10,5 @@ find_library(COREFOUNDATION CoreFoundation "/")
 find_library(COREMIDI CoreMidi "/")
 
 include_directories(${USB-1.0_INCLUDE_DIR} ${LO_INCLUDE_DIR})
-add_executable(MantaMIDI MantaMIDI.cpp ../core/Manta.cpp ../core/MantaUSB.cpp)
+add_executable(MantaMIDI MantaMIDI.cpp ../core/Manta.cpp ../core/MantaUSB.cpp MIDImanager.cpp CoreMidiManager.cpp)
 target_link_libraries(MantaMIDI ${LO_LIBRARY} ${USB-1.0_LIBRARY} ${COREAUDIO} ${COREFOUNDATION} ${COREMIDI} m)

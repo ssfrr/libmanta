@@ -1,3 +1,4 @@
+#include "MIDImanager.h"
 #include "coremidimanager.h"
 
 void midimsg_die(char *errmsg) 
@@ -11,6 +12,15 @@ void midimsg_attempt(OSStatus result, char* errmsg)
 	if (result != noErr) {
 		midimsg_die(errmsg);
 	}
+}
+
+CoreMidiManager::CoreMidiManager()
+{
+	InitializeMIDI();
+}
+
+CoreMidiManager::~CoreMidiManager()
+{
 }
 
 void CoreMidiManager::InitializeMIDI()

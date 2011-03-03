@@ -1,3 +1,6 @@
+#ifndef _MANTAEXCEPTIONS_H
+#define _MANTAEXCEPTIONS_H
+
 #include <stdexcept>
 
 class LibusbInitException : public std::runtime_error
@@ -45,3 +48,4 @@ class MantaCommunicationException : public std::runtime_error
          }
 };
 
+#endif // _MANTAEXCEPTIONS_H
