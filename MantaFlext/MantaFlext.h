@@ -9,14 +9,13 @@ class manta:
 	public flext_base,
    public Manta
 {
-	FLEXT_HEADER_S(manta, flext_base, ClassSetup)
+	FLEXT_HEADER(manta, flext_base)
  
    public:
 	manta(); 
 	~manta(); 
 
    protected:
-   static void ClassSetup(t_classid c);
 	void StartThread();
    void SetPadLED(t_symbol *state, int ledID);
    void SetPadLEDRow(t_symbol *state, int row, int mask);
@@ -60,16 +59,16 @@ private:
    ThrCond cond;
    volatile bool shouldStop;
 
-   static const t_symbol *padSymbol;
-   static const t_symbol *buttonSymbol;
-   static const t_symbol *sliderSymbol;
-   static const t_symbol *amberSymbol;
-   static const t_symbol *redSymbol;
-   static const t_symbol *offSymbol;
-   static const t_symbol *rowSymbol;
-   static const t_symbol *columnSymbol;
-   static const t_symbol *frameSymbol;
-   static const t_symbol *padAndButtonSymbol;
+   const t_symbol *padSymbol;
+   const t_symbol *buttonSymbol;
+   const t_symbol *sliderSymbol;
+   const t_symbol *amberSymbol;
+   const t_symbol *redSymbol;
+   const t_symbol *offSymbol;
+   const t_symbol *rowSymbol;
+   const t_symbol *columnSymbol;
+   const t_symbol *frameSymbol;
+   const t_symbol *padAndButtonSymbol;
 
    static const int velocityOutlet = 0;
    static const int continuousOutlet = 1;
