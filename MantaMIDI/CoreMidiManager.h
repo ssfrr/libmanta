@@ -6,8 +6,8 @@
 #include <CoreMIDI/MIDIServices.h>
 #include <CoreAudio/HostTime.h>
 
-void midimsg_die(char *errmsg);
-void midimsg_attempt(OSStatus result, char* errmsg);
+void midimsg_die(const char *errmsg);
+void midimsg_attempt(OSStatus result, const char* errmsg);
 
 class CoreMidiManager : public MidiManager
 {

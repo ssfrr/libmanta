@@ -1,8 +1,9 @@
 #include "MIDImanager.h"
+#include <cstring>
 
 MidiManager::MidiManager()
 {
-	//InitializeMIDI();
+  Initialize();
 }
 
 MidiManager::~MidiManager()
@@ -10,24 +11,34 @@ MidiManager::~MidiManager()
 	
 }
 
+void MidiManager::Initialize()
+{
+  InitializeMIDI();
+}
+
 void MidiManager::Send_Volume(int value)
 {
+  SendMIDI( 'V', 7 /* course volume */, value );
 }
 
 void MidiManager::Send_Aftertouch(int noteNum, int value)
 {
+  SendMIDI( 'A', noteNum, value );
 }
 
 void MidiManager::Send_ChannelPressure(int value)
 {
+  SendMIDI( 'C', value, -1 );
 }
 
 void MidiManager::Send_NoteOn(int noteNum, int value)
 {
+  SendMIDI( 'O', noteNum, value );
 }
 
 void MidiManager::Send_NoteOff(int noteNum, int value)
 {
+  SendMIDI( 'o', noteNum, value );
 }
 
 void MidiManager::ComposeMIDIMessage(char actionType, int noteNum, int value, uint8_t *msg)

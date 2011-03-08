@@ -3,9 +3,9 @@
 
 //#include "MIDImanager.h"
 #include "CoreMidiManager.h"
-//#include <cstring>
+#include <cstring>
 //#include <unistd.h>
-//#include <stdio.h>
+#include <stdio.h>
 #include <iostream>
 
 class MantaMIDI : public Manta
@@ -20,7 +20,7 @@ private:
 	virtual void PadVelocityEvent(int id, int value);
 	virtual void ButtonVelocityEvent(int id, int value);
 	
-	MidiManager *m_midiManager;
+        MidiManager *m_midiManager;
 };
 
 void ErrorHandler(int num, const char *m, const char *path);

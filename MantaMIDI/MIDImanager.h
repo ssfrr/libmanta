@@ -26,6 +26,7 @@ public:
 	void Send_NoteOff(int noteNum, int value);
 	
 protected:
+	void Initialize();
 	virtual void InitializeMIDI() = 0;
 	virtual void SendMIDI(char actionType, int noteNum, int value) = 0;
 	
