@@ -1,5 +1,5 @@
-#N canvas 470 138 907 761 10;
-#X obj 405 233 dac~;
+#N canvas 324 157 855 669 10;
+#X obj 356 253 dac~;
 #N canvas 8 73 402 472 slidernote 0;
 #X obj 93 253 osc~;
 #X obj 95 132 + 60;
@@ -29,7 +29,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 0 0;
 #X connect 13 0 11 0;
-#X restore 416 179 pd slidernote;
+#X restore 367 199 pd slidernote;
 #N canvas 589 145 427 266 padnote 0;
 #X obj 146 22 inlet;
 #X obj 147 189 outlet~;
@@ -51,17 +51,17 @@
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X connect 9 0 3 0;
-#X restore 325 180 pd padnote;
-#X obj 117 233 manta;
-#X obj 144 209 r \$0-leds;
-#X obj 117 188 r \$0-control;
-#X obj 117 319 s \$0-velocity;
-#X obj 126 297 s \$0-continuous;
-#X obj 135 275 s \$0-slider;
-#X obj 325 159 route pad;
-#X obj 325 135 r \$0-continuous;
-#X obj 416 158 r \$0-slider;
-#X obj 144 254 s \$0-padframe;
+#X restore 276 200 pd padnote;
+#X obj 62 323 manta;
+#X obj 89 299 r \$0-leds;
+#X obj 62 278 r \$0-control;
+#X obj 62 409 s \$0-velocity;
+#X obj 71 387 s \$0-continuous;
+#X obj 80 365 s \$0-slider;
+#X obj 276 179 route pad;
+#X obj 276 155 r \$0-continuous;
+#X obj 367 178 r \$0-slider;
+#X obj 89 344 s \$0-padframe;
 #N canvas 242 343 571 575 LED_Examples 0;
 #X msg 51 33 amber;
 #X msg 58 55 red;
@@ -137,21 +137,33 @@
 #X connect 36 0 42 0;
 #X connect 37 0 38 0;
 #X connect 42 0 41 0;
-#X restore 372 53 pd LED_Examples;
-#X text 325 70 Open this subpatch for LED Examples;
-#X obj 319 583 list split 4;
-#X obj 319 604 unpack f f f f;
-#X floatatom 319 679 5 0 0 0 - - -;
-#X floatatom 346 661 5 0 0 0 - - -;
-#X floatatom 373 643 5 0 0 0 - - -;
-#X floatatom 400 625 5 0 0 0 - - -;
-#X obj 319 561 r \$0-padframe;
-#X text 464 567 DO NOT CONNECT TO A [print] OBJECT!!;
-#X text 472 599 The padframe outlet gives the value of all the pads
-at once as they're received over USB (around once every 6-8ms). Attempting
-to print it all out as it comes will choke your CPU.;
-#X text 473 658 Use this outlet to do any further processing on the
+#X restore 315 52 pd LED_Examples;
+#X text 461 50 Open this subpatch for LED Examples;
+#X obj 317 362 list split 4;
+#X obj 317 383 unpack f f f f;
+#X floatatom 317 458 5 0 0 0 - - -;
+#X floatatom 344 440 5 0 0 0 - - -;
+#X floatatom 371 422 5 0 0 0 - - -;
+#X floatatom 398 404 5 0 0 0 - - -;
+#X obj 317 340 r \$0-padframe;
+#X text 469 346 DO NOT CONNECT TO A [print] OBJECT!!;
+#X text 471 442 Use this outlet to do any further processing on the
 output.;
+#X text 467 178 Some Examples of controlling a simple single-oscillator
+monophonic synth;
+#X obj 321 507 r \$0-padframe;
+#X obj 321 542 manta.maximum;
+#X obj 321 578 unpack f f;
+#X floatatom 321 599 5 0 0 0 - - -;
+#X floatatom 378 598 5 0 0 0 - - -;
+#X text 467 530 manta.maxumum is a support object that takes the full
+pad data as input and gives you the pad index and value of the current
+maximum pad;
+#X text 410 541 <-------;
+#X text 470 378 The padframe outlet gives the value of all the pads
+at once as they're received over USB (around once every 6-8ms). Attempting
+to print it all out as it comes will choke your CPU. The data is simply
+a list of 48 ints.;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -171,3 +183,7 @@ output.;
 #X connect 16 2 19 0;
 #X connect 16 3 20 0;
 #X connect 21 0 15 0;
+#X connect 25 0 26 0;
+#X connect 26 0 27 0;
+#X connect 27 0 28 0;
+#X connect 27 1 29 0;
