@@ -11,5 +11,6 @@ class MantaFlextCentroid : public flext_base
    void padFrameHandler(int argc, t_atom *argv);
 
    private:
+   bool dormant;
    FLEXT_CALLBACK_V(padFrameHandler)
 };
