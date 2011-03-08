@@ -2,25 +2,29 @@
 #include "../core/MantaExceptions.h"
 
 //#include "MIDImanager.h"
-#include "CoreMidiManager.h"
+#include "RtMidiManager.h"
 #include <cstring>
 //#include <unistd.h>
 #include <stdio.h>
 #include <iostream>
 
+bool bDebugMode = false;
+
 class MantaMIDI : public Manta
 {
 public:
-	MantaMIDI();
-	~MantaMIDI();
+  MantaMIDI();
+  ~MantaMIDI();
 private:
-	virtual void PadEvent(int id, int value);
-	virtual void SliderEvent(int id, int value);
-	virtual void ButtonEvent(int id, int value);
-	virtual void PadVelocityEvent(int id, int value);
-	virtual void ButtonVelocityEvent(int id, int value);
+  virtual void PadEvent(int id, int value);
+  virtual void SliderEvent(int id, int value);
+  virtual void ButtonEvent(int id, int value);
+  virtual void PadVelocityEvent(int id, int value);
+  virtual void ButtonVelocityEvent(int id, int value);
+  
+  void SetPadFromValue(int id, int value);
 	
-        MidiManager *m_midiManager;
+  MidiManager *m_midiManager;  
 };
 
 void ErrorHandler(int num, const char *m, const char *path);
@@ -29,47 +33,59 @@ MantaMIDI::LEDState getLEDStateFromString(const char *stateString);
 
 MantaMIDI::MantaMIDI()
 {
-	m_midiManager = new CoreMidiManager();
-	//m_midiManager = new MidiManager();
+  m_midiManager = new RtMidiManager();
 }
 
 MantaMIDI::~MantaMIDI()
 {
-	delete m_midiManager;
+  delete m_midiManager;
 }
 
 void MantaMIDI::PadEvent(int id, int value)
 {
-	std::cout << "PadEvent: " << id << ", " << value << "\n";
+  if (bDebugMode)
+    std::cout << "PadEvent: " << id << ", " << value << "\n";
   //lo_send(OSCAddress, "/Manta/Continuous/Pad", "ii", id, value);
+
+  m_midiManager->HandlePadEvent(id, value);
 }
 
 void MantaMIDI::SliderEvent(int id, int value)
 {
-	std::cout << "SliderEvent: " << id << ", " << value << "\n";
+  if (bDebugMode)
+    std::cout << "SliderEvent: " << id << ", " << value << "\n";
   //lo_send(OSCAddress, "/Manta/Continuous/Slider", "ii", id, value);
 }
 
 void MantaMIDI::ButtonEvent(int id, int value)
 {
-	std::cout << "ButtonEvent: " << id << ", " << value << "\n";
+  if (bDebugMode)
+    std::cout << "ButtonEvent: " << id << ", " << value << "\n";
   //lo_send(OSCAddress, "/Manta/Continuous/Button", "ii", id, value);
 }
 
 void MantaMIDI::PadVelocityEvent(int id, int value)
 {
-	std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
+  if (bDebugMode)
+    std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
   //lo_send(OSCAddress, "/Manta/Velocity/Pad", "ii", id, value);
 }
 
 void MantaMIDI::ButtonVelocityEvent(int id, int value)
 {
-	std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
+  if (bDebugMode)
+    std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
   //lo_send(OSCAddress, "/Manta/Velocity/Button", "ii", id, value);
 }
 
-int main(void)
+int main(int argc, char** argv)
 {
+  if (argc > 1 && argv[1] && argv[1][0] == '1')
+    {
+      bDebugMode = true;
+      std::cout << "Debug Mode: ON\n";
+    }
+
    MantaMIDI manta;
    do
    {

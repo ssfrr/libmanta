@@ -1,9 +1,10 @@
 #include "MIDImanager.h"
 #include <cstring>
+#include <stdio.h>
 
 MidiManager::MidiManager()
 {
-  Initialize();
+  InitializePadMidiValues();
 }
 
 MidiManager::~MidiManager()
@@ -11,9 +12,28 @@ MidiManager::~MidiManager()
 	
 }
 
-void MidiManager::Initialize()
+void MidiManager::HandlePadEvent(int id, int value)
 {
-  InitializeMIDI();
+  int midiNote = m_noteToKeyMap[id];
+  MidiNote &note = m_notes[midiNote];
+
+  if (0 == note.lastValue && value > 0)
+    Send_NoteOn(midiNote, value);
+  else if (0 < note.lastValue && value == 0)
+    Send_NoteOff(midiNote, value);
+  else
+    Send_Aftertouch(midiNote, value);
+
+  note.lastValue = note.value;
+  note.value = value;
+}
+
+void MidiManager::InitializePadMidiValues()
+{
+  for(int i = 0; i < MANTA_PADS; ++i)
+    {
+      m_noteToKeyMap[i] = 48 + i;
+    }
 }
 
 void MidiManager::Send_Volume(int value)
@@ -36,9 +56,9 @@ void MidiManager::Send_NoteOn(int noteNum, int value)
   SendMIDI( 'O', noteNum, value );
 }
 
-void MidiManager::Send_NoteOff(int noteNum, int value)
+void MidiManager::Send_NoteOff(int noteNum, int velocity)
 {
-  SendMIDI( 'o', noteNum, value );
+  SendMIDI( 'o', noteNum, velocity );
 }
 
 void MidiManager::ComposeMIDIMessage(char actionType, int noteNum, int value, uint8_t *msg)
@@ -83,4 +103,6 @@ void MidiManager::ComposeMIDIMessage(char actionType, int noteNum, int value, ui
 	
 	msg[0] += ((midi_channel - 1) & 0xFF);
 	msg[1] = noteNum;
+
+	printf("action: %c; notenum: %d, value: %d", actionType, noteNum, value);
 }

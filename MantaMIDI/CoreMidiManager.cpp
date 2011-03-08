@@ -17,6 +17,7 @@ void midimsg_attempt(OSStatus result, const char* errmsg)
 
 CoreMidiManager::CoreMidiManager()
 {
+  InitializeMIDI();
 }
 
 CoreMidiManager::~CoreMidiManager()
