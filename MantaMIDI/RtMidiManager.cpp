@@ -60,7 +60,7 @@ void RtMidiManager::SendMIDI(char actionType, int noteNum, int value)
 	  message.push_back(100);
 	  m_midiOut->sendMessage( &message );
 	}
-      else if (actionType == 'A')
+      /* else if (actionType == 'A')
 	{
 	  if (bDebugMode)
 	    printf("aftertourch: %d", value);
@@ -68,7 +68,7 @@ void RtMidiManager::SendMIDI(char actionType, int noteNum, int value)
 	  message.push_back(baseNote + noteNum);
 	  message.push_back(value);
 	  m_midiOut->sendMessage( &message );
-	}
+	  }*/
 
       /*
       // Program change: 192, 5

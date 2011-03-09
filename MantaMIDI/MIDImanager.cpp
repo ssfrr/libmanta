@@ -1,6 +1,9 @@
 #include "MIDImanager.h"
 #include <cstring>
 #include <stdio.h>
+#include <iostream>
+
+extern bool bDebugMode;
 
 MidiManager::MidiManager()
 {
@@ -12,8 +15,11 @@ MidiManager::~MidiManager()
 	
 }
 
-void MidiManager::HandlePadEvent(int id, int value)
+void MidiManager::PadEvent(int id, int value)
 {
+  if (bDebugMode)
+    std::cout << "PadEvent: " << id << ", " << value << "\n";
+
   int midiNote = m_noteToKeyMap[id];
   MidiNote &note = m_notes[midiNote];
 
@@ -26,6 +32,30 @@ void MidiManager::HandlePadEvent(int id, int value)
 
   note.lastValue = note.value;
   note.value = value;
+}
+
+void MidiManager::SliderEvent(int id, int value)
+{
+  if (bDebugMode)
+    std::cout << "SliderEvent: " << id << ", " << value << "\n";
+}
+
+void MidiManager::ButtonEvent(int id, int value)
+{
+  if (bDebugMode)
+    std::cout << "ButtonEvent: " << id << ", " << value << "\n";
+}
+
+void MidiManager::PadVelocityEvent(int id, int value)
+{
+  if (bDebugMode)
+    std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
+}
+
+void MidiManager::ButtonVelocityEvent(int id, int value)
+{
+  if (bDebugMode)
+    std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
 }
 
 void MidiManager::InitializePadMidiValues()
@@ -51,9 +81,9 @@ void MidiManager::Send_ChannelPressure(int value)
   SendMIDI( 'C', value, -1 );
 }
 
-void MidiManager::Send_NoteOn(int noteNum, int value)
+void MidiManager::Send_NoteOn(int noteNum, int velocity)
 {
-  SendMIDI( 'O', noteNum, value );
+  SendMIDI( 'O', noteNum, velocity );
 }
 
 void MidiManager::Send_NoteOff(int noteNum, int velocity)

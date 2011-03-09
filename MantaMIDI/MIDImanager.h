@@ -1,6 +1,8 @@
 #ifndef _MIDIMANAGER_H
 #define _MIDIMANAGER_H
 
+#include "../core/Manta.h"
+#include "../core/MantaExceptions.h"
 #include <stdint.h>
 
 #define MANTA_PADS      48
@@ -14,21 +16,27 @@ typedef struct
   int lastValue;
 } MidiNote;
 
-class MidiManager
+class MidiManager : public Manta
 {
  public:
   MidiManager();
   ~MidiManager();
-  
-  void HandlePadEvent(int id, int value);
   
  protected:
   virtual void InitializeMIDI() = 0;
   virtual void SendMIDI(char actionType, int noteNum, int value) = 0;
   
  private:
+  /* Manta events */
+  virtual void PadEvent(int id, int value);
+  virtual void SliderEvent(int id, int value);
+  virtual void ButtonEvent(int id, int value);
+  virtual void PadVelocityEvent(int id, int value);
+  virtual void ButtonVelocityEvent(int id, int value);
+
   void InitializePadMidiValues();
 
+  /* MIDI handling */
   void Send_Volume(int value);
   void Send_Aftertouch(int noteNum, int value);
   void Send_ChannelPressure(int value);
