@@ -1,16 +1,16 @@
 #include <flext.h>
 
-class MantaFlextCentroid : public flext_base
+class MantaFlextMaximum : public flext_base
 {
-   FLEXT_HEADER(MantaFlextCentroid, flext_base)
+   FLEXT_HEADER(MantaFlextMaximum, flext_base)
       
    public:
-   MantaFlextCentroid();
+   MantaFlextMaximum();
 
    protected:
    void padFrameHandler(int argc, t_atom *argv);
 
    private:
-   bool dormant;
+   int lastMax;
    FLEXT_CALLBACK_V(padFrameHandler)
 };

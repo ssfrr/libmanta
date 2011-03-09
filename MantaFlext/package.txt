@@ -6,10 +6,12 @@ SRCS= MantaFlext.cpp \
       MantaFlextHandlers.cpp \
       MantaFlextLibrary.cpp \
       MantaFlextCentroid.cpp \
+      MantaFlextMaximum.cpp \
       ../core/Manta.cpp \
       ../core/MantaUSB.cpp
 HDRS= MantaFlext.h \
       MantaFlextCentroid.h \
+      MantaFlextMaximum.h \
       ../core/Manta.h \
       ../core/MantaUSB.h
 LIBS+= -lusb-1.0 -lm

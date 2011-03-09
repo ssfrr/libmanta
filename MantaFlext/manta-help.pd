@@ -1,5 +1,5 @@
-#N canvas 470 138 907 761 10;
-#X obj 405 233 dac~;
+#N canvas 462 185 733 739 10;
+#X obj 188 219 dac~;
 #N canvas 8 73 402 472 slidernote 0;
 #X obj 93 253 osc~;
 #X obj 95 132 + 60;
@@ -29,7 +29,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 0 0;
 #X connect 13 0 11 0;
-#X restore 416 179 pd slidernote;
+#X restore 208 188 pd slidernote;
 #N canvas 589 145 427 266 padnote 0;
 #X obj 146 22 inlet;
 #X obj 147 189 outlet~;
@@ -51,17 +51,16 @@
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X connect 9 0 3 0;
-#X restore 325 180 pd padnote;
-#X obj 117 233 manta;
-#X obj 144 209 r \$0-leds;
-#X obj 117 188 r \$0-control;
-#X obj 117 319 s \$0-velocity;
-#X obj 126 297 s \$0-continuous;
-#X obj 135 275 s \$0-slider;
-#X obj 325 159 route pad;
-#X obj 325 135 r \$0-continuous;
-#X obj 416 158 r \$0-slider;
-#X obj 144 254 s \$0-padframe;
+#X restore 189 141 pd padnote;
+#X obj 49 287 r \$0-leds;
+#X obj 22 266 r \$0-control;
+#X obj 22 397 s \$0-velocity;
+#X obj 31 375 s \$0-continuous;
+#X obj 40 353 s \$0-slider;
+#X obj 189 120 route pad;
+#X obj 189 96 r \$0-continuous;
+#X obj 208 167 r \$0-slider;
+#X obj 48 331 s \$0-padframe;
 #N canvas 242 343 571 575 LED_Examples 0;
 #X msg 51 33 amber;
 #X msg 58 55 red;
@@ -137,37 +136,71 @@
 #X connect 36 0 42 0;
 #X connect 37 0 38 0;
 #X connect 42 0 41 0;
-#X restore 372 53 pd LED_Examples;
-#X text 325 70 Open this subpatch for LED Examples;
-#X obj 319 583 list split 4;
-#X obj 319 604 unpack f f f f;
-#X floatatom 319 679 5 0 0 0 - - -;
-#X floatatom 346 661 5 0 0 0 - - -;
-#X floatatom 373 643 5 0 0 0 - - -;
-#X floatatom 400 625 5 0 0 0 - - -;
-#X obj 319 561 r \$0-padframe;
-#X text 464 567 DO NOT CONNECT TO A [print] OBJECT!!;
-#X text 472 599 The padframe outlet gives the value of all the pads
-at once as they're received over USB (around once every 6-8ms). Attempting
-to print it all out as it comes will choke your CPU.;
-#X text 473 658 Use this outlet to do any further processing on the
+#X restore 183 41 pd LED_Examples;
+#X text 329 39 Open this subpatch for LED Examples;
+#X obj 185 291 list split 4;
+#X obj 185 312 unpack f f f f;
+#X floatatom 185 387 5 0 0 0 - - -;
+#X floatatom 212 369 5 0 0 0 - - -;
+#X floatatom 239 351 5 0 0 0 - - -;
+#X floatatom 266 333 5 0 0 0 - - -;
+#X obj 185 269 r \$0-padframe;
+#X text 337 275 DO NOT CONNECT TO A [print] OBJECT!!;
+#X text 339 371 Use this outlet to do any further processing on the
 output.;
+#X text 335 136 Some Examples of controlling a simple single-oscillator
+monophonic synth;
+#X obj 189 426 r \$0-padframe;
+#X obj 189 497 unpack f f;
+#X floatatom 189 518 5 0 0 0 - - -;
+#X floatatom 246 517 5 0 0 0 - - -;
+#X text 335 449 manta.maxumum is a support object that takes the full
+pad data as input and gives you the pad index and value of the current
+maximum pad;
+#X text 278 460 <-------;
+#X text 338 307 The padframe outlet gives the value of all the pads
+at once as they're received over USB (around once every 6-8ms). Attempting
+to print it all out as it comes will choke your CPU. The data is simply
+a list of 48 ints.;
+#X floatatom 192 673 5 0 0 0 - - -;
+#X floatatom 226 673 5 0 0 0 - - -;
+#X floatatom 261 673 5 0 0 0 - - -;
+#X obj 192 650 unpack f f f;
+#X obj 192 584 r \$0-padframe;
+#X obj 22 311 manta;
+#X obj 189 460 manta.maximum;
+#X obj 192 616 manta.centroid;
+#X text 286 614 <-------;
+#X text 343 603 manta.centroid is a support object that takes the full
+pad data as input and calculates the centroid of all the pads;
+#X text 344 662 NOTE: the 'manta' object must be created before the
+manta.centroid and manta.maximum support object \, in order to load
+the library.;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
 #X connect 2 0 0 1;
-#X connect 3 0 6 0;
-#X connect 3 1 7 0;
-#X connect 3 2 8 0;
-#X connect 3 3 12 0;
-#X connect 4 0 3 1;
-#X connect 5 0 3 0;
-#X connect 9 0 2 0;
-#X connect 10 0 9 0;
-#X connect 11 0 1 0;
+#X connect 3 0 36 1;
+#X connect 4 0 36 0;
+#X connect 8 0 2 0;
+#X connect 9 0 8 0;
+#X connect 10 0 1 0;
+#X connect 14 0 15 0;
 #X connect 15 0 16 0;
-#X connect 16 0 17 0;
-#X connect 16 1 18 0;
-#X connect 16 2 19 0;
-#X connect 16 3 20 0;
-#X connect 21 0 15 0;
+#X connect 15 1 17 0;
+#X connect 15 2 18 0;
+#X connect 15 3 19 0;
+#X connect 20 0 14 0;
+#X connect 24 0 37 0;
+#X connect 25 0 26 0;
+#X connect 25 1 27 0;
+#X connect 34 0 31 0;
+#X connect 34 1 32 0;
+#X connect 34 2 33 0;
+#X connect 35 0 38 0;
+#X connect 36 0 5 0;
+#X connect 36 1 6 0;
+#X connect 36 2 7 0;
+#X connect 36 3 11 0;
+#X connect 37 0 25 0;
+#X connect 38 0 34 0;
