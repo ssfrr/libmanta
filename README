@@ -25,7 +25,9 @@ Prerequisites
 libusb-1.0
 liblo (only for MantaOSC example)
 CMake (to build standalone library or non-flext examples)
-flext (only for PD/Max object)
+flext (for the PD/Max object) is included with this source package.
+   If you have another version installed feel free to use that instead, and
+   modify the instructions accordingly.
 
 -----------------------------------------------------------
 PureData / Max/MSP Object Build and Install Instructions
@@ -70,8 +72,10 @@ each instance of 'pd' with 'max')
    b. PDPATH to point to the "pd" subdirectory of the pd source package you
       extracted in step 2
    c. INSTPATH to point to where your PD externals live
-5. './build.sh pd gcc'
-6. './build.sh pd gcc' (yes, again)
-7. 'cd ../../MantaFlext'
-8. '../extern/flext/build.sh pd gcc'
-9. 'sudo ../extern/flext/build.sh pd gcc install'
+5. (Mac Only) Edit config.txt and comment out the line "SIMD=1"
+6. './build.sh pd gcc'
+7. './build.sh pd gcc' (yes, again)
+8. './build.sh pd gcc install'
+9. 'cd ../../MantaFlext'
+10. '../extern/flext/build.sh pd gcc'
+11. 'sudo ../extern/flext/build.sh pd gcc install'
