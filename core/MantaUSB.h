@@ -1,3 +1,6 @@
+#ifndef _MANTAUSB_H
+#define _MANTAUSB_H
+
 /* forward-declare libusb types so we don't need to include the
  * whole header file */
 
@@ -51,3 +54,5 @@ class MantaUSB
       friend void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer);
       friend void MantaInTransferCompleteHandler(struct libusb_transfer *transfer);
 };
+
+#endif // _MANTAUSB_H
