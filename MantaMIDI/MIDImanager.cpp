@@ -1,13 +1,13 @@
+#include "OptionHolder.h"
 #include "MIDImanager.h"
 #include <cstring>
 #include <stdio.h>
 #include <iostream>
 
-extern bool bDebugMode;
-
-MidiManager::MidiManager()
+MidiManager::MidiManager(OptionHolder &options) :
+  m_options(options)
 {
-  InitializePadMidiValues();
+  InitializeMapValues();
 }
 
 MidiManager::~MidiManager()
@@ -17,122 +17,107 @@ MidiManager::~MidiManager()
 
 void MidiManager::PadEvent(int id, int value)
 {
-  if (bDebugMode)
+  if (m_options.GetDebugMode())
     std::cout << "PadEvent: " << id << ", " << value << "\n";
 
-  int midiNote = m_noteToKeyMap[id];
-  MidiNote &note = m_notes[midiNote];
+  if (!m_options.GetUseVelocity())
+    SendPadMIDI(id, value);
+}
 
-  if (0 == note.lastValue && value > 0)
-    Send_NoteOn(midiNote, value);
-  else if (0 < note.lastValue && value == 0)
-    Send_NoteOff(midiNote, value);
+void MidiManager::SliderEvent(int id, int value)
+{
+  if (m_options.GetDebugMode())
+    std::cout << "SliderEvent: " << id << ", " << value << "\n";
+
+  if (!m_options.GetUseVelocity())
+    SendSliderMIDI(id, value);
+}
+
+void MidiManager::ButtonEvent(int id, int value)
+{
+  if (m_options.GetDebugMode())
+    std::cout << "ButtonEvent: " << id << ", " << value << "\n";
+
+  SendButtonMIDI(id, value);
+}
+
+void MidiManager::PadVelocityEvent(int id, int value)
+{
+  if (m_options.GetDebugMode())
+    std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
+
+  if (m_options.GetUseVelocity())
+    SendPadMIDI(id, value);
+}
+
+void MidiManager::ButtonVelocityEvent(int id, int value)
+{
+  if (m_options.GetDebugMode())
+    std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
+
+  if (m_options.GetUseVelocity())
+    SendPadMIDI(id, value);
+}
+
+void MidiManager::InitializeMapValues()
+{
+  for(int i = 0; i < MANTA_PADS; ++i)
+      m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
+}
+
+void MidiManager::SendPadMIDI(int noteNum, int value)
+{
+  int channel = m_options.GetPadEventChannel();
+  int midiNote = m_padToNoteMap[noteNum];
+  MidiNote &note = m_padNotes[midiNote];
+
+  if (m_options.GetUseVelocity())
+    Send_NoteOn(channel, midiNote, value);
   else
-    Send_Aftertouch(midiNote, value);
+    {
+      if (0 == note.lastValue && value > 0)
+	Send_NoteOn(channel, midiNote, 100);
+      else if (value == 0)
+	Send_NoteOff(channel, midiNote, 0);
+    }
+  //else
+  //Send_Aftertouch(midiNote, value);
 
   note.lastValue = note.value;
   note.value = value;
 }
 
-void MidiManager::SliderEvent(int id, int value)
+void MidiManager::SendSliderMIDI(int noteNum, int value)
 {
-  if (bDebugMode)
-    std::cout << "SliderEvent: " << id << ", " << value << "\n";
+  int channel = m_options.GetSliderEventChannel();
 }
 
-void MidiManager::ButtonEvent(int id, int value)
+void MidiManager::SendButtonMIDI(int noteNum, int value)
 {
-  if (bDebugMode)
-    std::cout << "ButtonEvent: " << id << ", " << value << "\n";
+  int channel = m_options.GetButtonEventChannel();
 }
 
-void MidiManager::PadVelocityEvent(int id, int value)
+void MidiManager::Send_Volume(int channel, int value)
 {
-  if (bDebugMode)
-    std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
+  SendMIDI( channel, 'V', 7 /* course volume */, value );
 }
 
-void MidiManager::ButtonVelocityEvent(int id, int value)
+void MidiManager::Send_Aftertouch(int channel, int noteNum, int value)
 {
-  if (bDebugMode)
-    std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
+  SendMIDI( channel, 'A', noteNum, value );
 }
 
-void MidiManager::InitializePadMidiValues()
+void MidiManager::Send_ChannelPressure(int channel, int value)
 {
-  for(int i = 0; i < MANTA_PADS; ++i)
-    {
-      m_noteToKeyMap[i] = 48 + i;
-    }
+  SendMIDI( channel, 'C', value, -1 );
 }
 
-void MidiManager::Send_Volume(int value)
+void MidiManager::Send_NoteOn(int channel, int noteNum, int velocity)
 {
-  SendMIDI( 'V', 7 /* course volume */, value );
+  SendMIDI( channel, 'O', noteNum, velocity );
 }
 
-void MidiManager::Send_Aftertouch(int noteNum, int value)
+void MidiManager::Send_NoteOff(int channel, int noteNum, int velocity)
 {
-  SendMIDI( 'A', noteNum, value );
-}
-
-void MidiManager::Send_ChannelPressure(int value)
-{
-  SendMIDI( 'C', value, -1 );
-}
-
-void MidiManager::Send_NoteOn(int noteNum, int velocity)
-{
-  SendMIDI( 'O', noteNum, velocity );
-}
-
-void MidiManager::Send_NoteOff(int noteNum, int velocity)
-{
-  SendMIDI( 'o', noteNum, velocity );
-}
-
-void MidiManager::ComposeMIDIMessage(char actionType, int noteNum, int value, uint8_t *msg)
-{
-	// on
-	if (actionType == 'O') 
-	{
-		msg[0] = 0x90;
-		msg[2] = 82;
-	}
-	// off
-	else if (actionType == 'o')
-	{
-		msg[0] = 0x80;
-		msg[2] = 0;
-	}
-	// aftertouch 
-	else if (actionType == 'A') 
-	{ 
-		msg[0] = 0xA0;
-		msg[2] = 82;
-	}
-	// channel pressure 
-	else if (actionType == 'C') 
-	{ 
-		msg[0] = 0xD0;
-		msg[2] = 0;
-	}    
-	// volume//
-	else if (actionType == 'V') 
-	{ 
-		msg[0] = 0xB0;
-		msg[2] = 0;
-	}
-	
-	if (value != -1) 
-	{
-		if (value > MAX_MIDI_NOTES)
-			value = MAX_MIDI_NOTES - 1;
-		msg[2] = value;
-	}
-	
-	msg[0] += ((midi_channel - 1) & 0xFF);
-	msg[1] = noteNum;
-
-	printf("action: %c; notenum: %d, value: %d", actionType, noteNum, value);
+  SendMIDI( channel, 'o', noteNum, velocity );
 }

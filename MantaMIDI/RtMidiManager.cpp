@@ -1,3 +1,4 @@
+#include "OptionHolder.h"
 #include "rtmidimanager.h"
 #include <stdio.h>
 #include <cstdlib>
@@ -5,8 +6,8 @@
 
 extern bool bDebugMode;
 
-RtMidiManager::RtMidiManager() /*:
-				 m_midiOut(0)*/
+RtMidiManager::RtMidiManager(OptionHolder &options) :
+  MidiManager(options)
 {
   InitializeMIDI();
 }
@@ -32,56 +33,74 @@ void RtMidiManager::InitializeMIDI()
     }
 }
 
-void RtMidiManager::SendMIDI(char actionType, int noteNum, int value)
+void RtMidiManager::SendMIDI(unsigned char ucChannel, char actionType, int noteNum, int value)
 {
-  std::vector<unsigned char> message;
-  int baseNote = 30;
+  unsigned char data[3];
+  int nBytes = 0;
 
   // Send out a series of MIDI messages
   try
     {
-      if(actionType == 'O')
+      // Note Off: 128, Note, Velocity
+      if (actionType == 'o')
 	{
-	  // Note On: 144, 64, 90
-	  if (bDebugMode)
-	    printf("Note on: %d\n", baseNote + noteNum);
-	  message.push_back(144);
-	  message.push_back(baseNote + noteNum);
-	  message.push_back(100);
-	  m_midiOut->sendMessage( &message );
-	}
-      else if (actionType == 'o')
-	{
-	  // Note Off: 128, 64, 40
-	  if (bDebugMode)
-	    printf("Note off: %d\n", baseNote + noteNum);
-	  message.push_back(128);
-	  message.push_back(30 + noteNum);
-	  message.push_back(100);
-	  m_midiOut->sendMessage( &message );
-	}
-      /* else if (actionType == 'A')
-	{
-	  if (bDebugMode)
-	    printf("aftertourch: %d", value);
-	  message.push_back(0xA0);
-	  message.push_back(baseNote + noteNum);
-	  message.push_back(value);
-	  m_midiOut->sendMessage( &message );
-	  }*/
+	  data[0] = 0x80 + ucChannel; // 128
+	  data[1] = noteNum;
+	  data[2] = value;
+	  nBytes = 3;
 
-      /*
-      // Program change: 192, 5
-      message.push_back( 192 );
-      message.push_back( 5 );
-      //m_midiOut->sendMessage( &message );
+	  if (m_options.GetDebugMode())
+	    printf("Note off: %d %d %d\n", data[0], data[1], data[2]);
+	}
+      // Note On: 144/0x90, Note, Velocity
+      else if(actionType == 'O')
+	{
+	  data[0] = 0x90 + ucChannel; // 144
+	  data[1] = noteNum;
+	  data[2] = value;
+	  nBytes = 3;
 	  
-      // Control Change: 176, 7, 100 (volume)
-      message[0] = 176;
-      message[1] = 7;
-      message.push_back( 100 );
-      //m_midiOut->sendMessage( &message );
-      */      
+	  if (m_options.GetDebugMode())
+	    printf("Note on: %d %d %d\n", data[0], data[1], data[2]);
+	}
+      // Polyphonic Pressure (Aftertouch): 0xA0, controller # (0-119), value
+      else if (actionType == 'A')
+	{
+	  data[0] = 0xA0 + ucChannel; //
+	  data[1] = noteNum;
+	  data[2] = value;
+	  nBytes = 3;
+
+	  if (m_options.GetDebugMode())
+	    printf("Polyphonic Pressure: %d %d %d\n", data[0], data[1], data[2]);
+	}
+      // Program Change: 0xB0
+      else if (actionType == 'P')
+	{
+	  data[0] = 0xB0 + ucChannel;
+	  data[1] = noteNum;
+	  nBytes = 2;
+	  
+	  if (m_options.GetDebugMode())
+	    printf("Program Change: %d %d\n", data[0], data[1]);
+	}
+      else if (actionType == 'C')
+	{
+	  if (m_options.GetDebugMode())
+	    printf("Channel Pressure (aftertouch)\n");
+	}
+      else if (actionType == 'w')
+	{
+	  if (m_options.GetDebugMode())
+	    printf("Pitch Wheel Change: \n");
+	}
+      
+      std::vector<unsigned char> message;
+      for (int i = 0; i < nBytes; ++i)
+	message.push_back(data[i]);
+
+      // Send the midi Message
+      m_midiOut->sendMessage( &message );
     }
   catch (RtError &error) {
     error.printMessage();

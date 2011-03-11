@@ -4,14 +4,16 @@
 #include "MIDImanager.h"
 #include "rtmidi/RtMidi.h"
 
+class OptionHolder;
+
 class RtMidiManager : public MidiManager
 {
 public:
-	RtMidiManager();
+	RtMidiManager(OptionHolder &options);
 	~RtMidiManager();
 private:
 	void InitializeMIDI();
-	void SendMIDI(char actionType, int noteNum, int value);
+	void SendMIDI(unsigned char ucChannel, char actionType, int noteNum, int value);
 
 	bool ChooseMidiPort();
 

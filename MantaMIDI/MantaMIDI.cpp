@@ -1,23 +1,25 @@
 //#include "MIDImanager.h"
+#include "OptionHolder.h"
 #include "RtMidiManager.h"
 #include <cstring>
 //#include <unistd.h>
 #include <stdio.h>
 #include <iostream>
 
-bool bDebugMode = false;
-
 void ErrorHandler(int num, const char *m, const char *path);
 
-int main(int argc, char** argv)
+void usage()
 {
-  if (argc > 1 && argv[1] && argv[1][0] == '1')
-    {
-      bDebugMode = true;
-      std::cout << "Debug Mode: ON\n";
-    }
-  
-  MidiManager *manta = new RtMidiManager();
+  printf("Usage: MantaMIDI [options]\n");
+  printf("\n");
+  printf("Options:\n");
+  printf("\n");
+}
+
+int main(int argc, char* argv[])
+{
+  OptionHolder options(argc-1, argv+1);
+  MidiManager *manta = new RtMidiManager(options);
   
   do
     {
