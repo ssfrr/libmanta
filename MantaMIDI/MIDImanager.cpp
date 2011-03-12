@@ -3,6 +3,7 @@
 #include <cstring>
 #include <stdio.h>
 #include <iostream>
+#include <math.h>
 
 MidiManager::MidiManager(OptionHolder &options) :
   m_options(options)
@@ -29,7 +30,6 @@ void MidiManager::SliderEvent(int id, int value)
   if (m_options.GetDebugMode())
     std::cout << "SliderEvent: " << id << ", " << value << "\n";
 
-  if (!m_options.GetUseVelocity())
     SendSliderMIDI(id, value);
 }
 
@@ -38,7 +38,8 @@ void MidiManager::ButtonEvent(int id, int value)
   if (m_options.GetDebugMode())
     std::cout << "ButtonEvent: " << id << ", " << value << "\n";
 
-  SendButtonMIDI(id, value);
+  if (!m_options.GetUseVelocity())
+    SendButtonMIDI(id, value);
 }
 
 void MidiManager::PadVelocityEvent(int id, int value)
@@ -56,13 +57,16 @@ void MidiManager::ButtonVelocityEvent(int id, int value)
     std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
 
   if (m_options.GetUseVelocity())
-    SendPadMIDI(id, value);
+    SendButtonMIDI(id, value);
 }
 
 void MidiManager::InitializeMapValues()
 {
   for(int i = 0; i < MANTA_PADS; ++i)
-      m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
+    m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
+  
+  for(int i = 0; i < MANTA_BUTTONS; ++i)
+    m_buttonToNoteMap[i] = m_options.GetBaseButtonMidi() + i;
 }
 
 void MidiManager::SendPadMIDI(int noteNum, int value)
@@ -80,44 +84,99 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
       else if (value == 0)
 	Send_NoteOff(channel, midiNote, 0);
     }
-  //else
-  //Send_Aftertouch(midiNote, value);
 
   note.lastValue = note.value;
   note.value = value;
 }
 
-void MidiManager::SendSliderMIDI(int noteNum, int value)
+void MidiManager::SendSliderMIDI(int whichSlider, int value)
 {
-  int channel = m_options.GetSliderEventChannel();
+  int channel;
+  int midiNote;
+
+  if (whichSlider == 0)
+    {
+      channel = m_options.GetSlider0_EventChannel();
+      midiNote = m_options.GetSlider0_MidiNote();
+    }
+  else
+    {
+      channel = m_options.GetSlider1_EventChannel();
+      midiNote = m_options.GetSlider1_MidiNote();
+    }
+
+  if (value != 0x0000FFFF)
+      Send_ControlChange(channel, midiNote, TranslateSliderValueToCC(value));
+}
+
+int MidiManager::TranslateSliderValueToCC(int sliderValue)
+{
+  int iRet = 0;
+  double transVal = (127.0 / 4096.0);
+
+  iRet = (int)(round(sliderValue * transVal));
+  //printf("Translate: %d %d\n", sliderValue, iRet);
+
+  return iRet;
 }
 
 void MidiManager::SendButtonMIDI(int noteNum, int value)
 {
   int channel = m_options.GetButtonEventChannel();
-}
+  int midiNote = m_buttonToNoteMap[noteNum];
+  MidiNote &note = m_buttonNotes[midiNote];
 
-void MidiManager::Send_Volume(int channel, int value)
-{
-  SendMIDI( channel, 'V', 7 /* course volume */, value );
-}
+  if (m_options.GetUseVelocity())
+    Send_NoteOn(channel, midiNote, value);
+  else
+    {
+      if (0 == note.lastValue && value > 0)
+	Send_NoteOn(channel, midiNote, 100);
+      else if (value == 0)
+	Send_NoteOff(channel, midiNote, 0);
+    }
 
-void MidiManager::Send_Aftertouch(int channel, int noteNum, int value)
-{
-  SendMIDI( channel, 'A', noteNum, value );
-}
-
-void MidiManager::Send_ChannelPressure(int channel, int value)
-{
-  SendMIDI( channel, 'C', value, -1 );
-}
-
-void MidiManager::Send_NoteOn(int channel, int noteNum, int velocity)
-{
-  SendMIDI( channel, 'O', noteNum, velocity );
+  note.lastValue = note.value;
+  note.value = value;
 }
 
 void MidiManager::Send_NoteOff(int channel, int noteNum, int velocity)
 {
-  SendMIDI( channel, 'o', noteNum, velocity );
+  SendMIDI( channel, atNoteOff, noteNum, velocity );
+}
+
+void MidiManager::Send_NoteOn(int channel, int noteNum, int velocity)
+{
+  SendMIDI( channel, atNoteOn, noteNum, velocity );
+}
+
+void MidiManager::Send_Aftertouch(int channel, int noteNum, int value)
+{
+  SendMIDI( channel, atPolyphonicKeyPressure, noteNum, value );
+}
+
+void MidiManager::Send_ControlChange(int channel, int controller, int value)
+{
+  SendMIDI( channel, atControlChange, controller, value);
+}
+
+void MidiManager::Send_ProgramChange(int channel, int newValue)
+{
+  SendMIDI( channel, atProgramChange, newValue, -1);
+}
+
+void MidiManager::Send_ChannelPressure(int channel, int value)
+{
+  SendMIDI( channel, atChannelPressure, value, -1 );
+}
+
+void MidiManager::Send_PitchWheelChange(int channel, int value)
+{
+  int sevenBitAnd = 0x0000007F;
+  if ( value < 0x00003FFF )
+    {
+      unsigned char leastByte = value & sevenBitAnd;
+      unsigned char mostByte = (value >> 7) & sevenBitAnd;
+      SendMIDI( channel, atPitchWheel, leastByte, mostByte);
+    }
 }

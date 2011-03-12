@@ -9,9 +9,19 @@
 #define MANTA_SLIDERPOS 127
 #define MANTA_BUTTONS   4
 #define MAX_MIDI_NOTES	128		// 48 for the actual manta array...
-static int midi_channel = 3;
 
 class OptionHolder;
+
+enum MidiActionType
+  {
+    atNoteOff = 0,
+    atNoteOn = 1,
+    atPolyphonicKeyPressure,
+    atControlChange,
+    atProgramChange,
+    atChannelPressure,
+    atPitchWheel
+  };
 
 typedef struct
 {
@@ -30,7 +40,7 @@ class MidiManager : public Manta
   OptionHolder m_options;
 
   virtual void InitializeMIDI() = 0;
-  virtual void SendMIDI(unsigned char ucChannel, char actionType, int noteNum, int value) = 0;
+  virtual void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value) = 0;
   
  private:
 
@@ -42,18 +52,21 @@ class MidiManager : public Manta
   virtual void ButtonVelocityEvent(int id, int value);
 
   void InitializeMapValues();
+  int TranslateSliderValueToCC(int sliderValue);
 
   /* Handling functions */
   void SendPadMIDI(int noteNum, int value);
-  void SendSliderMIDI(int noteNum, int value);
+  void SendSliderMIDI(int whichSlider, int value);
   void SendButtonMIDI(int noteNum, int value);
 
   /* MIDI handling */
-  void Send_Volume(int channel, int value);
-  void Send_Aftertouch(int channel, int noteNum, int value);
-  void Send_ChannelPressure(int channel, int value);
   void Send_NoteOn(int channel, int noteNum, int value);
   void Send_NoteOff(int channel, int noteNum, int value);
+  void Send_Aftertouch(int channel, int noteNum, int value);
+  void Send_ControlChange(int channel, int controller, int value);
+  void Send_ProgramChange(int channel, int newValue);
+  void Send_ChannelPressure(int channel, int value);
+  void Send_PitchWheelChange(int channel, int value);
   
   int m_padToNoteMap[MANTA_PADS];
   int m_sliderToNoteMap[MANTA_SLIDERPOS];
