@@ -62,11 +62,65 @@ void MidiManager::ButtonVelocityEvent(int id, int value)
 
 void MidiManager::InitializeMapValues()
 {
-  for(int i = 0; i < MANTA_PADS; ++i)
-    m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
+  switch(m_options.GetPadLayout())
+    {
+    case plPiano:
+      AssignPianoLayout();
+      break;
+    case plChromatic:
+      AssignChromaticLayout();
+      break;
+    case plHoneycomb:
+      AssignHoneycombLayout();
+    default:
+      break;
+    }
   
   for(int i = 0; i < MANTA_BUTTONS; ++i)
     m_buttonToNoteMap[i] = m_options.GetBaseButtonMidi() + i;
+}
+
+void MidiManager::AssignPianoLayout()
+{
+  int baseMidi = m_options.GetBasePadMidi();
+  int padIndex = 0;
+  for (int i = 0; i < (MANTA_PAD_ROWS / 2); ++i)
+    {
+      m_padToNoteMap[padIndex] = baseMidi++;     // 0
+      m_padToNoteMap[padIndex + 8] = baseMidi++; // 1
+      padIndex++;
+      m_padToNoteMap[padIndex] = baseMidi++;     // 2
+      m_padToNoteMap[padIndex + 8] = baseMidi++; // 3
+      padIndex++;
+      m_padToNoteMap[padIndex] = baseMidi++;     // 4
+      m_padToNoteMap[padIndex + 8] = -1;
+      padIndex++;
+      m_padToNoteMap[padIndex] = baseMidi++;     // 5
+      m_padToNoteMap[padIndex + 8] = baseMidi++; // 6
+      padIndex++;
+      m_padToNoteMap[padIndex] = baseMidi++;     // 7
+      m_padToNoteMap[padIndex + 8] = baseMidi++; // 8
+      padIndex++;
+      m_padToNoteMap[padIndex] = baseMidi++;     // 9
+      m_padToNoteMap[padIndex + 8] = baseMidi++; // 10
+      padIndex++;
+      m_padToNoteMap[padIndex] = baseMidi++;     // 11
+      m_padToNoteMap[padIndex + 8] = -1;
+      padIndex++;
+      m_padToNoteMap[padIndex] = baseMidi;       //12
+      m_padToNoteMap[padIndex + 8] = -1;
+      padIndex += 9;
+    }
+}
+
+void MidiManager::AssignChromaticLayout()
+{
+  for(int i = 0; i < MANTA_PADS; ++i)
+    m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
+}
+
+void MidiManager::AssignHoneycombLayout()
+{
 }
 
 void MidiManager::SendPadMIDI(int noteNum, int value)
@@ -142,12 +196,14 @@ void MidiManager::SendButtonMIDI(int noteNum, int value)
 
 void MidiManager::Send_NoteOff(int channel, int noteNum, int velocity)
 {
-  SendMIDI( channel, atNoteOff, noteNum, velocity );
+  if ( (channel > 0 && channel <= 16) && (noteNum >= 0 && noteNum < 128) )
+    SendMIDI( channel, atNoteOff, noteNum, velocity );
 }
 
 void MidiManager::Send_NoteOn(int channel, int noteNum, int velocity)
 {
-  SendMIDI( channel, atNoteOn, noteNum, velocity );
+  if ( (channel > 0 && channel <= 16) && (noteNum >= 0 && noteNum < 128) )
+    SendMIDI( channel, atNoteOn, noteNum, velocity );
 }
 
 void MidiManager::Send_Aftertouch(int channel, int noteNum, int value)

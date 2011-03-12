@@ -5,6 +5,7 @@
 #include "../core/MantaExceptions.h"
 #include <stdint.h>
 
+#define MANTA_PAD_ROWS  6
 #define MANTA_PADS      48
 #define MANTA_SLIDERPOS 127
 #define MANTA_BUTTONS   4
@@ -52,6 +53,9 @@ class MidiManager : public Manta
   virtual void ButtonVelocityEvent(int id, int value);
 
   void InitializeMapValues();
+  void AssignPianoLayout();
+  void AssignChromaticLayout();
+  void AssignHoneycombLayout();
   int TranslateSliderValueToCC(int sliderValue);
 
   /* Handling functions */
