@@ -31,6 +31,14 @@ typedef struct
   int lastValue;
 } MidiNote;
 
+static void waitForTransmitComplete(MantaUSB &manta)
+{
+  while(manta.IsTransmitting())
+    {
+      manta.HandleEvents();
+    }
+}
+
 class MidiManager : public Manta
 {
  public:

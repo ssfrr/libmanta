@@ -121,6 +121,66 @@ void MidiManager::AssignChromaticLayout()
 
 void MidiManager::AssignHoneycombLayout()
 {
+  // First Row
+  m_padToNoteMap[0] = 32; // G#1
+  m_padToNoteMap[1] = 35; // B1
+  m_padToNoteMap[2] = 38; // D2
+  m_padToNoteMap[3] = 53; // F3
+  m_padToNoteMap[4] = 56; // G#3
+  m_padToNoteMap[5] = 59; // B3
+  m_padToNoteMap[6] = 62; // D4
+  m_padToNoteMap[7] = 77; // F5
+
+  // Second Row
+  m_padToNoteMap[8] = 40; // E2
+  m_padToNoteMap[9] = 43; // G2
+  m_padToNoteMap[10] = 46; // A#2
+  m_padToNoteMap[11] = 61; // C#4
+  m_padToNoteMap[12] = 64; // E4
+  m_padToNoteMap[13] = 67; // G4
+  m_padToNoteMap[14] = 70; // A#4
+  m_padToNoteMap[15] = 85; // C#6
+
+  // Third Row
+  m_padToNoteMap[16] = 24; // A1
+  m_padToNoteMap[17] = 36; // C2
+  m_padToNoteMap[18] = 39; // D#2
+  m_padToNoteMap[19] = 54; // F#3
+  m_padToNoteMap[20] = 57; // A3
+  m_padToNoteMap[21] = 60; // C4
+  m_padToNoteMap[22] = 75; // D#5
+  m_padToNoteMap[23] = 78; // F#5
+
+  // Fourth Row
+  m_padToNoteMap[24] = 41; // F2
+  m_padToNoteMap[25] = 44; // G#2
+  m_padToNoteMap[26] = 47; // B2
+  m_padToNoteMap[27] = 62; // D4
+  m_padToNoteMap[28] = 65; // F4
+  m_padToNoteMap[29] = 68; // G#4
+  m_padToNoteMap[30] = 71; // B4
+  m_padToNoteMap[31] = 86; // D6
+
+  // Fifth Row
+  m_padToNoteMap[32] = 34; // A#1
+  m_padToNoteMap[33] = 37; // C#2
+  m_padToNoteMap[34] = 52; // E3
+  m_padToNoteMap[35] = 55; // G3
+  m_padToNoteMap[36] = 58; // A#3
+  m_padToNoteMap[37] = 73; // C#5
+  m_padToNoteMap[38] = 76; // E5
+  m_padToNoteMap[39] = 79; // G5
+
+  // Sixth Row
+  m_padToNoteMap[40] = 42; // F#2
+  m_padToNoteMap[41] = 45; // A2
+  m_padToNoteMap[42] = 48; // C3
+  m_padToNoteMap[43] = 63; // D#4
+  m_padToNoteMap[44] = 66; // F4
+  m_padToNoteMap[45] = 69; // A4
+  m_padToNoteMap[46] = 72; // C5
+  m_padToNoteMap[47] = 87; // D#6
+
 }
 
 void MidiManager::SendPadMIDI(int noteNum, int value)
@@ -134,11 +194,18 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
   else
     {
       if (0 == note.lastValue && value > 0)
-	Send_NoteOn(channel, midiNote, 100);
+	{
+	  Send_NoteOn(channel, midiNote, 100);
+	  SetPadLED(Off, noteNum);
+	  waitForTransmitComplete(*this);
+	}
       else if (value == 0)
-	Send_NoteOff(channel, midiNote, 0);
+	{
+	  Send_NoteOff(channel, midiNote, 0);
+	  SetPadLED(Red, noteNum);
+	  waitForTransmitComplete(*this);
+	}
     }
-
   note.lastValue = note.value;
   note.value = value;
 }
