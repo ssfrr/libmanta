@@ -47,23 +47,13 @@ int main(int argc, char* argv[])
 	{
 	  effs[i] = 0xff;
 	}
-      manta->SetPadLEDFrame(Manta::Amber, effs);
-      waitForTransmitComplete(*manta);
-      usleep(200000);
-      manta->SetPadLEDFrame(Manta::Red, effs);
-      waitForTransmitComplete(*manta);
-      usleep(200000);
-      manta->SetPadLEDFrame(Manta::Amber, effs);
-      waitForTransmitComplete(*manta);
-      usleep(200000);
       manta->SetPadLEDFrame(Manta::Off, effs);
       waitForTransmitComplete(*manta);
-      usleep(200000);
 
-      manta->SetLEDControl(Manta::PadAndButton, false);
+      /*manta->SetLEDControl(Manta::PadAndButton, false);
       waitForTransmitComplete(*manta);
       manta->SetLEDControl(Manta::Slider, false);
-      waitForTransmitComplete(*manta);
+      waitForTransmitComplete(*manta);*/
 
       while(1)
 	{
