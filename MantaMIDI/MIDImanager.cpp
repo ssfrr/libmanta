@@ -197,13 +197,11 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
 	{
 	  Send_NoteOn(channel, midiNote, 100);
 	  SetPadLED(Red, noteNum);
-	  waitForTransmitComplete(*this);
 	}
       else if (value == 0)
 	{
 	  Send_NoteOff(channel, midiNote, 0);
 	  SetPadLED(Off, noteNum);
-	  waitForTransmitComplete(*this);
 	}
     }
   note.lastValue = note.value;

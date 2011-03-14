@@ -17,7 +17,7 @@ find_library(USB-1.0_LIBRARY usb-1.0)
 #################
 SET(Manta_Core_Srcs		# Core sources
 	../core/Manta.cpp
-	../Core/MantaUSB.cpp
+	../core/MantaUSB.cpp
 )
 
 SET(Manta_RtMidi_Srcs		# RtMIDI library
@@ -25,7 +25,7 @@ SET(Manta_RtMidi_Srcs		# RtMIDI library
 )
 
 SET(MantaMidi_Srcs
-	MantaMidi.cpp
+	MantaMIDI.cpp
 	MIDImanager.cpp
 	RtMidiManager.cpp
 

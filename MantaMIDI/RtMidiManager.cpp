@@ -1,5 +1,5 @@
 #include "OptionHolder.h"
-#include "rtmidimanager.h"
+#include "RtMidiManager.h"
 #include <stdio.h>
 #include <cstdlib>
 #include <iostream>
