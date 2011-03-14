@@ -37,24 +37,7 @@ int main(int argc, char* argv[])
   std::cout << "Manta Connected" << std::endl;
   try
     {
-      manta->SetLEDControl(Manta::PadAndButton, true);
-      waitForTransmitComplete(*manta);
-      manta->SetLEDControl(Manta::Slider, true);
-      waitForTransmitComplete(*manta);
-
-      uint8_t effs[6];
-      for(int i = 0; i < 6; ++i)
-	{
-	  effs[i] = 0xff;
-	}
-      manta->SetPadLEDFrame(Manta::Off, effs);
-      waitForTransmitComplete(*manta);
-
-      /*manta->SetLEDControl(Manta::PadAndButton, false);
-      waitForTransmitComplete(*manta);
-      manta->SetLEDControl(Manta::Slider, false);
-      waitForTransmitComplete(*manta);*/
-
+      manta->Initialize();
       while(1)
 	{
 	  manta->HandleEvents();

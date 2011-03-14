@@ -16,6 +16,19 @@ MidiManager::~MidiManager()
 	
 }
 
+void MidiManager::Initialize()
+{
+  SetLEDControl(Manta::PadAndButton, true);
+  //SetLEDControl(Manta::Slider, true);
+  
+  uint8_t effs[6];
+  for(int i = 0; i < 6; ++i)
+    effs[i] = 0xff;
+
+  SetPadLEDFrame(m_options.GetOffPadColor(), effs);
+
+}
+
 void MidiManager::PadEvent(int id, int value)
 {
   if (m_options.GetDebugMode())
@@ -196,12 +209,12 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
       if (0 == note.lastValue && value > 0)
 	{
 	  Send_NoteOn(channel, midiNote, 100);
-	  SetPadLED(Red, noteNum);
+	  SetPadLED(m_options.GetOnPadColor(), noteNum);
 	}
       else if (value == 0)
 	{
 	  Send_NoteOff(channel, midiNote, 0);
-	  SetPadLED(Off, noteNum);
+	  SetPadLED(m_options.GetOffPadColor(), noteNum);
 	}
     }
   note.lastValue = note.value;
@@ -244,15 +257,21 @@ void MidiManager::SendButtonMIDI(int noteNum, int value)
   int channel = m_options.GetButtonEventChannel();
   int midiNote = m_buttonToNoteMap[noteNum];
   MidiNote &note = m_buttonNotes[midiNote];
-
+  
   if (m_options.GetUseVelocity())
     Send_NoteOn(channel, midiNote, value);
   else
     {
       if (0 == note.lastValue && value > 0)
-	Send_NoteOn(channel, midiNote, 100);
+	{
+	  Send_NoteOn(channel, midiNote, 100);
+	  SetButtonLED(m_options.GetOnButtonColor(), noteNum);
+	}
       else if (value == 0)
-	Send_NoteOff(channel, midiNote, 0);
+	{
+	  Send_NoteOff(channel, midiNote, 0);
+	  SetButtonLED(m_options.GetOffButtonColor(), noteNum);
+	}
     }
 
   note.lastValue = note.value;
@@ -261,13 +280,13 @@ void MidiManager::SendButtonMIDI(int noteNum, int value)
 
 void MidiManager::Send_NoteOff(int channel, int noteNum, int velocity)
 {
-  if ( (channel > 0 && channel <= 16) && (noteNum >= 0 && noteNum < 128) )
+  if ( (channel >= 0 && channel < 16) && (noteNum >= 0 && noteNum < 128) )
     SendMIDI( channel, atNoteOff, noteNum, velocity );
 }
 
 void MidiManager::Send_NoteOn(int channel, int noteNum, int velocity)
 {
-  if ( (channel > 0 && channel <= 16) && (noteNum >= 0 && noteNum < 128) )
+  if ( (channel >= 0 && channel < 16) && (noteNum >= 0 && noteNum < 128) )
     SendMIDI( channel, atNoteOn, noteNum, velocity );
 }
 

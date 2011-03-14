@@ -1,6 +1,7 @@
 #ifndef _OPTIONHOLDER_H
 #define _OPTIONHOLDER_H
 
+#include "../core/Manta.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -95,6 +96,9 @@ class OptionHolder
   unsigned char GetPadLEDChannel() { return m_padLEDChannel; }
   unsigned char GetBaseAmberLEDMidi() { return m_baseAmberLEDMidi; }
   unsigned char GetBaseRedLEDMidi() { return m_baseRedLEDMidi; }
+  Manta::LEDState GetActivePadColor() { return m_activePadColor; }
+  Manta::LEDState GetOnPadColor() { return m_onPadColor; }
+  Manta::LEDState GetOffPadColor() { return m_offPadColor; }
   PadLayout GetPadLayout() { return m_padLayout; }
   PadValMode GetPadMode() { return m_padMode; }
 
@@ -110,6 +114,9 @@ class OptionHolder
   unsigned char GetButtonEventChannel() { return m_buttonEventChannel; }
   unsigned char GetBaseButtonMidi() { return m_baseButtonMidi; }
   ButtonMode GetButtonMode() { return m_buttonMode; }
+  Manta::LEDState GetActiveButtonColor() { return m_activeButtonColor; }
+  Manta::LEDState GetOnButtonColor() { return m_onButtonColor; }
+  Manta::LEDState GetOffButtonColor() { return m_offButtonColor; }
 
   void PrintOptionStatus()
   {
@@ -140,24 +147,30 @@ class OptionHolder
     m_bDebugMode = false;
     m_bUseVelocity = false;
 
-    m_padEventChannel = 1;
+    m_padEventChannel = 0;
     m_basePadMidi = 36;
     m_padLEDChannel = 1;
     m_baseAmberLEDMidi = 0;
     m_baseRedLEDMidi = 50;
+    m_activePadColor = Manta::Amber;
+    m_onPadColor = Manta::Red;
+    m_offPadColor = Manta::Off;
     m_padLayout = plHoneycomb;
     m_padMode = pvmMonoAftertouch;
 
-    m_slider0_EventChannel = 2;
-    m_slider1_EventChannel = 2;
+    m_slider0_EventChannel = 1;
+    m_slider1_EventChannel = 1;
     m_slider0_MidiNote = 20;
     m_slider1_MidiNote = 21;
     m_slider0_Mode = smContinuous;
     m_slider1_Mode = smContinuous;
 
-    m_buttonEventChannel = 3;
+    m_buttonEventChannel = 2;
     m_baseButtonMidi = 102;
     m_buttonMode = bmDefault;
+    m_activeButtonColor = Manta::Amber;
+    m_onButtonColor = Manta::Red;
+    m_offButtonColor = Manta::Off;
   }
   
  private:
@@ -172,6 +185,9 @@ class OptionHolder
   unsigned char m_padLEDChannel;
   unsigned char m_baseAmberLEDMidi;
   unsigned char m_baseRedLEDMidi;
+  Manta::LEDState m_activePadColor;
+  Manta::LEDState m_onPadColor;
+  Manta::LEDState m_offPadColor;
 
   PadLayout m_padLayout;
   PadValMode m_padMode;
@@ -190,6 +206,9 @@ class OptionHolder
   unsigned char m_buttonEventChannel;
   unsigned char m_baseButtonMidi;
   ButtonMode m_buttonMode;
+  Manta::LEDState m_activeButtonColor;
+  Manta::LEDState m_onButtonColor;
+  Manta::LEDState m_offButtonColor;
   
 };
 
