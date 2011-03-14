@@ -1,8 +1,8 @@
-#N canvas 507 182 808 738 10;
+#N canvas 524 235 808 738 10;
 #X obj 31 21 mrpeach/udpreceive 8000;
 #X obj 31 42 mrpeach/unpackOSC;
 #X obj 31 63 mrpeach/routeOSC /Manta;
-#X obj 32 147 dac~;
+#X obj 32 182 dac~;
 #N canvas 0 0 361 358 slidernote 0;
 #X obj 61 49 unpack f f;
 #X obj 118 113 select 65535;
@@ -39,8 +39,8 @@
 #X connect 14 0 8 0;
 #X connect 15 0 16 0;
 #X connect 16 0 1 0;
-#X restore 101 104 pd slidernote;
-#N canvas 589 145 427 266 padnote 0;
+#X restore 116 132 pd slidernote;
+#N canvas 897 361 427 266 padnote 0;
 #X obj 146 22 inlet;
 #X obj 147 189 outlet~;
 #X obj 146 51 unpack f f;
@@ -61,14 +61,14 @@
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X connect 9 0 3 0;
-#X restore 32 104 pd padnote;
+#X restore 31 133 pd padnote;
 #X obj 221 662 mrpeach/packOSC;
 #X msg 4 385 connect 127.0.0.1 8001;
 #X obj 221 689 mrpeach/udpsend;
 #X obj 198 266 hsl 128 15 0 7 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 8700 1;
 #X obj 254 335 hsl 128 15 0 5 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 9800 1;
 #N canvas 0 0 439 292 ChooseRow 0;
 #X obj 85 61 int;
 #X obj 85 90 select 0;
@@ -114,18 +114,13 @@
 #X connect 8 0 4 0;
 #X restore 195 285 pd ChooseColumn;
 #X obj 290 410 hsl 128 15 0 7 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
-#X obj 287 452 <<;
-#X msg 287 430 1 \$1;
-#X obj 331 498 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+-1 -1 6100 1;
 #X msg 195 306 send /Manta/LED/Pad/Column Amber \$1 \$2;
-#X msg 287 474 send /Manta/LED/Slider 0 \$1;
 #X msg 102 197 send /Manta/LEDControl PadAndButton \$1;
 #X msg 135 236 send /Manta/LEDControl Slider \$1;
-#X obj 102 174 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 102 174 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 135 217 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 135 217 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 4 343 loadbang;
 #X obj 4 366 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
@@ -133,16 +128,24 @@
 #X text 23 363 Click to Connect;
 #X text 126 170 Click to Toggle LED control;
 #X msg 251 373 send /Manta/LED/Pad/Row Red \$1 \$2;
-#X obj 331 519 select 1;
-#X msg 415 547 symbol Off;
-#X msg 332 544 symbol Amber;
-#X msg 334 577 send /Manta/LED/Button \$1 2;
-#X obj 32 82 mrpeach/routeOSC /Pad /Slider /Button /Velocity;
-#X obj 243 108 print velocity;
-#X obj 180 140 print pad;
+#X msg 321 608 symbol Off;
+#X msg 405 609 symbol Amber;
+#X msg 321 645 send /Manta/LED/Button \$1 2;
+#X obj 245 111 print velocity;
+#X obj 31 110 mrpeach/routeOSC /Pad /Slider;
+#X obj 31 81 mrpeach/routeOSC /Continuous /Velocity;
+#X msg 501 608 symbol Red;
+#X obj 321 556 hradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144
+-1 -1 0;
+#X obj 321 574 select 0 1 2;
+#X msg 287 532 send /Manta/LED/Slider Amber 0 \$1;
+#X obj 287 473 t f f;
+#X msg 314 510 send /Manta/LED/Slider Off 0 255;
+#X msg 287 430 128 \$1;
+#X obj 287 452 >>;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 32 0;
+#X connect 2 0 29 0;
 #X connect 4 0 3 0;
 #X connect 4 0 3 1;
 #X connect 5 0 3 0;
@@ -151,26 +154,32 @@
 #X connect 7 0 8 0;
 #X connect 9 0 12 0;
 #X connect 10 0 11 0;
-#X connect 11 0 27 0;
-#X connect 12 0 17 0;
-#X connect 13 0 15 0;
-#X connect 14 0 18 0;
-#X connect 15 0 14 0;
-#X connect 16 0 28 0;
-#X connect 17 0 6 0;
-#X connect 18 0 6 0;
-#X connect 19 0 6 0;
-#X connect 20 0 6 0;
-#X connect 21 0 19 0;
-#X connect 22 0 20 0;
-#X connect 23 0 24 0;
-#X connect 24 0 7 0;
-#X connect 27 0 6 0;
-#X connect 28 0 30 0;
-#X connect 28 1 29 0;
-#X connect 29 0 31 0;
-#X connect 30 0 31 0;
-#X connect 31 0 6 0;
-#X connect 32 0 5 0;
-#X connect 32 1 4 0;
-#X connect 32 3 33 0;
+#X connect 11 0 23 0;
+#X connect 12 0 14 0;
+#X connect 13 0 36 0;
+#X connect 14 0 6 0;
+#X connect 15 0 6 0;
+#X connect 16 0 6 0;
+#X connect 17 0 15 0;
+#X connect 18 0 16 0;
+#X connect 19 0 20 0;
+#X connect 20 0 7 0;
+#X connect 23 0 6 0;
+#X connect 24 0 26 0;
+#X connect 25 0 26 0;
+#X connect 26 0 6 0;
+#X connect 28 0 5 0;
+#X connect 28 1 4 0;
+#X connect 29 0 28 0;
+#X connect 29 1 27 0;
+#X connect 30 0 26 0;
+#X connect 31 0 32 0;
+#X connect 32 0 24 0;
+#X connect 32 1 25 0;
+#X connect 32 2 30 0;
+#X connect 33 0 6 0;
+#X connect 34 0 33 0;
+#X connect 34 1 35 0;
+#X connect 35 0 6 0;
+#X connect 36 0 37 0;
+#X connect 37 0 34 0;

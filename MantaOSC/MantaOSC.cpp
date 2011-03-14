@@ -62,7 +62,7 @@ MantaOSC::MantaOSC()
    lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Pad/Row", "sii", LEDRowHandler, this);
    lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Pad/Column", "sii", LEDColumnHandler, this);
    lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Pad/Frame", "ss", LEDFrameHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Slider", "ii", LEDSliderHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Slider", "sii", LEDSliderHandler, this);
    lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Button", "si", LEDButtonHandler, this);
    lo_server_thread_start(OSCServerThread);
 }
