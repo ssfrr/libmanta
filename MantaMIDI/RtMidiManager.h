@@ -13,7 +13,7 @@ public:
 	~RtMidiManager();
 private:
 	void InitializeMIDI();
-	void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value);
+	void SendMIDI(unsigned char data[], int nBytes);
 
 	bool ChooseMidiPort();
 

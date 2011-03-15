@@ -43,7 +43,7 @@ class MidiManager : public Manta
   OptionHolder m_options;
 
   virtual void InitializeMIDI() = 0;
-  virtual void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value) = 0;
+  virtual void SendMIDI(unsigned char data[], int nBytes) = 0;
   
  private:
 
@@ -53,6 +53,8 @@ class MidiManager : public Manta
   virtual void ButtonEvent(int id, int value);
   virtual void PadVelocityEvent(int id, int value);
   virtual void ButtonVelocityEvent(int id, int value);
+
+  void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value);
 
   void InitializeMapValues();
   void AssignPianoLayout();

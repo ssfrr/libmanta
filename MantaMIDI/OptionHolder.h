@@ -49,14 +49,11 @@ class OptionHolder
 	      {
 		switch(argv[i][0])
 		  {
-		  case 'P':
-		    m_padLayout = plPiano;
+		  case 'P': SetPadLayout(plPiano);
 		    break;
-		  case 'C':
-		    m_padLayout = plChromatic;
+		  case 'C': SetPadLayout(plChromatic);
 		    break;
-		  default:
-		    m_padLayout = plHoneycomb;
+		  default: SetPadLayout(plHoneycomb);
 		    break;
 		  }
 	      }
@@ -97,6 +94,7 @@ class OptionHolder
   unsigned char GetBaseAmberLEDMidi() { return m_baseAmberLEDMidi; }
   unsigned char GetBaseRedLEDMidi() { return m_baseRedLEDMidi; }
   Manta::LEDState GetActivePadColor() { return m_activePadColor; }
+  Manta::LEDState GetInactivePadColor() { return m_inactivePadColor; }
   Manta::LEDState GetOnPadColor() { return m_onPadColor; }
   Manta::LEDState GetOffPadColor() { return m_offPadColor; }
   PadLayout GetPadLayout() { return m_padLayout; }
@@ -152,10 +150,7 @@ class OptionHolder
     m_padLEDChannel = 1;
     m_baseAmberLEDMidi = 0;
     m_baseRedLEDMidi = 50;
-    m_activePadColor = Manta::Amber;
-    m_onPadColor = Manta::Red;
-    m_offPadColor = Manta::Off;
-    m_padLayout = plHoneycomb;
+    SetPadLayout(plHoneycomb);
     m_padMode = pvmMonoAftertouch;
 
     m_slider0_EventChannel = 1;
@@ -172,6 +167,32 @@ class OptionHolder
     m_onButtonColor = Manta::Red;
     m_offButtonColor = Manta::Off;
   }
+
+  void SetPadLayout(PadLayout layout)
+  {
+    m_padLayout = layout;
+    switch(layout)
+      {
+      case plPiano:
+	m_activePadColor = Manta::Amber;
+	m_inactivePadColor = Manta::Off;
+	m_onPadColor = Manta::Red;
+	m_offPadColor = Manta::Amber;
+	break;
+      case plChromatic:
+	m_activePadColor = Manta::Off;
+	m_inactivePadColor = Manta::Off;
+	m_onPadColor = Manta::Amber;
+	m_offPadColor = Manta::Off;
+	break;
+      case plHoneycomb:
+      default:
+	m_activePadColor = Manta::Off;
+	m_inactivePadColor = Manta::Off;
+	m_onPadColor = Manta::Red;
+	m_offPadColor = Manta::Off;
+      }
+  }
   
  private:
   /* Master Program Settings */
@@ -186,6 +207,7 @@ class OptionHolder
   unsigned char m_baseAmberLEDMidi;
   unsigned char m_baseRedLEDMidi;
   Manta::LEDState m_activePadColor;
+  Manta::LEDState m_inactivePadColor;
   Manta::LEDState m_onPadColor;
   Manta::LEDState m_offPadColor;
 

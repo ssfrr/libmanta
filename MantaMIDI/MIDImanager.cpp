@@ -25,8 +25,13 @@ void MidiManager::Initialize()
   for(int i = 0; i < 6; ++i)
     effs[i] = 0xff;
 
-  SetPadLEDFrame(m_options.GetOffPadColor(), effs);
+  SetPadLEDFrame(m_options.GetActivePadColor(), effs);
 
+  for(int i = 0; i < MANTA_PADS; ++i)
+    {
+      if (-1 == m_padToNoteMap[i])
+	SetPadLED(m_options.GetInactivePadColor(), i);
+    }
 }
 
 void MidiManager::PadEvent(int id, int value)
@@ -200,25 +205,35 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
 {
   int channel = m_options.GetPadEventChannel();
   int midiNote = m_padToNoteMap[noteNum];
-  MidiNote &note = m_padNotes[midiNote];
 
-  if (m_options.GetUseVelocity())
-    Send_NoteOn(channel, midiNote, value);
-  else
+  if (midiNote != -1)
     {
-      if (0 == note.lastValue && value > 0)
+      MidiNote &note = m_padNotes[midiNote];
+      
+      if (m_options.GetUseVelocity())
 	{
-	  Send_NoteOn(channel, midiNote, 100);
-	  SetPadLED(m_options.GetOnPadColor(), noteNum);
+	  Send_NoteOn(channel, midiNote, value);
+	  if (value > 0)
+	    SetPadLED(m_options.GetOnPadColor(), noteNum);
+	  else
+	    SetPadLED(m_options.GetOffPadColor(), noteNum);
 	}
-      else if (value == 0)
+      else
 	{
-	  Send_NoteOff(channel, midiNote, 0);
-	  SetPadLED(m_options.GetOffPadColor(), noteNum);
+	  if (0 == note.lastValue && value > 0)
+	    {
+	      Send_NoteOn(channel, midiNote, 100);
+	      SetPadLED(m_options.GetOnPadColor(), noteNum);
+	    }
+	  else if (value == 0)
+	    {
+	      Send_NoteOff(channel, midiNote, 0);
+	      SetPadLED(m_options.GetOffPadColor(), noteNum);
+	    }
 	}
+      note.lastValue = note.value;
+      note.value = value;
     }
-  note.lastValue = note.value;
-  note.value = value;
 }
 
 void MidiManager::SendSliderMIDI(int whichSlider, int value)
@@ -256,26 +271,36 @@ void MidiManager::SendButtonMIDI(int noteNum, int value)
 {
   int channel = m_options.GetButtonEventChannel();
   int midiNote = m_buttonToNoteMap[noteNum];
-  MidiNote &note = m_buttonNotes[midiNote];
-  
-  if (m_options.GetUseVelocity())
-    Send_NoteOn(channel, midiNote, value);
-  else
-    {
-      if (0 == note.lastValue && value > 0)
-	{
-	  Send_NoteOn(channel, midiNote, 100);
-	  SetButtonLED(m_options.GetOnButtonColor(), noteNum);
-	}
-      else if (value == 0)
-	{
-	  Send_NoteOff(channel, midiNote, 0);
-	  SetButtonLED(m_options.GetOffButtonColor(), noteNum);
-	}
-    }
 
-  note.lastValue = note.value;
-  note.value = value;
+  if (midiNote != -1)
+    {
+      MidiNote &note = m_buttonNotes[midiNote];
+      
+      if (m_options.GetUseVelocity())
+	{
+	  Send_NoteOn(channel, midiNote, value);
+	  if (value > 0) 
+	    SetButtonLED(m_options.GetOnButtonColor(), noteNum);
+	  else // value == 0
+	    SetButtonLED(m_options.GetOffButtonColor(), noteNum);
+	}
+      else
+	{
+	  if (0 == note.lastValue && value > 0)
+	    {
+	      Send_NoteOn(channel, midiNote, 100);
+	      SetButtonLED(m_options.GetOnButtonColor(), noteNum);
+	    }
+	  else if (value == 0)
+	    {
+	      Send_NoteOff(channel, midiNote, 0);
+	      SetButtonLED(m_options.GetOffButtonColor(), noteNum);
+	    }
+	}
+      
+      note.lastValue = note.value;
+      note.value = value;
+    }
 }
 
 void MidiManager::Send_NoteOff(int channel, int noteNum, int velocity)
@@ -319,4 +344,78 @@ void MidiManager::Send_PitchWheelChange(int channel, int value)
       unsigned char mostByte = (value >> 7) & sevenBitAnd;
       SendMIDI( channel, atPitchWheel, leastByte, mostByte);
     }
+}
+
+void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value)
+{
+  unsigned char data[3];
+  int nBytes = 0;
+  
+  // Note Off: 128, Note, Velocity
+  if (actionType == atNoteOff)
+    {
+      data[0] = 0x80 + ucChannel; // 128
+      data[1] = noteNum;
+      data[2] = value;
+      nBytes = 3;
+      
+      if (m_options.GetDebugMode())
+	printf("Note off: %d %d %d\n", data[0], data[1], data[2]);
+    }
+  // Note On: 144/0x90, Note, Velocity
+  else if(actionType == atNoteOn)
+    {
+      data[0] = 0x90 + ucChannel; // 144
+      data[1] = noteNum;
+      data[2] = value;
+      nBytes = 3;
+      
+      if (m_options.GetDebugMode())
+	printf("Note on: %d %d %d\n", data[0], data[1], data[2]);
+    }
+  // Polyphonic Pressure (Aftertouch): 0xA0, controller # (0-119), value
+  else if (actionType == atPolyphonicKeyPressure)
+    {
+      data[0] = 0xA0 + ucChannel; //
+      data[1] = noteNum;
+      data[2] = value;
+      nBytes = 3;
+      
+      if (m_options.GetDebugMode())
+	printf("Polyphonic Pressure: %d %d %d\n", data[0], data[1], data[2]);
+    }
+  
+  // Control Change: 0xB0
+  else if (actionType == atControlChange)
+    {
+      data[0] = 0xB0 + ucChannel;
+      data[1] = noteNum;
+      data[2] = value;
+      nBytes = 3;
+      
+      if (m_options.GetDebugMode())
+	printf("Program Change: %d %d %d\n", data[0], data[1], data[2]);
+    }
+  // Program Change: 0xC0
+  else if (actionType == atProgramChange)
+    {
+      data[0] = 0xC0 + ucChannel;
+      data[1] = noteNum;
+      nBytes = 2;
+      
+      if (m_options.GetDebugMode())
+	printf("Program Change: %d %d\n", data[0], data[1]);
+    }
+  else if (actionType == atChannelPressure)
+    {
+      if (m_options.GetDebugMode())
+	printf("Channel Pressure (aftertouch)\n");
+    }
+  else if (actionType == atPitchWheel)
+    {
+      if (m_options.GetDebugMode())
+	printf("Pitch Wheel Change: \n");
+    }
+  
+  SendMIDI(data, nBytes);
 }
