@@ -12,7 +12,7 @@ RtMidiManager::RtMidiManager(OptionHolder &options) :
 
 RtMidiManager::~RtMidiManager()
 {
-  //delete m_midiIn;
+  delete m_midiIn;
   delete m_midiOut;
 }
 
@@ -20,7 +20,7 @@ void RtMidiManager::InitializeMIDI()
 {
   // RtMidiIn constructor
   try {
-    // m_midiIn = new RtMidiIn();
+    m_midiIn = new RtMidiIn();
     m_midiOut = new RtMidiOut();
 
     ChooseMidiPort();

@@ -6,7 +6,7 @@
 #include <math.h>
 
 MidiManager::MidiManager(OptionHolder &options) :
-  m_options(options)
+  m_options(options), m_padAftertouchStackIndex(-1)
 {
   InitializeMapValues();
 }
@@ -198,7 +198,6 @@ void MidiManager::AssignHoneycombLayout()
   m_padToNoteMap[45] = 69; // A4
   m_padToNoteMap[46] = 72; // C5
   m_padToNoteMap[47] = 87; // D#6
-
 }
 
 void MidiManager::SendPadMIDI(int noteNum, int value)
@@ -209,30 +208,42 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
   if (midiNote != -1)
     {
       MidiNote &note = m_padNotes[midiNote];
-      
-      if (m_options.GetUseVelocity())
+
+      // Note On
+      if (value > 0 && note.lastValue == 0)
 	{
-	  Send_NoteOn(channel, midiNote, value);
-	  if (value > 0)
-	    SetPadLED(m_options.GetOnPadColor(), noteNum);
+	  if (m_options.GetUseVelocity())
+	    Send_NoteOn(channel, midiNote, value);
 	  else
-	    SetPadLED(m_options.GetOffPadColor(), noteNum);
+	    Send_NoteOn(channel, midiNote, 100);
+
+	  SetPadLED(m_options.GetOnPadColor(), noteNum);
+	  
+	  if (m_options.GetPadMode() == pvmMonoAftertouch)
+	    PushAftertouch(noteNum);
 	}
-      else
+      // Aftertouch
+      else if (value > 0 && note.lastValue > 0)
 	{
-	  if (0 == note.lastValue && value > 0)
-	    {
-	      Send_NoteOn(channel, midiNote, 100);
-	      SetPadLED(m_options.GetOnPadColor(), noteNum);
-	    }
-	  else if (value == 0)
-	    {
-	      Send_NoteOff(channel, midiNote, 0);
-	      SetPadLED(m_options.GetOffPadColor(), noteNum);
-	    }
+	  if (m_options.GetPadMode() == pvmMonoAftertouch && 
+	      noteNum == m_padAftertouchStack[m_padAftertouchStackIndex])
+	    Send_Aftertouch(channel, noteNum, TranslatePadValueToMIDI(value));
+	  else if (m_options.GetPadMode() == pvmPolyAftertouch)
+	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
+	  //else if (m_options.GetPadMode() == pvmPolyContinuous)
+	    //Send_ControlChange(channel, midiNote, value);
 	}
-      note.lastValue = note.value;
-      note.value = value;
+      else // Note Off
+	{
+	  Send_NoteOff(channel, midiNote, 0);
+
+	  SetPadLED(m_options.GetOffPadColor(), noteNum);
+	  
+	  if (m_options.GetPadMode() == pvmMonoAftertouch)
+	    PopAftertouch(noteNum);
+	}
+
+      note.lastValue = value;
     }
 }
 
@@ -256,13 +267,22 @@ void MidiManager::SendSliderMIDI(int whichSlider, int value)
       Send_ControlChange(channel, midiNote, TranslateSliderValueToCC(value));
 }
 
+int MidiManager::TranslatePadValueToMIDI(int padValue)
+{
+  int iRet = 0;
+  double transVal = (127.0 / 200.0);
+  
+  iRet = (int)(round(padValue * transVal));
+  
+  return iRet;
+}
+
 int MidiManager::TranslateSliderValueToCC(int sliderValue)
 {
   int iRet = 0;
   double transVal = (127.0 / 4096.0);
 
   iRet = (int)(round(sliderValue * transVal));
-  //printf("Translate: %d %d\n", sliderValue, iRet);
 
   return iRet;
 }
@@ -298,8 +318,7 @@ void MidiManager::SendButtonMIDI(int noteNum, int value)
 	    }
 	}
       
-      note.lastValue = note.value;
-      note.value = value;
+      note.lastValue = value;
     }
 }
 
@@ -346,10 +365,35 @@ void MidiManager::Send_PitchWheelChange(int channel, int value)
     }
 }
 
+void MidiManager::PushAftertouch(int key)
+{ 
+  m_padAftertouchStack[++m_padAftertouchStackIndex] = key;
+}
+
+void MidiManager::PopAftertouch(int key)
+{
+  bool bFound = false;
+  for (int i = 0; i <= m_padAftertouchStackIndex; ++i)
+    {
+      if (m_padAftertouchStack[i] == key)
+	  bFound = true;
+      
+      if (bFound)
+	{
+	  if (i+1 <= m_padAftertouchStackIndex)
+	    m_padAftertouchStack[i] = m_padAftertouchStack[i+1];
+	}
+    }
+  --m_padAftertouchStackIndex;
+}
+
 void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value)
 {
   unsigned char data[3];
   int nBytes = 0;
+
+  if (value > 127)
+    value &= 0x7F;
   
   // Note Off: 128, Note, Velocity
   if (actionType == atNoteOff)
@@ -384,7 +428,6 @@ void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, i
       if (m_options.GetDebugMode())
 	printf("Polyphonic Pressure: %d %d %d\n", data[0], data[1], data[2]);
     }
-  
   // Control Change: 0xB0
   else if (actionType == atControlChange)
     {

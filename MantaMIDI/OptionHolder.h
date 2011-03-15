@@ -65,13 +65,13 @@ class OptionHolder
 		switch(argv[i][0])
 		  {
 		  case '1':
-		    m_padMode = pvmMonoAftertouch;
+		    m_padMode = pvmPolyAftertouch;
 		    break;
 		  case '2':
 		    m_padMode = pvmPolyAftertouch;
 		    break;
 		  default:
-		    m_padMode = pvmMonoAftertouch;
+		    m_padMode = pvmPolyContinuous;
 		    break;
 		  }
 	      }

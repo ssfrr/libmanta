@@ -17,7 +17,7 @@ private:
 
 	bool ChooseMidiPort();
 
-	//RtMidiIn *m_midiIn;
+	RtMidiIn *m_midiIn;
 	RtMidiOut *m_midiOut;
 };
 

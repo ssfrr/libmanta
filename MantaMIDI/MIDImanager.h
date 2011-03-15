@@ -27,7 +27,6 @@ enum MidiActionType
 typedef struct
 {
   int timeOn;
-  int value;
   int lastValue;
 } MidiNote;
 
@@ -60,6 +59,8 @@ class MidiManager : public Manta
   void AssignPianoLayout();
   void AssignChromaticLayout();
   void AssignHoneycombLayout();
+
+  int TranslatePadValueToMIDI(int padValue);
   int TranslateSliderValueToCC(int sliderValue);
 
   /* Handling functions */
@@ -75,6 +76,9 @@ class MidiManager : public Manta
   void Send_ProgramChange(int channel, int newValue);
   void Send_ChannelPressure(int channel, int value);
   void Send_PitchWheelChange(int channel, int value);
+
+  void PushAftertouch(int key);
+  void PopAftertouch(int key);
   
   int m_padToNoteMap[MANTA_PADS];
   int m_sliderToNoteMap[MANTA_SLIDERPOS];
@@ -82,6 +86,9 @@ class MidiManager : public Manta
 
   MidiNote m_padNotes[MAX_MIDI_NOTES];
   MidiNote m_buttonNotes[MAX_MIDI_NOTES];
+
+  int m_padAftertouchStack[MANTA_PADS];
+  int m_padAftertouchStackIndex;
 };
 
 #endif
