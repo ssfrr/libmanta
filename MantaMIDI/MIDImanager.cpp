@@ -134,7 +134,7 @@ void MidiManager::AssignPianoLayout()
 void MidiManager::AssignChromaticLayout()
 {
   for(int i = 0; i < MANTA_PADS; ++i)
-    m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
+      m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
 }
 
 void MidiManager::AssignHoneycombLayout()
@@ -227,7 +227,7 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
 	{
 	  if (m_options.GetPadMode() == pvmMonoAftertouch && 
 	      IsCurrentPadMaximum(noteNum, value))
-	    Send_Aftertouch(channel, noteNum, TranslatePadValueToMIDI(value));
+	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
 	  else if (m_options.GetPadMode() == pvmPolyAftertouch)
 	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
 	  //else if (m_options.GetPadMode() == pvmPolyContinuous)

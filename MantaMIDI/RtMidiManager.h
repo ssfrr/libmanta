@@ -6,11 +6,14 @@
 
 class OptionHolder;
 
+void MidiReadThread(double deltatime, std::vector< unsigned char > *message, void *userData);
+
 class RtMidiManager : public MidiManager
 {
 public:
 	RtMidiManager(OptionHolder &options);
 	~RtMidiManager();
+
 private:
 	void InitializeMIDI();
 	void SendMIDI(unsigned char data[], int nBytes);

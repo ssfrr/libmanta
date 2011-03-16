@@ -4,6 +4,21 @@
 #include <cstdlib>
 #include <iostream>
 
+void MidiReadThread( double deltatime, std::vector< unsigned char > *message, void *userData )
+{
+  /*unsigned int nBytes = message->size();
+  for ( unsigned int i=0; i<nBytes; i++ )
+    std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
+  if ( nBytes > 0 )
+  std::cout << "stamp = " << deltatime << std::endl;*/
+
+  RtMidiManager *manta = (RtMidiManager *)userData;
+  if (message->at(2))
+    manta->SetPadLED(Manta::Red, message->at(1));
+  else
+    manta->SetPadLED(Manta::Off, message->at(1));
+}
+
 RtMidiManager::RtMidiManager(OptionHolder &options) :
   MidiManager(options)
 {
@@ -24,6 +39,8 @@ void RtMidiManager::InitializeMIDI()
     m_midiOut = new RtMidiOut();
 
     ChooseMidiPort();
+
+    m_midiIn->setCallback( &MidiReadThread, this );
   }
   catch (RtError &error) {
     // Handle the exception here
@@ -54,35 +71,62 @@ bool RtMidiManager::ChooseMidiPort()
 
   std::string keyHit;
   std::getline( std::cin, keyHit );
-  if ( keyHit == "y" ) {
-    m_midiOut->openVirtualPort( "Manta" );
-    return true;
-  }
+  if ( keyHit == "y" ) 
+    {
+      m_midiIn->openVirtualPort( "Manta" );
+      m_midiOut->openVirtualPort( "Manta" );
+      return true;
+    }
 
+  // Check ports for output
   std::string portName;
-  unsigned int i = 0, nPorts = m_midiOut->getPortCount();
-  if ( nPorts == 0 ) {
+  unsigned int i = 0, nOutPorts = m_midiOut->getPortCount();
+  if ( nOutPorts == 0 ) {
     std::cout << "No output ports available!" << std::endl;
     return false;
   }
 
-  if ( nPorts == 1 ) {
+  unsigned int j = 0, nInPorts = m_midiIn->getPortCount();
+  if ( nInPorts == 0 ){
+    std::cout << "No input ports available!" << std::endl;
+    return false;
+  }
+
+  if ( nOutPorts == 1 ) {
     std::cout << "\nOpening " << m_midiOut->getPortName() << std::endl;
   }
   else {
-    for ( i=0; i<nPorts; i++ ) {
+    for ( i=0; i<nOutPorts; i++ ) {
       portName = m_midiOut->getPortName(i);
       std::cout << "  Output port #" << i << ": " << portName << '\n';
     }
-
+    
     do {
       std::cout << "\nChoose a port number: ";
       std::cin >> i;
-    } while ( i >= nPorts );
+    } while ( i >= nOutPorts );
   }
 
   std::cout << "\n";
   m_midiOut->openPort( i );
+  
+  if ( nInPorts == 1 ) {
+    std::cout << "\nOpening " << m_midiIn->getPortName() << std::endl;
+  }
+  else {
+    for ( i=0; i<nInPorts; i++ ) {
+      portName = m_midiIn->getPortName(i);
+      std::cout << "  Output port #" << i << ": " << portName << '\n';
+    }
+    
+    do {
+      std::cout << "\nChoose a port number: ";
+      std::cin >> i;
+    } while ( i >= nInPorts );
+  }
+
+  std::getline( std::cin, keyHit ); // used to clear out stdin
+  m_midiIn->openPort( i );
 
   return true;
 }

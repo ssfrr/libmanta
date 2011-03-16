@@ -41,45 +41,45 @@ class OptionHolder
 	{
 	  if ( 0 == strcmp(argv[i], "-d") )
 	    m_bDebugMode = true;
-	else if ( 0 == strcmp(argv[i], "-v" ) )
-	  m_bUseVelocity = true;
-	else if ( 0 == strcmp(argv[i], "-padlayout") )
-	  {
-	    if ( i + 1 < argc && argv[++i])
-	      {
-		switch(argv[i][0])
-		  {
-		  case 'P': SetPadLayout(plPiano);
-		    break;
-		  case 'C': SetPadLayout(plChromatic);
-		    break;
-		  default: SetPadLayout(plHoneycomb);
-		    break;
-		  }
-	      }
-	  }
-	else if ( 0 == strcmp(argv[i], "-padmode") )
-	  {
-	    if ( i + 1 < argc && argv[++i])
-	      {
-		switch(argv[i][0])
-		  {
-		  case '1':
-		    m_padMode = pvmPolyAftertouch;
-		    break;
-		  case '2':
-		    m_padMode = pvmPolyAftertouch;
-		    break;
-		  default:
-		    m_padMode = pvmPolyContinuous;
-		    break;
-		  }
-	      }
-	  }
-      }
-    
-    PrintOptionStatus();
-  }
+	  else if ( 0 == strcmp(argv[i], "-v" ) )
+	    m_bUseVelocity = true;
+	  else if ( 0 == strcmp(argv[i], "-padlayout") )
+	    {
+	      if ( i + 1 < argc && argv[++i])
+		{
+		  switch(argv[i][0])
+		    {
+		    case 'P': SetPadLayout(plPiano);
+		      break;
+		    case 'C': SetPadLayout(plChromatic);
+		      break;
+		    default: SetPadLayout(plHoneycomb);
+		      break;
+		    }
+		}
+	    }
+	  else if ( 0 == strcmp(argv[i], "-padmode") )
+	    {
+	      if ( i + 1 < argc && argv[++i])
+		{
+		  switch(argv[i][0])
+		    {
+		    case '1':
+		      m_padMode = pvmPolyAftertouch;
+		      break;
+		    case '2':
+		      m_padMode = pvmPolyAftertouch;
+		      break;
+		    default:
+		      m_padMode = pvmPolyContinuous;
+		      break;
+		    }
+		}
+	    }
+	}
+      
+      PrintOptionStatus();
+    }
   
   ~OptionHolder() {}
   

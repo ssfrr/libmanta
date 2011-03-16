@@ -8,9 +8,6 @@ find_library(LO_LIBRARY lo)
 find_path(USB-1.0_INCLUDE_DIR libusb-1.0/libusb.h)
 find_library(USB-1.0_LIBRARY usb-1.0)
 
-#find_library(COREAUDIO CoreAudio "/usr")
-#find_library(COREFOUNDATION CoreFoundation "/")
-#find_library(COREMIDI CoreMidi "/")
 
 #################
 # List sources  #
@@ -47,7 +44,7 @@ IF(MINGW)
         ADD_DEFINITIONS(-D__WINDOWS_MM__)
 ENDIF(MINGW)
 
-include_directories(${USB-1.0_INCLUDE_DIR} ${LO_INCLUDE_DIR})
+include_directories(${USB-1.0_INCLUDE_DIR} ${LO_INCLUDE_DIR} )
 
 ###############################################
 ADD_EXECUTABLE(MantaMIDI ${MantaMidi_Srcs})
