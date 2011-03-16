@@ -28,6 +28,7 @@ typedef struct
 {
   int timeOn;
   int lastValue;
+  int curValue;
 } MidiNote;
 
 class MidiManager : public Manta
@@ -79,6 +80,7 @@ class MidiManager : public Manta
 
   void PushAftertouch(int key);
   void PopAftertouch(int key);
+  bool IsCurrentPadMaximum(int noteNum, int value);
   
   int m_padToNoteMap[MANTA_PADS];
   int m_sliderToNoteMap[MANTA_SLIDERPOS];

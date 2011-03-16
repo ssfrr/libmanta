@@ -226,7 +226,7 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
       else if (value > 0 && note.lastValue > 0)
 	{
 	  if (m_options.GetPadMode() == pvmMonoAftertouch && 
-	      noteNum == m_padAftertouchStack[m_padAftertouchStackIndex])
+	      IsCurrentPadMaximum(noteNum, value))
 	    Send_Aftertouch(channel, noteNum, TranslatePadValueToMIDI(value));
 	  else if (m_options.GetPadMode() == pvmPolyAftertouch)
 	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
@@ -244,7 +244,29 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
 	}
 
       note.lastValue = value;
+      note.curValue = value;
     }
+}
+
+bool MidiManager::IsCurrentPadMaximum(int noteNum, int value)
+{
+  bool bRet = false;
+  int curMax = 0;
+  
+  // Loop through and get the maximum of the current pad values
+  for(int i = 0; i <= m_padAftertouchStackIndex; ++i)
+    {
+      int midiNote = m_padToNoteMap[m_padAftertouchStack[i]];
+      MidiNote &note = m_padNotes[midiNote];
+    
+      if (note.curValue > curMax)
+	curMax = note.curValue;
+    }
+
+  if (value > curMax)
+    bRet = true;
+
+  return bRet;
 }
 
 void MidiManager::SendSliderMIDI(int whichSlider, int value)
@@ -270,7 +292,7 @@ void MidiManager::SendSliderMIDI(int whichSlider, int value)
 int MidiManager::TranslatePadValueToMIDI(int padValue)
 {
   int iRet = 0;
-  double transVal = (127.0 / 200.0);
+  double transVal = (127.0 / 205.0);
   
   iRet = (int)(round(padValue * transVal));
   
