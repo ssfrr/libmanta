@@ -31,10 +31,10 @@ class manta:
    */
 
 private:
-   void PadEvent(int id, int value);
+   void PadEvent(int row, int column, int id, int value);
    void SliderEvent(int id, int value);
    void ButtonEvent(int id, int value);
-   void PadVelocityEvent(int id, int value);
+   void PadVelocityEvent(int row, int column, int id, int value);
    void ButtonVelocityEvent(int id, int value);
    void DebugPrint(const char *fmt, ...);
    /* here we're actually co-opting the parent class's FrameReceived

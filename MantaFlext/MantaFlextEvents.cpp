@@ -1,6 +1,6 @@
 #include "MantaFlext.h"
 
-void manta::PadEvent(int id, int value)
+void manta::PadEvent(int row, int column, int id, int value)
 {
    t_atom args[2];
    SetFloat(args[0], id);
@@ -26,7 +26,7 @@ void manta::SliderEvent(int id, int value)
    lastSliderValue[id] = value;
 }
 
-void manta::PadVelocityEvent(int id, int value)
+void manta::PadVelocityEvent(int row, int column, int id, int value)
 {
    t_atom args[2];
    SetFloat(args[0], id);

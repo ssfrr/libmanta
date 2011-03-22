@@ -9,7 +9,7 @@ using namespace std;
 class MantaTester: public Manta
 {
    private:
-      virtual void PadEvent(int id, int value)
+      virtual void PadEvent(int row, int column, int id, int value)
       {
          cout << "Pad " << id << ": " << value << endl;
       }
@@ -21,7 +21,7 @@ class MantaTester: public Manta
       {
          cout << "Button " << id << ": " << value << endl;
       }
-      virtual void PadVelocityEvent(int id, int value)
+      virtual void PadVelocityEvent(int row, int column, int id, int value)
       {
          cout << "Pad Velocity " << id << ": " << value << endl;
       }
