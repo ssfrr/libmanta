@@ -1,8 +1,6 @@
-//#include "MIDImanager.h"
 #include "OptionHolder.h"
-#include "RtMidiManager.h"
+#include "midimanager/RtMidiManager.h"
 #include <cstring>
-//#include <unistd.h>
 #include <stdio.h>
 #include <iostream>
 

@@ -2,7 +2,7 @@
 #define _RTMIDIMANAGER_H
 
 #include "MIDImanager.h"
-#include "rtmidi/RtMidi.h"
+#include "../rtmidi/RtMidi.h"
 
 class OptionHolder;
 

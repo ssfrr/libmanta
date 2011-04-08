@@ -1,3 +1,5 @@
+project(MantaMIDI)
+
 cmake_minimum_required (VERSION 2.6)
 
 # add /opt/local to cmake search prefix to find MacPorts-installed libs on OSX
@@ -23,8 +25,8 @@ SET(Manta_RtMidi_Srcs		# RtMIDI library
 
 SET(MantaMidi_Srcs
 	MantaMIDI.cpp
-	MIDImanager.cpp
-	RtMidiManager.cpp
+        ./midimanager/MIDImanager.cpp
+        ./midimanager/RtMidiManager.cpp
 
 	${Manta_Core_Srcs}
 	${Manta_RtMidi_Srcs}

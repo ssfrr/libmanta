@@ -1,4 +1,4 @@
-#include "OptionHolder.h"
+#include "../OptionHolder.h"
 #include "RtMidiManager.h"
 #include <stdio.h>
 #include <cstdlib>

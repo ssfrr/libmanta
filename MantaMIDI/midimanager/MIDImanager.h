@@ -1,8 +1,8 @@
 #ifndef _MIDIMANAGER_H
 #define _MIDIMANAGER_H
 
-#include "../core/Manta.h"
-#include "../core/MantaExceptions.h"
+#include "../../core/Manta.h"
+#include "../../core/MantaExceptions.h"
 #include <stdint.h>
 
 #define MANTA_PAD_ROWS  6
