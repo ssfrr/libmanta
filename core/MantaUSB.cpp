@@ -61,6 +61,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
       if(LIBUSB_SUCCESS != libusb_submit_transfer(CurrentOutTransfer))
       {
          libusb_free_transfer(CurrentOutTransfer);
+         Disconnect();
          throw(MantaCommunicationException());
       }
    }
@@ -81,9 +82,15 @@ void MantaUSB::Connect(int serialNumber)
          throw(MantaNotFoundException());
       libusb_detach_kernel_driver(DeviceHandle, 0);
       if(LIBUSB_SUCCESS != libusb_set_configuration(DeviceHandle, 1))
+      {
+         Disconnect();
          throw(MantaOpenException());
+      }
       if(LIBUSB_SUCCESS != libusb_claim_interface(DeviceHandle, 0))
+      {
+         Disconnect();
          throw(MantaOpenException());
+      }
 
       /* start the first read transfer */
       CurrentInTransfer = libusb_alloc_transfer(0);
@@ -112,6 +119,7 @@ void MantaUSB::HandleEvents(void)
    if(TransferError)
    {
       TransferError = false;
+      Disconnect();
       throw(MantaCommunicationException());
    }
    libusb_handle_events(LibusbContext);

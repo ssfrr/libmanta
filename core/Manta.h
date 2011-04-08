@@ -32,10 +32,10 @@ class Manta : public MantaUSB
 
    protected:
       /* declare callbacks to be implemented by subclasses */
-      virtual void PadEvent(int id, int value) = 0;
+      virtual void PadEvent(int row, int column, int id, int value) = 0;
       virtual void SliderEvent(int id, int value) = 0;
       virtual void ButtonEvent(int id, int value) = 0;
-      virtual void PadVelocityEvent(int id, int velocity) = 0;
+      virtual void PadVelocityEvent(int row, int column, int id, int velocity) = 0;
       virtual void ButtonVelocityEvent(int id, int velocity) = 0;
       /* declare superclass callbacks implemented by this class */
       virtual void FrameReceived(int8_t *frame);

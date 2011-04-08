@@ -34,7 +34,8 @@ void Manta::FrameReceived(int8_t *frame)
       if(true == VelocityWaiting[i])
       {
          if(i < 49)
-            PadVelocityEvent(i - 1, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
+            PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1,
+                  CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
          else
             ButtonVelocityEvent(i - 49, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
          VelocityWaiting[i] = false;
@@ -46,7 +47,7 @@ void Manta::FrameReceived(int8_t *frame)
          if(-128 == frame[i])
          {
             if(i < 49)
-               PadVelocityEvent(i - 1, 0);
+               PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1, 0);
             else
                ButtonVelocityEvent(i - 49, 0);
          }
@@ -56,7 +57,7 @@ void Manta::FrameReceived(int8_t *frame)
             VelocityWaiting[i] = true;
          }
          if(i < 49)
-            PadEvent(i - 1, frame[i] + 128);
+            PadEvent((i - 1) / 8, (i - 1) % 8, i - 1, frame[i] + 128);
          else
             ButtonEvent(i - 49, frame[i] + 128);
       }

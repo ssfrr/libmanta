@@ -34,7 +34,7 @@ void MidiManager::Initialize()
     }
 }
 
-void MidiManager::PadEvent(int id, int value)
+void MidiManager::PadEvent(int row, int column, int id, int value)
 {
   if (m_options.GetDebugMode())
     std::cout << "PadEvent: " << id << ", " << value << "\n";
@@ -60,7 +60,7 @@ void MidiManager::ButtonEvent(int id, int value)
     SendButtonMIDI(id, value);
 }
 
-void MidiManager::PadVelocityEvent(int id, int value)
+void MidiManager::PadVelocityEvent(int row, int column, int id, int value)
 {
   if (m_options.GetDebugMode())
     std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";

@@ -48,10 +48,10 @@ class MidiManager : public Manta
  private:
 
   /* Manta events */
-  virtual void PadEvent(int id, int value);
+  virtual void PadEvent(int row, int column, int id, int value);
   virtual void SliderEvent(int id, int value);
   virtual void ButtonEvent(int id, int value);
-  virtual void PadVelocityEvent(int id, int value);
+  virtual void PadVelocityEvent(int row, int column, int id, int value);
   virtual void ButtonVelocityEvent(int id, int value);
 
   void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value);
