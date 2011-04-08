@@ -88,9 +88,12 @@ void MidiManager::InitializeMapValues()
     case plChromatic:
       AssignChromaticLayout();
       break;
+    case plDuet:
+      AssignHaydenDuetLayout();
+      break;
     case plHoneycomb:
-      AssignHoneycombLayout();
     default:
+      AssignHoneycombLayout();
       break;
     }
   
@@ -200,6 +203,70 @@ void MidiManager::AssignHoneycombLayout()
   m_padToNoteMap[47] = 87; // D#6
 }
 
+void MidiManager::AssignHaydenDuetLayout()
+{
+	// First Row
+	m_padToNoteMap[0] = 61; // Db4
+	m_padToNoteMap[1] = 63; // 
+	m_padToNoteMap[2] = 65; // 
+	m_padToNoteMap[3] = 67; // 
+	m_padToNoteMap[4] = 69; // 
+	m_padToNoteMap[5] = 71; // 
+	m_padToNoteMap[6] = 73; // 
+	m_padToNoteMap[7] = 75; // 
+	
+	// Second Row
+	m_padToNoteMap[8] = 68; // Ab4
+	m_padToNoteMap[9] = 70; // 
+	m_padToNoteMap[10] = 72; // 
+	m_padToNoteMap[11] = 74; // 
+	m_padToNoteMap[12] = 76; // 
+	m_padToNoteMap[13] = 78; // 
+	m_padToNoteMap[14] = 80; // 
+	m_padToNoteMap[15] = 82; // 
+	
+	// Third Row
+	m_padToNoteMap[16] = 73; // Db5
+	m_padToNoteMap[17] = 75; //
+	m_padToNoteMap[18] = 77; // 
+	m_padToNoteMap[19] = 79; // 
+	m_padToNoteMap[20] = 81; // 
+	m_padToNoteMap[21] = 83; // 
+	m_padToNoteMap[22] = 85; //
+	m_padToNoteMap[23] = 87; // 
+	
+	// Fourth Row
+	m_padToNoteMap[24] = 80; // Ab5
+	m_padToNoteMap[25] = 82; // 
+	m_padToNoteMap[26] = 84; // 
+	m_padToNoteMap[27] = 86; // 
+	m_padToNoteMap[28] = 88; // 
+	m_padToNoteMap[29] = 90; // 
+	m_padToNoteMap[30] = 92; // 
+	m_padToNoteMap[31] = 94; 
+	
+	// Fifth Row
+	m_padToNoteMap[32] = 85; // Db6
+	m_padToNoteMap[33] = 87; // 
+	m_padToNoteMap[34] = 89; // 
+	m_padToNoteMap[35] = 91; // 
+	m_padToNoteMap[36] = 93; // 
+	m_padToNoteMap[37] = 95; // 
+	m_padToNoteMap[38] = 97; // 
+	m_padToNoteMap[39] = 99; // 
+	
+	// Sixth Row
+	m_padToNoteMap[40] = 92; // Ab6
+	m_padToNoteMap[41] = 94; // 
+	m_padToNoteMap[42] = 96; // 
+	m_padToNoteMap[43] = 98; // 
+	m_padToNoteMap[44] = 100; // 
+	m_padToNoteMap[45] = 102; // 
+	m_padToNoteMap[46] = 104; // 
+	m_padToNoteMap[47] = 106; // 
+}
+
+
 void MidiManager::SendPadMIDI(int noteNum, int value)
 {
   int channel = m_options.GetPadEventChannel();
@@ -292,7 +359,11 @@ void MidiManager::SendSliderMIDI(int whichSlider, int value)
 int MidiManager::TranslatePadValueToMIDI(int padValue)
 {
   int iRet = 0;
-  double transVal = (127.0 / 205.0);
+  double transVal = (127.0 / 210.0);
+
+  int tempPadValue = padValue;
+  if (tempPadValue > 210)
+    tempPadValue = 210;
   
   iRet = (int)(round(padValue * transVal));
   

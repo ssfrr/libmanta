@@ -13,10 +13,42 @@ void MidiReadThread( double deltatime, std::vector< unsigned char > *message, vo
   std::cout << "stamp = " << deltatime << std::endl;*/
 
   RtMidiManager *manta = (RtMidiManager *)userData;
-  if (message->at(2))
-    manta->SetPadLED(Manta::Red, message->at(1));
-  else
-    manta->SetPadLED(Manta::Off, message->at(1));
+
+  int first = message->at(0);
+  int second = message->at(1);
+  int third = message->at(2);
+  Manta::LEDState resultColor;
+  int index = second;
+
+  if ( 0 <= second && 98 > second)
+    {
+      // 0 - 47 = Amber
+      if ( 0 <= second && 48 > second)
+	{
+	  resultColor = Manta::Amber;
+	  index = second;
+	}
+      else if ( 50 <= second && 98 > second)
+	{
+	  resultColor = Manta::Red;
+	  index -= 50;
+	}
+      
+      if ( 0 == third )
+	resultColor = Manta::Off;
+      
+      if (index < 48 && index >= 0)
+	manta->SetPadLED(resultColor, index);
+    }
+  // slider leds
+  else if ( 100 <= second && 118 > second)
+    {
+    }
+  // buttons
+  else if ( 120 <= second && 124 > second)
+    {
+      
+    }
 }
 
 RtMidiManager::RtMidiManager(OptionHolder &options) :
@@ -67,16 +99,16 @@ void RtMidiManager::SendMIDI(unsigned char data[], int nBytes)
 
 bool RtMidiManager::ChooseMidiPort()
 {
-  std::cout << "\nWould you like to open a virtual output port? [y/N] ";
+  /*std::cout << "\nWould you like to open a virtual output port? [y/N] ";
 
   std::string keyHit;
   std::getline( std::cin, keyHit );
   if ( keyHit == "y" ) 
-    {
+  {*/
       m_midiIn->openVirtualPort( "Manta" );
       m_midiOut->openVirtualPort( "Manta" );
       return true;
-    }
+      /*  }
 
   // Check ports for output
   std::string portName;
@@ -128,5 +160,5 @@ bool RtMidiManager::ChooseMidiPort()
   std::getline( std::cin, keyHit ); // used to clear out stdin
   m_midiIn->openPort( i );
 
-  return true;
+  return true;*/
 }

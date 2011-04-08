@@ -60,6 +60,7 @@ class MidiManager : public Manta
   void AssignPianoLayout();
   void AssignChromaticLayout();
   void AssignHoneycombLayout();
+  void AssignHaydenDuetLayout();
 
   int TranslatePadValueToMIDI(int padValue);
   int TranslateSliderValueToCC(int sliderValue);

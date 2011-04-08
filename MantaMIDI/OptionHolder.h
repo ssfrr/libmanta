@@ -9,7 +9,8 @@ enum PadLayout
   {
     plHoneycomb = 0,
     plPiano,
-    plChromatic
+    plChromatic,
+    plDuet
   };
 
 enum PadValMode
@@ -52,6 +53,8 @@ class OptionHolder
 		    case 'P': SetPadLayout(plPiano);
 		      break;
 		    case 'C': SetPadLayout(plChromatic);
+		      break;
+		    case 'D': SetPadLayout(plDuet);
 		      break;
 		    default: SetPadLayout(plHoneycomb);
 		      break;
@@ -185,6 +188,7 @@ class OptionHolder
 	m_onPadColor = Manta::Amber;
 	m_offPadColor = Manta::Off;
 	break;
+      case plDuet:
       case plHoneycomb:
       default:
 	m_activePadColor = Manta::Off;
