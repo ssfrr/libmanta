@@ -8,7 +8,7 @@ libmanta is a library and set of example programs, and a PD/Max object for
 interfacing with the Snyderphonics Manta, a touch-sensitive usb controller with
 LED feedback.
 
-libmanta is currently in alpha stage, and the examples are intended simply as
+libmanta is currently in beta stage, and the examples are intended simply as
 starting points to show how the library may be used. The [manta] object for Pure
 Data and Max/MSP will be a user-facing release released in both source and
 binary forms.
