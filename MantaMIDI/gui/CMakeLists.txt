@@ -40,10 +40,12 @@ set(MantaGUI_SOURCES
     ${MantaMidi_Srcs}
     main.cpp
     mainwindow.cpp
+    mantathread.cpp
 )
 
 set(MantaGUI_MOC_HEADERS
     mainwindow.h
+    mantathread.h
 )
 
 set(MantaGUI_UIS

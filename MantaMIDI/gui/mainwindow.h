@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "mantathread.h"
+
 namespace Ui {
     class MainWindow;
 }
@@ -17,9 +19,12 @@ public:
 
 private slots:
     void on_checkBox_clicked();
+    void DisplayMantaMessage(const QString &text);
 
 private:
     Ui::MainWindow *ui;
+
+    MantaThread thread;
 };
 
 #endif // MAINWINDOW_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>642</height>
+    <width>591</width>
+    <height>745</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,7 @@
       <x>10</x>
       <y>110</y>
       <width>549</width>
-      <height>61</height>
+      <height>161</height>
      </rect>
     </property>
     <property name="title">
@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>170</y>
+      <y>270</y>
       <width>551</width>
       <height>161</height>
      </rect>
@@ -65,7 +65,7 @@
     <property name="title">
      <string>Slider Controls</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -187,7 +187,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>370</y>
+      <y>430</y>
       <width>549</width>
       <height>201</height>
      </rect>
@@ -357,7 +357,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>591</width>
      <height>22</height>
     </rect>
    </property>

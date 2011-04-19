@@ -34,6 +34,11 @@ enum ButtonMode
 class OptionHolder
 {
  public:
+ OptionHolder()
+ {
+     Reset();
+ }
+
  OptionHolder(int argc, char **argv) 
     {
       Reset();

@@ -6,6 +6,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    connect(&thread, SIGNAL(MantaMessage(const QString &)),
+           this, SLOT(DisplayMantaMessage(const QString &)));
+
+    thread.start();
 }
 
 MainWindow::~MainWindow()
@@ -22,4 +27,9 @@ void MainWindow::on_checkBox_clicked()
         ui->statusBar->showMessage(on, 1000);
     else
         ui->statusBar->showMessage(off, 1000);
+}
+
+void MainWindow::DisplayMantaMessage(const QString &text)
+{
+    ui->statusBar->showMessage(text, 1000);
 }
