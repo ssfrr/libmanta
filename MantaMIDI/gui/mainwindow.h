@@ -19,7 +19,9 @@ public:
 
 private slots:
     void on_checkBox_clicked();
-    void DisplayMantaMessage(const QString &text);
+
+    void DisplayConnectionMessage(const QString &text);
+    void DisplayStatusMessage(const QString &text);
 
 private:
     Ui::MainWindow *ui;

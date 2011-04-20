@@ -7,14 +7,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(&thread, SIGNAL(MantaMessage(const QString &)),
-           this, SLOT(DisplayMantaMessage(const QString &)));
+    connect(&thread, SIGNAL(MantaConnectedMessage(const QString &)),
+           this, SLOT(DisplayConnectionMessage(const QString &)));
+    connect(&thread, SIGNAL(UpdateStatusMessage(const QString &)),
+            this, SLOT(DisplayStatusMessage(const QString &)));
 
     thread.start();
 }
 
 MainWindow::~MainWindow()
 {
+    thread.terminate();
     delete ui;
 }
 
@@ -29,7 +32,12 @@ void MainWindow::on_checkBox_clicked()
         ui->statusBar->showMessage(off, 1000);
 }
 
-void MainWindow::DisplayMantaMessage(const QString &text)
+void MainWindow::DisplayConnectionMessage(const QString &text)
+{
+    ui->mantaConnectedLbl->setText(text);
+}
+
+void MainWindow::DisplayStatusMessage(const QString &text)
 {
     ui->statusBar->showMessage(text, 1000);
 }

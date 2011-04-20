@@ -15,7 +15,8 @@ public:
     ~MantaThread();
 
 signals:
-    void MantaMessage(const QString &output);
+    void MantaConnectedMessage(const QString &output);
+    void UpdateStatusMessage(const QString &output);
 
 protected:
     void run();
@@ -25,8 +26,6 @@ private:
 
     OptionHolder options;
     MidiManager *manta;
-
-
 };
 
 #endif // MANTATHREAD_H

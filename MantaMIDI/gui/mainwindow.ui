@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>745</height>
+    <width>575</width>
+    <height>709</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,6 +37,22 @@
      </property>
      <property name="text">
       <string>Use Velocity</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="mantaConnectedLbl">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>0</y>
+       <width>151</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Manta Not Connected</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -357,7 +373,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>591</width>
+     <width>575</width>
      <height>22</height>
     </rect>
    </property>

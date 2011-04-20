@@ -13,38 +13,35 @@ MantaThread::~MantaThread()
 
 void MantaThread::run()
 {
-    do
+    forever
     {
+        while (!manta->IsConnected())
+        {
+            try
+            {
+                manta->Connect();
+            }
+            catch(MantaNotFoundException &e)
+            {
+                emit UpdateStatusMessage("Could not find an attached Manta. Retrying...");
+                sleep(1);
+            }
+        }
+
+        emit MantaConnectedMessage("Manta Connected");
+
         try
         {
-            manta->Connect();
+            manta->Initialize();
+            forever
+            {
+                manta->HandleEvents();
+            }
         }
-        catch(MantaNotFoundException &e)
+        catch(MantaCommunicationException &e)
         {
-            emit MantaMessage("Could not find an attached Manta. Retrying...");
-            sleep(1);
-        }
-    } while (! manta->IsConnected());
-
-    emit MantaMessage("Manta Connected!");
-
-    try
-    {
-        manta->Initialize();
-        forever
-        {
-            manta->HandleEvents();
+            emit UpdateStatusMessage("Communication with Manta interrrupted...");
+            emit MantaConnectedMessage("Manta Not Connected");
         }
     }
-    catch(MantaCommunicationException &e)
-    {
-        emit MantaMessage("Communication with Manta interrrupted...");
-    }
-
-    /*
-    int i = 0;
-    char buf[128];
-    sprintf(buf, "Test %d.", i++);
-    emit MantaMessage(QString(buf));
-    sleep(2);*/
 }
