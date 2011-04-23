@@ -51,7 +51,7 @@ void MidiReadThread( double deltatime, std::vector< unsigned char > *message, vo
     }
 }
 
-RtMidiManager::RtMidiManager(OptionHolder &options) :
+RtMidiManager::RtMidiManager(OptionHolder *options) :
   MidiManager(options)
 {
   InitializeMIDI();

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <math.h>
 
-MidiManager::MidiManager(OptionHolder &options) :
+MidiManager::MidiManager(OptionHolder *options) :
   m_options(options), m_padAftertouchStackIndex(-1)
 {
   InitializeMapValues();
@@ -13,7 +13,6 @@ MidiManager::MidiManager(OptionHolder &options) :
 
 MidiManager::~MidiManager()
 {
-	
 }
 
 void MidiManager::Initialize()
@@ -25,27 +24,27 @@ void MidiManager::Initialize()
   for(int i = 0; i < 6; ++i)
     effs[i] = 0xff;
 
-  SetPadLEDFrame(m_options.GetActivePadColor(), effs);
+  SetPadLEDFrame(m_options->GetActivePadColor(), effs);
 
   for(int i = 0; i < MANTA_PADS; ++i)
     {
       if (-1 == m_padToNoteMap[i])
-	SetPadLED(m_options.GetInactivePadColor(), i);
+        SetPadLED(m_options->GetInactivePadColor(), i);
     }
 }
 
 void MidiManager::PadEvent(int row, int column, int id, int value)
 {
-  if (m_options.GetDebugMode())
+  if (m_options->GetDebugMode())
     std::cout << "PadEvent: " << id << ", " << value << "\n";
 
-  if (!m_options.GetUseVelocity())
+  if (!m_options->GetUseVelocity())
     SendPadMIDI(id, value);
 }
 
 void MidiManager::SliderEvent(int id, int value)
 {
-  if (m_options.GetDebugMode())
+  if (m_options->GetDebugMode())
     std::cout << "SliderEvent: " << id << ", " << value << "\n";
 
     SendSliderMIDI(id, value);
@@ -53,34 +52,34 @@ void MidiManager::SliderEvent(int id, int value)
 
 void MidiManager::ButtonEvent(int id, int value)
 {
-  if (m_options.GetDebugMode())
+  if (m_options->GetDebugMode())
     std::cout << "ButtonEvent: " << id << ", " << value << "\n";
 
-  if (!m_options.GetUseVelocity())
+  if (!m_options->GetUseVelocity())
     SendButtonMIDI(id, value);
 }
 
 void MidiManager::PadVelocityEvent(int row, int column, int id, int value)
 {
-  if (m_options.GetDebugMode())
+  if (m_options->GetDebugMode())
     std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
 
-  if (m_options.GetUseVelocity())
+  if (m_options->GetUseVelocity())
     SendPadMIDI(id, value);
 }
 
 void MidiManager::ButtonVelocityEvent(int id, int value)
 {
-  if (m_options.GetDebugMode())
+  if (m_options->GetDebugMode())
     std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
 
-  if (m_options.GetUseVelocity())
+  if (m_options->GetUseVelocity())
     SendButtonMIDI(id, value);
 }
 
 void MidiManager::InitializeMapValues()
 {
-  switch(m_options.GetPadLayout())
+  switch(m_options->GetPadLayout())
     {
     case plPiano:
       AssignPianoLayout();
@@ -98,12 +97,12 @@ void MidiManager::InitializeMapValues()
     }
   
   for(int i = 0; i < MANTA_BUTTONS; ++i)
-    m_buttonToNoteMap[i] = m_options.GetBaseButtonMidi() + i;
+    m_buttonToNoteMap[i] = m_options->GetBaseButtonMidi() + i;
 }
 
 void MidiManager::AssignPianoLayout()
 {
-  int baseMidi = m_options.GetBasePadMidi();
+  int baseMidi = m_options->GetBasePadMidi();
   int padIndex = 0;
   for (int i = 0; i < (MANTA_PAD_ROWS / 2); ++i)
     {
@@ -137,7 +136,7 @@ void MidiManager::AssignPianoLayout()
 void MidiManager::AssignChromaticLayout()
 {
   for(int i = 0; i < MANTA_PADS; ++i)
-      m_padToNoteMap[i] = m_options.GetBasePadMidi() + i;
+      m_padToNoteMap[i] = m_options->GetBasePadMidi() + i;
 }
 
 void MidiManager::AssignHoneycombLayout()
@@ -269,7 +268,7 @@ void MidiManager::AssignHaydenDuetLayout()
 
 void MidiManager::SendPadMIDI(int noteNum, int value)
 {
-  int channel = m_options.GetPadEventChannel();
+  int channel = m_options->GetPadEventChannel();
   int midiNote = m_padToNoteMap[noteNum];
 
   if (midiNote != -1)
@@ -279,34 +278,34 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
       // Note On
       if (value > 0 && note.lastValue == 0)
 	{
-	  if (m_options.GetUseVelocity())
+          if (m_options->GetUseVelocity())
 	    Send_NoteOn(channel, midiNote, value);
 	  else
 	    Send_NoteOn(channel, midiNote, 100);
 
-	  SetPadLED(m_options.GetOnPadColor(), noteNum);
+          SetPadLED(m_options->GetOnPadColor(), noteNum);
 	  
-	  if (m_options.GetPadMode() == pvmMonoAftertouch)
+          if (m_options->GetPadMode() == pvmMonoAftertouch)
 	    PushAftertouch(noteNum);
 	}
       // Aftertouch
       else if (value > 0 && note.lastValue > 0)
 	{
-	  if (m_options.GetPadMode() == pvmMonoAftertouch && 
+          if (m_options->GetPadMode() == pvmMonoAftertouch &&
 	      IsCurrentPadMaximum(noteNum, value))
 	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
-	  else if (m_options.GetPadMode() == pvmPolyAftertouch)
+          else if (m_options->GetPadMode() == pvmPolyAftertouch)
 	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
-	  //else if (m_options.GetPadMode() == pvmPolyContinuous)
+          //else if (m_options->GetPadMode() == pvmPolyContinuous)
 	    //Send_ControlChange(channel, midiNote, value);
 	}
       else // Note Off
 	{
 	  Send_NoteOff(channel, midiNote, 0);
 
-	  SetPadLED(m_options.GetOffPadColor(), noteNum);
+          SetPadLED(m_options->GetOffPadColor(), noteNum);
 	  
-	  if (m_options.GetPadMode() == pvmMonoAftertouch)
+          if (m_options->GetPadMode() == pvmMonoAftertouch)
 	    PopAftertouch(noteNum);
 	}
 
@@ -343,13 +342,13 @@ void MidiManager::SendSliderMIDI(int whichSlider, int value)
 
   if (whichSlider == 0)
     {
-      channel = m_options.GetSlider0_EventChannel();
-      midiNote = m_options.GetSlider0_MidiNote();
+      channel = m_options->GetSlider0_EventChannel();
+      midiNote = m_options->GetSlider0_MidiNote();
     }
   else
     {
-      channel = m_options.GetSlider1_EventChannel();
-      midiNote = m_options.GetSlider1_MidiNote();
+      channel = m_options->GetSlider1_EventChannel();
+      midiNote = m_options->GetSlider1_MidiNote();
     }
 
   if (value != 0x0000FFFF)
@@ -382,32 +381,32 @@ int MidiManager::TranslateSliderValueToCC(int sliderValue)
 
 void MidiManager::SendButtonMIDI(int noteNum, int value)
 {
-  int channel = m_options.GetButtonEventChannel();
+  int channel = m_options->GetButtonEventChannel();
   int midiNote = m_buttonToNoteMap[noteNum];
 
   if (midiNote != -1)
     {
       MidiNote &note = m_buttonNotes[midiNote];
       
-      if (m_options.GetUseVelocity())
+      if (m_options->GetUseVelocity())
 	{
 	  Send_NoteOn(channel, midiNote, value);
 	  if (value > 0) 
-	    SetButtonLED(m_options.GetOnButtonColor(), noteNum);
+            SetButtonLED(m_options->GetOnButtonColor(), noteNum);
 	  else // value == 0
-	    SetButtonLED(m_options.GetOffButtonColor(), noteNum);
+            SetButtonLED(m_options->GetOffButtonColor(), noteNum);
 	}
       else
 	{
 	  if (0 == note.lastValue && value > 0)
 	    {
 	      Send_NoteOn(channel, midiNote, 100);
-	      SetButtonLED(m_options.GetOnButtonColor(), noteNum);
+              SetButtonLED(m_options->GetOnButtonColor(), noteNum);
 	    }
 	  else if (value == 0)
 	    {
 	      Send_NoteOff(channel, midiNote, 0);
-	      SetButtonLED(m_options.GetOffButtonColor(), noteNum);
+              SetButtonLED(m_options->GetOffButtonColor(), noteNum);
 	    }
 	}
       
@@ -496,7 +495,7 @@ void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, i
       data[2] = value;
       nBytes = 3;
       
-      if (m_options.GetDebugMode())
+      if (m_options->GetDebugMode())
 	printf("Note off: %d %d %d\n", data[0], data[1], data[2]);
     }
   // Note On: 144/0x90, Note, Velocity
@@ -507,7 +506,7 @@ void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, i
       data[2] = value;
       nBytes = 3;
       
-      if (m_options.GetDebugMode())
+      if (m_options->GetDebugMode())
 	printf("Note on: %d %d %d\n", data[0], data[1], data[2]);
     }
   // Polyphonic Pressure (Aftertouch): 0xA0, controller # (0-119), value
@@ -518,7 +517,7 @@ void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, i
       data[2] = value;
       nBytes = 3;
       
-      if (m_options.GetDebugMode())
+      if (m_options->GetDebugMode())
 	printf("Polyphonic Pressure: %d %d %d\n", data[0], data[1], data[2]);
     }
   // Control Change: 0xB0
@@ -529,7 +528,7 @@ void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, i
       data[2] = value;
       nBytes = 3;
       
-      if (m_options.GetDebugMode())
+      if (m_options->GetDebugMode())
 	printf("Program Change: %d %d %d\n", data[0], data[1], data[2]);
     }
   // Program Change: 0xC0
@@ -539,17 +538,17 @@ void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, i
       data[1] = noteNum;
       nBytes = 2;
       
-      if (m_options.GetDebugMode())
+      if (m_options->GetDebugMode())
 	printf("Program Change: %d %d\n", data[0], data[1]);
     }
   else if (actionType == atChannelPressure)
     {
-      if (m_options.GetDebugMode())
+      if (m_options->GetDebugMode())
 	printf("Channel Pressure (aftertouch)\n");
     }
   else if (actionType == atPitchWheel)
     {
-      if (m_options.GetDebugMode())
+      if (m_options->GetDebugMode())
 	printf("Pitch Wheel Change: \n");
     }
   

@@ -11,7 +11,7 @@ void MidiReadThread(double deltatime, std::vector< unsigned char > *message, voi
 class RtMidiManager : public MidiManager
 {
 public:
-	RtMidiManager(OptionHolder &options);
+        RtMidiManager(OptionHolder *options);
 	~RtMidiManager();
 
 private:

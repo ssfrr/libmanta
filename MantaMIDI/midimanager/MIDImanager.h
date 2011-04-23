@@ -34,13 +34,13 @@ typedef struct
 class MidiManager : public Manta
 {
  public:
-  MidiManager(OptionHolder &options);
+  MidiManager(OptionHolder *options);
   ~MidiManager();
 
   void Initialize();
   
  protected:
-  OptionHolder m_options;
+  OptionHolder *m_options;
 
   virtual void InitializeMIDI() = 0;
   virtual void SendMIDI(unsigned char data[], int nBytes) = 0;

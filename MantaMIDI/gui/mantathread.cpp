@@ -3,7 +3,7 @@
 MantaThread::MantaThread(QObject *parent) :
     QThread(parent)
 {
-    manta = new RtMidiManager(options);
+    manta = new RtMidiManager(&options);
 }
 
 MantaThread::~MantaThread()
