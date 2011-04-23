@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&thread, SIGNAL(UpdateStatusMessage(const QString &)),
             this, SLOT(DisplayStatusMessage(const QString &)));
 
+    thread.Setup(&options);
     thread.start();
 }
 
@@ -23,13 +24,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_checkBox_clicked()
 {
-    QString on = "UseVelocityOn";
-    QString off = "UseVelocityOff";
+    bool bStatus = ui->checkBox->isChecked();
+    QString qMessage = QString("UseVelocity: %1").arg(bStatus);
 
-    if(ui->checkBox->isChecked())
-        ui->statusBar->showMessage(on, 1000);
-    else
-        ui->statusBar->showMessage(off, 1000);
+    options.SetUseVelocity(bStatus);
+    ui->statusBar->showMessage(qMessage, 1000);
 }
 
 void MainWindow::DisplayConnectionMessage(const QString &text)

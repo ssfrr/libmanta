@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "mantathread.h"
+#include "../OptionHolder.h"
 
 namespace Ui {
     class MainWindow;
@@ -26,6 +27,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    OptionHolder options;
     MantaThread thread;
 };
 

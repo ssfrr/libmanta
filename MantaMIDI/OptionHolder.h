@@ -94,6 +94,7 @@ class OptionHolder
   /* Master settings */
   bool GetDebugMode()  { return m_bDebugMode; }
   bool GetUseVelocity() { return m_bUseVelocity; }
+  void SetUseVelocity(bool bUseVelocity) { m_bUseVelocity = bUseVelocity; }
 
   /* Pads */
   unsigned char GetPadEventChannel() {return m_padEventChannel; }

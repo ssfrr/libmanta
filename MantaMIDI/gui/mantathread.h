@@ -15,6 +15,8 @@ public:
     MantaThread(QObject *parent = 0);
     ~MantaThread();
 
+    void Setup(OptionHolder *options);
+
 signals:
     void MantaConnectedMessage(const QString &output);
     void UpdateStatusMessage(const QString &output);
@@ -27,7 +29,7 @@ private:
     QWaitCondition condition;
     bool bExit;
 
-    OptionHolder options;
+    OptionHolder *m_options;
     MidiManager *manta;
 };
 

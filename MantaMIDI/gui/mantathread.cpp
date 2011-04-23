@@ -1,9 +1,8 @@
 #include "mantathread.h"
 
 MantaThread::MantaThread(QObject *parent) :
-    QThread(parent)
+    QThread(parent), m_options(NULL), manta(NULL)
 {
-    manta = new RtMidiManager(&options);
 }
 
 MantaThread::~MantaThread()
@@ -17,41 +16,52 @@ MantaThread::~MantaThread()
     delete manta;
 }
 
+void MantaThread::Setup(OptionHolder *options)
+{
+    m_options = options;
+    manta = new RtMidiManager(options);
+}
+
 void MantaThread::run()
 {
     forever
     {
-        while (!manta->IsConnected())
+        if (manta && m_options)
         {
+            while (!manta->IsConnected())
+            {
+                try
+                {
+                    manta->Connect();
+                }
+                catch(MantaNotFoundException &e)
+                {
+                    emit UpdateStatusMessage("Could not find an attached Manta. Retrying...");
+                    sleep(1);
+                }
+            }
+
+            emit MantaConnectedMessage("Manta Connected");
+
             try
             {
-                manta->Connect();
+                manta->Initialize();
+                forever
+                {
+                    manta->HandleEvents();
+
+                    if (bExit)
+                        break;
+                }
             }
-            catch(MantaNotFoundException &e)
+            catch(MantaCommunicationException &e)
             {
-                emit UpdateStatusMessage("Could not find an attached Manta. Retrying...");
-                sleep(1);
+                emit UpdateStatusMessage("Communication with Manta interrrupted...");
+                emit MantaConnectedMessage("Manta Not Connected");
             }
         }
-
-        emit MantaConnectedMessage("Manta Connected");
-
-        try
-        {
-            manta->Initialize();
-            forever
-            {
-                manta->HandleEvents();
-
-                if (bExit)
-                    break;
-            }
-        }
-        catch(MantaCommunicationException &e)
-        {
-            emit UpdateStatusMessage("Communication with Manta interrrupted...");
-            emit MantaConnectedMessage("Manta Not Connected");
-        }
+        else
+            emit UpdateStatusMessage("Manta Object Not initialized!!!");
 
         if (bExit)
             break;
