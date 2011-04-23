@@ -3,6 +3,7 @@
 
 #include <QMutex>
 #include <QThread>
+#include <QWaitCondition>
 
 #include "../OptionHolder.h"
 #include "../midimanager/RtMidiManager.h"
@@ -23,6 +24,8 @@ protected:
 
 private:
     QMutex mutex;
+    QWaitCondition condition;
+    bool bExit;
 
     OptionHolder options;
     MidiManager *manta;

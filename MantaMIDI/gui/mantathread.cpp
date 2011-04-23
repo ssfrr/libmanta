@@ -8,6 +8,12 @@ MantaThread::MantaThread(QObject *parent) :
 
 MantaThread::~MantaThread()
 {
+    mutex.lock();
+    bExit = true;
+    manta->Disconnect();
+    condition.wait(&mutex);
+    mutex.unlock();
+
     delete manta;
 }
 
@@ -36,6 +42,9 @@ void MantaThread::run()
             forever
             {
                 manta->HandleEvents();
+
+                if (bExit)
+                    break;
             }
         }
         catch(MantaCommunicationException &e)
@@ -43,5 +52,8 @@ void MantaThread::run()
             emit UpdateStatusMessage("Communication with Manta interrrupted...");
             emit MantaConnectedMessage("Manta Not Connected");
         }
+
+        if (bExit)
+            break;
     }
 }

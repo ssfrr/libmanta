@@ -41,3 +41,4 @@ void MainWindow::DisplayStatusMessage(const QString &text)
 {
     ui->statusBar->showMessage(text, 1000);
 }
+
