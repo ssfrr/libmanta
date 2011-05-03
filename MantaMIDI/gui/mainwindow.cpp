@@ -41,3 +41,35 @@ void MainWindow::DisplayStatusMessage(const QString &text)
     ui->statusBar->showMessage(text, 1000);
 }
 
+void MainWindow::UpdateLayout(PadLayout padLayout)
+{
+    options.SetPadLayout(padLayout);
+    int index = ui->padLayoutGroup->checkedId();
+    ui->statusBar->showMessage(QString("Button ID: %1").arg(index), 1000);
+    thread.ReloadLEDS();
+}
+
+
+void MainWindow::on_layoutRB_HaydenDuet_clicked()
+{
+    UpdateLayout(plDuet);
+}
+
+void MainWindow::on_layoutRB_Honeycomb_clicked()
+{
+    UpdateLayout(plHoneycomb);
+}
+
+void MainWindow::on_layoutRB_Piano_clicked()
+{
+    UpdateLayout(plPiano);
+}
+
+void MainWindow::on_layoutRB_Chromatic_clicked()
+{
+    UpdateLayout(plChromatic);
+}
+
+void MainWindow::on_layoutRB_Custom_clicked()
+{
+}

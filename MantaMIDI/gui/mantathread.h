@@ -16,6 +16,7 @@ public:
     ~MantaThread();
 
     void Setup(OptionHolder *options);
+    void ReloadLEDS();
 
 signals:
     void MantaConnectedMessage(const QString &output);

@@ -33,6 +33,12 @@ void MidiManager::Initialize()
     }
 }
 
+void MidiManager::ResetLEDS()
+{
+    InitializeMapValues();
+    Initialize();
+}
+
 void MidiManager::PadEvent(int row, int column, int id, int value)
 {
   if (m_options->GetDebugMode())

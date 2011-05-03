@@ -24,7 +24,15 @@ private slots:
     void DisplayConnectionMessage(const QString &text);
     void DisplayStatusMessage(const QString &text);
 
+    void on_layoutRB_HaydenDuet_clicked();
+    void on_layoutRB_Honeycomb_clicked();
+    void on_layoutRB_Piano_clicked();
+    void on_layoutRB_Chromatic_clicked();
+    void on_layoutRB_Custom_clicked();
+
 private:
+    void UpdateLayout(PadLayout padLayout);
+
     Ui::MainWindow *ui;
 
     OptionHolder options;

@@ -22,6 +22,11 @@ void MantaThread::Setup(OptionHolder *options)
     manta = new RtMidiManager(options);
 }
 
+void MantaThread::ReloadLEDS()
+{
+    manta->ResetLEDS();
+}
+
 void MantaThread::run()
 {
     forever
