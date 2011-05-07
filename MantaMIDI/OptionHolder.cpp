@@ -119,20 +119,98 @@ void OptionHolder::SetSlider(int slider, unsigned char channel, unsigned char no
 }
 
 /* Buttons */
-ButtonMode OptionHolder::GetButton_Mode() { return m_buttonMode; }
-void OptionHolder::SetButton_Mode(ButtonMode mode) { m_buttonMode = mode; }
-unsigned char OptionHolder::GetButton_EventChannel(int button) { return m_buttonEventChannel[button]; }
-unsigned char OptionHolder::GetButton_Midi(int button) { return m_buttonMidi[button]; }
-Manta::LEDState OptionHolder::GetButton_InactiveColor(int button) { return m_inactiveButtonColor[button]; }
-Manta::LEDState OptionHolder::GetButton_OnColor(int button) { return m_onButtonColor[button]; }
-Manta::LEDState OptionHolder::GetButton_OffColor(int button) { return m_offButtonColor[button]; }
-void OptionHolder::SetButton(int button, unsigned char channel, unsigned char key, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor)
+bool OptionHolder::IsValidButtonIndex(int button) { return button >= 0 && button < numButtons; }
+ButtonMode OptionHolder::GetButton_Mode(int button)
 {
-    m_buttonEventChannel[button] = channel;
-    m_buttonMidi[button] = key;
-    m_onButtonColor[button] = onColor;
-    m_offButtonColor[button] = offColor;
-    m_inactiveButtonColor[button] = inactiveColor;
+    if ( IsValidButtonIndex(button) )
+        return m_buttonMode[button];
+    else
+        return bmNote;
+}
+
+void OptionHolder::SetButton_Mode(int button, ButtonMode mode)
+{
+    if ( IsValidButtonIndex(button) )
+        m_buttonMode[button] = mode;
+}
+
+unsigned char OptionHolder::GetButton_EventChannel(int button)
+{
+    if ( IsValidButtonIndex(button) )
+        return m_buttonEventChannel[button];
+    else
+        return 0;
+}
+void OptionHolder::SetButton_Channel(int button, unsigned char channel)
+{
+    if ( IsValidButtonIndex(button) && channel < 16)
+        m_buttonEventChannel[button] = channel;
+}
+
+unsigned char OptionHolder::GetButton_Midi(int button)
+{
+    if (IsValidButtonIndex(button))
+        return m_buttonMidi[button];
+    else
+        return 0;
+}
+void OptionHolder::SetButton_Midi(int button, char midi)
+{
+    if ( IsValidButtonIndex(button) < numButtons)
+        m_buttonMidi[button] = midi;
+}
+
+Manta::LEDState OptionHolder::GetButton_OnColor(int button)
+{
+    if ( IsValidButtonIndex(button) )
+        return m_onButtonColor[button];
+    else
+        return Manta::Off;
+}
+Manta::LEDState OptionHolder::GetButton_OffColor(int button)
+{
+    if ( IsValidButtonIndex(button) )
+        return m_offButtonColor[button];
+    else
+        return Manta::Off;
+}
+Manta::LEDState OptionHolder::GetButton_InactiveColor(int button)
+{
+    if ( IsValidButtonIndex(button) )
+        return m_inactiveButtonColor[button];
+    else
+        return Manta::Off;
+}
+
+void OptionHolder::SetButton_OnColor(int button, Manta::LEDState color)
+{
+    if ( IsValidButtonIndex(button) )
+        m_onButtonColor[button] = color;
+}
+
+void OptionHolder::SetButton_OffColor(int button, Manta::LEDState color)
+{
+    if ( IsValidButtonIndex(button) )
+        m_offButtonColor[button] = color;
+}
+
+void OptionHolder::SetButton_InactiveColor(int button, Manta::LEDState color)
+{
+    if ( IsValidButtonIndex(button) )
+        m_inactiveButtonColor[button] = color;
+}
+
+void OptionHolder::SetButton(int button, unsigned char channel, unsigned char key, ButtonMode mode, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor)
+{
+    if ( IsValidButtonIndex(button) )
+    {
+        m_buttonMode[button] = mode;
+        m_buttonEventChannel[button] = channel;
+        m_buttonMidi[button] = key;
+        m_onButtonColor[button] = onColor;
+        m_offButtonColor[button] = offColor;
+        m_inactiveButtonColor[button] = inactiveColor;
+    }
 }
 
 void OptionHolder::PrintOptionStatus()
@@ -174,11 +252,10 @@ void OptionHolder::Reset()
     SetSlider(0, 1, 20, smContinuous);
     SetSlider(1, 1, 20, smContinuous);
 
-    SetButton_Mode(bmDefault);
-    SetButton(0, 2, 102, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(1, 2, 103, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(2, 2, 104, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(3, 2, 105, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(0, 2, 102, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(1, 2, 103, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(2, 2, 104, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(3, 2, 105, bmNote, Manta::Red, Manta::Off, Manta::Off);
 }
 
 void OptionHolder::SetPad_Layout(PadLayout layout)

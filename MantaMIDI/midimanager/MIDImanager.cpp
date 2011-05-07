@@ -24,6 +24,14 @@ void MidiManager::Initialize()
     SetLEDControl(Manta::PadAndButton, true);
     //SetLEDControl(Manta::Slider, true);
 
+    for(int i = 0; i < MANTA_BUTTONS; ++i)
+    {
+        if (-1 == (char)m_options->GetButton_Midi(i))
+            SetButtonLED(m_options->GetButton_InactiveColor(i), i);
+        else
+            SetButtonLED(m_options->GetButton_OffColor(i), i);
+    }
+
     for(int i = 0; i < MANTA_PADS; ++i)
     {
         if (-1 == (char)m_options->GetPad_Midi(i))

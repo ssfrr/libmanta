@@ -149,7 +149,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBox_2">
+       <widget class="QSpinBox" name="button1Channel">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -159,21 +159,21 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QRadioButton" name="radioButton">
+       <widget class="QRadioButton" name="button1type_conrol">
         <property name="text">
          <string>Control</string>
         </property>
        </widget>
       </item>
       <item row="1" column="4">
-       <widget class="QRadioButton" name="radioButton_2">
+       <widget class="QRadioButton" name="button1type_note">
         <property name="text">
          <string>Note</string>
         </property>
        </widget>
       </item>
       <item row="1" column="5">
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="button1color_on">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -192,7 +192,7 @@
        </widget>
       </item>
       <item row="1" column="6">
-       <widget class="QComboBox" name="comboBox_2">
+       <widget class="QComboBox" name="button1color_off">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -211,7 +211,7 @@
        </widget>
       </item>
       <item row="1" column="7">
-       <widget class="QComboBox" name="comboBox_3">
+       <widget class="QComboBox" name="button1color_inactive">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -240,7 +240,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox_4">
+       <widget class="QSpinBox" name="button2Channel">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -250,9 +250,12 @@
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QSpinBox" name="spinBox_8">
+       <widget class="QSpinBox" name="button2Note">
+        <property name="toolTip">
+         <string extracomment="Midi Value for Note, Controller Number for Control. 1 - 128, 0 to disable."/>
+        </property>
         <property name="minimum">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="maximum">
          <number>128</number>
@@ -263,21 +266,21 @@
        </widget>
       </item>
       <item row="2" column="3">
-       <widget class="QRadioButton" name="radioButton_3">
+       <widget class="QRadioButton" name="button2type_control">
         <property name="text">
          <string>Control</string>
         </property>
        </widget>
       </item>
       <item row="2" column="4">
-       <widget class="QRadioButton" name="radioButton_4">
+       <widget class="QRadioButton" name="button2type_note">
         <property name="text">
          <string>Note</string>
         </property>
        </widget>
       </item>
       <item row="2" column="5">
-       <widget class="QComboBox" name="comboBox_4">
+       <widget class="QComboBox" name="button2color_on">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -296,7 +299,7 @@
        </widget>
       </item>
       <item row="2" column="7">
-       <widget class="QComboBox" name="comboBox_6">
+       <widget class="QComboBox" name="button2color_inactive">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -325,7 +328,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="spinBox_5">
+       <widget class="QSpinBox" name="button3Channel">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -335,9 +338,12 @@
        </widget>
       </item>
       <item row="3" column="2">
-       <widget class="QSpinBox" name="spinBox_9">
+       <widget class="QSpinBox" name="button3Note">
+        <property name="toolTip">
+         <string extracomment="Midi Value for Note, Controller Number for Control. 1 - 128, 0 to disable."/>
+        </property>
         <property name="minimum">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="maximum">
          <number>128</number>
@@ -348,21 +354,21 @@
        </widget>
       </item>
       <item row="3" column="3">
-       <widget class="QRadioButton" name="radioButton_11">
+       <widget class="QRadioButton" name="button3type_control">
         <property name="text">
          <string>Control</string>
         </property>
        </widget>
       </item>
       <item row="3" column="4">
-       <widget class="QRadioButton" name="radioButton_5">
+       <widget class="QRadioButton" name="button3type_note">
         <property name="text">
          <string>Note</string>
         </property>
        </widget>
       </item>
       <item row="3" column="5">
-       <widget class="QComboBox" name="comboBox_7">
+       <widget class="QComboBox" name="button3color_on">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -381,7 +387,7 @@
        </widget>
       </item>
       <item row="3" column="6">
-       <widget class="QComboBox" name="comboBox_9">
+       <widget class="QComboBox" name="button3color_off">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -400,7 +406,7 @@
        </widget>
       </item>
       <item row="3" column="7">
-       <widget class="QComboBox" name="comboBox_8">
+       <widget class="QComboBox" name="button3color_inactive">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -429,7 +435,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QSpinBox" name="spinBox_6">
+       <widget class="QSpinBox" name="button4Channel">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -439,9 +445,12 @@
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="QSpinBox" name="spinBox_10">
+       <widget class="QSpinBox" name="button4Note">
+        <property name="toolTip">
+         <string extracomment="Midi Value for Note, Controller Number for Control. 1 - 128, 0 to disable."/>
+        </property>
         <property name="minimum">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="maximum">
          <number>128</number>
@@ -452,21 +461,21 @@
        </widget>
       </item>
       <item row="4" column="3">
-       <widget class="QRadioButton" name="radioButton_13">
+       <widget class="QRadioButton" name="butotn4type_control">
         <property name="text">
          <string>Control</string>
         </property>
        </widget>
       </item>
       <item row="4" column="4">
-       <widget class="QRadioButton" name="radioButton_12">
+       <widget class="QRadioButton" name="button4type_note">
         <property name="text">
          <string>Note</string>
         </property>
        </widget>
       </item>
       <item row="4" column="5">
-       <widget class="QComboBox" name="comboBox_12">
+       <widget class="QComboBox" name="button4color_on">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -485,7 +494,7 @@
        </widget>
       </item>
       <item row="4" column="6">
-       <widget class="QComboBox" name="comboBox_11">
+       <widget class="QComboBox" name="button4color_off">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -504,7 +513,7 @@
        </widget>
       </item>
       <item row="4" column="7">
-       <widget class="QComboBox" name="comboBox_10">
+       <widget class="QComboBox" name="button4color_inactive">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -523,7 +532,7 @@
        </widget>
       </item>
       <item row="2" column="6">
-       <widget class="QComboBox" name="comboBox_5">
+       <widget class="QComboBox" name="button2color_off">
         <item>
          <property name="text">
           <string extracomment="LEDs Off">Off</string>
@@ -542,9 +551,12 @@
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QSpinBox" name="spinBox_7">
+       <widget class="QSpinBox" name="button1Note">
+        <property name="toolTip">
+         <string extracomment="Midi Value for Note, Controller Number for Control. 1 - 128, 0 to disable."/>
+        </property>
         <property name="minimum">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="maximum">
          <number>128</number>

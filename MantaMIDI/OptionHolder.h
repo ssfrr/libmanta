@@ -30,7 +30,8 @@ enum SliderMode
 
 enum ButtonMode
   {
-    bmDefault = 0
+    bmNote = 0,
+    bmController = 1
   };
 
 class OptionHolder
@@ -71,14 +72,20 @@ class OptionHolder
     void SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode);
 
     /* Buttons */
-    ButtonMode GetButton_Mode();
-    void SetButton_Mode(ButtonMode mode);
+    bool IsValidButtonIndex(int button);
+    ButtonMode GetButton_Mode(int button);
+    void SetButton_Mode(int button, ButtonMode mode);
     unsigned char GetButton_EventChannel(int button);
+    void SetButton_Channel(int button, unsigned char channel);
     unsigned char GetButton_Midi(int button);
-    Manta::LEDState GetButton_InactiveColor(int button);
+    void SetButton_Midi(int button, char midi);
     Manta::LEDState GetButton_OnColor(int button);
     Manta::LEDState GetButton_OffColor(int button);
-    void SetButton(int button, unsigned char channel, unsigned char key, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor);
+    Manta::LEDState GetButton_InactiveColor(int button);
+    void SetButton_OnColor(int button, Manta::LEDState color);
+    void SetButton_OffColor(int button, Manta::LEDState color);
+    void SetButton_InactiveColor(int button, Manta::LEDState color);
+    void SetButton(int button, unsigned char channel, unsigned char key, ButtonMode mode, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor);
 
     void PrintOptionStatus();
     void Reset();
@@ -114,9 +121,9 @@ class OptionHolder
 
     /* button */
     const static int numButtons = 4;
-    ButtonMode m_buttonMode;
+    ButtonMode m_buttonMode[numButtons];
     unsigned char m_buttonEventChannel[numButtons];
-    unsigned char m_buttonMidi[numButtons];
+    char m_buttonMidi[numButtons];
     Manta::LEDState m_inactiveButtonColor[numButtons];
     Manta::LEDState m_onButtonColor[numButtons];
     Manta::LEDState m_offButtonColor[numButtons];

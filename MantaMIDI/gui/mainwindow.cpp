@@ -49,8 +49,6 @@ void MainWindow::WriteDebugMessage(const QString &text)
 void MainWindow::UpdateLayout(PadLayout padLayout)
 {
     options.SetPad_Layout(padLayout);
-    int index = ui->padLayoutGroup->checkedId();
-    ui->statusBar->showMessage(QString("Button ID: %1").arg(index), 1000);
     thread.ReloadLEDS();
 }
 
@@ -76,4 +74,160 @@ void MainWindow::on_layoutRB_Chromatic_clicked()
 
 void MainWindow::on_layoutRB_Custom_clicked()
 {
+}
+
+void MainWindow::on_button1Channel_valueChanged(int value)
+{
+    options.SetButton_Channel(0, value - 1);
+}
+
+void MainWindow::on_button2Channel_valueChanged(int value)
+{
+    options.SetButton_Channel(1, value - 1);
+}
+
+void MainWindow::on_button3Channel_valueChanged(int value)
+{
+    options.SetButton_Channel(2, value - 1);
+}
+
+void MainWindow::on_button4Channel_valueChanged(int value)
+{
+    options.SetButton_Channel(3, value - 1);
+}
+
+void MainWindow::on_button1Note_valueChanged(int value)
+{
+    options.SetButton_Midi(0, (char)value - 1);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button2Note_valueChanged(int value)
+{
+    options.SetButton_Midi(1, (char)value - 1);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button3Note_valueChanged(int value)
+{
+    options.SetButton_Midi(2, (char)value - 1);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button4Note_valueChanged(int value)
+{
+    options.SetButton_Midi(3, (char)value - 1);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button1type_conrol_clicked()
+{
+    options.SetButton_Mode(0, bmController);
+}
+
+void MainWindow::on_button1type_note_clicked()
+{
+    options.SetButton_Mode(0, bmNote);
+}
+
+void MainWindow::on_button2type_control_clicked()
+{
+    options.SetButton_Mode(1, bmController);
+}
+
+void MainWindow::on_button2type_note_clicked()
+{
+    options.SetButton_Mode(1, bmNote);
+}
+
+void MainWindow::on_button3type_control_clicked()
+{
+    options.SetButton_Mode(2, bmController);
+}
+
+void MainWindow::on_button3type_note_clicked()
+{
+    options.SetButton_Mode(2, bmNote);
+}
+
+void MainWindow::on_butotn4type_control_clicked()
+{
+    options.SetButton_Mode(3, bmController);
+}
+
+void MainWindow::on_button4type_note_clicked()
+{
+    options.SetButton_Mode(3, bmNote);
+}
+
+void MainWindow::on_button1color_on_currentIndexChanged(int index)
+{
+    options.SetButton_OnColor(0, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button1color_off_currentIndexChanged(int index)
+{
+    options.SetButton_OffColor(0, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button1color_inactive_currentIndexChanged(int index)
+{
+    options.SetButton_InactiveColor(0, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button2color_on_currentIndexChanged(int index)
+{
+    options.SetButton_OnColor(1, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button2color_off_currentIndexChanged(int index)
+{
+    options.SetButton_OffColor(1, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button2color_inactive_currentIndexChanged(int index)
+{
+    options.SetButton_InactiveColor(1, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button3color_on_currentIndexChanged(int index)
+{
+    options.SetButton_OnColor(2, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button3color_off_currentIndexChanged(int index)
+{
+    options.SetButton_OffColor(2, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button3color_inactive_currentIndexChanged(int index)
+{
+    options.SetButton_InactiveColor(2, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button4color_on_currentIndexChanged(int index)
+{
+    options.SetButton_OnColor(3, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button4color_off_currentIndexChanged(int index)
+{
+    options.SetButton_OffColor(3, (Manta::LEDState)index);
+    thread.ReloadLEDS();
+}
+
+void MainWindow::on_button4color_inactive_currentIndexChanged(int index)
+{
+    options.SetButton_InactiveColor(3, (Manta::LEDState)index);
+    thread.ReloadLEDS();
 }
