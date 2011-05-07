@@ -76,6 +76,21 @@ void MainWindow::on_layoutRB_Custom_clicked()
 {
 }
 
+void MainWindow::on_padAftertouch_Monophonic_clicked()
+{
+    options.SetPad_Mode(pvmMonoAftertouch);
+}
+
+void MainWindow::on_padAftertouch_Polyphonic_clicked()
+{
+    options.SetPad_Mode(pvmPolyAftertouch);
+}
+
+void MainWindow::on_padAftertouch_PolyphonicController_clicked()
+{
+    options.SetPad_Mode(pvmPolyContinuous);
+}
+
 void MainWindow::on_button1Channel_valueChanged(int value)
 {
     options.SetButton_Channel(0, value - 1);
@@ -230,4 +245,44 @@ void MainWindow::on_button4color_inactive_currentIndexChanged(int index)
 {
     options.SetButton_InactiveColor(3, (Manta::LEDState)index);
     thread.ReloadLEDS();
+}
+
+void MainWindow::on_slider1channel_valueChanged(int value)
+{
+    options.SetSlider_Channel(0, value);
+}
+
+void MainWindow::on_slider2channel_valueChanged(int value)
+{
+    options.SetSlider_Channel(1, value);
+}
+
+void MainWindow::on_slider1ccnum_valueChanged(int value)
+{
+    options.SetSlider_Midi(0, value);
+}
+
+void MainWindow::on_slider2ccnum_valueChanged(int value)
+{
+    options.SetSlider_Midi(1, value);
+}
+
+void MainWindow::on_slider1mode_conroller_clicked()
+{
+    options.SetSlider_Mode(0, smContinuous);
+}
+
+void MainWindow::on_slider1mode_pitchbend_clicked()
+{
+    options.SetSlider_Mode(0, smPitchBend);
+}
+
+void MainWindow::on_slider2mode_controller_clicked()
+{
+    options.SetSlider_Mode(1, smContinuous);
+}
+
+void MainWindow::on_slider2mode_pitchbend_clicked()
+{
+    options.SetSlider_Mode(1, smPitchBend);
 }

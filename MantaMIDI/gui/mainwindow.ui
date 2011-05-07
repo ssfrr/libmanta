@@ -574,14 +574,14 @@
      <rect>
       <x>10</x>
       <y>270</y>
-      <width>570</width>
+      <width>411</width>
       <height>160</height>
      </rect>
     </property>
     <property name="title">
      <string>Slider Controls</string>
     </property>
-    <widget class="QSpinBox" name="spinBox">
+    <widget class="QSpinBox" name="slider1channel">
      <property name="geometry">
       <rect>
        <x>29</x>
@@ -648,8 +648,8 @@
     <widget class="QLabel" name="label_31">
      <property name="geometry">
       <rect>
-       <x>350</x>
-       <y>32</y>
+       <x>280</x>
+       <y>30</y>
        <width>19</width>
        <height>16</height>
       </rect>
@@ -664,8 +664,8 @@
     <widget class="QLabel" name="label_32">
      <property name="geometry">
       <rect>
-       <x>430</x>
-       <y>31</y>
+       <x>350</x>
+       <y>30</y>
        <width>21</width>
        <height>16</height>
       </rect>
@@ -675,22 +675,6 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_33">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>30</y>
-       <width>49</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Inactive</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_8">
@@ -709,7 +693,7 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinBox_11">
+    <widget class="QSpinBox" name="slider1ccnum">
      <property name="geometry">
       <rect>
        <x>80</x>
@@ -719,7 +703,7 @@
       </rect>
      </property>
      <property name="minimum">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="maximum">
       <number>128</number>
@@ -728,34 +712,9 @@
     <widget class="QComboBox" name="comboBox_26">
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>250</x>
        <y>64</y>
        <width>70</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string extracomment="LEDs Off">Off</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Amber">Amber</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Red">Red</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QComboBox" name="comboBox_27">
-     <property name="geometry">
-      <rect>
-       <x>490</x>
-       <y>64</y>
-       <width>69</width>
        <height>26</height>
       </rect>
      </property>
@@ -794,8 +753,8 @@
     <widget class="QComboBox" name="comboBox_28">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>114</y>
+       <x>250</x>
+       <y>110</y>
        <width>70</width>
        <height>26</height>
       </rect>
@@ -816,7 +775,7 @@
       </property>
      </item>
     </widget>
-    <widget class="QSpinBox" name="spinBox_20">
+    <widget class="QSpinBox" name="slider2ccnum">
      <property name="geometry">
       <rect>
        <x>80</x>
@@ -826,13 +785,13 @@
       </rect>
      </property>
      <property name="minimum">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="maximum">
       <number>128</number>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinBox_21">
+    <widget class="QSpinBox" name="slider2channel">
      <property name="geometry">
       <rect>
        <x>29</x>
@@ -851,7 +810,7 @@
     <widget class="QComboBox" name="comboBox_29">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>330</x>
        <y>64</y>
        <width>69</width>
        <height>26</height>
@@ -884,45 +843,20 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QRadioButton" name="radioButton_24">
+       <widget class="QRadioButton" name="slider2mode_controller">
         <property name="text">
          <string>Continuous</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_25">
+       <widget class="QRadioButton" name="slider2mode_pitchbend">
         <property name="text">
          <string>Pitchbend</string>
         </property>
        </widget>
       </item>
      </layout>
-    </widget>
-    <widget class="QComboBox" name="comboBox_30">
-     <property name="geometry">
-      <rect>
-       <x>490</x>
-       <y>114</y>
-       <width>70</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string extracomment="LEDs Off">Off</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Amber">Amber</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Red">Red</string>
-      </property>
-     </item>
     </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
@@ -935,14 +869,14 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QRadioButton" name="radioButton_6">
+       <widget class="QRadioButton" name="slider1mode_conroller">
         <property name="text">
          <string>Continuous</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_7">
+       <widget class="QRadioButton" name="slider1mode_pitchbend">
         <property name="text">
          <string>Pitchbend</string>
         </property>
@@ -953,8 +887,8 @@
     <widget class="QComboBox" name="comboBox_37">
      <property name="geometry">
       <rect>
-       <x>410</x>
-       <y>114</y>
+       <x>330</x>
+       <y>110</y>
        <width>70</width>
        <height>26</height>
       </rect>
@@ -981,7 +915,7 @@
      <rect>
       <x>10</x>
       <y>430</y>
-      <width>571</width>
+      <width>411</width>
       <height>201</height>
      </rect>
     </property>
@@ -1099,14 +1033,14 @@
       <rect>
        <x>180</x>
        <y>20</y>
-       <width>211</width>
-       <height>161</height>
+       <width>191</width>
+       <height>91</height>
       </rect>
      </property>
      <property name="title">
       <string>Aftertouch Mode</string>
      </property>
-     <widget class="QRadioButton" name="radioButton_8">
+     <widget class="QRadioButton" name="padAftertouch_Monophonic">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1119,7 +1053,7 @@
        <string>Monophonic Aftertouch</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="radioButton_9">
+     <widget class="QRadioButton" name="padAftertouch_Polyphonic">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1132,7 +1066,7 @@
        <string>Polyphonic Aftertouch</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="radioButton_10">
+     <widget class="QRadioButton" name="padAftertouch_PolyphonicController">
       <property name="geometry">
        <rect>
         <x>10</x>

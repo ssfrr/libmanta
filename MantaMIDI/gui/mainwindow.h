@@ -31,6 +31,10 @@ private slots:
     void on_layoutRB_Chromatic_clicked();
     void on_layoutRB_Custom_clicked();
 
+    void on_padAftertouch_Monophonic_clicked();
+    void on_padAftertouch_Polyphonic_clicked();
+    void on_padAftertouch_PolyphonicController_clicked();
+
     void on_button1Channel_valueChanged(int );
     void on_button2Channel_valueChanged(int );
     void on_button3Channel_valueChanged(int );
@@ -62,6 +66,22 @@ private slots:
     void on_button4color_on_currentIndexChanged(int index);
     void on_button4color_off_currentIndexChanged(int index);
     void on_button4color_inactive_currentIndexChanged(int index);
+
+    void on_slider1channel_valueChanged(int );
+
+    void on_slider1ccnum_valueChanged(int );
+
+    void on_slider2channel_valueChanged(int );
+
+    void on_slider2ccnum_valueChanged(int );
+
+    void on_slider1mode_conroller_clicked();
+
+    void on_slider1mode_pitchbend_clicked();
+
+    void on_slider2mode_controller_clicked();
+
+    void on_slider2mode_pitchbend_clicked();
 
 private:
     void UpdateLayout(PadLayout padLayout);

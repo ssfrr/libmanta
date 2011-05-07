@@ -66,7 +66,7 @@ void OptionHolder::SetUseVelocity(bool bUseVelocity) { m_bUseVelocity = bUseVelo
 
 /* Pads */
 unsigned char OptionHolder::GetPad_EventChannel(int pad) {return m_padEventChannel[pad]; }
-unsigned char OptionHolder::GetPad_Midi(int pad) { return m_basePadMidi[pad]; }
+char OptionHolder::GetPad_Midi(int pad) { return m_basePadMidi[pad]; }
 unsigned char OptionHolder::GetPad_LEDChannel(int pad) { return m_padLEDChannel[pad]; }
 unsigned char OptionHolder::GetPad_AmberLEDMidi(int pad) { return m_AmberLEDMidi[pad]; }
 unsigned char OptionHolder::GetPad_RedLEDMidi(int pad) { return m_RedLEDMidi[pad]; }
@@ -75,6 +75,10 @@ Manta::LEDState OptionHolder::GetPad_OnColor(int pad) { return m_onPadColor[pad]
 Manta::LEDState OptionHolder::GetPad_OffColor(int pad) { return m_offPadColor[pad]; }
 PadLayout OptionHolder::GetPad_Layout() { return m_padLayout; }
 PadValMode OptionHolder::GetPad_Mode() { return m_padMode; }
+void OptionHolder::SetPad_Mode(PadValMode mode)
+{
+    m_padMode = mode;
+}
 
 void OptionHolder::SetPad(int pad, unsigned char channel, unsigned char note)
 {
@@ -108,9 +112,46 @@ void OptionHolder::SetAllPadInactiveColor(Manta::LEDState inactiveColor)
 }
 
 /* Sliders */
-unsigned char OptionHolder::GetSlider_EventChannel(int slider) { return m_slider_EventChannel[slider]; }
-unsigned char OptionHolder::GetSlider_MidiNote(int slider) { return m_slider_MidiNote[slider]; }
-SliderMode OptionHolder::GetSlider_Mode(int slider) { return m_slider_Mode[slider]; }
+bool OptionHolder::IsValidSliderIndex(int slider) { return slider == 0 || slider == 1; }
+unsigned char OptionHolder::GetSlider_EventChannel(int slider)
+{
+    if ( IsValidSliderIndex(slider))
+        return m_slider_EventChannel[slider];
+    else
+        return 0;
+}
+void OptionHolder::SetSlider_Channel(int slider, unsigned char channel)
+{
+    if ( IsValidSliderIndex(slider) )
+        m_slider_EventChannel[slider] = channel;
+}
+
+char OptionHolder::GetSlider_MidiNote(int slider)
+{
+    if ( IsValidSliderIndex(slider) )
+        return m_slider_MidiNote[slider];
+    else
+        return -1;
+}
+void OptionHolder::SetSlider_Midi(int slider, char midi)
+{
+    if ( IsValidSliderIndex(slider) )
+        m_slider_MidiNote[slider] = midi;
+}
+
+SliderMode OptionHolder::GetSlider_Mode(int slider)
+{
+    if ( IsValidSliderIndex(slider) )
+        return m_slider_Mode[slider];
+    else
+        return smContinuous;
+}
+void OptionHolder::SetSlider_Mode(int slider, SliderMode mode)
+{
+    if ( IsValidSliderIndex(slider) )
+        m_slider_Mode[slider] = mode;
+}
+
 void OptionHolder::SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode)
 {
     m_slider_EventChannel[slider] = channel;
@@ -147,7 +188,7 @@ void OptionHolder::SetButton_Channel(int button, unsigned char channel)
         m_buttonEventChannel[button] = channel;
 }
 
-unsigned char OptionHolder::GetButton_Midi(int button)
+char OptionHolder::GetButton_Midi(int button)
 {
     if (IsValidButtonIndex(button))
         return m_buttonMidi[button];

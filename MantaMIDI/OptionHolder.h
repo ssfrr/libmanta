@@ -49,7 +49,7 @@ class OptionHolder
 
     /* Pads */
     unsigned char GetPad_EventChannel(int pad);
-    unsigned char GetPad_Midi(int pad);
+    char GetPad_Midi(int pad);
     unsigned char GetPad_LEDChannel(int pad);
     unsigned char GetPad_AmberLEDMidi(int pad);
     unsigned char GetPad_RedLEDMidi(int pad);
@@ -59,6 +59,7 @@ class OptionHolder
     PadLayout GetPad_Layout();
     void SetPad_Layout(PadLayout layout);
     PadValMode GetPad_Mode();
+    void SetPad_Mode(PadValMode mode);
     void SetPad(int pad, unsigned char channel, unsigned char note);
     void SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote);
     void SetAllPadOnColor(Manta::LEDState onColor);
@@ -66,9 +67,13 @@ class OptionHolder
     void SetAllPadInactiveColor(Manta::LEDState inactiveColor);
 
     /* Sliders */
+    bool IsValidSliderIndex(int slider);
     unsigned char GetSlider_EventChannel(int slider);
-    unsigned char GetSlider_MidiNote(int slider);
+    void SetSlider_Channel(int slider, unsigned char channel);
+    char GetSlider_MidiNote(int slider);
+    void SetSlider_Midi(int slider, char midi);
     SliderMode GetSlider_Mode(int slider);
+    void SetSlider_Mode(int slider, SliderMode mode);
     void SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode);
 
     /* Buttons */
@@ -77,7 +82,7 @@ class OptionHolder
     void SetButton_Mode(int button, ButtonMode mode);
     unsigned char GetButton_EventChannel(int button);
     void SetButton_Channel(int button, unsigned char channel);
-    unsigned char GetButton_Midi(int button);
+    char GetButton_Midi(int button);
     void SetButton_Midi(int button, char midi);
     Manta::LEDState GetButton_OnColor(int button);
     Manta::LEDState GetButton_OffColor(int button);
