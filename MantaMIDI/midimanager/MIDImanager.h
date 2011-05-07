@@ -5,7 +5,6 @@
 #include "../../core/MantaExceptions.h"
 #include <stdint.h>
 
-#define MANTA_PAD_ROWS  6
 #define MANTA_PADS      48
 #define MANTA_SLIDERPOS 127
 #define MANTA_BUTTONS   4
@@ -57,12 +56,6 @@ class MidiManager : public Manta
 
   void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value);
 
-  void InitializeMapValues();
-  void AssignPianoLayout();
-  void AssignChromaticLayout();
-  void AssignHoneycombLayout();
-  void AssignHaydenDuetLayout();
-
   int TranslatePadValueToMIDI(int padValue);
   int TranslateSliderValueToCC(int sliderValue);
 
@@ -83,10 +76,6 @@ class MidiManager : public Manta
   void PushAftertouch(int key);
   void PopAftertouch(int key);
   bool IsCurrentPadMaximum(int noteNum, int value);
-  
-  int m_padToNoteMap[MANTA_PADS];
-  int m_sliderToNoteMap[MANTA_SLIDERPOS];
-  int m_buttonToNoteMap[MANTA_BUTTONS];
 
   MidiNote m_padNotes[MAX_MIDI_NOTES];
   MidiNote m_buttonNotes[MAX_MIDI_NOTES];

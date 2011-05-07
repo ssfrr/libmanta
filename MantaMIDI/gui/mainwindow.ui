@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>587</width>
-    <height>720</height>
+    <height>688</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -912,12 +912,12 @@
       </property>
      </item>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>140</x>
        <y>60</y>
-       <width>91</width>
+       <width>99</width>
        <height>39</height>
       </rect>
      </property>
@@ -1149,6 +1149,16 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="debugOutput">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>0</y>
+      <width>231</width>
+      <height>78</height>
+     </rect>
     </property>
    </widget>
   </widget>

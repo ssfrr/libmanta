@@ -23,6 +23,7 @@ private slots:
 
     void DisplayConnectionMessage(const QString &text);
     void DisplayStatusMessage(const QString &text);
+    void WriteDebugMessage(const QString &text);
 
     void on_layoutRB_HaydenDuet_clicked();
     void on_layoutRB_Honeycomb_clicked();

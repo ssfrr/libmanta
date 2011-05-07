@@ -41,14 +41,18 @@ void MainWindow::DisplayStatusMessage(const QString &text)
     ui->statusBar->showMessage(text, 1000);
 }
 
+void MainWindow::WriteDebugMessage(const QString &text)
+{
+    ui->debugOutput->append(text);
+}
+
 void MainWindow::UpdateLayout(PadLayout padLayout)
 {
-    options.SetPadLayout(padLayout);
+    options.SetPad_Layout(padLayout);
     int index = ui->padLayoutGroup->checkedId();
     ui->statusBar->showMessage(QString("Button ID: %1").arg(index), 1000);
     thread.ReloadLEDS();
 }
-
 
 void MainWindow::on_layoutRB_HaydenDuet_clicked()
 {
