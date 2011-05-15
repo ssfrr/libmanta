@@ -61,25 +61,25 @@
 #X obj 189 96 r \$0-continuous;
 #X obj 208 167 r \$0-slider;
 #X obj 48 331 s \$0-padframe;
-#N canvas 216 308 571 575 LED_Examples 0;
+#N canvas 216 308 676 575 LED_Examples 0;
 #X msg 51 33 amber;
 #X msg 58 55 red;
 #X msg 64 77 off;
 #X obj 51 102 symbol;
 #X obj 51 148 s \$0-leds;
 #X msg 51 126 pad \$1 20;
-#X msg 208 37 amber;
-#X msg 215 59 red;
-#X msg 221 81 off;
-#X obj 208 106 symbol;
-#X obj 208 152 s \$0-leds;
-#X msg 208 130 row \$1 3 255;
-#X msg 386 33 amber;
-#X msg 393 55 red;
-#X msg 399 77 off;
-#X obj 386 102 symbol;
-#X obj 370 155 s \$0-leds;
-#X msg 370 133 column \$1 3 255;
+#X msg 258 37 amber;
+#X msg 265 59 red;
+#X msg 271 81 off;
+#X obj 258 106 symbol;
+#X obj 258 152 s \$0-leds;
+#X msg 258 130 row \$1 3 255;
+#X msg 496 33 amber;
+#X msg 503 55 red;
+#X msg 509 77 off;
+#X obj 496 102 symbol;
+#X obj 480 155 s \$0-leds;
+#X msg 480 133 column \$1 3 255;
 #X msg 55 244 amber;
 #X msg 62 266 red;
 #X msg 68 288 off;
@@ -87,40 +87,42 @@
 #X obj 55 359 s \$0-leds;
 #X text 33 380 Set a button LED;
 #X text 27 171 Set a single pad LED;
-#X text 186 173 Set a row of pad LEDs;
-#X text 348 176 Set a column of pads LEDs;
+#X text 236 173 Set a row of pad LEDs;
+#X text 458 176 Set a column of pads LEDs;
 #X msg 55 337 button \$1 3;
-#X obj 217 355 s \$0-leds;
-#X obj 27 441 tgl 45 0 empty empty empty 17 7 0 10 -4034 -1 -1 1 1
-;
-#X obj 337 442 tgl 45 0 empty empty empty 17 7 0 10 -4034 -1 -1 0 1
-;
+#X obj 267 355 s \$0-leds;
+#X obj 27 441 tgl 45 0 empty empty Pad_And_Button_LED_Control -20 -8
+0 10 -4034 -1 -1 0 1;
+#X obj 262 441 tgl 45 0 empty empty Slider_LED_Control -20 -8 0 10
+-4034 -1 -1 0 1;
 #X msg 27 507 ledcontrol padandbutton \$1;
 #X obj 27 527 s \$0-control;
-#X text 353 488 Click to Toggle LED Slider Control;
-#X text 44 487 Click to Toggle LED Pad and Button control;
-#X obj 337 530 s \$0-control;
-#X msg 337 509 ledcontrol slider \$1;
-#X msg 217 333 slider 1 \$1;
-#X obj 220 273 hsl 64 15 -1 7 0 0 empty empty empty -2 -8 0 10 -262144
+#X obj 262 529 s \$0-control;
+#X msg 262 508 ledcontrol slider \$1;
+#X msg 267 333 slider 1 \$1;
+#X obj 270 273 hsl 64 15 -1 7 0 0 empty empty empty -2 -8 0 10 -262144
 -1 -1 0 1;
-#X obj 217 292 int;
-#X floatatom 217 313 5 0 0 0 - - -;
-#X msg 398 268 amber;
-#X msg 411 293 off;
-#X obj 398 318 symbol;
-#X obj 398 364 s \$0-leds;
-#X text 380 387 Set slider LEDs;
-#X text 181 378 Set a single slider LED;
-#X msg 398 342 slidermask \$1 1 255;
-#X obj 355 65 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+#X obj 267 292 int;
+#X floatatom 267 313 5 0 0 0 - - -;
+#X msg 508 268 amber;
+#X msg 521 293 off;
+#X obj 508 318 symbol;
+#X obj 508 364 s \$0-leds;
+#X text 490 387 Set slider LEDs;
+#X text 231 378 Set a single slider LED;
+#X msg 508 342 slidermask \$1 1 255;
+#X obj 465 65 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
 -1 0;
-#X obj 184 57 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+#X obj 234 57 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
 -1 0;
 #X obj 29 56 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
 -1 0;
 #X obj 26 264 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
 -1 0;
+#X obj 443 440 tgl 45 0 empty empty Button_LED_Control -20 -8 0 10
+-4034 -1 -1 0 1;
+#X obj 443 528 s \$0-control;
+#X msg 443 507 ledcontrol button \$1;
 #X connect 0 0 3 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
@@ -142,21 +144,23 @@
 #X connect 21 0 27 0;
 #X connect 27 0 22 0;
 #X connect 29 0 31 0;
-#X connect 30 0 36 0;
+#X connect 30 0 34 0;
 #X connect 31 0 32 0;
-#X connect 36 0 35 0;
-#X connect 37 0 28 0;
-#X connect 38 0 39 0;
-#X connect 39 0 40 0;
-#X connect 40 0 37 0;
-#X connect 41 0 43 0;
-#X connect 42 0 43 0;
-#X connect 43 0 47 0;
-#X connect 47 0 44 0;
-#X connect 48 0 17 0;
-#X connect 49 0 11 0;
-#X connect 50 0 5 0;
-#X connect 51 0 27 0;
+#X connect 34 0 33 0;
+#X connect 35 0 28 0;
+#X connect 36 0 37 0;
+#X connect 37 0 38 0;
+#X connect 38 0 35 0;
+#X connect 39 0 41 0;
+#X connect 40 0 41 0;
+#X connect 41 0 45 0;
+#X connect 45 0 42 0;
+#X connect 46 0 17 0;
+#X connect 47 0 11 0;
+#X connect 48 0 5 0;
+#X connect 49 0 27 0;
+#X connect 50 0 52 0;
+#X connect 52 0 51 0;
 #X restore 183 41 pd LED_Examples;
 #X text 329 39 Open this subpatch for LED Examples;
 #X obj 185 291 list split 4;

@@ -67,7 +67,6 @@ void manta::StartThread()
    Unlock();
 }
 
-/* TODO: other control types */
 void manta::SetLEDControl(t_symbol *control, int state)
 {
    if(control == padAndButtonSymbol)
@@ -77,6 +76,10 @@ void manta::SetLEDControl(t_symbol *control, int state)
    else if(control == sliderSymbol)
    {
       Manta::SetLEDControl(Slider, state);
+   }
+   else if(control == buttonSymbol)
+   {
+      Manta::SetLEDControl(Button, state);
    }
 }
 
