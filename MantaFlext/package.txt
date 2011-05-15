@@ -14,5 +14,4 @@ HDRS= MantaFlext.h \
       MantaFlextMaximum.h \
       ../core/Manta.h \
       ../core/MantaUSB.h
-LIBS+= -lusb-1.0 -lm
 CXXFLAGS += -Wall

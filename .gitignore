@@ -1,4 +1,7 @@
-*/build
+core/build
+MantaOSC/build
+MantaMIDI/build
+tests/build
 tags
 */tags
 *~
