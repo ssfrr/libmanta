@@ -82,10 +82,33 @@ void manta::SetPadLEDColumn(t_symbol *state, int column, int mask)
    Manta::SetPadLEDColumn(parsedState, column, mask);
 }
 
-void manta::SetSliderLED(t_symbol *state, int id, int mask)
+void manta::SetSliderLEDMask(t_symbol *state, int id, int mask)
 {
    LEDState parsedState = ledStateFromSymbol(state);
    Manta::SetSliderLED(parsedState, id, mask);
+}
+
+void manta::SetSliderLEDNum(int id, int ledNum)
+{
+   if(ledNum >= 0 && ledNum < 8)
+   {
+      uint8_t mask = 0x80 >> ledNum;
+      Manta::SetSliderLED(Amber, id, mask);
+      Manta::SetSliderLED(Off, id, ~mask);
+   }
+   else if(ledNum == -1)
+   {
+      Manta::SetSliderLED(Off, id, 0xFF);
+   }
+}
+
+void manta::SetSliderLEDSym(int id, t_symbol *state)
+{
+   if(state == offSymbol)
+   {
+      /* turn all LEDs on that slider off */
+      Manta::SetSliderLED(Off, id, 0xFF);
+   }
 }
 
 void manta::SetButtonLED(t_symbol *state, int id)

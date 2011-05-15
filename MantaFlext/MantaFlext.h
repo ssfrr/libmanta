@@ -21,7 +21,9 @@ class manta:
    void SetPadLEDRow(t_symbol *state, int row, int mask);
    void SetPadLEDColumn(t_symbol *state, int column, int mask);
    //void SetPadLEDFrame(t_symbol *state, int mask[]);
-   void SetSliderLED(t_symbol *state, int id, int mask);
+   void SetSliderLEDMask(t_symbol *state, int id, int mask);
+   void SetSliderLEDNum(int id, int ledNum);
+   void SetSliderLEDSym(int id, t_symbol *state);
    void SetButtonLED(t_symbol *state, int id);
    void SetLEDControl(t_symbol *control, int state);
    /*
@@ -49,7 +51,9 @@ private:
    FLEXT_CALLBACK_2(SetPadLED, t_symptr, int)
    FLEXT_CALLBACK_3(SetPadLEDRow, t_symptr, int, int)
    FLEXT_CALLBACK_3(SetPadLEDColumn, t_symptr, int, int)
-   FLEXT_CALLBACK_3(SetSliderLED, t_symptr, int, int)
+   FLEXT_CALLBACK_3(SetSliderLEDMask, t_symptr, int, int)
+   FLEXT_CALLBACK_2(SetSliderLEDNum, int, int)
+   FLEXT_CALLBACK_2(SetSliderLEDSym, int, t_symptr)
    FLEXT_CALLBACK_2(SetButtonLED, t_symptr, int)
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
 
@@ -62,6 +66,7 @@ private:
    const t_symbol *padSymbol;
    const t_symbol *buttonSymbol;
    const t_symbol *sliderSymbol;
+   const t_symbol *sliderMaskSymbol;
    const t_symbol *amberSymbol;
    const t_symbol *redSymbol;
    const t_symbol *offSymbol;
