@@ -18,13 +18,17 @@ class manta:
    protected:
 	void StartThread();
    void SetPadLED(t_symbol *state, int ledID);
+   void SetPadLEDNum(int state, int ledID);
    void SetPadLEDRow(t_symbol *state, int row, int mask);
+   void SetPadLEDRowNum(int state, int row, int mask);
    void SetPadLEDColumn(t_symbol *state, int column, int mask);
-   //void SetPadLEDFrame(t_symbol *state, int mask[]);
+   void SetPadLEDColumnNum(int state, int column, int mask);
    void SetSliderLEDMask(t_symbol *state, int id, int mask);
+   void SetSliderLEDMaskNum(int state, int id, int mask);
+   void SetSliderLED(int id, t_symbol *state);
    void SetSliderLEDNum(int id, int ledNum);
-   void SetSliderLEDSym(int id, t_symbol *state);
    void SetButtonLED(t_symbol *state, int id);
+   void SetButtonLEDNum(int state, int id);
    void SetLEDControl(t_symbol *control, int state);
    /*
    void Recalibrate(void);
@@ -44,17 +48,23 @@ private:
    void FrameReceived(int8_t *frame);
 
    LEDState ledStateFromSymbol(t_symbol *stateSymbol);
+   LEDState ledStateFromInt(int stateSymbol);
 	// declare threaded callback 
 	// the same syntax as with FLEXT_CALLBACK is used here
 	FLEXT_THREAD(StartThread)
    /* declare message handlers */
    FLEXT_CALLBACK_2(SetPadLED, t_symptr, int)
+   FLEXT_CALLBACK_2(SetPadLEDNum, int, int)
    FLEXT_CALLBACK_3(SetPadLEDRow, t_symptr, int, int)
+   FLEXT_CALLBACK_3(SetPadLEDRowNum, int, int, int)
    FLEXT_CALLBACK_3(SetPadLEDColumn, t_symptr, int, int)
+   FLEXT_CALLBACK_3(SetPadLEDColumnNum, int, int, int)
    FLEXT_CALLBACK_3(SetSliderLEDMask, t_symptr, int, int)
+   FLEXT_CALLBACK_3(SetSliderLEDMaskNum, int, int, int)
+   FLEXT_CALLBACK_2(SetSliderLED, int, t_symptr)
    FLEXT_CALLBACK_2(SetSliderLEDNum, int, int)
-   FLEXT_CALLBACK_2(SetSliderLEDSym, int, t_symptr)
    FLEXT_CALLBACK_2(SetButtonLED, t_symptr, int)
+   FLEXT_CALLBACK_2(SetButtonLEDNum, int, int)
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
 
    int lastSliderValue[2];

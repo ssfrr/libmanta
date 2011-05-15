@@ -17,6 +17,22 @@ manta::LEDState manta::ledStateFromSymbol(t_symbol *stateSymbol)
    }
 }
 
+manta::LEDState manta::ledStateFromInt(int state)
+{
+   if(state == 1)
+   {
+      return Amber;
+   }
+   else if(state == 2)
+   {
+      return Red;
+   }
+   else
+   {
+      return Off;
+   }
+}
+
 void manta::StartThread()
 {
    while(!shouldStop)
@@ -70,9 +86,21 @@ void manta::SetPadLED(t_symbol *state, int ledID)
    Manta::SetPadLED(parsedState, ledID);
 }
 
+void manta::SetPadLEDNum(int state, int ledID)
+{
+   LEDState parsedState = ledStateFromInt(state);
+   Manta::SetPadLED(parsedState, ledID);
+}
+
 void manta::SetPadLEDRow(t_symbol *state, int row, int mask)
 {
    LEDState parsedState = ledStateFromSymbol(state);
+   Manta::SetPadLEDRow(parsedState, row, mask);
+}
+
+void manta::SetPadLEDRowNum(int state, int row, int mask)
+{
+   LEDState parsedState = ledStateFromInt(state);
    Manta::SetPadLEDRow(parsedState, row, mask);
 }
 
@@ -82,10 +110,31 @@ void manta::SetPadLEDColumn(t_symbol *state, int column, int mask)
    Manta::SetPadLEDColumn(parsedState, column, mask);
 }
 
+void manta::SetPadLEDColumnNum(int state, int column, int mask)
+{
+   LEDState parsedState = ledStateFromInt(state);
+   Manta::SetPadLEDColumn(parsedState, column, mask);
+}
+
 void manta::SetSliderLEDMask(t_symbol *state, int id, int mask)
 {
    LEDState parsedState = ledStateFromSymbol(state);
    Manta::SetSliderLED(parsedState, id, mask);
+}
+
+void manta::SetSliderLEDMaskNum(int state, int id, int mask)
+{
+   LEDState parsedState = ledStateFromInt(state);
+   Manta::SetSliderLED(parsedState, id, mask);
+}
+
+void manta::SetSliderLED(int id, t_symbol *state)
+{
+   if(state == offSymbol)
+   {
+      /* turn all LEDs on that slider off */
+      Manta::SetSliderLED(Off, id, 0xFF);
+   }
 }
 
 void manta::SetSliderLEDNum(int id, int ledNum)
@@ -102,17 +151,14 @@ void manta::SetSliderLEDNum(int id, int ledNum)
    }
 }
 
-void manta::SetSliderLEDSym(int id, t_symbol *state)
-{
-   if(state == offSymbol)
-   {
-      /* turn all LEDs on that slider off */
-      Manta::SetSliderLED(Off, id, 0xFF);
-   }
-}
-
 void manta::SetButtonLED(t_symbol *state, int id)
 {
    LEDState parsedState = ledStateFromSymbol(state);
+   Manta::SetButtonLED(parsedState, id);
+}
+
+void manta::SetButtonLEDNum(int state, int id)
+{
+   LEDState parsedState = ledStateFromInt(state);
    Manta::SetButtonLED(parsedState, id);
 }

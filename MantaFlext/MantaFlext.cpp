@@ -16,12 +16,17 @@ manta::manta():
 	AddOutAnything("Processed");
 
    FLEXT_ADDMETHOD_2(1, "pad", SetPadLED, t_symptr, int);
+   FLEXT_ADDMETHOD_2(1, "pad", SetPadLEDNum, int, int);
    FLEXT_ADDMETHOD_3(1, "row", SetPadLEDRow, t_symptr, int, int);
+   FLEXT_ADDMETHOD_3(1, "row", SetPadLEDRowNum, int, int, int);
    FLEXT_ADDMETHOD_3(1, "column", SetPadLEDColumn, t_symptr, int, int);
+   FLEXT_ADDMETHOD_3(1, "column", SetPadLEDColumnNum, int, int, int);
+   FLEXT_ADDMETHOD_2(1, "slider", SetSliderLED, int, t_symptr);
    FLEXT_ADDMETHOD_2(1, "slider", SetSliderLEDNum, int, int);
-   FLEXT_ADDMETHOD_2(1, "slider", SetSliderLEDSym, int, t_symptr);
    FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMask, t_symptr, int, int);
+   FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMaskNum, int, int, int);
    FLEXT_ADDMETHOD_2(1, "button", SetButtonLED, t_symptr, int);
+   FLEXT_ADDMETHOD_2(1, "button", SetButtonLEDNum, int, int);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
    
    padSymbol = MakeSymbol("pad");

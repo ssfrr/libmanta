@@ -1,5 +1,6 @@
 NAME=manta
 BUILDTYPE=multi
+BUILDDIR=build
 SRCDIR=.
 SRCS= MantaFlext.cpp \
       MantaFlextEvents.cpp \

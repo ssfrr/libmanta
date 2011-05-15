@@ -1,4 +1,4 @@
-#N canvas 462 185 733 739 10;
+#N canvas 586 194 733 739 10;
 #X obj 188 219 dac~;
 #N canvas 8 73 402 472 slidernote 0;
 #X obj 93 253 osc~;
@@ -61,7 +61,7 @@
 #X obj 189 96 r \$0-continuous;
 #X obj 208 167 r \$0-slider;
 #X obj 48 331 s \$0-padframe;
-#N canvas 242 343 571 575 LED_Examples 0;
+#N canvas 216 308 571 575 LED_Examples 0;
 #X msg 51 33 amber;
 #X msg 58 55 red;
 #X msg 64 77 off;
@@ -74,30 +74,24 @@
 #X obj 208 106 symbol;
 #X obj 208 152 s \$0-leds;
 #X msg 208 130 row \$1 3 255;
-#X msg 370 40 amber;
-#X msg 377 62 red;
-#X msg 383 84 off;
-#X obj 370 109 symbol;
+#X msg 386 33 amber;
+#X msg 393 55 red;
+#X msg 399 77 off;
+#X obj 386 102 symbol;
 #X obj 370 155 s \$0-leds;
 #X msg 370 133 column \$1 3 255;
-#X msg 118 240 amber;
-#X msg 125 262 red;
-#X msg 131 284 off;
-#X obj 118 309 symbol;
-#X obj 118 355 s \$0-leds;
-#X text 96 376 Set a button LED;
+#X msg 55 244 amber;
+#X msg 62 266 red;
+#X msg 68 288 off;
+#X obj 55 313 symbol;
+#X obj 55 359 s \$0-leds;
+#X text 33 380 Set a button LED;
 #X text 27 171 Set a single pad LED;
 #X text 186 173 Set a row of pad LEDs;
 #X text 348 176 Set a column of pads LEDs;
-#X msg 118 333 button \$1 3;
-#X msg 300 235 amber;
-#X msg 307 257 red;
-#X msg 313 279 off;
-#X obj 300 304 symbol;
-#X obj 300 350 s \$0-leds;
-#X text 282 373 Set slider LEDs;
-#X msg 300 328 slider \$1 1 255;
-#X obj 27 441 tgl 45 0 empty empty empty 17 7 0 10 -4034 -1 -1 0 1
+#X msg 55 337 button \$1 3;
+#X obj 217 355 s \$0-leds;
+#X obj 27 441 tgl 45 0 empty empty empty 17 7 0 10 -4034 -1 -1 1 1
 ;
 #X obj 337 442 tgl 45 0 empty empty empty 17 7 0 10 -4034 -1 -1 0 1
 ;
@@ -107,6 +101,26 @@
 #X text 44 487 Click to Toggle LED Pad and Button control;
 #X obj 337 530 s \$0-control;
 #X msg 337 509 ledcontrol slider \$1;
+#X msg 217 333 slider 1 \$1;
+#X obj 220 273 hsl 64 15 -1 7 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 217 292 int;
+#X floatatom 217 313 5 0 0 0 - - -;
+#X msg 398 268 amber;
+#X msg 411 293 off;
+#X obj 398 318 symbol;
+#X obj 398 364 s \$0-leds;
+#X text 380 387 Set slider LEDs;
+#X text 181 378 Set a single slider LED;
+#X msg 398 342 slidermask \$1 1 255;
+#X obj 355 65 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 184 57 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 29 56 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 26 264 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
 #X connect 0 0 3 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
@@ -127,15 +141,22 @@
 #X connect 20 0 21 0;
 #X connect 21 0 27 0;
 #X connect 27 0 22 0;
-#X connect 28 0 31 0;
 #X connect 29 0 31 0;
-#X connect 30 0 31 0;
-#X connect 31 0 34 0;
-#X connect 34 0 32 0;
-#X connect 35 0 37 0;
-#X connect 36 0 42 0;
-#X connect 37 0 38 0;
-#X connect 42 0 41 0;
+#X connect 30 0 36 0;
+#X connect 31 0 32 0;
+#X connect 36 0 35 0;
+#X connect 37 0 28 0;
+#X connect 38 0 39 0;
+#X connect 39 0 40 0;
+#X connect 40 0 37 0;
+#X connect 41 0 43 0;
+#X connect 42 0 43 0;
+#X connect 43 0 47 0;
+#X connect 47 0 44 0;
+#X connect 48 0 17 0;
+#X connect 49 0 11 0;
+#X connect 50 0 5 0;
+#X connect 51 0 27 0;
 #X restore 183 41 pd LED_Examples;
 #X text 329 39 Open this subpatch for LED Examples;
 #X obj 185 291 list split 4;
