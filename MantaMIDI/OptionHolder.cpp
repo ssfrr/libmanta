@@ -321,8 +321,14 @@ void OptionHolder::SetPad_Layout(PadLayout layout)
         SetAllPadOffColor(Manta::Off);
         break;
     case plDuet:
+        AssignHaydenDuetLayout();
+        SetAllPadInactiveColor(Manta::Off);
+        SetAllPadOnColor(Manta::Red);
+        SetAllPadOffColor(Manta::Off);
+        break;
     case plHoneycomb:
     default:
+        AssignHoneycombLayout();
         SetAllPadInactiveColor(Manta::Off);
         SetAllPadOnColor(Manta::Red);
         SetAllPadOffColor(Manta::Off);

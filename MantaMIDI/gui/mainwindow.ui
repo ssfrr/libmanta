@@ -1080,6 +1080,19 @@
       </property>
      </widget>
     </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>160</y>
+       <width>114</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Edit Pad MIDI</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="mantaConnectedLbl">
     <property name="geometry">

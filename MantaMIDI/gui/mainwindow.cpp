@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     thread.terminate();
+    if (padSettingsDialog)
+        delete padSettingsDialog;
     delete ui;
 }
 
@@ -285,4 +287,17 @@ void MainWindow::on_slider2mode_controller_clicked()
 void MainWindow::on_slider2mode_pitchbend_clicked()
 {
     options.SetSlider_Mode(1, smPitchBend);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    if (!padSettingsDialog)
+    {
+        padSettingsDialog = new PadSettingsDialog(this);
+        //connect(padSettingsDialog, SIGNAL(), this, SLOT());
+    }
+
+    padSettingsDialog->show();
+    padSettingsDialog->raise();
+    padSettingsDialog->activateWindow();
 }

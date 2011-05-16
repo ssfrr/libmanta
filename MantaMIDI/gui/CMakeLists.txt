@@ -43,15 +43,18 @@ set(MantaGUI_SOURCES
     main.cpp
     mainwindow.cpp
     mantathread.cpp
+    padsettingsdialog.cpp
 )
 
 set(MantaGUI_MOC_HEADERS
     mainwindow.h
     mantathread.h
+    padsettingsdialog.h
 )
 
 set(MantaGUI_UIS
-	mainwindow.ui
+    mainwindow.ui
+   padsettingsdialog.ui
 )
 
 #####################

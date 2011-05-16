@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "mantathread.h"
+#include "padsettingsdialog.h"
 #include "../OptionHolder.h"
 
 namespace Ui {
@@ -68,25 +69,21 @@ private slots:
     void on_button4color_inactive_currentIndexChanged(int index);
 
     void on_slider1channel_valueChanged(int );
-
     void on_slider1ccnum_valueChanged(int );
-
     void on_slider2channel_valueChanged(int );
-
     void on_slider2ccnum_valueChanged(int );
-
     void on_slider1mode_conroller_clicked();
-
     void on_slider1mode_pitchbend_clicked();
-
     void on_slider2mode_controller_clicked();
-
     void on_slider2mode_pitchbend_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     void UpdateLayout(PadLayout padLayout);
 
     Ui::MainWindow *ui;
+    PadSettingsDialog *padSettingsDialog;
 
     OptionHolder options;
     MantaThread thread;
