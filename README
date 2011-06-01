@@ -1,4 +1,5 @@
 libmanta
+=========
 
 -----------------------------------------------------------
 Introduction
@@ -9,8 +10,8 @@ interfacing with the Snyderphonics Manta, a touch-sensitive usb controller with
 LED feedback.
 
 libmanta is currently in beta stage, and the examples are intended simply as
-starting points to show how the library may be used. The [manta] object for Pure
-Data and Max/MSP will be a user-facing release released in both source and
+starting points to show how the library may be used. The [manta] object for
+Pure Data and Max/MSP will be a user-facing release released in both source and
 binary forms.
 
 [manta] (the pd/max object) is built on an abstraction layer called flext by
@@ -42,8 +43,9 @@ no other instruction.
 2. Download the latest version of libusb-1.0 from
    http://sourceforge.net/projects/libusb/files/libusb-1.0/
 3. Extract the libusb-1.0 tarball
-4. Navigate to the libusb directory
-5. './configure'
+4. in Terminal, navigate to the libusb directory
+5. './configure CC="gcc -m32"' (the CC flag is only needed if building for Max
+   instead of PD, since it can't do 64-bit)
 6. 'sudo make install'
 7. run the mantaswitch.sh script found in platform/osx to install the dummy driver
    that prevents the OSX hid driver from blocking our access to the manta
@@ -59,10 +61,9 @@ no other instruction.
 2. Install the "build-essential" package
 3. Jump to 'Linux and OS X Common Instructions'
 
-* Linux and OS X Common Instructions:
-(to build for Max instead of PD you should mostly just be able to replace
-each instance of 'pd' with 'max')
+* Linux and OS X Common Instructions for PD:
 
+PD on Linux or OS X
 1. Download the pd source from http://puredata.info/downloads and remember
    where you extract it.
 2. Navigate to extern/flext in the libmanta directory
@@ -72,10 +73,34 @@ each instance of 'pd' with 'max')
    b. PDPATH to point to the "pd" subdirectory of the pd source package you
       extracted in step 2
    c. INSTPATH to point to where your PD externals live
-5. (Mac Only) Edit config.txt and comment out the line "SIMD=1"
-6. './build.sh pd gcc'
+5. './build.sh pd gcc'
+6. (Mac Only) Edit config.txt and comment out the line "SIMD=1"
 7. './build.sh pd gcc' (yes, again)
 8. './build.sh pd gcc install'
 9. 'cd ../../MantaFlext'
 10. '../extern/flext/build.sh pd gcc'
 11. 'sudo ../extern/flext/build.sh pd gcc install'
+
+* OS X instructions for Max/MSP
+
+1. Download Max/MSP SDK from Cycling74.com and put it somewhere easy to find
+2. Place the MaxAPI.framework folder found inside the max-includes directory
+   into Library/Frameworks 
+3. in Terminal, navigate to extern/flext in the libmanta directory
+4. './build.sh max gcc'
+5. Edit buildsys/config-mac-max-gcc.txt and change:
+   b. MAXPATH to point to the "pd" subdirectory of the Max SDK you extracted in
+      step 1 (should be the directory right above the max-includes directory,
+      like MaxSDK-5.1.6/c74support/)
+   c. INSTPATH to point to where your Max externals live
+   d. change the ARCH= line to read only ARCH=i386
+6. './build.sh max gcc'
+7. Edit config.txt and comment out the line "SIMD=1"
+8. './build.sh max gcc' (yes, again)
+9. 'sudo cd./build.sh max gcc install'
+10. 'cd ../../MantaFlext'
+11. '../extern/flext/build.sh max gcc'
+12. in MantaFlext/max-darwin create an empty folder called 'core'
+13. '../extern/flext/build.sh max gcc' (again)
+14. 'sudo ../extern/flext/build.sh max gcc install'
+
