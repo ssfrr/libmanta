@@ -28,6 +28,7 @@ manta::manta():
    FLEXT_ADDMETHOD_2(1, "button", SetButtonLED, t_symptr, int);
    FLEXT_ADDMETHOD_2(1, "button", SetButtonLEDNum, int, int);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
+   FLEXT_ADDMETHOD_(0, "reset", Recalibrate);
    
    padSymbol = MakeSymbol("pad");
    sliderSymbol = MakeSymbol("slider");

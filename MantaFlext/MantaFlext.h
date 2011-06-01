@@ -66,6 +66,7 @@ private:
    FLEXT_CALLBACK_2(SetButtonLED, t_symptr, int)
    FLEXT_CALLBACK_2(SetButtonLEDNum, int, int)
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
+   FLEXT_CALLBACK(Recalibrate)
 
    int lastSliderValue[2];
    /* thread conditional to wait on to make sure
