@@ -35,12 +35,14 @@ manta::LEDState manta::ledStateFromInt(int state)
 
 void manta::StartThread()
 {
+   bool errorPrinted = false;
    while(!shouldStop)
    {
       try
       {
          Connect();
          post("manta: Connected to Manta");
+         errorPrinted = false;
          while(!shouldStop)
          {
             HandleEvents();
@@ -48,7 +50,11 @@ void manta::StartThread()
       }
       catch(MantaNotFoundException e)
       {
-         post("manta: No attached Mantas found. Retrying...");
+         if(! errorPrinted)
+         {
+            post("manta: No attached Mantas found. Retrying...");
+            errorPrinted = true;
+         }
          Sleep(1);
       }
       catch(MantaOpenException e)
