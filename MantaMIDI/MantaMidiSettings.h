@@ -34,13 +34,13 @@ enum ButtonMode
     bmController = 1
   };
 
-class OptionHolder
+class MantaMidiSettings
 {
  public:
-    OptionHolder();
-    OptionHolder(int argc, char **argv);
+    MantaMidiSettings();
+    MantaMidiSettings(int argc, char **argv);
 
-    ~OptionHolder();
+    ~MantaMidiSettings();
 
     /* Master settings */
     bool GetDebugMode();
@@ -101,6 +101,7 @@ class OptionHolder
     void AssignHoneycombLayout();
     void AssignHaydenDuetLayout();
 
+protected:
     /* Master Program Settings */
     bool m_bDebugMode;
     bool m_bUseVelocity;

@@ -30,7 +30,7 @@ SET(Manta_RtMidi_Srcs		# RtMIDI library
 SET(MantaMidi_Srcs
         ../midimanager/MIDImanager.cpp
         ../midimanager/RtMidiManager.cpp
-        ../OptionHolder.cpp
+        ../MantaMidiSettings.cpp
         ../LayoutMgr.cpp
 
         ${Manta_Core_Srcs}

@@ -1,11 +1,11 @@
-#include "OptionHolder.h"
+#include "MantaMidiSettings.h"
 
-OptionHolder::OptionHolder()
+MantaMidiSettings::MantaMidiSettings()
 {
     Reset();
 }
 
-OptionHolder::OptionHolder(int argc, char **argv)
+MantaMidiSettings::MantaMidiSettings(int argc, char **argv)
 {
     Reset();
 
@@ -55,104 +55,104 @@ OptionHolder::OptionHolder(int argc, char **argv)
     PrintOptionStatus();
 }
 
-OptionHolder::~OptionHolder()
+MantaMidiSettings::~MantaMidiSettings()
 {
 }
 
 /* Master settings */
-bool OptionHolder::GetDebugMode()  { return m_bDebugMode; }
-bool OptionHolder::GetUseVelocity() { return m_bUseVelocity; }
-void OptionHolder::SetUseVelocity(bool bUseVelocity) { m_bUseVelocity = bUseVelocity; }
+bool MantaMidiSettings::GetDebugMode()  { return m_bDebugMode; }
+bool MantaMidiSettings::GetUseVelocity() { return m_bUseVelocity; }
+void MantaMidiSettings::SetUseVelocity(bool bUseVelocity) { m_bUseVelocity = bUseVelocity; }
 
 /* Pads */
-unsigned char OptionHolder::GetPad_EventChannel(int pad) {return m_padEventChannel[pad]; }
-char OptionHolder::GetPad_Midi(int pad) { return m_basePadMidi[pad]; }
-unsigned char OptionHolder::GetPad_LEDChannel(int pad) { return m_padLEDChannel[pad]; }
-unsigned char OptionHolder::GetPad_AmberLEDMidi(int pad) { return m_AmberLEDMidi[pad]; }
-unsigned char OptionHolder::GetPad_RedLEDMidi(int pad) { return m_RedLEDMidi[pad]; }
-Manta::LEDState OptionHolder::GetPad_InactiveColor(int pad) { return m_inactivePadColor[pad]; }
-Manta::LEDState OptionHolder::GetPad_OnColor(int pad) { return m_onPadColor[pad]; }
-Manta::LEDState OptionHolder::GetPad_OffColor(int pad) { return m_offPadColor[pad]; }
-PadLayout OptionHolder::GetPad_Layout() { return m_padLayout; }
-PadValMode OptionHolder::GetPad_Mode() { return m_padMode; }
-void OptionHolder::SetPad_Mode(PadValMode mode)
+unsigned char MantaMidiSettings::GetPad_EventChannel(int pad) {return m_padEventChannel[pad]; }
+char MantaMidiSettings::GetPad_Midi(int pad) { return m_basePadMidi[pad]; }
+unsigned char MantaMidiSettings::GetPad_LEDChannel(int pad) { return m_padLEDChannel[pad]; }
+unsigned char MantaMidiSettings::GetPad_AmberLEDMidi(int pad) { return m_AmberLEDMidi[pad]; }
+unsigned char MantaMidiSettings::GetPad_RedLEDMidi(int pad) { return m_RedLEDMidi[pad]; }
+Manta::LEDState MantaMidiSettings::GetPad_InactiveColor(int pad) { return m_inactivePadColor[pad]; }
+Manta::LEDState MantaMidiSettings::GetPad_OnColor(int pad) { return m_onPadColor[pad]; }
+Manta::LEDState MantaMidiSettings::GetPad_OffColor(int pad) { return m_offPadColor[pad]; }
+PadLayout MantaMidiSettings::GetPad_Layout() { return m_padLayout; }
+PadValMode MantaMidiSettings::GetPad_Mode() { return m_padMode; }
+void MantaMidiSettings::SetPad_Mode(PadValMode mode)
 {
     m_padMode = mode;
 }
 
-void OptionHolder::SetPad(int pad, unsigned char channel, unsigned char note)
+void MantaMidiSettings::SetPad(int pad, unsigned char channel, unsigned char note)
 {
     m_padEventChannel[pad] = channel;
     m_basePadMidi[pad] = note;
 }
 
-void OptionHolder::SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote)
+void MantaMidiSettings::SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote)
 {
     m_padLEDChannel[pad] = channel;
     m_AmberLEDMidi[pad] = amberNote;
     m_RedLEDMidi[pad] = redNote;
 }
 
-void OptionHolder::SetAllPadOnColor(Manta::LEDState onColor)
+void MantaMidiSettings::SetAllPadOnColor(Manta::LEDState onColor)
 {
     for (int i = 0; i < numPads; ++i)
         m_onPadColor[i] = onColor;
 }
 
-void OptionHolder::SetAllPadOffColor(Manta::LEDState offColor)
+void MantaMidiSettings::SetAllPadOffColor(Manta::LEDState offColor)
 {
     for (int i = 0; i < numPads; ++i)
         m_offPadColor[i] = offColor;
 }
 
-void OptionHolder::SetAllPadInactiveColor(Manta::LEDState inactiveColor)
+void MantaMidiSettings::SetAllPadInactiveColor(Manta::LEDState inactiveColor)
 {
     for (int i = 0; i < numPads; ++i)
         m_inactivePadColor[i] = inactiveColor;
 }
 
 /* Sliders */
-bool OptionHolder::IsValidSliderIndex(int slider) { return slider == 0 || slider == 1; }
-unsigned char OptionHolder::GetSlider_EventChannel(int slider)
+bool MantaMidiSettings::IsValidSliderIndex(int slider) { return slider == 0 || slider == 1; }
+unsigned char MantaMidiSettings::GetSlider_EventChannel(int slider)
 {
     if ( IsValidSliderIndex(slider))
         return m_slider_EventChannel[slider];
     else
         return 0;
 }
-void OptionHolder::SetSlider_Channel(int slider, unsigned char channel)
+void MantaMidiSettings::SetSlider_Channel(int slider, unsigned char channel)
 {
     if ( IsValidSliderIndex(slider) )
         m_slider_EventChannel[slider] = channel;
 }
 
-char OptionHolder::GetSlider_MidiNote(int slider)
+char MantaMidiSettings::GetSlider_MidiNote(int slider)
 {
     if ( IsValidSliderIndex(slider) )
         return m_slider_MidiNote[slider];
     else
         return -1;
 }
-void OptionHolder::SetSlider_Midi(int slider, char midi)
+void MantaMidiSettings::SetSlider_Midi(int slider, char midi)
 {
     if ( IsValidSliderIndex(slider) )
         m_slider_MidiNote[slider] = midi;
 }
 
-SliderMode OptionHolder::GetSlider_Mode(int slider)
+SliderMode MantaMidiSettings::GetSlider_Mode(int slider)
 {
     if ( IsValidSliderIndex(slider) )
         return m_slider_Mode[slider];
     else
         return smContinuous;
 }
-void OptionHolder::SetSlider_Mode(int slider, SliderMode mode)
+void MantaMidiSettings::SetSlider_Mode(int slider, SliderMode mode)
 {
     if ( IsValidSliderIndex(slider) )
         m_slider_Mode[slider] = mode;
 }
 
-void OptionHolder::SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode)
+void MantaMidiSettings::SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode)
 {
     m_slider_EventChannel[slider] = channel;
     m_slider_MidiNote[slider] = note;
@@ -160,8 +160,8 @@ void OptionHolder::SetSlider(int slider, unsigned char channel, unsigned char no
 }
 
 /* Buttons */
-bool OptionHolder::IsValidButtonIndex(int button) { return button >= 0 && button < numButtons; }
-ButtonMode OptionHolder::GetButton_Mode(int button)
+bool MantaMidiSettings::IsValidButtonIndex(int button) { return button >= 0 && button < numButtons; }
+ButtonMode MantaMidiSettings::GetButton_Mode(int button)
 {
     if ( IsValidButtonIndex(button) )
         return m_buttonMode[button];
@@ -169,53 +169,53 @@ ButtonMode OptionHolder::GetButton_Mode(int button)
         return bmNote;
 }
 
-void OptionHolder::SetButton_Mode(int button, ButtonMode mode)
+void MantaMidiSettings::SetButton_Mode(int button, ButtonMode mode)
 {
     if ( IsValidButtonIndex(button) )
         m_buttonMode[button] = mode;
 }
 
-unsigned char OptionHolder::GetButton_EventChannel(int button)
+unsigned char MantaMidiSettings::GetButton_EventChannel(int button)
 {
     if ( IsValidButtonIndex(button) )
         return m_buttonEventChannel[button];
     else
         return 0;
 }
-void OptionHolder::SetButton_Channel(int button, unsigned char channel)
+void MantaMidiSettings::SetButton_Channel(int button, unsigned char channel)
 {
     if ( IsValidButtonIndex(button) && channel < 16)
         m_buttonEventChannel[button] = channel;
 }
 
-char OptionHolder::GetButton_Midi(int button)
+char MantaMidiSettings::GetButton_Midi(int button)
 {
     if (IsValidButtonIndex(button))
         return m_buttonMidi[button];
     else
         return 0;
 }
-void OptionHolder::SetButton_Midi(int button, char midi)
+void MantaMidiSettings::SetButton_Midi(int button, char midi)
 {
     if ( IsValidButtonIndex(button) < numButtons)
         m_buttonMidi[button] = midi;
 }
 
-Manta::LEDState OptionHolder::GetButton_OnColor(int button)
+Manta::LEDState MantaMidiSettings::GetButton_OnColor(int button)
 {
     if ( IsValidButtonIndex(button) )
         return m_onButtonColor[button];
     else
         return Manta::Off;
 }
-Manta::LEDState OptionHolder::GetButton_OffColor(int button)
+Manta::LEDState MantaMidiSettings::GetButton_OffColor(int button)
 {
     if ( IsValidButtonIndex(button) )
         return m_offButtonColor[button];
     else
         return Manta::Off;
 }
-Manta::LEDState OptionHolder::GetButton_InactiveColor(int button)
+Manta::LEDState MantaMidiSettings::GetButton_InactiveColor(int button)
 {
     if ( IsValidButtonIndex(button) )
         return m_inactiveButtonColor[button];
@@ -223,25 +223,25 @@ Manta::LEDState OptionHolder::GetButton_InactiveColor(int button)
         return Manta::Off;
 }
 
-void OptionHolder::SetButton_OnColor(int button, Manta::LEDState color)
+void MantaMidiSettings::SetButton_OnColor(int button, Manta::LEDState color)
 {
     if ( IsValidButtonIndex(button) )
         m_onButtonColor[button] = color;
 }
 
-void OptionHolder::SetButton_OffColor(int button, Manta::LEDState color)
+void MantaMidiSettings::SetButton_OffColor(int button, Manta::LEDState color)
 {
     if ( IsValidButtonIndex(button) )
         m_offButtonColor[button] = color;
 }
 
-void OptionHolder::SetButton_InactiveColor(int button, Manta::LEDState color)
+void MantaMidiSettings::SetButton_InactiveColor(int button, Manta::LEDState color)
 {
     if ( IsValidButtonIndex(button) )
         m_inactiveButtonColor[button] = color;
 }
 
-void OptionHolder::SetButton(int button, unsigned char channel, unsigned char key, ButtonMode mode, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor)
+void MantaMidiSettings::SetButton(int button, unsigned char channel, unsigned char key, ButtonMode mode, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor)
 {
     if ( IsValidButtonIndex(button) )
     {
@@ -254,7 +254,7 @@ void OptionHolder::SetButton(int button, unsigned char channel, unsigned char ke
     }
 }
 
-void OptionHolder::PrintOptionStatus()
+void MantaMidiSettings::PrintOptionStatus()
 {
     /*printf("Debug Mode: %d\n", (int)m_bDebugMode);
     printf("Velocity: %d\n\n", (int)m_bUseVelocity);
@@ -282,7 +282,7 @@ void OptionHolder::PrintOptionStatus()
     printf("Button %d Mode: %d\n\n", 4, m_buttonMode[3]);*/
 }
 
-void OptionHolder::Reset()
+void MantaMidiSettings::Reset()
 {
     m_bDebugMode = false;
     m_bUseVelocity = false;
@@ -299,7 +299,7 @@ void OptionHolder::Reset()
     SetButton(3, 2, 105, bmNote, Manta::Red, Manta::Off, Manta::Off);
 }
 
-void OptionHolder::SetPad_Layout(PadLayout layout)
+void MantaMidiSettings::SetPad_Layout(PadLayout layout)
 {
     m_padLayout = layout;
 
@@ -335,7 +335,7 @@ void OptionHolder::SetPad_Layout(PadLayout layout)
     }
 }
 
-void OptionHolder::AssignPianoLayout()
+void MantaMidiSettings::AssignPianoLayout()
 {
     int baseMidi = 36;
     int padIndex = 0;
@@ -369,14 +369,14 @@ void OptionHolder::AssignPianoLayout()
     }
 }
 
-void OptionHolder::AssignChromaticLayout()
+void MantaMidiSettings::AssignChromaticLayout()
 {
     int channel = 0;
     for (int i = 0; i < numPads; ++i)
         SetPad(i, channel, 36+i);
 }
 
-void OptionHolder::AssignHoneycombLayout()
+void MantaMidiSettings::AssignHoneycombLayout()
 {
     int channel = 0;
     // First Row
@@ -440,7 +440,7 @@ void OptionHolder::AssignHoneycombLayout()
     SetPad(47, channel, 87); // D#6
 }
 
-void OptionHolder::AssignHaydenDuetLayout()
+void MantaMidiSettings::AssignHaydenDuetLayout()
 {
     // First Row
     int channel = 0;
