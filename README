@@ -51,7 +51,7 @@ no other instruction.
    that prevents the OSX hid driver from blocking our access to the manta
    NOTE: while this .kext file is installed you will be unable to use the
    non-libmanta-based manta Max object or OSC client. To switch back simply
-   run the script again to uninstall it
+   run the script again to uninstall it.  (only do this if you haven't     	already installed the MantaDummyDriver kext with the installer   	package.
 8. reboot
 9. Jump to 'Linux and OS X Common Instructions'
 
@@ -89,18 +89,18 @@ PD on Linux or OS X
 3. in Terminal, navigate to extern/flext in the libmanta directory
 4. './build.sh max gcc'
 5. Edit buildsys/config-mac-max-gcc.txt and change:
-   b. MAXPATH to point to the "pd" subdirectory of the Max SDK you extracted in
-      step 1 (should be the directory right above the max-includes directory,
-      like MaxSDK-5.1.6/c74support/)
+   b. MAXSDKPATH to point to the subdirectory of the Max SDK you extracted 	in step 1 (should be the directory right above the max-includes   	directory,
+	like MaxSDK-5.1.6/c74support/)
    c. INSTPATH to point to where your Max externals live
    d. change the ARCH= line to read only ARCH=i386
 6. './build.sh max gcc'
 7. Edit config.txt and comment out the line "SIMD=1"
 8. './build.sh max gcc' (yes, again)
-9. 'sudo cd./build.sh max gcc install'
+9. 'sudo ./build.sh max gcc install'
 10. 'cd ../../MantaFlext'
 11. '../extern/flext/build.sh max gcc'
-12. in MantaFlext/max-darwin create an empty folder called 'core'
-13. '../extern/flext/build.sh max gcc' (again)
-14. 'sudo ../extern/flext/build.sh max gcc install'
+12. '../extern/flext/build.sh max gcc' (again)
+13. in MantaFlext/max-darwin create an empty folder called 'core'
+14. '../extern/flext/build.sh max gcc' (again)
+15. 'sudo ../extern/flext/build.sh max gcc install'
 
