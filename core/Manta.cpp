@@ -82,11 +82,6 @@ void Manta::SetPadLED(LEDState state, int ledID)
    int row = ledID / 8;
    int column = ledID % 8;
 
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
-   
    if(ledID < 0 || ledID > 47)
    {
       throw std::invalid_argument("Invalid Pad Index");
@@ -110,15 +105,14 @@ void Manta::SetPadLED(LEDState state, int ledID)
          throw std::invalid_argument("Invalid state");
    }
 
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
 {
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
    if(row < 0 || row > 5)
    {
       throw std::invalid_argument("Invalid Row Index");
@@ -144,15 +138,14 @@ void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
       default:
          throw std::invalid_argument("Invalid state");
    }
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
 {
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
    if(column < 0 || column > 7)
    {
       throw std::invalid_argument("Invalid Column Index");
@@ -196,15 +189,14 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
          throw std::invalid_argument("Invalid state");
    }
 
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
 {
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
    
    switch(state)
    {
@@ -232,15 +224,14 @@ void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
       default:
          throw std::invalid_argument("Invalid state");
    }
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::SetSliderLED(LEDState state, int id, uint8_t mask)
 {
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
    if(id < 0 || id > 1)
    {
       throw std::invalid_argument("Invalid Slider Index");
@@ -259,15 +250,14 @@ void Manta::SetSliderLED(LEDState state, int id, uint8_t mask)
       default:
          throw std::invalid_argument("Invalid state");
    }
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::SetButtonLED(LEDState state, int id)
 {
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
    if(id < 0 || id > 3)
    {
       throw std::invalid_argument("Invalid Button Index");
@@ -290,7 +280,18 @@ void Manta::SetButtonLED(LEDState state, int id)
       default:
          throw std::invalid_argument("Invalid state");
    }
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
+}
+
+void Manta::ResendLEDState(void)
+{
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::Recalibrate(void)
@@ -309,10 +310,6 @@ void Manta::Recalibrate(void)
 void Manta::SetLEDControl(LEDControlType control, bool state)
 {
    uint8_t flag;
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
    
    switch(control)
    {
@@ -333,35 +330,34 @@ void Manta::SetLEDControl(LEDControlType control, bool state)
       CurrentOutReport[ConfigIndex] |= flag;
    else
       CurrentOutReport[ConfigIndex] &= ~flag;
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::SetTurboMode(bool Enabled)
 {
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
-   
    if(Enabled)
       CurrentOutReport[ConfigIndex] |= 0x04;
    else
       CurrentOutReport[ConfigIndex] &= ~0x04;
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 void Manta::SetRawMode(bool Enabled)
 {
-   if(! IsConnected())
-   {
-      throw MantaNotConnectedException();
-   }
-   
    if(Enabled)
       CurrentOutReport[ConfigIndex] |= 0x08;
    else
       CurrentOutReport[ConfigIndex] &= ~0x08;
-   WriteFrame(CurrentOutReport);
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
 }
 
 uint8_t Manta::byteReverse(uint8_t inByte)

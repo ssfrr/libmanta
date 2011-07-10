@@ -77,7 +77,6 @@ void MantaUSB::Connect(int serialNumber)
    if(! IsConnected())
    {
       DeviceHandle = libusb_open_device_with_vid_pid(LibusbContext, VendorID, ProductID);
-      /*TODO create new types of exceptions */
       if(NULL == DeviceHandle)
          throw(MantaNotFoundException());
       libusb_detach_kernel_driver(DeviceHandle, 0);

@@ -43,6 +43,7 @@ void manta::StartThread()
          Connect();
          post("manta: Connected to Manta");
          errorPrinted = false;
+         ResendLEDState();
          while(!shouldStop)
          {
             HandleEvents();
