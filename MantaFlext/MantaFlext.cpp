@@ -15,8 +15,7 @@ manta::manta():
 	AddOutAnything("Slider");
 	AddOutAnything("Processed");
 
-   FLEXT_ADDMETHOD_2(1, "pad", SetPadLED, t_symptr, int);
-   FLEXT_ADDMETHOD_2(1, "pad", SetPadLEDNum, int, int);
+   FLEXT_ADDMETHOD_(1, "pad", SetPadLED);
    FLEXT_ADDMETHOD_3(1, "row", SetPadLEDRow, t_symptr, int, int);
    FLEXT_ADDMETHOD_3(1, "row", SetPadLEDRowNum, int, int, int);
    FLEXT_ADDMETHOD_3(1, "column", SetPadLEDColumn, t_symptr, int, int);

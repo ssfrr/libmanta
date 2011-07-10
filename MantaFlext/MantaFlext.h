@@ -17,8 +17,7 @@ class manta:
 
    protected:
 	void StartThread();
-   void SetPadLED(t_symbol *state, int ledID);
-   void SetPadLEDNum(int state, int ledID);
+   void SetPadLED(int argc, t_atom *argv);
    void SetPadLEDRow(t_symbol *state, int row, int mask);
    void SetPadLEDRowNum(int state, int row, int mask);
    void SetPadLEDColumn(t_symbol *state, int column, int mask);
@@ -47,13 +46,13 @@ private:
     * function, but it will call the parents version within */
    void FrameReceived(int8_t *frame);
 
-   LEDState ledStateFromSymbol(t_symbol *stateSymbol);
+   LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
    LEDState ledStateFromInt(int stateSymbol);
 	// declare threaded callback 
 	// the same syntax as with FLEXT_CALLBACK is used here
 	FLEXT_THREAD(StartThread)
    /* declare message handlers */
-   FLEXT_CALLBACK_2(SetPadLED, t_symptr, int)
+   FLEXT_CALLBACK_V(SetPadLED)
    FLEXT_CALLBACK_2(SetPadLEDNum, int, int)
    FLEXT_CALLBACK_3(SetPadLEDRow, t_symptr, int, int)
    FLEXT_CALLBACK_3(SetPadLEDRowNum, int, int, int)

@@ -1,7 +1,7 @@
 #include "MantaFlext.h"
 #include "../core/MantaExceptions.h"
 
-manta::LEDState manta::ledStateFromSymbol(t_symbol *stateSymbol)
+manta::LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
 {
    if(stateSymbol == amberSymbol)
    {
@@ -90,16 +90,23 @@ void manta::SetLEDControl(t_symbol *control, int state)
    }
 }
 
-void manta::SetPadLED(t_symbol *state, int ledID)
+void manta::SetPadLED(int argc, t_atom *argv)
 {
-   LEDState parsedState = ledStateFromSymbol(state);
-   Manta::SetPadLED(parsedState, ledID);
-}
-
-void manta::SetPadLEDNum(int state, int ledID)
-{
-   LEDState parsedState = ledStateFromInt(state);
-   Manta::SetPadLED(parsedState, ledID);
+   LEDState parsedState;
+   if(argc < 2 ||
+         (!CanbeInt(argv[0]) && !IsSymbol(argv[0])))
+   {
+      post("manta: 'pad' - invalid parameters");
+   }
+   if(CanbeInt(argv[0]))
+   {
+      parsedState = ledStateFromInt(state);
+   }
+   else if(IsSymbol(argv[0]))
+   {
+      parsedState = ledStateFromSymbol(GetSymbol(argv[0]));
+   }
+   Manta::SetPadLED(parsedState, GetInt(argv[1]));
 }
 
 void manta::SetPadLEDRow(t_symbol *state, int row, int mask)
