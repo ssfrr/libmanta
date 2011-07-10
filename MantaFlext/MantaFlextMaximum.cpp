@@ -5,7 +5,8 @@ FLEXT_LIB("manta.maximum", MantaFlextMaximum);
 MantaFlextMaximum::MantaFlextMaximum() :
    lastMax(0)
 {
-   skippedPadsMask = {0,0};
+   skippedPadsMask[0] = 0;
+   skippedPadsMask[1] = 0;
    AddInAnything();
    AddOutList();
    FLEXT_ADDMETHOD_V(0, padFrameHandler);
