@@ -1,4 +1,5 @@
 #include <flext.h>
+#include <stdint.h>
 
 class MantaFlextMaximum : public flext_base
 {
@@ -9,8 +10,13 @@ class MantaFlextMaximum : public flext_base
 
    protected:
    void padFrameHandler(int argc, t_atom *argv);
+   void skipHandler(int pad);
+   void noskipHandler(int pad);
 
    private:
    int lastMax;
+   uint32_t skippedPadsMask[2];
    FLEXT_CALLBACK_V(padFrameHandler)
+   FLEXT_CALLBACK_F(skipHandler)
+   FLEXT_CALLBACK_F(noskipHandler)
 };

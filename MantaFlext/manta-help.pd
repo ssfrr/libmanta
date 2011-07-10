@@ -201,6 +201,8 @@ pad data as input and calculates the centroid of all the pads;
 #X text 344 662 NOTE: the 'manta' object must be created before the
 manta.centroid and manta.maximum support object \, in order to load
 the library.;
+#X msg 142 412 skip 5;
+#X msg 111 442 noskip 5;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -229,3 +231,5 @@ the library.;
 #X connect 36 3 11 0;
 #X connect 37 0 25 0;
 #X connect 38 0 34 0;
+#X connect 42 0 37 0;
+#X connect 43 0 37 0;
