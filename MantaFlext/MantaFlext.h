@@ -53,7 +53,6 @@ private:
 	FLEXT_THREAD(StartThread)
    /* declare message handlers */
    FLEXT_CALLBACK_V(SetPadLED)
-   FLEXT_CALLBACK_2(SetPadLEDNum, int, int)
    FLEXT_CALLBACK_3(SetPadLEDRow, t_symptr, int, int)
    FLEXT_CALLBACK_3(SetPadLEDRowNum, int, int, int)
    FLEXT_CALLBACK_3(SetPadLEDColumn, t_symptr, int, int)

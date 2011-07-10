@@ -100,13 +100,19 @@ void manta::SetPadLED(int argc, t_atom *argv)
    }
    if(CanbeInt(argv[0]))
    {
-      parsedState = ledStateFromInt(state);
+      parsedState = ledStateFromInt(GetInt(argv[0]));
    }
    else if(IsSymbol(argv[0]))
    {
       parsedState = ledStateFromSymbol(GetSymbol(argv[0]));
    }
-   Manta::SetPadLED(parsedState, GetInt(argv[1]));
+   for(int i = 1; i < argc; ++i)
+   {
+      if(CanbeInt(argv[i]))
+      {
+         Manta::SetPadLED(parsedState, GetInt(argv[i]));
+      }
+   }
 }
 
 void manta::SetPadLEDRow(t_symbol *state, int row, int mask)
