@@ -184,49 +184,51 @@ libusb_context *MantaUSB::LibusbContext;
 /* define callback functions outside of the class */
 void MantaInTransferCompleteHandler(struct libusb_transfer *transfer)
 {
-   assert(transfer ==
-         static_cast<MantaUSB *>(transfer->user_data)->CurrentInTransfer);
+   MantaUSB *device = static_cast<MantaUSB *>(transfer->user_data); 
+
+   assert(transfer == device->CurrentInTransfer);
    if(LIBUSB_TRANSFER_COMPLETED == transfer->status)
    {
-      static_cast<MantaUSB *>(transfer->user_data)->FrameReceived(
+      device->FrameReceived(
             reinterpret_cast<int8_t *>(transfer->buffer));
-      static_cast<MantaUSB *>(transfer->user_data)->BeginReadTransfer();
+      device->BeginReadTransfer();
    }
    else
    {
       libusb_free_transfer(transfer);
-      static_cast<MantaUSB *>(transfer->user_data)->CurrentInTransfer = NULL;
+      device->CurrentInTransfer = NULL;
       if(LIBUSB_TRANSFER_CANCELLED != transfer->status)
       {
-         static_cast<MantaUSB *>(transfer->user_data)->TransferError = true;
+         device->TransferError = true;
       }
    }
 }
 
 void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer)
 {
-   assert(transfer ==
-         static_cast<MantaUSB *>(transfer->user_data)->CurrentOutTransfer);
+   MantaUSB *device = static_cast<MantaUSB *>(transfer->user_data); 
+
+   assert(transfer == device->CurrentOutTransfer);
    if(LIBUSB_TRANSFER_COMPLETED == transfer->status)
    {
-      if(static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued)
+      if(device->OutTransferQueued)
       {
-         static_cast<MantaUSB *>(transfer->user_data)->OutTransferQueued = false;
-         static_cast<MantaUSB *>(transfer->user_data)->BeginQueuedTransfer();
+         device->OutTransferQueued = false;
+         device->BeginQueuedTransfer();
       }
       else
       {
          libusb_free_transfer(transfer);
-         static_cast<MantaUSB *>(transfer->user_data)->CurrentOutTransfer = NULL;
+         device->CurrentOutTransfer = NULL;
       }
    }
    else
    {
       libusb_free_transfer(transfer);
-      static_cast<MantaUSB *>(transfer->user_data)->CurrentOutTransfer = NULL;
+      device->CurrentOutTransfer = NULL;
       if(LIBUSB_TRANSFER_CANCELLED != transfer->status)
       {
-         static_cast<MantaUSB *>(transfer->user_data)->TransferError = true;
+         device->TransferError = true;
       }
    }
 }
