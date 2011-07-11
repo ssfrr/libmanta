@@ -26,6 +26,8 @@ class Manta : public MantaUSB
       void SetSliderLED(LEDState state, int id, uint8_t mask);
       void SetButtonLED(LEDState state, int id);
       void ResendLEDState(void);
+      void ClearPadAndButtonLEDs(void);
+      void ClearButtonLEDs(void);
       void Recalibrate(void);
       void SetLEDControl(LEDControlType control, bool state);
       void SetTurboMode(bool Enabled);

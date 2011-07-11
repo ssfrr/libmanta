@@ -197,7 +197,6 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
 
 void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
 {
-   
    switch(state)
    {
       case Amber:
@@ -288,6 +287,32 @@ void Manta::SetButtonLED(LEDState state, int id)
 
 void Manta::ResendLEDState(void)
 {
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
+}
+
+void Manta::ClearButtonLEDs(void)
+{
+   CurrentOutReport[ButtonIndex] = 0;
+
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport);
+   }
+}
+
+void Manta::ClearPadAndButtonLEDs(void)
+{
+   for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
+   {
+      CurrentOutReport[AmberIndex + i] = 0;
+      CurrentOutReport[RedIndex + i] = 0;
+   }
+
+   CurrentOutReport[ButtonIndex] = 0;
+
    if(IsConnected())
    {
       WriteFrame(CurrentOutReport);

@@ -78,6 +78,10 @@ void manta::SetLEDControl(t_symbol *control, int state)
 {
    if(control == padAndButtonSymbol)
    {
+      if(0 == state)
+      {
+         ClearPadAndButtonLEDs();
+      }
       Manta::SetLEDControl(PadAndButton, state);
    }
    else if(control == sliderSymbol)
@@ -86,6 +90,10 @@ void manta::SetLEDControl(t_symbol *control, int state)
    }
    else if(control == buttonSymbol)
    {
+      if(0 == state)
+      {
+         Manta::ClearButtonLEDs();
+      }
       Manta::SetLEDControl(Button, state);
    }
 }
