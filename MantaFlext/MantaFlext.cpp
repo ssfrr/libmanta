@@ -25,6 +25,7 @@ manta::manta():
    FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMask, t_symptr, int, int);
    FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMaskNum, int, int, int);
    FLEXT_ADDMETHOD_(1, "button", SetButtonLED);
+   FLEXT_ADDMETHOD_(1, "ledsoff", ClearPadAndButtonLEDs);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
    FLEXT_ADDMETHOD_(0, "reset", Recalibrate);
    
@@ -39,6 +40,7 @@ manta::manta():
    columnSymbol = MakeSymbol("column");
    frameSymbol = MakeSymbol("frame");
    padAndButtonSymbol = MakeSymbol("padandbutton");
+   ledsOffSymbol = MakeSymbol("ledsoff");
 
    /* use flext to call the threaded method */
    FLEXT_CALLMETHOD(StartThread);

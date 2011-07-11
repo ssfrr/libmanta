@@ -29,7 +29,6 @@ class manta:
    void SetButtonLED(int argc, t_atom *argv);
    void SetLEDControl(t_symbol *control, int state);
    /*
-   void Recalibrate(void);
    void SetTurboMode(bool Enabled);
    void SetRawMode(bool Enabled);
    */
@@ -63,6 +62,7 @@ private:
    FLEXT_CALLBACK_V(SetButtonLED)
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
    FLEXT_CALLBACK(Recalibrate)
+   FLEXT_CALLBACK(ClearPadAndButtonLEDs)
 
    int lastSliderValue[2];
    /* thread conditional to wait on to make sure
@@ -81,6 +81,7 @@ private:
    const t_symbol *columnSymbol;
    const t_symbol *frameSymbol;
    const t_symbol *padAndButtonSymbol;
+   const t_symbol *ledsOffSymbol;
 
    static const int velocityOutlet = 0;
    static const int continuousOutlet = 1;
