@@ -26,8 +26,7 @@ class manta:
    void SetSliderLEDMaskNum(int state, int id, int mask);
    void SetSliderLED(int id, t_symbol *state);
    void SetSliderLEDNum(int id, int ledNum);
-   void SetButtonLED(t_symbol *state, int id);
-   void SetButtonLEDNum(int state, int id);
+   void SetButtonLED(int argc, t_atom *argv);
    void SetLEDControl(t_symbol *control, int state);
    /*
    void Recalibrate(void);
@@ -61,8 +60,7 @@ private:
    FLEXT_CALLBACK_3(SetSliderLEDMaskNum, int, int, int)
    FLEXT_CALLBACK_2(SetSliderLED, int, t_symptr)
    FLEXT_CALLBACK_2(SetSliderLEDNum, int, int)
-   FLEXT_CALLBACK_2(SetButtonLED, t_symptr, int)
-   FLEXT_CALLBACK_2(SetButtonLEDNum, int, int)
+   FLEXT_CALLBACK_V(SetButtonLED)
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
    FLEXT_CALLBACK(Recalibrate)
 

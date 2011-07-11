@@ -174,14 +174,27 @@ void manta::SetSliderLEDNum(int id, int ledNum)
    }
 }
 
-void manta::SetButtonLED(t_symbol *state, int id)
+void manta::SetButtonLED(int argc, t_atom *argv)
 {
-   LEDState parsedState = ledStateFromSymbol(state);
-   Manta::SetButtonLED(parsedState, id);
-}
-
-void manta::SetButtonLEDNum(int state, int id)
-{
-   LEDState parsedState = ledStateFromInt(state);
-   Manta::SetButtonLED(parsedState, id);
+   LEDState parsedState;
+   if(argc < 2 ||
+         (!CanbeInt(argv[0]) && !IsSymbol(argv[0])))
+   {
+      post("manta: 'pad' - invalid parameters");
+   }
+   if(CanbeInt(argv[0]))
+   {
+      parsedState = ledStateFromInt(GetInt(argv[0]));
+   }
+   else if(IsSymbol(argv[0]))
+   {
+      parsedState = ledStateFromSymbol(GetSymbol(argv[0]));
+   }
+   for(int i = 1; i < argc; ++i)
+   {
+      if(CanbeInt(argv[i]))
+      {
+         Manta::SetButtonLED(parsedState, GetInt(argv[i]));
+      }
+   }
 }

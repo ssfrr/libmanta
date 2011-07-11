@@ -24,8 +24,7 @@ manta::manta():
    FLEXT_ADDMETHOD_2(1, "slider", SetSliderLEDNum, int, int);
    FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMask, t_symptr, int, int);
    FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMaskNum, int, int, int);
-   FLEXT_ADDMETHOD_2(1, "button", SetButtonLED, t_symptr, int);
-   FLEXT_ADDMETHOD_2(1, "button", SetButtonLEDNum, int, int);
+   FLEXT_ADDMETHOD_(1, "button", SetButtonLED);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
    FLEXT_ADDMETHOD_(0, "reset", Recalibrate);
    
