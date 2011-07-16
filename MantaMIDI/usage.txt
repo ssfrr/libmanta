@@ -34,3 +34,24 @@ Aftertouch / key "pressure"
 1. (default) maximum pad value sent as Channel Pressure (After-touch) for only one channel
 2. polyphonic aftertouch for each note
 3. continuous controller for each
+
+
+
+
+
+* Octave modifier for pads
+* move pad selection to main window, remove layouts
+* remove led controls from sliders
+* 
+
+===== CMake Changes ======
+# for libraries that are only 32-bit
+set (CMAKE_CXX_FLAGS "-m32")
+
+#############################
+# QT Static linking files   #
+#############################
+SET(QT_STATIC_LIBS
+    /opt/local/lib/libQtGui.la
+)
+
