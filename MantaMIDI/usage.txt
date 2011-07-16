@@ -1,0 +1,36 @@
+Mapping settings:
+
+Pads:
+Channel: 0 (or configured)
+values 36 (+48)
+
+Pad LEDs: 
+channel: 1
+Values: 0-48 (amber), 50-98(red)
+
+Sliders: 
+channel: 2
+
+-s [nn] Starting MIDI pitch (36 by default)
+
+Pads
+-------
+* Start 36, increase chromatically
+	-m c	(mode chromatic)
+* Honeycomb (default)
+* "Piano"
+	-m p	(mode piano)
+
+Sliders
+-------
+* Continuous controller… ?
+* Pitch bend
+
+Modes:
+Velocity sensing on / off
+-v	use velocity
+
+Aftertouch / key "pressure"
+1. (default) maximum pad value sent as Channel Pressure (After-touch) for only one channel
+2. polyphonic aftertouch for each note
+3. continuous controller for each
