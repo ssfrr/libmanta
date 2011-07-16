@@ -1,4 +1,4 @@
-#include "../OptionHolder.h"
+#include "../MantaMidiSettings.h"
 #include "RtMidiManager.h"
 #include <stdio.h>
 #include <cstdlib>
@@ -51,7 +51,7 @@ void MidiReadThread( double deltatime, std::vector< unsigned char > *message, vo
     }
 }
 
-RtMidiManager::RtMidiManager(OptionHolder *options) :
+RtMidiManager::RtMidiManager(MantaMidiSettings *options) :
   MidiManager(options)
 {
   InitializeMIDI();

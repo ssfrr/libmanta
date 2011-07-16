@@ -16,7 +16,7 @@ MantaThread::~MantaThread()
     delete manta;
 }
 
-void MantaThread::Setup(OptionHolder *options)
+void MantaThread::Setup(MantaMidiSettings *options)
 {
     m_options = options;
     manta = new RtMidiManager(options);

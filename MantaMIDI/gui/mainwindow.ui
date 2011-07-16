@@ -858,7 +858,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget_3">
      <property name="geometry">
       <rect>
        <x>140</x>
@@ -1080,7 +1080,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="editPadsButton">
      <property name="geometry">
       <rect>
        <x>290</x>
@@ -1130,6 +1130,21 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionLoad_Preset"/>
+    <addaction name="actionSave_Preset"/>
+   </widget>
+   <widget class="QMenu" name="menuTesting">
+    <property name="title">
+     <string>Testing</string>
+    </property>
+    <addaction name="actionForce_Disconnect"/>
+   </widget>
+   <addaction name="menuOptions"/>
+   <addaction name="menuTesting"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -1140,6 +1155,33 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionLoad_Preset">
+   <property name="text">
+    <string>Load Preset</string>
+   </property>
+   <property name="toolTip">
+    <string>Load Preset from File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave_Preset">
+   <property name="text">
+    <string>Save Preset</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Preset to File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionForce_Disconnect">
+   <property name="text">
+    <string>Force Disconnect</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

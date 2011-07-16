@@ -10,7 +10,7 @@
 #define MANTA_BUTTONS   4
 #define MAX_MIDI_NOTES	128		// 48 for the actual manta array...
 
-class OptionHolder;
+class MantaMidiSettings;
 
 enum MidiActionType
   {
@@ -33,14 +33,14 @@ typedef struct
 class MidiManager : public Manta
 {
  public:
-  MidiManager(OptionHolder *options);
+  MidiManager(MantaMidiSettings *options);
   ~MidiManager();
 
   void Initialize();
   void ResetLEDS();
   
  protected:
-  OptionHolder *m_options;
+  MantaMidiSettings *m_options;
 
   virtual void InitializeMIDI() = 0;
   virtual void SendMIDI(unsigned char data[], int nBytes) = 0;

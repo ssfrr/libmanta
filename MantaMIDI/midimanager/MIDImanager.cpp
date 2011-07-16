@@ -1,11 +1,11 @@
-#include "../OptionHolder.h"
+#include "../MantaMidiSettings.h"
 #include "MIDImanager.h"
 #include <cstring>
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
 
-MidiManager::MidiManager(OptionHolder *options) :
+MidiManager::MidiManager(MantaMidiSettings *options) :
   m_options(options), m_padAftertouchStackIndex(-1)
 {
 }

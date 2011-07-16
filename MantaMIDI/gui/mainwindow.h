@@ -5,7 +5,7 @@
 
 #include "mantathread.h"
 #include "padsettingsdialog.h"
-#include "../OptionHolder.h"
+#include "QMantaSettings.h"
 
 namespace Ui {
     class MainWindow;
@@ -77,15 +77,20 @@ private slots:
     void on_slider2mode_controller_clicked();
     void on_slider2mode_pitchbend_clicked();
 
-    void on_pushButton_clicked();
+    void on_editPadsButton_clicked();
+
+    void on_actionSave_Preset_triggered();
+
+    void on_actionLoad_Preset_triggered();
 
 private:
     void UpdateLayout(PadLayout padLayout);
+    void ReloadForms();
 
     Ui::MainWindow *ui;
     PadSettingsDialog *padSettingsDialog;
 
-    OptionHolder options;
+    QMantaMidiSettings options;
     MantaThread thread;
 };
 

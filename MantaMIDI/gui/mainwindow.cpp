@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -289,15 +290,67 @@ void MainWindow::on_slider2mode_pitchbend_clicked()
     options.SetSlider_Mode(1, smPitchBend);
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_editPadsButton_clicked()
 {
     if (!padSettingsDialog)
     {
-        padSettingsDialog = new PadSettingsDialog(this);
+        padSettingsDialog = new PadSettingsDialog(&options, this);
         //connect(padSettingsDialog, SIGNAL(), this, SLOT());
     }
 
     padSettingsDialog->show();
     padSettingsDialog->raise();
     padSettingsDialog->activateWindow();
+}
+
+void MainWindow::on_actionSave_Preset_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Manta Preset"), tr("./"), tr("Manta Presets (*.mta)"));
+
+    options.Save(fileName);
+}
+
+void MainWindow::on_actionLoad_Preset_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Save Manta Preset"), tr("./"), tr("Manta Presets (*.mta)"));
+
+    options.Load(fileName);
+    ReloadForms();
+}
+
+void MainWindow::ReloadForms()
+{
+    // Settings
+    ui->checkBox->setChecked(options.GetUseVelocity());
+
+    // Buttons
+    ui->button1Channel->setValue(options.GetButton_EventChannel(0));
+    ui->button2Channel->setValue(options.GetButton_EventChannel(1));
+    ui->button3Channel->setValue(options.GetButton_EventChannel(2));
+    ui->button4Channel->setValue(options.GetButton_EventChannel(3));
+    ui->button1Note->setValue(options.GetButton_Midi(0));
+    ui->button2Note->setValue(options.GetButton_Midi(0));
+    ui->button3Note->setValue(options.GetButton_Midi(0));
+    ui->button4Note->setValue(options.GetButton_Midi(0));
+    ui->button1color_on->setCurrentIndex(options.GetButton_OnColor(0));
+    ui->button2color_on->setCurrentIndex(options.GetButton_OnColor(1));
+    ui->button3color_on->setCurrentIndex(options.GetButton_OnColor(2));
+    ui->button4color_on->setCurrentIndex(options.GetButton_OnColor(3));
+    ui->button1color_off->setCurrentIndex(options.GetButton_OffColor(0));
+    ui->button2color_off->setCurrentIndex(options.GetButton_OffColor(1));
+    ui->button3color_off->setCurrentIndex(options.GetButton_OffColor(2));
+    ui->button4color_off->setCurrentIndex(options.GetButton_OffColor(3));
+    ui->button1color_inactive->setCurrentIndex(options.GetButton_InactiveColor(0));
+    ui->button2color_inactive->setCurrentIndex(options.GetButton_InactiveColor(1));
+    ui->button3color_inactive->setCurrentIndex(options.GetButton_InactiveColor(2));
+    ui->button4color_inactive->setCurrentIndex(options.GetButton_InactiveColor(3));
+
+    // Sliders
+    ui->slider1channel->setValue(options.GetSlider_EventChannel(0));
+    ui->slider2channel->setValue(options.GetSlider_EventChannel(1));
+    ui->slider1ccnum->setValue(options.GetSlider_MidiNote(0));
+    ui->slider2ccnum->setValue(options.GetSlider_MidiNote(1));
+
+    // Pads
+
 }

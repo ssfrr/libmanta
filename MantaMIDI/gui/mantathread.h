@@ -5,7 +5,7 @@
 #include <QThread>
 #include <QWaitCondition>
 
-#include "../OptionHolder.h"
+#include "../MantaMidiSettings.h"
 #include "../midimanager/RtMidiManager.h"
 
 class MantaThread : public QThread
@@ -15,7 +15,7 @@ public:
     MantaThread(QObject *parent = 0);
     ~MantaThread();
 
-    void Setup(OptionHolder *options);
+    void Setup(MantaMidiSettings *options);
     void ReloadLEDS();
 
 signals:
@@ -30,7 +30,7 @@ private:
     QWaitCondition condition;
     bool bExit;
 
-    OptionHolder *m_options;
+    MantaMidiSettings *m_options;
     MidiManager *manta;
 };
 

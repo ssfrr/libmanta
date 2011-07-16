@@ -3,7 +3,7 @@
 
 #include <QGraphicsRectItem>
 
-PadSettingsDialog::PadSettingsDialog(OptionHolder *options, QWidget *parent) :
+PadSettingsDialog::PadSettingsDialog(MantaMidiSettings *options, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PadSettingsDialog),
     m_options(options)
@@ -41,4 +41,14 @@ void PadSettingsDialog::SetWidgetsFromPadIndex(int index)
 void PadSettingsDialog::on_padSelectionSpin_valueChanged(int value)
 {
     SetWidgetsFromPadIndex(value);
+}
+
+void PadSettingsDialog::on_padChannelSpin_valueChanged(int value)
+{
+    m_options->SetPad(ui->padSelectionSpin->value() - 1, value, ui->padNoteSpin->value() - 1);
+}
+
+void PadSettingsDialog::on_padNoteSpin_valueChanged(int value)
+{
+    m_options->SetPad(ui->padSelectionSpin->value() - 1, ui->padChannelSpin->value() - 1, value);
 }
