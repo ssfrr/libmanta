@@ -1,17 +1,16 @@
 #ifndef _MIDIMANAGER_H
 #define _MIDIMANAGER_H
 
-#include "../core/Manta.h"
-#include "../core/MantaExceptions.h"
+#include "../../core/Manta.h"
+#include "../../core/MantaExceptions.h"
 #include <stdint.h>
 
-#define MANTA_PAD_ROWS  6
 #define MANTA_PADS      48
 #define MANTA_SLIDERPOS 127
 #define MANTA_BUTTONS   4
 #define MAX_MIDI_NOTES	128		// 48 for the actual manta array...
 
-class OptionHolder;
+class MantaMidiSettings;
 
 enum MidiActionType
   {
@@ -28,18 +27,20 @@ typedef struct
 {
   int timeOn;
   int lastValue;
+  int curValue;
 } MidiNote;
 
 class MidiManager : public Manta
 {
  public:
-  MidiManager(OptionHolder &options);
+  MidiManager(MantaMidiSettings *options);
   ~MidiManager();
 
   void Initialize();
+  void ResetLEDS();
   
  protected:
-  OptionHolder m_options;
+  MantaMidiSettings *m_options;
 
   virtual void InitializeMIDI() = 0;
   virtual void SendMIDI(unsigned char data[], int nBytes) = 0;
@@ -54,11 +55,6 @@ class MidiManager : public Manta
   virtual void ButtonVelocityEvent(int id, int value);
 
   void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value);
-
-  void InitializeMapValues();
-  void AssignPianoLayout();
-  void AssignChromaticLayout();
-  void AssignHoneycombLayout();
 
   int TranslatePadValueToMIDI(int padValue);
   int TranslateSliderValueToCC(int sliderValue);
@@ -79,10 +75,7 @@ class MidiManager : public Manta
 
   void PushAftertouch(int key);
   void PopAftertouch(int key);
-  
-  int m_padToNoteMap[MANTA_PADS];
-  int m_sliderToNoteMap[MANTA_SLIDERPOS];
-  int m_buttonToNoteMap[MANTA_BUTTONS];
+  bool IsCurrentPadMaximum(int noteNum, int value);
 
   MidiNote m_padNotes[MAX_MIDI_NOTES];
   MidiNote m_buttonNotes[MAX_MIDI_NOTES];
