@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>587</width>
-    <height>688</height>
+    <width>606</width>
+    <height>753</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -63,7 +63,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>550</width>
+       <width>631</width>
        <height>161</height>
       </rect>
      </property>
@@ -574,8 +574,8 @@
      <rect>
       <x>10</x>
       <y>270</y>
-      <width>411</width>
-      <height>160</height>
+      <width>571</width>
+      <height>111</height>
      </rect>
     </property>
     <property name="title">
@@ -584,7 +584,7 @@
     <widget class="QSpinBox" name="slider1channel">
      <property name="geometry">
       <rect>
-       <x>29</x>
+       <x>39</x>
        <y>67</y>
        <width>45</width>
        <height>25</height>
@@ -600,7 +600,7 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>30</x>
        <y>32</y>
        <width>52</width>
        <height>16</height>
@@ -616,7 +616,7 @@
     <widget class="QLabel" name="label_29">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>100</x>
        <y>32</y>
        <width>30</width>
        <height>16</height>
@@ -632,7 +632,7 @@
     <widget class="QLabel" name="label_30">
      <property name="geometry">
       <rect>
-       <x>173</x>
+       <x>183</x>
        <y>32</y>
        <width>35</width>
        <height>16</height>
@@ -640,38 +640,6 @@
      </property>
      <property name="text">
       <string>Mode</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_31">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>30</y>
-       <width>19</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>On</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_32">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>30</y>
-       <width>21</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Off</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -696,7 +664,7 @@
     <widget class="QSpinBox" name="slider1ccnum">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>90</x>
        <y>67</y>
        <width>53</width>
        <height>25</height>
@@ -709,36 +677,11 @@
       <number>128</number>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_26">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>64</y>
-       <width>70</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string extracomment="LEDs Off">Off</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Amber">Amber</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Red">Red</string>
-      </property>
-     </item>
-    </widget>
     <widget class="QLabel" name="label_28">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>120</y>
+       <x>313</x>
+       <y>73</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -750,36 +693,11 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_28">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>110</y>
-       <width>70</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string extracomment="LEDs Off">Off</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Amber">Amber</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Red">Red</string>
-      </property>
-     </item>
-    </widget>
     <widget class="QSpinBox" name="slider2ccnum">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>116</y>
+       <x>383</x>
+       <y>69</y>
        <width>53</width>
        <height>25</height>
       </rect>
@@ -794,8 +712,8 @@
     <widget class="QSpinBox" name="slider2channel">
      <property name="geometry">
       <rect>
-       <x>29</x>
-       <y>116</y>
+       <x>332</x>
+       <y>69</y>
        <width>45</width>
        <height>25</height>
       </rect>
@@ -807,38 +725,13 @@
       <number>16</number>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_29">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>64</y>
-       <width>69</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string extracomment="LEDs Off">Off</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Amber">Amber</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Red">Red</string>
-      </property>
-     </item>
-    </widget>
     <widget class="QWidget" name="layoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>109</y>
+       <x>443</x>
+       <y>60</y>
        <width>99</width>
-       <height>39</height>
+       <height>41</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -861,7 +754,7 @@
     <widget class="QWidget" name="layoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>150</x>
        <y>60</y>
        <width>99</width>
        <height>39</height>
@@ -884,39 +777,62 @@
       </item>
      </layout>
     </widget>
-    <widget class="QComboBox" name="comboBox_37">
+    <widget class="QLabel" name="label_31">
+     <property name="geometry">
+      <rect>
+       <x>483</x>
+       <y>30</y>
+       <width>35</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Mode</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
        <x>330</x>
-       <y>110</y>
-       <width>70</width>
-       <height>26</height>
+       <y>30</y>
+       <width>52</width>
+       <height>16</height>
       </rect>
      </property>
-     <item>
-      <property name="text">
-       <string extracomment="LEDs Off">Off</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Amber">Amber</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string extracomment="LED Red">Red</string>
-      </property>
-     </item>
+     <property name="text">
+      <string>Channel</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_32">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>30</y>
+       <width>30</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Note</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>430</y>
-      <width>411</width>
-      <height>201</height>
+      <y>380</y>
+      <width>590</width>
+      <height>480</height>
      </rect>
     </property>
     <property name="title">
@@ -928,7 +844,7 @@
        <x>10</x>
        <y>20</y>
        <width>161</width>
-       <height>161</height>
+       <height>110</height>
       </rect>
      </property>
      <property name="title">
@@ -1001,32 +917,6 @@
        <string>padLayoutGroup</string>
       </attribute>
      </widget>
-     <widget class="QRadioButton" name="layoutRB_Custom">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>100</y>
-        <width>102</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Custom</string>
-      </property>
-      <attribute name="buttonGroup">
-       <string>padLayoutGroup</string>
-      </attribute>
-     </widget>
-     <widget class="QTextEdit" name="textEdit">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>120</y>
-        <width>121</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_8">
      <property name="geometry">
@@ -1034,7 +924,7 @@
        <x>180</x>
        <y>20</y>
        <width>191</width>
-       <height>91</height>
+       <height>90</height>
       </rect>
      </property>
      <property name="title">
@@ -1080,18 +970,404 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="editPadsButton">
+    <widget class="QGroupBox" name="groupBox_6">
      <property name="geometry">
       <rect>
-       <x>290</x>
-       <y>160</y>
-       <width>114</width>
-       <height>32</height>
+       <x>10</x>
+       <y>130</y>
+       <width>570</width>
+       <height>180</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Edit Pad MIDI</string>
+     <property name="title">
+      <string>Pad MIDI</string>
      </property>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>60</y>
+        <width>62</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Inactive</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>60</y>
+        <width>62</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>On</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="padcolor_off">
+      <property name="geometry">
+       <rect>
+        <x>424</x>
+        <y>80</y>
+        <width>70</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string extracomment="LEDs Off">Off</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string extracomment="LED Amber">Amber</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string extracomment="LED Red">Red</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="padcolor_on">
+      <property name="geometry">
+       <rect>
+        <x>348</x>
+        <y>80</y>
+        <width>70</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string extracomment="LEDs Off">Off</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string extracomment="LED Amber">Amber</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string extracomment="LED Red">Red</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>60</y>
+        <width>62</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Mode</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>60</y>
+        <width>50</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Channel</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="padMode_control">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>80</y>
+        <width>68</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Control</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="padMode_note">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>80</y>
+        <width>55</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Note</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="padSelectionSpin">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>28</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>48</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_20">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>60</y>
+        <width>62</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="padSendChannelSpin">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>80</y>
+        <width>57</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>16</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="padSendNoteSpin">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>80</y>
+        <width>57</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string extracomment="Midi Value for Note, Controller Number for Control. 1 - 128, 0 to disable."/>
+      </property>
+      <property name="minimum">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <number>128</number>
+      </property>
+      <property name="value">
+       <number>64</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>30</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Pad</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="padcolor_inactive">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>80</y>
+        <width>70</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string extracomment="LEDs Off">Off</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string extracomment="LED Amber">Amber</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string extracomment="LED Red">Red</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_21">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Note</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="receiveMirrorsSendCheck">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>20</y>
+        <width>150</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>MIDI Receive Mirrors Send</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="padReceiveAmberNoteSpin">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>110</y>
+        <width>57</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string extracomment="Midi Value for Note, Controller Number for Control. 1 - 128, 0 to disable."/>
+      </property>
+      <property name="minimum">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <number>128</number>
+      </property>
+      <property name="value">
+       <number>64</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="padReceiveChannelSpin">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>124</y>
+        <width>57</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>16</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="padReceiveRedNoteSpin">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>140</y>
+        <width>57</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string extracomment="Midi Value for Note, Controller Number for Control. 1 - 128, 0 to disable."/>
+      </property>
+      <property name="minimum">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <number>128</number>
+      </property>
+      <property name="value">
+       <number>64</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_22">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>86</y>
+        <width>40</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Send</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_23">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>108</y>
+        <width>51</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Receive Amber</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_24">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>140</y>
+        <width>51</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Receive Red</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="testtext">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>110</y>
+        <width>351</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QLabel" name="mantaConnectedLbl">
@@ -1126,7 +1402,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>587</width>
+     <width>606</width>
      <height>22</height>
     </rect>
    </property>

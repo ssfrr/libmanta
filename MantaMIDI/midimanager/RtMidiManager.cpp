@@ -40,15 +40,6 @@ void MidiReadThread( double deltatime, std::vector< unsigned char > *message, vo
       if (index < 48 && index >= 0)
 	manta->SetPadLED(resultColor, index);
     }
-  // slider leds
-  else if ( 100 <= second && 118 > second)
-    {
-    }
-  // buttons
-  else if ( 120 <= second && 124 > second)
-    {
-      
-    }
 }
 
 RtMidiManager::RtMidiManager(MantaMidiSettings *options) :

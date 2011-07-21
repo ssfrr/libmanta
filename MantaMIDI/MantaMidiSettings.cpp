@@ -86,6 +86,21 @@ void MantaMidiSettings::SetPad(int pad, unsigned char channel, unsigned char not
     m_basePadMidi[pad] = note;
 }
 
+void MantaMidiSettings::SetPadLED_MidiChannel(int pad, unsigned char channel)
+{
+    m_padLEDChannel[pad] = channel;
+}
+
+void MantaMidiSettings::SetPadLED_AmberMidiNote(int pad, unsigned char amberNote)
+{
+    m_AmberLEDMidi[pad] = amberNote;
+}
+
+void MantaMidiSettings::SetPadLED_RedMidiNote(int pad, unsigned char redNote)
+{
+    m_RedLEDMidi[pad] = redNote;
+}
+
 void MantaMidiSettings::SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote)
 {
     m_padLEDChannel[pad] = channel;

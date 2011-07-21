@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     thread.terminate();
-    if (padSettingsDialog)
-        delete padSettingsDialog;
     delete ui;
 }
 
@@ -290,19 +288,6 @@ void MainWindow::on_slider2mode_pitchbend_clicked()
     options.SetSlider_Mode(1, smPitchBend);
 }
 
-void MainWindow::on_editPadsButton_clicked()
-{
-    if (!padSettingsDialog)
-    {
-        padSettingsDialog = new PadSettingsDialog(&options, this);
-        //connect(padSettingsDialog, SIGNAL(), this, SLOT());
-    }
-
-    padSettingsDialog->show();
-    padSettingsDialog->raise();
-    padSettingsDialog->activateWindow();
-}
-
 void MainWindow::on_actionSave_Preset_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Manta Preset"), tr("./"), tr("Manta Presets (*.mta)"));
@@ -353,4 +338,82 @@ void MainWindow::ReloadForms()
 
     // Pads
 
+}
+
+void MainWindow::SetPadMIDIFormFromIndex(int index)
+{
+    int adjIndex = index-1;
+    if (ui)
+    {
+        ui->padSendChannelSpin->setValue(options.GetPad_EventChannel(adjIndex));
+        ui->padSendNoteSpin->setValue(options.GetPad_Midi(adjIndex) + 1);
+        ui->padcolor_on->setCurrentIndex(options.GetPad_OnColor(adjIndex));
+        ui->padcolor_off->setCurrentIndex(options.GetPad_OffColor(adjIndex));
+        ui->padcolor_inactive->setCurrentIndex(options.GetPad_InactiveColor(adjIndex));
+
+        ui->padReceiveChannelSpin->setValue(options.GetPad_LEDChannel(adjIndex));
+        ui->padReceiveAmberNoteSpin->setValue(options.GetPad_AmberLEDMidi(adjIndex) + 1);
+        ui->padReceiveRedNoteSpin->setValue(options.GetPad_RedLEDMidi(adjIndex) + 1);
+
+        QString debugPrint;
+        for (int i = 0; i < 48; i++)
+        {
+            debugPrint.append(QString("%1:%2;").arg(i).arg(options.GetPad_RedLEDMidi(i)));
+        }
+        ui->testtext->setText(debugPrint);
+    }
+}
+
+void MainWindow::on_padSelectionSpin_valueChanged(int value)
+{
+    SetPadMIDIFormFromIndex(value);
+}
+
+void MainWindow::on_padChannelSpin_valueChanged(int value)
+{
+    options.SetPad(ui->padSelectionSpin->value() - 1, value, ui->padSendChannelSpin->value() - 1);
+
+    if(m_bReceiveMirrorsSend)
+    {
+        ui->padReceiveChannelSpin->setValue(value);
+        options.SetPadLED(ui->padSelectionSpin->value() - 1, value, ui->padReceiveAmberNoteSpin->value() - 1, ui->padReceiveRedNoteSpin->value() - 1);
+    }
+}
+
+void MainWindow::on_padNoteSpin_valueChanged(int value)
+{
+    options.SetPad(ui->padSelectionSpin->value() - 1, ui->padSendChannelSpin->value(), value - 1);
+
+    if(m_bReceiveMirrorsSend)
+    {
+        ui->padReceiveAmberNoteSpin->setValue(options.GetPad_AmberLEDMidi(value));
+        ui->padReceiveRedNoteSpin->setValue(options.GetPad_RedLEDMidi(value));
+        options.SetPadLED(ui->padSelectionSpin->value() - 1, ui->padSendChannelSpin->value(), value - 1, value - 1);
+    }
+}
+
+void MainWindow::on_padReceiveAmberNoteSpin_valueChanged(int value)
+{
+    int padIndex = ui->padSelectionSpin->value() - 1;
+    options.SetPadLED_AmberMidiNote(padIndex, value - 1);
+}
+
+void MainWindow::on_padReceiveRedNoteSpin_valueChanged(int value)
+{
+    int padIndex = ui->padSelectionSpin->value() - 1;
+    options.SetPadLED_RedMidiNote(padIndex, value - 1);
+}
+
+void MainWindow::on_padReceiveChannelSpin_valueChanged(int value)
+{
+    int padIndex = ui->padSelectionSpin->value() - 1;
+    options.SetPadLED_MidiChannel(padIndex, value);
+}
+
+void MainWindow::on_receiveMirrorsSendCheck_clicked(bool checked)
+{
+    m_bReceiveMirrorsSend = checked;
+    ui->padReceiveChannelSpin->setEnabled(!checked);
+    ui->padReceiveRedNoteSpin->setEnabled(!checked);
+    ui->padReceiveAmberNoteSpin->setEnabled(!checked);
 }

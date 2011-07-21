@@ -4,7 +4,6 @@
 #include <QMainWindow>
 
 #include "mantathread.h"
-#include "padsettingsdialog.h"
 #include "QMantaSettings.h"
 
 namespace Ui {
@@ -77,21 +76,29 @@ private slots:
     void on_slider2mode_controller_clicked();
     void on_slider2mode_pitchbend_clicked();
 
-    void on_editPadsButton_clicked();
-
     void on_actionSave_Preset_triggered();
-
     void on_actionLoad_Preset_triggered();
+    void on_padSelectionSpin_valueChanged(int );
+    void on_padChannelSpin_valueChanged(int );
+    void on_padNoteSpin_valueChanged(int );
+    void on_padReceiveChannelSpin_valueChanged(int );
+    void on_padReceiveAmberNoteSpin_valueChanged(int );
+    void on_padReceiveRedNoteSpin_valueChanged(int );
+    void on_receiveMirrorsSendCheck_clicked(bool checked);
 
 private:
     void UpdateLayout(PadLayout padLayout);
     void ReloadForms();
 
+    void SetPadMIDIFormFromIndex(int index);
+    void SetPadRecieveAmberFormFromIndex(int index);
+    void SetPadRecieveRedFormFromIndex(int index);
+
     Ui::MainWindow *ui;
-    PadSettingsDialog *padSettingsDialog;
 
     QMantaMidiSettings options;
     MantaThread thread;
+    bool m_bReceiveMirrorsSend;
 };
 
 #endif // MAINWINDOW_H

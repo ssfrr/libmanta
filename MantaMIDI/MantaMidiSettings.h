@@ -47,12 +47,9 @@ class MantaMidiSettings
     bool GetUseVelocity();
     void SetUseVelocity(bool bUseVelocity);
 
-    /* Pads */
+    /* Pads Sends*/
     unsigned char GetPad_EventChannel(int pad);
     char GetPad_Midi(int pad);
-    unsigned char GetPad_LEDChannel(int pad);
-    unsigned char GetPad_AmberLEDMidi(int pad);
-    unsigned char GetPad_RedLEDMidi(int pad);
     Manta::LEDState GetPad_InactiveColor(int pad);
     Manta::LEDState GetPad_OnColor(int pad);
     Manta::LEDState GetPad_OffColor(int pad);
@@ -61,10 +58,18 @@ class MantaMidiSettings
     PadValMode GetPad_Mode();
     void SetPad_Mode(PadValMode mode);
     void SetPad(int pad, unsigned char channel, unsigned char note);
-    void SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote);
     void SetAllPadOnColor(Manta::LEDState onColor);
     void SetAllPadOffColor(Manta::LEDState offColor);
     void SetAllPadInactiveColor(Manta::LEDState inactiveColor);
+
+    /* Pad Recieve */
+    unsigned char GetPad_LEDChannel(int pad);
+    unsigned char GetPad_AmberLEDMidi(int pad);
+    unsigned char GetPad_RedLEDMidi(int pad);
+    void SetPadLED_MidiChannel(int pad, unsigned char channel);
+    void SetPadLED_AmberMidiNote(int pad, unsigned char amberNote);
+    void SetPadLED_RedMidiNote(int pad, unsigned char redNote);
+    void SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote);
 
     /* Sliders */
     bool IsValidSliderIndex(int slider);
@@ -106,18 +111,19 @@ protected:
     bool m_bDebugMode;
     bool m_bUseVelocity;
 
-    /* Pad */
+    /* Pad Send*/
     const static int numPads = 48;
     PadLayout m_padLayout;
     PadValMode m_padMode;
     unsigned char m_padEventChannel[numPads];
     unsigned char m_basePadMidi[numPads];
-    unsigned char m_padLEDChannel[numPads];
-    unsigned char m_AmberLEDMidi[numPads];
-    unsigned char m_RedLEDMidi[numPads];
     Manta::LEDState m_inactivePadColor[numPads];
     Manta::LEDState m_onPadColor[numPads];
     Manta::LEDState m_offPadColor[numPads];
+    /* Pad Receive */
+    unsigned char m_padLEDChannel[numPads];
+    unsigned char m_AmberLEDMidi[numPads];
+    unsigned char m_RedLEDMidi[numPads];
 
     /* Sliders */
     const static int numSliders = 2;
