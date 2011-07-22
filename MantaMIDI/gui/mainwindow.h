@@ -45,13 +45,13 @@ private slots:
     void on_button3Note_valueChanged(int );
     void on_button4Note_valueChanged(int );
 
-    void on_button1type_conrol_clicked();
+    void on_button1type_control_clicked();
     void on_button1type_note_clicked();
     void on_button2type_control_clicked();
     void on_button2type_note_clicked();
     void on_button3type_control_clicked();
     void on_button3type_note_clicked();
-    void on_butotn4type_control_clicked();
+    void on_button4type_control_clicked();
     void on_button4type_note_clicked();
 
     void on_button1color_on_currentIndexChanged(int index);
@@ -71,7 +71,7 @@ private slots:
     void on_slider1ccnum_valueChanged(int );
     void on_slider2channel_valueChanged(int );
     void on_slider2ccnum_valueChanged(int );
-    void on_slider1mode_conroller_clicked();
+    void on_slider1mode_controller_clicked();
     void on_slider1mode_pitchbend_clicked();
     void on_slider2mode_controller_clicked();
     void on_slider2mode_pitchbend_clicked();

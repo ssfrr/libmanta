@@ -136,7 +136,7 @@ void MainWindow::on_button4Note_valueChanged(int value)
     thread.ReloadLEDS();
 }
 
-void MainWindow::on_button1type_conrol_clicked()
+void MainWindow::on_button1type_control_clicked()
 {
     options.SetButton_Mode(0, bmController);
 }
@@ -166,7 +166,7 @@ void MainWindow::on_button3type_note_clicked()
     options.SetButton_Mode(2, bmNote);
 }
 
-void MainWindow::on_butotn4type_control_clicked()
+void MainWindow::on_button4type_control_clicked()
 {
     options.SetButton_Mode(3, bmController);
 }
@@ -268,7 +268,7 @@ void MainWindow::on_slider2ccnum_valueChanged(int value)
     options.SetSlider_Midi(1, value);
 }
 
-void MainWindow::on_slider1mode_conroller_clicked()
+void MainWindow::on_slider1mode_controller_clicked()
 {
     options.SetSlider_Mode(0, smContinuous);
 }
@@ -330,13 +330,53 @@ void MainWindow::ReloadForms()
     ui->button3color_inactive->setCurrentIndex(options.GetButton_InactiveColor(2));
     ui->button4color_inactive->setCurrentIndex(options.GetButton_InactiveColor(3));
 
+    // This way is really dumb, but I couldn't figure out a better way to do it...
+    // Button 1
+    if (bmNote == options.GetButton_Mode(0))
+        ui->button1type_note->setChecked(true);
+    else if (bmController == options.GetButton_Mode(0))
+        ui->button1type_control->setChecked(true);
+    // Button 2
+    if (bmNote == options.GetButton_Mode(1))
+        ui->button2type_note->setChecked(true);
+    else if (bmController == options.GetButton_Mode(1))
+        ui->button2type_control->setChecked(true);
+    // Button 3
+    if (bmNote == options.GetButton_Mode(2))
+        ui->button3type_note->setChecked(true);
+    else if (bmController == options.GetButton_Mode(2))
+        ui->button3type_control->setChecked(true);
+    // Button 4
+    if (bmNote == options.GetButton_Mode(3))
+        ui->button4type_note->setChecked(true);
+    else if (bmController == options.GetButton_Mode(3))
+        ui->button4type_control->setChecked(true);
+
     // Sliders
     ui->slider1channel->setValue(options.GetSlider_EventChannel(0));
     ui->slider2channel->setValue(options.GetSlider_EventChannel(1));
     ui->slider1ccnum->setValue(options.GetSlider_MidiNote(0));
     ui->slider2ccnum->setValue(options.GetSlider_MidiNote(1));
 
+    // Slider 1
+    if (smContinuous == options.GetSlider_Mode(0))
+        ui->slider1mode_controller->setChecked(true);
+    else if (smPitchBend == options.GetSlider_Mode(0))
+        ui->slider1mode_pitchbend->setChecked(true);
+
+    // Slider 2
+    if (smContinuous == options.GetSlider_Mode(1))
+        ui->slider2mode_controller->setChecked(true);
+    else if (smPitchBend == options.GetSlider_Mode(1))
+        ui->slider2mode_pitchbend->setChecked(true);
+
     // Pads
+    if (pvmMonoAftertouch == options.GetPad_Mode())
+        ui->padAftertouch_Monophonic->setChecked(true);
+    else if (pvmPolyAftertouch == options.GetPad_Mode())
+        ui->padAftertouch_Polyphonic->setChecked(true);
+    else if (pvmPolyContinuous == options.GetPad_Mode())
+        ui->padAftertouch_PolyphonicController->setChecked(true);
 
 }
 
@@ -354,13 +394,6 @@ void MainWindow::SetPadMIDIFormFromIndex(int index)
         ui->padReceiveChannelSpin->setValue(options.GetPad_LEDChannel(adjIndex));
         ui->padReceiveAmberNoteSpin->setValue(options.GetPad_AmberLEDMidi(adjIndex) + 1);
         ui->padReceiveRedNoteSpin->setValue(options.GetPad_RedLEDMidi(adjIndex) + 1);
-
-        QString debugPrint;
-        for (int i = 0; i < 48; i++)
-        {
-            debugPrint.append(QString("%1:%2;").arg(i).arg(options.GetPad_RedLEDMidi(i)));
-        }
-        ui->testtext->setText(debugPrint);
     }
 }
 

@@ -159,10 +159,13 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QRadioButton" name="button1type_conrol">
+       <widget class="QRadioButton" name="button1type_control">
         <property name="text">
          <string>Control</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button1TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="1" column="4">
@@ -170,6 +173,9 @@
         <property name="text">
          <string>Note</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button1TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="1" column="5">
@@ -270,6 +276,9 @@
         <property name="text">
          <string>Control</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button2TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="2" column="4">
@@ -277,6 +286,9 @@
         <property name="text">
          <string>Note</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button2TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="2" column="5">
@@ -358,6 +370,9 @@
         <property name="text">
          <string>Control</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button3TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="3" column="4">
@@ -365,6 +380,9 @@
         <property name="text">
          <string>Note</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button3TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="3" column="5">
@@ -461,10 +479,13 @@
        </widget>
       </item>
       <item row="4" column="3">
-       <widget class="QRadioButton" name="butotn4type_control">
+       <widget class="QRadioButton" name="button4type_control">
         <property name="text">
          <string>Control</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button4TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="4" column="4">
@@ -472,6 +493,9 @@
         <property name="text">
          <string>Note</string>
         </property>
+        <attribute name="buttonGroup">
+         <string>button4TypeGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="4" column="5">
@@ -762,7 +786,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QRadioButton" name="slider1mode_conroller">
+       <widget class="QRadioButton" name="slider1mode_controller">
         <property name="text">
          <string>Continuous</string>
         </property>
@@ -942,6 +966,9 @@
       <property name="text">
        <string>Monophonic Aftertouch</string>
       </property>
+      <attribute name="buttonGroup">
+       <string>padAftertouchModeGroup</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="padAftertouch_Polyphonic">
       <property name="geometry">
@@ -955,6 +982,9 @@
       <property name="text">
        <string>Polyphonic Aftertouch</string>
       </property>
+      <attribute name="buttonGroup">
+       <string>padAftertouchModeGroup</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="padAftertouch_PolyphonicController">
       <property name="geometry">
@@ -968,6 +998,9 @@
       <property name="text">
        <string>Polyphonic Controllers</string>
       </property>
+      <attribute name="buttonGroup">
+       <string>padAftertouchModeGroup</string>
+      </attribute>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_6">
@@ -1058,19 +1091,6 @@
        </property>
       </item>
      </widget>
-     <widget class="QLabel" name="label_18">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>60</y>
-        <width>62</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Mode</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_19">
       <property name="geometry">
        <rect>
@@ -1082,32 +1102,6 @@
       </property>
       <property name="text">
        <string>Channel</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="padMode_control">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>80</y>
-        <width>68</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Control</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="padMode_note">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>80</y>
-        <width>55</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Note</string>
       </property>
      </widget>
      <widget class="QSpinBox" name="padSelectionSpin">
@@ -1464,5 +1458,10 @@
  <connections/>
  <buttongroups>
   <buttongroup name="padLayoutGroup"/>
+  <buttongroup name="button4TypeGroup"/>
+  <buttongroup name="button1TypeGroup"/>
+  <buttongroup name="button2TypeGroup"/>
+  <buttongroup name="button3TypeGroup"/>
+  <buttongroup name="padAftertouchModeGroup"/>
  </buttongroups>
 </ui>
