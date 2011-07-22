@@ -4,8 +4,6 @@
 #include "MIDImanager.h"
 #include "../rtmidi/RtMidi.h"
 
-class OptionHolder;
-
 void MidiReadThread(double deltatime, std::vector< unsigned char > *message, void *userData);
 
 class RtMidiManager : public MidiManager

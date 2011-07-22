@@ -17,29 +17,14 @@ void MidiReadThread( double deltatime, std::vector< unsigned char > *message, vo
   int first = message->at(0);
   int second = message->at(1);
   int third = message->at(2);
-  Manta::LEDState resultColor;
-  int index = second;
 
-  if ( 0 <= second && 98 > second)
-    {
-      // 0 - 47 = Amber
-      if ( 0 <= second && 48 > second)
-	{
-	  resultColor = Manta::Amber;
-	  index = second;
-	}
-      else if ( 50 <= second && 98 > second)
-	{
-	  resultColor = Manta::Red;
-	  index -= 50;
-	}
+  Manta::LEDState resultColor = Manta::Off;
+  int index = manta->GetOptions()->GetPadFromMidi(second, resultColor);
       
-      if ( 0 == third )
-	resultColor = Manta::Off;
+  if ( 0 == third )
+    resultColor = Manta::Off;
       
-      if (index < 48 && index >= 0)
-	manta->SetPadLED(resultColor, index);
-    }
+    manta->SetPadLED(resultColor, index);
 }
 
 RtMidiManager::RtMidiManager(MantaMidiSettings *options) :

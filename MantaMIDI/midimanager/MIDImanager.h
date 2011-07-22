@@ -38,6 +38,8 @@ class MidiManager : public Manta
 
   void Initialize();
   void ResetLEDS();
+
+  MantaMidiSettings *GetOptions();
   
  protected:
   MantaMidiSettings *m_options;

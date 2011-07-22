@@ -70,6 +70,32 @@ char MantaMidiSettings::GetPad_Midi(int pad) { return m_basePadMidi[pad]; }
 unsigned char MantaMidiSettings::GetPad_LEDChannel(int pad) { return m_padLEDChannel[pad]; }
 unsigned char MantaMidiSettings::GetPad_AmberLEDMidi(int pad) { return m_AmberLEDMidi[pad]; }
 unsigned char MantaMidiSettings::GetPad_RedLEDMidi(int pad) { return m_RedLEDMidi[pad]; }
+int MantaMidiSettings::GetPadFromMidi(unsigned char midiIn, Manta::LEDState &color)
+{
+    int iRet = -1;
+    color = Manta::Off;
+
+    for (int i = 0; i < numPads && iRet == -1; ++i)
+    {
+        if (m_AmberLEDMidi[i] == midiIn)
+        {
+            iRet = i;
+            color = Manta::Amber;
+        }
+    }
+
+    for (int i = 0; i < numPads && iRet == -1; ++i)
+    {
+        if (m_RedLEDMidi[i] == midiIn)
+        {
+            iRet = i;
+            color = Manta::Red;
+        }
+    }
+
+    return iRet;
+}
+
 Manta::LEDState MantaMidiSettings::GetPad_InactiveColor(int pad) { return m_inactivePadColor[pad]; }
 Manta::LEDState MantaMidiSettings::GetPad_OnColor(int pad) { return m_onPadColor[pad]; }
 Manta::LEDState MantaMidiSettings::GetPad_OffColor(int pad) { return m_offPadColor[pad]; }

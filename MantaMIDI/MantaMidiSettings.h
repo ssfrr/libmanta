@@ -43,33 +43,34 @@ class MantaMidiSettings
     ~MantaMidiSettings();
 
     /* Master settings */
-    bool GetDebugMode();
-    bool GetUseVelocity();
-    void SetUseVelocity(bool bUseVelocity);
+    bool            GetDebugMode();
+    bool            GetUseVelocity();
+    void            SetUseVelocity(bool bUseVelocity);
 
     /* Pads Sends*/
-    unsigned char GetPad_EventChannel(int pad);
-    char GetPad_Midi(int pad);
+    unsigned char   GetPad_EventChannel(int pad);
+    char            GetPad_Midi(int pad);
     Manta::LEDState GetPad_InactiveColor(int pad);
     Manta::LEDState GetPad_OnColor(int pad);
     Manta::LEDState GetPad_OffColor(int pad);
-    PadLayout GetPad_Layout();
-    void SetPad_Layout(PadLayout layout);
-    PadValMode GetPad_Mode();
-    void SetPad_Mode(PadValMode mode);
-    void SetPad(int pad, unsigned char channel, unsigned char note);
-    void SetAllPadOnColor(Manta::LEDState onColor);
-    void SetAllPadOffColor(Manta::LEDState offColor);
-    void SetAllPadInactiveColor(Manta::LEDState inactiveColor);
+    PadLayout       GetPad_Layout();
+    void            SetPad_Layout(PadLayout layout);
+    PadValMode      GetPad_Mode();
+    void            SetPad_Mode(PadValMode mode);
+    void            SetPad(int pad, unsigned char channel, unsigned char note);
+    void            SetAllPadOnColor(Manta::LEDState onColor);
+    void            SetAllPadOffColor(Manta::LEDState offColor);
+    void            SetAllPadInactiveColor(Manta::LEDState inactiveColor);
 
     /* Pad Recieve */
-    unsigned char GetPad_LEDChannel(int pad);
-    unsigned char GetPad_AmberLEDMidi(int pad);
-    unsigned char GetPad_RedLEDMidi(int pad);
-    void SetPadLED_MidiChannel(int pad, unsigned char channel);
-    void SetPadLED_AmberMidiNote(int pad, unsigned char amberNote);
-    void SetPadLED_RedMidiNote(int pad, unsigned char redNote);
-    void SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote);
+    unsigned char   GetPad_LEDChannel(int pad);
+    unsigned char   GetPad_AmberLEDMidi(int pad);
+    unsigned char   GetPad_RedLEDMidi(int pad);
+    int             GetPadFromMidi(unsigned char midiIn, Manta::LEDState &color);
+    void            SetPadLED_MidiChannel(int pad, unsigned char channel);
+    void            SetPadLED_AmberMidiNote(int pad, unsigned char amberNote);
+    void            SetPadLED_RedMidiNote(int pad, unsigned char redNote);
+    void            SetPadLED(int pad, unsigned char channel, unsigned char amberNote, unsigned char redNote);
 
     /* Sliders */
     bool IsValidSliderIndex(int slider);

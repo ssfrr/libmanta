@@ -41,6 +41,11 @@ void MidiManager::Initialize()
     }
 }
 
+MantaMidiSettings *MidiManager::GetOptions()
+{
+    return m_options;
+}
+
 void MidiManager::PadEvent(int row, int column, int id, int value)
 {
   if (m_options->GetDebugMode())
