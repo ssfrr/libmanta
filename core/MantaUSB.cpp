@@ -61,6 +61,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
       if(LIBUSB_SUCCESS != libusb_submit_transfer(CurrentOutTransfer))
       {
          libusb_free_transfer(CurrentOutTransfer);
+         CurrentOutTransfer = NULL;
          Disconnect();
          throw(MantaCommunicationException());
       }
