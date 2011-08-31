@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(DisplayStatusMessage(const QString &)));
 
     thread.Setup(&options);
-    thread.start();
+    //thread.start();
 }
 
 MainWindow::~MainWindow()
@@ -449,4 +449,15 @@ void MainWindow::on_receiveMirrorsSendCheck_clicked(bool checked)
     ui->padReceiveChannelSpin->setEnabled(!checked);
     ui->padReceiveRedNoteSpin->setEnabled(!checked);
     ui->padReceiveAmberNoteSpin->setEnabled(!checked);
+}
+
+void MainWindow::on_actionRun_LED_Diagnostic_triggered()
+{
+    thread.RunDiagnostic();
+}
+
+void MainWindow::on_actionForce_Disconnect_triggered()
+{
+    if (thread.isRunning())
+        thread.ForceDisconnectManta();
 }

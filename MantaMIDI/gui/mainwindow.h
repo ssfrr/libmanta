@@ -86,6 +86,10 @@ private slots:
     void on_padReceiveRedNoteSpin_valueChanged(int );
     void on_receiveMirrorsSendCheck_clicked(bool checked);
 
+    void on_actionRun_LED_Diagnostic_triggered();
+
+    void on_actionForce_Disconnect_triggered();
+
 private:
     void UpdateLayout(PadLayout padLayout);
     void ReloadForms();

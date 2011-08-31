@@ -22,7 +22,7 @@ void MidiManager::ResetLEDS()
 void MidiManager::Initialize()
 {
     SetLEDControl(Manta::PadAndButton, true);
-    //SetLEDControl(Manta::Slider, true);
+    SetLEDControl(Manta::Slider, false);
 
     for(int i = 0; i < MANTA_BUTTONS; ++i)
     {

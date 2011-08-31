@@ -63,7 +63,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>631</width>
+       <width>550</width>
        <height>161</height>
       </rect>
      </property>
@@ -1412,6 +1412,7 @@
      <string>Testing</string>
     </property>
     <addaction name="actionForce_Disconnect"/>
+    <addaction name="actionRun_LED_Diagnostic"/>
    </widget>
    <addaction name="menuOptions"/>
    <addaction name="menuTesting"/>
@@ -1452,16 +1453,21 @@
     <string>Force Disconnect</string>
    </property>
   </action>
+  <action name="actionRun_LED_Diagnostic">
+   <property name="text">
+    <string>Run LED Diagnostic</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="padLayoutGroup"/>
   <buttongroup name="button4TypeGroup"/>
+  <buttongroup name="padAftertouchModeGroup"/>
+  <buttongroup name="padLayoutGroup"/>
   <buttongroup name="button1TypeGroup"/>
   <buttongroup name="button2TypeGroup"/>
   <buttongroup name="button3TypeGroup"/>
-  <buttongroup name="padAftertouchModeGroup"/>
  </buttongroups>
 </ui>
