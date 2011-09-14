@@ -11,17 +11,29 @@ static void waitForTransmitComplete(MantaUSB &manta)
 MantaThread::MantaThread(QObject *parent) :
     QThread(parent), m_options(NULL), manta(NULL)
 {
+    connect(parent, SIGNAL(MantaDiagnosticsSignal()),
+           this, SLOT(RunMantaDiagnostic()), Qt::QueuedConnection);
+    connect(parent, SIGNAL(MantaDisconnectSignal()),
+            this, SLOT(ForceMantaDisconnect()), Qt::QueuedConnection);
 }
 
 MantaThread::~MantaThread()
 {
-    mutex.lock();
-    bExit = true;
-    manta->Disconnect();
-    condition.wait(&mutex);
-    mutex.unlock();
+    if (manta)
+    {
+        if (this->isRunning())
+            this->exit(0);
 
-    delete manta;
+        if (manta->IsConnected())
+        {
+            //mutex.lock();
+            //manta->Disconnect();
+            //condition.wait(&mutex);
+            //mutex.unlock();
+        }
+
+        delete manta;
+    }
 }
 
 void MantaThread::Setup(MantaMidiSettings *options)
@@ -35,20 +47,16 @@ void MantaThread::ReloadLEDS()
     manta->ResetLEDS();
 }
 
-void MantaThread::ForceDisconnectManta()
+void MantaThread::ForceMantaDisconnect()
 {
-    bExit = true;
-
     if (manta->IsConnected())
     {
         waitForTransmitComplete(*manta);
-        manta->Disconnect();
+        //manta->Disconnect();
 
-        emit MantaConnectedMessage("Manta Force Disconnected");
+        emit MantaConnectedMessage("Disconnect currently disabled.");
+        //emit MantaConnectedMessage("Manta Force Disconnected");
     }
-
-    if (this->isRunning())
-        this->exit();
 }
 
 bool MantaThread::CheckMantaConnected()
@@ -71,10 +79,12 @@ bool MantaThread::CheckMantaConnected()
     return manta->IsConnected();
 }
 
-void MantaThread::RunDiagnostic()
+void MantaThread::RunMantaDiagnostic()
 {
-    if (this->isRunning())
-        this->exit();
+    /*mutex.lock();
+    bPause = true;
+    condition.wait(&mutex);
+    mutex.unlock();*/
 
     if (manta && CheckMantaConnected())
     {
@@ -87,7 +97,44 @@ void MantaThread::RunDiagnostic()
         RunButtonDiagnostic();
         RunSliderDiagnostic();
 
-        //manta->Initialize();
+        manta->Initialize();
+    }
+
+    /*mutex.lock();
+    bPause = false;
+    condition.wait(&mutex);
+    mutex.unlock();*/
+}
+
+void MantaThread::RunManta()
+{
+    if (manta && m_options && CheckMantaConnected())
+    {
+        try
+        {
+            manta->Initialize();
+            forever
+            {
+                if (!bPause)
+                    manta->HandleEvents();
+            }
+        }
+        catch(MantaCommunicationException &e)
+        {
+            emit UpdateStatusMessage("Communication with Manta interrrupted...");
+            emit MantaConnectedMessage("Manta Not Connected");
+        }
+    }
+    else
+        emit UpdateStatusMessage("Manta Object Not initialized!!!");
+}
+
+void MantaThread::run()
+{
+    bPause = false;
+    forever
+    {
+        RunManta();
     }
 }
 
@@ -191,35 +238,4 @@ void MantaThread::RunSliderDiagnostic()
     manta->SetSliderLED(Manta::Off, 0, 0xFF);
     manta->SetSliderLED(Manta::Off, 1, 0xFF);
     waitForTransmitComplete(*manta);
-}
-
-void MantaThread::run()
-{
-    forever
-    {
-        if (manta && m_options && CheckMantaConnected())
-        {
-            try
-            {
-                manta->Initialize();
-                forever
-                {
-                    manta->HandleEvents();
-
-                    if (bExit)
-                        break;
-                }
-            }
-            catch(MantaCommunicationException &e)
-            {
-                emit UpdateStatusMessage("Communication with Manta interrrupted...");
-                emit MantaConnectedMessage("Manta Not Connected");
-            }
-        }
-        else
-            emit UpdateStatusMessage("Manta Object Not initialized!!!");
-
-        if (bExit)
-            break;
-    }
 }

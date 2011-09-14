@@ -4,7 +4,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    thread(this)
 {
     ui->setupUi(this);
 
@@ -14,12 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(DisplayStatusMessage(const QString &)));
 
     thread.Setup(&options);
-    //thread.start();
+    thread.start();
 }
 
 MainWindow::~MainWindow()
 {
-    thread.terminate();
     delete ui;
 }
 
@@ -453,11 +453,10 @@ void MainWindow::on_receiveMirrorsSendCheck_clicked(bool checked)
 
 void MainWindow::on_actionRun_LED_Diagnostic_triggered()
 {
-    thread.RunDiagnostic();
+    emit MantaDiagnosticsSignal();
 }
 
 void MainWindow::on_actionForce_Disconnect_triggered()
 {
-    if (thread.isRunning())
-        thread.ForceDisconnectManta();
+    emit MantaDisconnectSignal();
 }

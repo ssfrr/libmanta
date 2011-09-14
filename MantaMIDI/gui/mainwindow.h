@@ -18,6 +18,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void MantaDiagnosticsSignal();
+    void MantaDisconnectSignal();
+
 private slots:
     void on_checkBox_clicked();
 
@@ -87,7 +91,6 @@ private slots:
     void on_receiveMirrorsSendCheck_clicked(bool checked);
 
     void on_actionRun_LED_Diagnostic_triggered();
-
     void on_actionForce_Disconnect_triggered();
 
 private:

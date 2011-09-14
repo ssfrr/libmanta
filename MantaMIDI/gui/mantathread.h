@@ -16,9 +16,7 @@ public:
     ~MantaThread();
 
     void Setup(MantaMidiSettings *options);
-    void ForceDisconnectManta();
     void ReloadLEDS();
-    void RunDiagnostic();
 
 signals:
     void MantaConnectedMessage(const QString &output);
@@ -26,6 +24,11 @@ signals:
 
 protected:
     void run();
+
+private slots:
+    void ForceMantaDisconnect();
+    void RunMantaDiagnostic();
+    void RunManta();
 
 private:
     bool CheckMantaConnected();
@@ -36,7 +39,7 @@ private:
 
     QMutex mutex;
     QWaitCondition condition;
-    bool bExit;
+    bool bPause;
 
     MantaMidiSettings *m_options;
     MidiManager *manta;
