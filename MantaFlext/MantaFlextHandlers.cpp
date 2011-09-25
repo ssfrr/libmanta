@@ -35,43 +35,49 @@ manta::LEDState manta::ledStateFromInt(int state)
 
 void manta::StartThread()
 {
-   bool errorPrinted = false;
-   while(!shouldStop)
+   connectionMutex.Lock();
+   if(IsConnected())
    {
-      try
+      connectionMutex.Unlock();
+      post("manta: Already Connected");
+      return;
+   }
+   try
+   {
+      while(!shouldStop)
       {
          Connect();
+         connectionMutex.Unlock();
          post("manta: Connected to Manta");
-         errorPrinted = false;
          ResendLEDState();
          while(!shouldStop)
          {
+            /* ensure that only one thread is handling events at a time. This
+             * is probably excessive, but much simpler than finer-grained locking */
+            connectionMutex.Lock();
             HandleEvents();
+            connectionMutex.Unlock();
          }
-      }
-      catch(MantaNotFoundException e)
-      {
-         if(! errorPrinted)
-         {
-            post("manta: No attached Mantas found. Retrying...");
-            errorPrinted = true;
-         }
-         Sleep(1);
-      }
-      catch(MantaOpenException e)
-      {
-         post("manta: Could not connect to attached Manta");
-         shouldStop = true;
-      }
-      catch(MantaCommunicationException e)
-      {
-         post("manta: Communication with Manta interrupted. Reconnecting...");
-         Sleep(1);
+         Lock();
+         cond.Signal();
+         Unlock();
       }
    }
-   Lock();
-   cond.Signal();
-   Unlock();
+   catch(MantaNotFoundException e)
+   {
+      connectionMutex.Unlock();
+      post("manta: No attached Mantas found. Plug in a Manta and send \"connect\"");
+   }
+   catch(MantaOpenException e)
+   {
+      connectionMutex.Unlock();
+      post("manta: Could not connect to attached Manta");
+   }
+   catch(MantaCommunicationException e)
+   {
+      connectionMutex.Unlock();
+      post("manta: Communication with Manta interrupted");
+   }
 }
 
 void manta::SetLEDControl(t_symbol *control, int state)

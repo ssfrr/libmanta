@@ -39,10 +39,8 @@ private:
    void ButtonEvent(int id, int value);
    void PadVelocityEvent(int row, int column, int id, int value);
    void ButtonVelocityEvent(int id, int value);
+   void FrameEvent(int8_t *frame);
    void DebugPrint(const char *fmt, ...);
-   /* here we're actually co-opting the parent class's FrameReceived
-    * function, but it will call the parents version within */
-   void FrameReceived(int8_t *frame);
 
    LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
    LEDState ledStateFromInt(int stateSymbol);
@@ -68,6 +66,8 @@ private:
    /* thread conditional to wait on to make sure
     * that the polling thread has stopped */
    ThrCond cond;
+   /* shared mutex used to prevent connection-related race conditions */
+   static ThrMutex connectionMutex;
    volatile bool shouldStop;
 
    const t_symbol *padSymbol;

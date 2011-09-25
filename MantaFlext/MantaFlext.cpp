@@ -28,6 +28,7 @@ manta::manta():
    FLEXT_ADDMETHOD_(1, "ledsoff", ClearPadAndButtonLEDs);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
    FLEXT_ADDMETHOD_(0, "reset", Recalibrate);
+   FLEXT_ADDMETHOD_(0, "connect", StartThread);
    
    padSymbol = MakeSymbol("pad");
    sliderSymbol = MakeSymbol("slider");
@@ -48,24 +49,27 @@ manta::manta():
 
 manta::~manta()
 { 
-   Lock();
-   shouldStop = true;
-   /* Wait() unlocks the lock while waiting */
-   cond.Wait();
-   Unlock();
+   if(IsConnected())
+   {
+      Lock();
+      shouldStop = true;
+      /* Wait() unlocks the lock while waiting */
+      cond.Wait();
+      Unlock();
+   }
 } 
 
 void manta::DebugPrint(const char *fmt, ...)
 {
-#if 0
    va_list args;
    char string[256];
    va_start(args, fmt);
    vsprintf(string, fmt, args);
    va_end (args);
    post(string);
-#endif
 }
+
+FLEXT_CLASSDEF(flext)::ThrMutex manta::connectionMutex;
 
 #if 0
 const t_symbol *manta::padSymbol;

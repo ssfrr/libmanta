@@ -27,6 +27,8 @@ class MantaUSB
       virtual void DebugPrint(const char *fmt, ...) {}
       static const int OutPacketLen = 16;
       static const int InPacketLen = 64;
+      int SerialNumber;
+      int MantaIndex;
 
    private:
       static const int Interface = 0;
@@ -39,10 +41,10 @@ class MantaUSB
       void BeginReadTransfer(void);
       void BeginQueuedTransfer(void);
       void CancelEvents(void);
+      libusb_device_handle *GetMantaDeviceHandle(void);
 
       static int DeviceCount;
       static libusb_context *LibusbContext;
-      int SerialNumber;
       libusb_device_handle *DeviceHandle;
       libusb_transfer *CurrentInTransfer;
       libusb_transfer *CurrentOutTransfer;

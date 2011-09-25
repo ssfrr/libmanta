@@ -26,6 +26,7 @@ Manta::Manta(void) {
 
 void Manta::FrameReceived(int8_t *frame)
 {
+   FrameEvent(frame);
    /* input frames have one reportID byte at the beginning */
    for(int i = 1; i < 53; ++i)
    {
