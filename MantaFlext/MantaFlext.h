@@ -1,5 +1,9 @@
 #include <flext.h>
-#include "../core/Manta.h"
+#include "../core/MantaClient.h"
+#include "../core/MantaMulti.h"
+#include <list>
+
+using namespace std;
 
 #if !defined(FLEXT_VERSION) || (FLEXT_VERSION < 400)
 #error You need at least flext version 0.4.0
@@ -7,13 +11,21 @@
 
 class manta:
 	public flext_base,
-   public Manta
+   public MantaClient
 {
 	FLEXT_HEADER(manta, flext_base)
  
    public:
 	manta(); 
 	~manta(); 
+
+   void PadEvent(int row, int column, int id, int value);
+   void SliderEvent(int id, int value);
+   void ButtonEvent(int id, int value);
+   void PadVelocityEvent(int row, int column, int id, int value);
+   void ButtonVelocityEvent(int id, int value);
+   void FrameEvent(int8_t *frame);
+   void DebugPrint(const char *fmt, ...);
 
    protected:
 	void StartThread();
@@ -28,19 +40,20 @@ class manta:
    void SetSliderLEDNum(int id, int ledNum);
    void SetButtonLED(int argc, t_atom *argv);
    void SetLEDControl(t_symbol *control, int state);
+   void Recalibrate();
+   void ClearPadAndButtonLEDs();
    /*
    void SetTurboMode(bool Enabled);
    void SetRawMode(bool Enabled);
    */
 
-private:
-   void PadEvent(int row, int column, int id, int value);
-   void SliderEvent(int id, int value);
-   void ButtonEvent(int id, int value);
-   void PadVelocityEvent(int row, int column, int id, int value);
-   void ButtonVelocityEvent(int id, int value);
-   void FrameEvent(int8_t *frame);
-   void DebugPrint(const char *fmt, ...);
+   private:
+   void Attach(int serialNumber = 0);
+   void Detach();
+   bool Attached();
+
+   MantaMulti *ConnectedManta;
+   static list<MantaMulti *> ConnectedMantaList;
 
    LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
    LEDState ledStateFromInt(int stateSymbol);
@@ -69,6 +82,7 @@ private:
    /* shared mutex used to prevent connection-related race conditions */
    static ThrMutex connectionMutex;
    volatile bool shouldStop;
+   volatile bool threadRunning;
 
    const t_symbol *padSymbol;
    const t_symbol *buttonSymbol;

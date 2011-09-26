@@ -133,6 +133,11 @@ bool MantaUSB::IsTransmitting(void)
    return (CurrentOutTransfer != NULL);
 }
 
+int MantaUSB::GetSerialNumber(void)
+{
+   /* TODO: get serial number */
+   return 1;
+}
 /* these Begin*Transfer functions shouldn't throw exceptions directly
  * because they get called from the TransferComplete callbacks, which
  * in turn are called by libusb and don't get to clean up properly

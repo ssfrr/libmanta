@@ -119,9 +119,9 @@ void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
       throw std::invalid_argument("Invalid Row Index");
    }
 
-   DebugPrint("Called SetPadLEDRow(%s, %d, %X)",
+   MantaClient::DebugPrint("Called SetPadLEDRow(%s, %d, %X)",
          state == Off ? "Off" : state == Amber ? "Amber" : "Red", row, mask);
-   DebugPrint("ByteReverse(0x%X) = 0x%X", 0xA0, byteReverse(0xA0));
+   MantaClient::DebugPrint("ByteReverse(0x%X) = 0x%X", 0xA0, byteReverse(0xA0));
    switch(state)
    {
       case Amber:
@@ -152,7 +152,7 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
       throw std::invalid_argument("Invalid Column Index");
    }
    
-   DebugPrint("Called SetPadLEDColumn(%s, %d, %X)",
+   MantaClient::DebugPrint("Called SetPadLEDColumn(%s, %d, %X)",
          state == Off ? "Off" : state == Amber ? "Amber" : "Red", column, mask);
    switch(state)
    {

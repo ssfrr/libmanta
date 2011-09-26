@@ -20,6 +20,7 @@ class MantaUSB
       void Disconnect();
       void HandleEvents(void);
       bool IsTransmitting(void);
+      int GetSerialNumber(void);
 
    protected:
       void WriteFrame(uint8_t *frame);

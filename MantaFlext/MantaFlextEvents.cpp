@@ -1,4 +1,6 @@
 #include "MantaFlext.h"
+#include <cstdarg>
+#include <cstdio>
 
 void manta::PadEvent(int row, int column, int id, int value)
 {
@@ -53,4 +55,14 @@ void manta::FrameEvent(int8_t *frame)
    }
    ToOutList(frameOutlet, sizeof(padValues) / sizeof(padValues[0]),
          padValues);
+}
+
+void manta::DebugPrint(const char *fmt, ...)
+{
+   va_list args;
+   char string[256];
+   va_start(args, fmt);
+   vsprintf(string, fmt, args);
+   va_end (args);
+   post(string);
 }

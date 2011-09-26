@@ -9,10 +9,13 @@ SRCS= MantaFlext.cpp \
       MantaFlextCentroid.cpp \
       MantaFlextMaximum.cpp \
       ../core/Manta.cpp \
-      ../core/MantaUSB.cpp
+      ../core/MantaUSB.cpp \
+      ../core/MantaMulti.cpp
 HDRS= MantaFlext.h \
       MantaFlextCentroid.h \
       MantaFlextMaximum.h \
       ../core/Manta.h \
-      ../core/MantaUSB.h
+      ../core/MantaUSB.h \
+      ../core/MantaServer.h \
+      ../core/MantaClient.h
 CXXFLAGS += -Wall

@@ -1,7 +1,7 @@
 #include "MantaFlext.h"
 #include "../core/MantaExceptions.h"
 
-manta::LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
+LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
 {
    if(stateSymbol == amberSymbol)
    {
@@ -17,7 +17,7 @@ manta::LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
    }
 }
 
-manta::LEDState manta::ledStateFromInt(int state)
+LEDState manta::ledStateFromInt(int state)
 {
    if(state == 1)
    {
@@ -36,31 +36,37 @@ manta::LEDState manta::ledStateFromInt(int state)
 void manta::StartThread()
 {
    connectionMutex.Lock();
-   if(IsConnected())
+   if(threadRunning)
    {
       connectionMutex.Unlock();
       post("manta: Already Connected");
       return;
    }
+   threadRunning = true;
    try
    {
       while(!shouldStop)
       {
-         Connect();
+         Attach();
+         post("manta: manta attached");
+         if(1 == ConnectedManta->GetReferenceCount())
+         {
+            ConnectedManta->Connect();
+         }
          connectionMutex.Unlock();
-         post("manta: Connected to Manta");
-         ResendLEDState();
+         post("manta: Connected to Manta %d", ConnectedManta->GetSerialNumber());
+         ConnectedManta->ResendLEDState();
          while(!shouldStop)
          {
             /* ensure that only one thread is handling events at a time. This
              * is probably excessive, but much simpler than finer-grained locking */
             connectionMutex.Lock();
-            HandleEvents();
+            /* TODO: only one of the connected objects needs to have an active
+             * thread polling the device */
+            ConnectedManta->HandleEvents();
             connectionMutex.Unlock();
          }
-         Lock();
-         cond.Signal();
-         Unlock();
+         Detach();
       }
    }
    catch(MantaNotFoundException e)
@@ -78,34 +84,46 @@ void manta::StartThread()
       connectionMutex.Unlock();
       post("manta: Communication with Manta interrupted");
    }
+   threadRunning = false;
+   Lock();
+   cond.Signal();
+   Unlock();
 }
 
 void manta::SetLEDControl(t_symbol *control, int state)
 {
+   if(! Attached())
+   {
+      return;
+   }
    if(control == padAndButtonSymbol)
    {
       if(0 == state)
       {
          ClearPadAndButtonLEDs();
       }
-      Manta::SetLEDControl(PadAndButton, state);
+      ConnectedManta->SetLEDControl(PadAndButton, state);
    }
    else if(control == sliderSymbol)
    {
-      Manta::SetLEDControl(Slider, state);
+      ConnectedManta->SetLEDControl(Slider, state);
    }
    else if(control == buttonSymbol)
    {
       if(0 == state)
       {
-         Manta::ClearButtonLEDs();
+         ConnectedManta->ClearButtonLEDs();
       }
-      Manta::SetLEDControl(Button, state);
+      ConnectedManta->SetLEDControl(Button, state);
    }
 }
 
 void manta::SetPadLED(int argc, t_atom *argv)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState;
    if(argc < 2 ||
          (!CanbeInt(argv[0]) && !IsSymbol(argv[0])))
@@ -124,72 +142,108 @@ void manta::SetPadLED(int argc, t_atom *argv)
    {
       if(CanbeInt(argv[i]))
       {
-         Manta::SetPadLED(parsedState, GetInt(argv[i]));
+         ConnectedManta->SetPadLED(parsedState, GetInt(argv[i]));
       }
    }
 }
 
 void manta::SetPadLEDRow(t_symbol *state, int row, int mask)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState = ledStateFromSymbol(state);
-   Manta::SetPadLEDRow(parsedState, row, mask);
+   ConnectedManta->SetPadLEDRow(parsedState, row, mask);
 }
 
 void manta::SetPadLEDRowNum(int state, int row, int mask)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState = ledStateFromInt(state);
-   Manta::SetPadLEDRow(parsedState, row, mask);
+   ConnectedManta->SetPadLEDRow(parsedState, row, mask);
 }
 
 void manta::SetPadLEDColumn(t_symbol *state, int column, int mask)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState = ledStateFromSymbol(state);
-   Manta::SetPadLEDColumn(parsedState, column, mask);
+   ConnectedManta->SetPadLEDColumn(parsedState, column, mask);
 }
 
 void manta::SetPadLEDColumnNum(int state, int column, int mask)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState = ledStateFromInt(state);
-   Manta::SetPadLEDColumn(parsedState, column, mask);
+   ConnectedManta->SetPadLEDColumn(parsedState, column, mask);
 }
 
 void manta::SetSliderLEDMask(t_symbol *state, int id, int mask)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState = ledStateFromSymbol(state);
-   Manta::SetSliderLED(parsedState, id, mask);
+   ConnectedManta->SetSliderLED(parsedState, id, mask);
 }
 
 void manta::SetSliderLEDMaskNum(int state, int id, int mask)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState = ledStateFromInt(state);
-   Manta::SetSliderLED(parsedState, id, mask);
+   ConnectedManta->SetSliderLED(parsedState, id, mask);
 }
 
 void manta::SetSliderLED(int id, t_symbol *state)
 {
+   if(! Attached())
+   {
+      return;
+   }
    if(state == offSymbol)
    {
       /* turn all LEDs on that slider off */
-      Manta::SetSliderLED(Off, id, 0xFF);
+      ConnectedManta->SetSliderLED(Off, id, 0xFF);
    }
 }
 
 void manta::SetSliderLEDNum(int id, int ledNum)
 {
+   if(! Attached())
+   {
+      return;
+   }
    if(ledNum >= 0 && ledNum < 8)
    {
       uint8_t mask = 0x80 >> ledNum;
-      Manta::SetSliderLED(Amber, id, mask);
-      Manta::SetSliderLED(Off, id, ~mask);
+      ConnectedManta->SetSliderLED(Amber, id, mask);
+      ConnectedManta->SetSliderLED(Off, id, ~mask);
    }
    else if(ledNum == -1)
    {
-      Manta::SetSliderLED(Off, id, 0xFF);
+      ConnectedManta->SetSliderLED(Off, id, 0xFF);
    }
 }
 
 void manta::SetButtonLED(int argc, t_atom *argv)
 {
+   if(! Attached())
+   {
+      return;
+   }
    LEDState parsedState;
    if(argc < 2 ||
          (!CanbeInt(argv[0]) && !IsSymbol(argv[0])))
@@ -208,7 +262,25 @@ void manta::SetButtonLED(int argc, t_atom *argv)
    {
       if(CanbeInt(argv[i]))
       {
-         Manta::SetButtonLED(parsedState, GetInt(argv[i]));
+         ConnectedManta->SetButtonLED(parsedState, GetInt(argv[i]));
       }
    }
+}
+
+void manta::Recalibrate()
+{
+   if(! Attached())
+   {
+      return;
+   }
+   ConnectedManta->Recalibrate();
+}
+
+void manta::ClearPadAndButtonLEDs()
+{
+   if(! Attached())
+   {
+      return;
+   }
+   ConnectedManta->ClearPadAndButtonLEDs();
 }

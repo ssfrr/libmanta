@@ -1,21 +1,11 @@
 #ifndef _MANTASERVER_H
 #define _MANTASERVER_H
 
+#include "MantaTypes.h"
+
 class MantaServer
 {
    public:
-      enum LEDState {
-         Off,
-         Amber,
-         Red,
-      };
-      enum LEDControlType {
-         PadAndButton,
-         Slider,
-         Button
-      };
-      typedef uint8_t LEDFrame[6];
-
       virtual ~MantaServer() {}
       /* declare callbacks to be implemented by subclasses */
       virtual void SetPadLED(LEDState state, int ledID) = 0;

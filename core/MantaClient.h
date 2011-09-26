@@ -1,6 +1,8 @@
 #ifndef _MANTACLIENT_H
 #define _MANTACLIENT_H
 
+#include <stdint.h>
+
 class MantaClient
 {
    public:
@@ -12,5 +14,6 @@ class MantaClient
       virtual void PadVelocityEvent(int row, int column, int id, int velocity) {}
       virtual void ButtonVelocityEvent(int id, int velocity) {}
       virtual void FrameEvent(int8_t *frame) {}
+      virtual void DebugPrint(const char *fmt, ...) {}
 };
 #endif /* _MANTACLIENT_H */

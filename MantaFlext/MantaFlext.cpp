@@ -1,11 +1,29 @@
 #include "MantaFlext.h"
-#include <cstdarg>
-#include <cstdio>
+#include <algorithm>
+
+class MantaFinder
+{
+   public:
+      MantaFinder(int s) : serialToMatch(s) {}
+      bool operator()(const MantaMulti *dev)
+      {
+         /*
+         return dev->GetSerialNumber() == serial;
+         */
+         /*for now just return true. we'll need the conditional when we start
+          * being able to select a specific serial number */
+         return true;
+      }
+   private:
+      int serialToMatch;
+};
 
 FLEXT_LIB("manta",manta)
 
 manta::manta():
-   shouldStop(false)
+   shouldStop(false),
+   threadRunning(false),
+   ConnectedManta(NULL)
 { 
 	AddInAnything();
 	AddInAnything();
@@ -49,7 +67,7 @@ manta::manta():
 
 manta::~manta()
 { 
-   if(IsConnected())
+   if(threadRunning)
    {
       Lock();
       shouldStop = true;
@@ -59,27 +77,57 @@ manta::~manta()
    }
 } 
 
-void manta::DebugPrint(const char *fmt, ...)
+void manta::Attach(int serialNumber)
 {
-   va_list args;
-   char string[256];
-   va_start(args, fmt);
-   vsprintf(string, fmt, args);
-   va_end (args);
-   post(string);
+   MantaFinder pred(serialNumber);
+   list<MantaMulti *>::iterator deviceIter;
+   MantaMulti *device;
+   if(! Attached())
+   {
+      deviceIter = find_if(ConnectedMantaList.begin(), ConnectedMantaList.end(), pred);
+      /* see if the device is already in the connected list */
+      if(ConnectedMantaList.end() != deviceIter)
+      {
+         post("manta: there's a device in the Connected List");
+         device = *deviceIter;
+         device->AttachClient(this);
+         ConnectedManta = device;
+      }
+      else
+      {
+         post("manta: there's no device in the Connected List, adding one");
+         /* TODO: open by serial number */
+         ConnectedManta = new MantaMulti(this);
+         ConnectedMantaList.push_back(ConnectedManta);
+      }
+   }
+   else
+   {
+      post("manta: already attached");
+   }
+}
+
+void manta::Detach()
+{
+   connectionMutex.Lock();
+   if(Attached())
+   {
+      ConnectedManta->DetachClient(this);
+      if(0 == ConnectedManta->GetReferenceCount())
+      {
+         ConnectedManta->Disconnect();
+         ConnectedMantaList.remove(ConnectedManta);
+         delete ConnectedManta;
+      }
+      ConnectedManta = NULL;
+   }
+   connectionMutex.Unlock();
+}
+
+bool manta::Attached()
+{
+   return ConnectedManta != NULL;
 }
 
 FLEXT_CLASSDEF(flext)::ThrMutex manta::connectionMutex;
-
-#if 0
-const t_symbol *manta::padSymbol;
-const t_symbol *manta::buttonSymbol;
-const t_symbol *manta::sliderSymbol;
-const t_symbol *manta::amberSymbol;
-const t_symbol *manta::redSymbol;
-const t_symbol *manta::offSymbol;
-const t_symbol *manta::rowSymbol;
-const t_symbol *manta::columnSymbol;
-const t_symbol *manta::frameSymbol;
-const t_symbol *manta::padAndButtonSymbol;
-#endif
+list<MantaMulti *> manta::ConnectedMantaList;
