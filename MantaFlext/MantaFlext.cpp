@@ -75,6 +75,7 @@ manta::~manta()
       cond.Wait();
       Unlock();
    }
+   Detach();
 } 
 
 /* this function attaches the Mantaflext instance to a Manta instance, but does

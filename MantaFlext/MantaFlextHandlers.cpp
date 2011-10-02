@@ -35,16 +35,15 @@ LEDState manta::ledStateFromInt(int state)
 
 void manta::StartThread()
 {
-   connectionMutex.Lock();
    if(threadRunning)
    {
-      connectionMutex.Unlock();
       post("manta: Already Connected");
       return;
    }
    threadRunning = true;
    try
    {
+      connectionMutex.Lock();
       Attach();
       if(1 == ConnectedManta->GetReferenceCount())
       {
@@ -57,8 +56,6 @@ void manta::StartThread()
             /* ensure that only one thread is handling events at a time. This
              * is probably excessive, but much simpler than finer-grained locking */
             connectionMutex.Lock();
-            /* TODO: only one of the connected objects needs to have an active
-             * thread polling the device */
             ConnectedManta->HandleEvents();
             connectionMutex.Unlock();
          }
