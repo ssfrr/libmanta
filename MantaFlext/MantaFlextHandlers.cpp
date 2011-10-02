@@ -45,17 +45,13 @@ void manta::StartThread()
    threadRunning = true;
    try
    {
-      while(!shouldStop)
+      Attach();
+      if(1 == ConnectedManta->GetReferenceCount())
       {
-         Attach();
-         post("manta: manta attached");
-         if(1 == ConnectedManta->GetReferenceCount())
-         {
-            ConnectedManta->Connect();
-         }
-         connectionMutex.Unlock();
+         ConnectedManta->Connect();
          post("manta: Connected to Manta %d", ConnectedManta->GetSerialNumber());
          ConnectedManta->ResendLEDState();
+         connectionMutex.Unlock();
          while(!shouldStop)
          {
             /* ensure that only one thread is handling events at a time. This
@@ -66,21 +62,27 @@ void manta::StartThread()
             ConnectedManta->HandleEvents();
             connectionMutex.Unlock();
          }
-         Detach();
+      }
+      else
+      {
+         connectionMutex.Unlock();
       }
    }
    catch(MantaNotFoundException e)
    {
+      Detach();
       connectionMutex.Unlock();
       post("manta: No attached Mantas found. Plug in a Manta and send \"connect\"");
    }
    catch(MantaOpenException e)
    {
+      Detach();
       connectionMutex.Unlock();
       post("manta: Could not connect to attached Manta");
    }
    catch(MantaCommunicationException e)
    {
+      Detach();
       connectionMutex.Unlock();
       post("manta: Communication with Manta interrupted");
    }

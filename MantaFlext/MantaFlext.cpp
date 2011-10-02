@@ -77,6 +77,8 @@ manta::~manta()
    }
 } 
 
+/* this function attaches the Mantaflext instance to a Manta instance, but does
+ * not connect that Manta instance to an actual hardware manta */
 void manta::Attach(int serialNumber)
 {
    MantaFinder pred(serialNumber);
