@@ -13,7 +13,6 @@ class Manta :
    public:
       Manta(void);
 
-   protected:
       /* MantaServer messages implemented here */
       virtual void SetPadLED(LEDState state, int ledID);
       virtual void SetPadLEDRow(LEDState state, int row, uint8_t mask);
