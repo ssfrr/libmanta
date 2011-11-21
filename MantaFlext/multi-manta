@@ -52,32 +52,41 @@ MantaFlext Constructor or "connect" message
          Lock MantaMutex
          add it to connected list
          attach to it
+         if this is the first connected manta
+            start polling thread
          Unlock MantaMutex
-         start polling thread
       else
          destroy MultiManta
          print "not found" message
 
 MantaFlext Destructor
    Lock MantaMutex
-   if attached to a Manta
-      detach
-      if reference count of MultiManta is 0
+   if attached
+      if reference count of MultiManta is 1
+         if this is the only connected manta
+            Unlock MantaMutex
+            shouldStop = true
+            Lock RunningCond
+            while(running)
+               Wait for RunningCond
+            UnLock RunningCond
+         else
+            Unlock MantaMutex
+         Lock MantaMutex
+         if attached // it's possible that we got detached when we released the lock
+                     // and let the polling thread finish up
+            detach
+            disconnect MultiManta
+            remove from Connected List
+            delete MultiManta
          Unlock MantaMutex
-         shouldStop = true
-         Lock RunningCond
-         while(running)
-            Wait for RunningCond
-         UnLock RunningCond
-         disconnect MultiManta
-         remove from Connected List
-         delete MultiManta
       else
+         detach
          Unlock MantaMutex
    else
       Unlock MantaMutex
 
-Polling Thread(takes MantaMultiListEntry pointer)
+Polling Thread
    running = true
    while (! shouldStop)
       Lock MantaMutex

@@ -112,6 +112,10 @@ void MantaUSB::Disconnect(void)
    }
 }
 
+/* TODO: this should be a static method because it handles events for all
+ * connected mantas. Also, the exceptions thrown should indicate which
+ * connected manta object caused the issue, so the application can handle
+ * it accordingly */
 void MantaUSB::HandleEvents(void)
 {
    if(! IsConnected())

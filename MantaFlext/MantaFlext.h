@@ -19,6 +19,9 @@ class manta:
 	manta(); 
 	~manta(); 
 
+   void Attach(int serialNumber = 0);
+   void Detach();
+   bool Attached();
    void PadEvent(int row, int column, int id, int value);
    void SliderEvent(int id, int value);
    void ButtonEvent(int id, int value);
@@ -47,18 +50,25 @@ class manta:
    */
 
    private:
-   void Attach(int serialNumber = 0);
-   void Detach();
-   bool Attached();
-
-	static void PollConnectedManta(MantaMultiListEntry *mantaEntry);
-
-   MantaMultiListEntry *ConnectedManta;
-   //! Shared list of all connected mantas
-   static list<MantaMultiListEntry *> ConnectedMantaList;
-
    LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
    LEDState ledStateFromInt(int stateSymbol);
+
+   /* we could be detached from the polling thread on communication error
+    * so this SHOULD be volatile, but I got lazy */
+   MantaMulti *ConnectedManta;
+
+	static void PollConnectedMantas(thr_params *p);
+   static MantaMulti *FindConnectedMantaBySerial(int serialNumber);
+   static void DetachAllMantaFlext(MantaMulti *multi);
+
+   //! Shared list of all connected mantas
+   static list<MantaMulti *> ConnectedMantaList;
+   static list<manta *> MantaFlextList;
+   /* thread conditional to wait on to make sure
+    * that the polling thread has stopped */
+   static ThrCond ThreadRunningCond;
+   static volatile bool shouldStop;
+   static volatile bool threadRunning;
 
    /* declare message handlers */
    FLEXT_CALLBACK_V(SetPadLED)
@@ -74,10 +84,11 @@ class manta:
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
    FLEXT_CALLBACK(Recalibrate)
    FLEXT_CALLBACK(ClearPadAndButtonLEDs)
+   FLEXT_CALLBACK(Attach)
 
    int lastSliderValue[2];
    /* shared mutex used to prevent connection-related race conditions */
-   static ThrMutex connectionMutex;
+   static ThrMutex MantaMutex;
 
    const t_symbol *padSymbol;
    const t_symbol *buttonSymbol;
@@ -104,9 +115,4 @@ struct MantaMultiListEntry
    ~MantaMultiListEntry();
 
    MantaMulti *mantaServer;
-   /* thread conditional to wait on to make sure
-    * that the polling thread has stopped */
-   ThrCond cond;
-   volatile bool shouldStop;
-   volatile bool threadRunning;
 };

@@ -1,22 +1,6 @@
 #include "MantaFlext.h"
+#include "../core/MantaExceptions.h"
 #include <algorithm>
-
-class MantaFinder
-{
-   public:
-      MantaFinder(int s) : serialToMatch(s) {}
-      bool operator()(const MantaMulti *dev)
-      {
-         /*
-         return dev->GetSerialNumber() == serial;
-         */
-         /*for now just return true. we'll need the conditional when we start
-          * being able to select a specific serial number */
-         return true;
-      }
-   private:
-      int serialToMatch;
-};
 
 FLEXT_LIB("manta",manta)
 
@@ -44,7 +28,7 @@ manta::manta():
    FLEXT_ADDMETHOD_(1, "ledsoff", ClearPadAndButtonLEDs);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
    FLEXT_ADDMETHOD_(0, "reset", Recalibrate);
-   FLEXT_ADDMETHOD_(0, "connect", StartThread);
+   FLEXT_ADDMETHOD_(0, "connect", Attach);
    
    padSymbol = MakeSymbol("pad");
    sliderSymbol = MakeSymbol("slider");
@@ -59,70 +43,123 @@ manta::manta():
    padAndButtonSymbol = MakeSymbol("padandbutton");
    ledsOffSymbol = MakeSymbol("ledsoff");
 
-   /* use flext to call the threaded method */
-   FLEXT_CALLMETHOD(StartThread);
+   // TODO: implement attaching by serial number
+   MantaFlextList.push_back(this);
+   Attach();
 } 
 
 manta::~manta()
 { 
-   if(threadRunning)
-   {
-      Lock();
-      shouldStop = true;
-      /* Wait() unlocks the lock while waiting */
-      cond.Wait();
-      Unlock();
-   }
    Detach();
+   MantaFlextList.remove(this);
 } 
 
 /* this function attaches the Mantaflext instance to a Manta instance, but does
  * not connect that Manta instance to an actual hardware manta */
 void manta::Attach(int serialNumber)
 {
-   MantaFinder pred(serialNumber);
-   list<MantaMulti *>::iterator deviceIter;
-   MantaMulti *device;
+   MantaMutex.Lock();
    if(! Attached())
    {
-      deviceIter = find_if(ConnectedMantaList.begin(), ConnectedMantaList.end(), pred);
+      MantaMulti *device = FindConnectedMantaBySerial(serialNumber);
       /* see if the device is already in the connected list */
-      if(ConnectedMantaList.end() != deviceIter)
+      if(NULL != device)
       {
-         post("manta: there's a device in the Connected List");
-         device = *deviceIter;
+         post("manta: attaching to device already in the connected list");
          device->AttachClient(this);
          ConnectedManta = device;
+         MantaMutex.Unlock();
       }
       else
       {
+         MantaMutex.Unlock();
          post("manta: there's no device in the Connected List, adding one");
          /* TODO: open by serial number */
-         ConnectedManta = new MantaMulti(this);
-         ConnectedMantaList.push_back(ConnectedManta);
+         device = new MantaMulti(this);
+         try
+         {
+            device->Connect(serialNumber);
+            post("manta: Connected to Manta %d", ConnectedManta->GetSerialNumber());
+            MantaMutex.Lock();
+            device->AttachClient(this);
+            device->ResendLEDState();
+            ConnectedManta = device;
+            ConnectedMantaList.push_back(ConnectedManta);
+            if(ConnectedMantaList.size() == 1)
+            {
+               /* start the polling thread if this is the first connected Manta */
+               LaunchThread(PollConnectedMantas, NULL);
+            }
+            MantaMutex.Unlock();
+         }
+         catch(MantaNotFoundException e)
+         {
+            post("manta: could not find matching manta");
+            delete device;
+         }
+         catch(MantaOpenException e)
+         {
+            post("manta: Could not connect to attached Manta");
+            delete device;
+         }
       }
    }
    else
    {
+      MantaMutex.Unlock();
       post("manta: already attached");
    }
 }
 
 void manta::Detach()
 {
-   connectionMutex.Lock();
+   MantaMutex.Lock();
    if(Attached())
    {
-      ConnectedManta->DetachClient(this);
-      if(0 == ConnectedManta->GetReferenceCount())
+      if(ConnectedManta->GetReferenceCount() == 1)
       {
-         ConnectedManta->Disconnect();
-         ConnectedMantaList.remove(ConnectedManta);
-         delete ConnectedManta;
+         if(ConnectedMantaList.size() == 1)
+         {
+            /* this is the last connected Manta and we're about to detach,
+             * so stop the polling thread */
+            MantaMutex.Unlock();
+            shouldStop = true;
+            ThreadRunningCond.Lock();
+            while(threadRunning)
+               ThreadRunningCond.Wait();
+            ThreadRunningCond.Unlock();
+         }
+         else
+         {
+            MantaMutex.Unlock();
+         }
+         MantaMutex.Lock();
+         // it's possible that we got detached when we released the lock and
+         // let the polling thread finish up, so we need to check again
+         if(Attached())
+         {
+            /* TODO: if the polling thread is still running here and the callbacks
+             * get called for the cancelled USB transfers, there will probably
+             * be a segfault */
+            delete ConnectedManta;
+            ConnectedMantaList.remove(ConnectedManta);
+            ConnectedManta = NULL;
+         }
+         MantaMutex.Unlock();
       }
-      ConnectedManta = NULL;
+      else
+      {
+         /* There are still other MantaFlext instances connected to this MantaMulti,
+          * so just detach ourselves */
+         ConnectedManta->DetachClient(this);
+         ConnectedManta = NULL;
+         MantaMutex.Unlock();
+      }
    }
-   connectionMutex.Unlock();
+   else
+   {
+      MantaMutex.Unlock();
+   }
 }
 
 bool manta::Attached()
@@ -130,72 +167,85 @@ bool manta::Attached()
    return ConnectedManta != NULL;
 }
 
-void manta::PollConnectedManta(MantaMultiListEntry *mantaEntry)
+void manta::PollConnectedMantas(thr_params *p)
 {
    if(threadRunning)
    {
-      post("manta: Already Connected");
+      post("manta: Thread Already Running!");
+      return;
+   }
+   if(ConnectedMantaList.empty())
+   {
+      post("manta: Polling thread started with no connected mantas");
       return;
    }
    threadRunning = true;
    try
    {
-      connectionMutex.Lock();
-      Attach();
-      if(1 == ConnectedManta->GetReferenceCount())
+      while(!shouldStop)
       {
-         ConnectedManta->Connect();
-         post("manta: Connected to Manta %d", ConnectedManta->GetSerialNumber());
-         ConnectedManta->ResendLEDState();
-         connectionMutex.Unlock();
-         while(!shouldStop)
-         {
-            /* ensure that only one thread is handling events at a time. This
-             * is probably excessive, but much simpler than finer-grained locking */
-            connectionMutex.Lock();
-            ConnectedManta->HandleEvents();
-            connectionMutex.Unlock();
-         }
+         MantaMutex.Lock();
+         /* TODO: this will become a static method */
+         ConnectedMantaList.front()->HandleEvents();
+         MantaMutex.Unlock();
       }
-      else
-      {
-         connectionMutex.Unlock();
-      }
-   }
-   catch(MantaNotFoundException e)
-   {
-      Detach();
-      connectionMutex.Unlock();
-      post("manta: No attached Mantas found. Plug in a Manta and send \"connect\"");
-   }
-   catch(MantaOpenException e)
-   {
-      Detach();
-      connectionMutex.Unlock();
-      post("manta: Could not connect to attached Manta");
    }
    catch(MantaCommunicationException e)
    {
-      Detach();
-      connectionMutex.Unlock();
+      /* for now we only handle one connected manta at a time, so we assume
+       * that's the one that caused the issue */
+      MantaMulti *multi = ConnectedMantaList.front();
+      delete multi;
+      DetachAllMantaFlext(multi);
+      ConnectedMantaList.remove(multi);
+      MantaMutex.Unlock();
       post("manta: Communication with Manta interrupted");
    }
+   catch(MantaNotConnectedException e)
+   {
+      MantaMulti *multi = ConnectedMantaList.front();
+      delete multi;
+      DetachAllMantaFlext(multi);
+      ConnectedMantaList.remove(multi);
+      MantaMutex.Unlock();
+      post("manta: Tried to poll with manta unconnected");
+   }
+   ThreadRunningCond.Lock();
    threadRunning = false;
-   Lock();
-   cond.Signal();
-   Unlock();
+   ThreadRunningCond.Signal();
+   ThreadRunningCond.Unlock();
 }
 
-MantaMultiListEntry::MantaMultiListEntry() :
-   mantaServer(NULL),
-   shouldStop(false),
-   threadRunning(false)
+MantaMulti *manta::FindConnectedMantaBySerial(int serialNumber)
 {
+   list<MantaMulti *>::iterator i = ConnectedMantaList.begin();
+   while(i != ConnectedMantaList.end())
+   {
+      if(serialNumber == 0 || (*i)->GetSerialNumber() == serialNumber)
+      {
+         return *i;
+      }
+      ++i;
+   }
+   return NULL;
 }
 
-MantaMultiListEntry::~MantaMultiListEntry()
+void manta::DetachAllMantaFlext(MantaMulti *multi)
 {
+   list<manta *>::iterator i = MantaFlextList.begin();
+   while(MantaFlextList.end() != i)
+   {
+      if((*i)->ConnectedManta == multi)
+      {
+         (*i)->ConnectedManta = NULL;
+      }
+      ++i;
+   }
 }
 
-FLEXT_CLASSDEF(flext)::ThrMutex manta::connectionMutex;
-list<MantaMultiListEntry *> manta::ConnectedMantaList;
+FLEXT_CLASSDEF(flext)::ThrMutex manta::MantaMutex;
+list<MantaMulti *> manta::ConnectedMantaList;
+list<manta *> manta::MantaFlextList;
+FLEXT_CLASSDEF(flext)::ThrCond manta::ThreadRunningCond;
+volatile bool manta::shouldStop;
+volatile bool manta::threadRunning;
