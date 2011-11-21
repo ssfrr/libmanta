@@ -1,0 +1,11 @@
+#N canvas 580 167 754 611 10;
+#X msg 332 210 ledcontrol padandbutton 1;
+#X obj 293 144 loadbang;
+#X obj 293 168 t b b b;
+#X msg 310 238 row red 3 255;
+#X obj 294 291 manta;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 1 3 0;
+#X connect 2 2 0 0;
+#X connect 3 0 4 1;
