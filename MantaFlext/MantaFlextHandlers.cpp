@@ -33,62 +33,6 @@ LEDState manta::ledStateFromInt(int state)
    }
 }
 
-void manta::StartThread()
-{
-   if(threadRunning)
-   {
-      post("manta: Already Connected");
-      return;
-   }
-   threadRunning = true;
-   try
-   {
-      connectionMutex.Lock();
-      Attach();
-      if(1 == ConnectedManta->GetReferenceCount())
-      {
-         ConnectedManta->Connect();
-         post("manta: Connected to Manta %d", ConnectedManta->GetSerialNumber());
-         ConnectedManta->ResendLEDState();
-         connectionMutex.Unlock();
-         while(!shouldStop)
-         {
-            /* ensure that only one thread is handling events at a time. This
-             * is probably excessive, but much simpler than finer-grained locking */
-            connectionMutex.Lock();
-            ConnectedManta->HandleEvents();
-            connectionMutex.Unlock();
-         }
-      }
-      else
-      {
-         connectionMutex.Unlock();
-      }
-   }
-   catch(MantaNotFoundException e)
-   {
-      Detach();
-      connectionMutex.Unlock();
-      post("manta: No attached Mantas found. Plug in a Manta and send \"connect\"");
-   }
-   catch(MantaOpenException e)
-   {
-      Detach();
-      connectionMutex.Unlock();
-      post("manta: Could not connect to attached Manta");
-   }
-   catch(MantaCommunicationException e)
-   {
-      Detach();
-      connectionMutex.Unlock();
-      post("manta: Communication with Manta interrupted");
-   }
-   threadRunning = false;
-   Lock();
-   cond.Signal();
-   Unlock();
-}
-
 void manta::SetLEDControl(t_symbol *control, int state)
 {
    if(! Attached())

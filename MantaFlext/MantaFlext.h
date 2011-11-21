@@ -28,7 +28,6 @@ class manta:
    void DebugPrint(const char *fmt, ...);
 
    protected:
-	void StartThread();
    void SetPadLED(int argc, t_atom *argv);
    void SetPadLEDRow(t_symbol *state, int row, int mask);
    void SetPadLEDRowNum(int state, int row, int mask);
@@ -52,14 +51,15 @@ class manta:
    void Detach();
    bool Attached();
 
-   MantaMulti *ConnectedManta;
-   static list<MantaMulti *> ConnectedMantaList;
+	static void PollConnectedManta(MantaMultiListEntry *mantaEntry);
+
+   MantaMultiListEntry *ConnectedManta;
+   //! Shared list of all connected mantas
+   static list<MantaMultiListEntry *> ConnectedMantaList;
 
    LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
    LEDState ledStateFromInt(int stateSymbol);
-	// declare threaded callback 
-	// the same syntax as with FLEXT_CALLBACK is used here
-	FLEXT_THREAD(StartThread)
+
    /* declare message handlers */
    FLEXT_CALLBACK_V(SetPadLED)
    FLEXT_CALLBACK_3(SetPadLEDRow, t_symptr, int, int)
@@ -76,13 +76,8 @@ class manta:
    FLEXT_CALLBACK(ClearPadAndButtonLEDs)
 
    int lastSliderValue[2];
-   /* thread conditional to wait on to make sure
-    * that the polling thread has stopped */
-   ThrCond cond;
    /* shared mutex used to prevent connection-related race conditions */
    static ThrMutex connectionMutex;
-   volatile bool shouldStop;
-   volatile bool threadRunning;
 
    const t_symbol *padSymbol;
    const t_symbol *buttonSymbol;
@@ -101,4 +96,17 @@ class manta:
    static const int continuousOutlet = 1;
    static const int sliderOutlet = 2;
    static const int frameOutlet = 3;
+};
+
+struct MantaMultiListEntry
+{
+   MantaMultiListEntry();
+   ~MantaMultiListEntry();
+
+   MantaMulti *mantaServer;
+   /* thread conditional to wait on to make sure
+    * that the polling thread has stopped */
+   ThrCond cond;
+   volatile bool shouldStop;
+   volatile bool threadRunning;
 };
