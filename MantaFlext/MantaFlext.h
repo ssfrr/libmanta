@@ -69,6 +69,8 @@ class manta:
    static ThrCond ThreadRunningCond;
    static volatile bool shouldStop;
    static volatile bool threadRunning;
+   /* shared mutex used to prevent connection-related race conditions */
+   static ThrMutex MantaMutex;
 
    /* declare message handlers */
    FLEXT_CALLBACK_V(SetPadLED)
@@ -87,8 +89,6 @@ class manta:
    FLEXT_CALLBACK(Attach)
 
    int lastSliderValue[2];
-   /* shared mutex used to prevent connection-related race conditions */
-   static ThrMutex MantaMutex;
 
    const t_symbol *padSymbol;
    const t_symbol *buttonSymbol;

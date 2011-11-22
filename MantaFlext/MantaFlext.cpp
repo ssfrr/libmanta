@@ -65,7 +65,7 @@ void manta::Attach(int serialNumber)
       /* see if the device is already in the connected list */
       if(NULL != device)
       {
-         post("manta: attaching to device already in the connected list");
+         post("manta: Attaching to manta %d", device->GetSerialNumber());
          device->AttachClient(this);
          ConnectedManta = device;
          MantaMutex.Unlock();
@@ -73,20 +73,21 @@ void manta::Attach(int serialNumber)
       else
       {
          MantaMutex.Unlock();
-         post("manta: there's no device in the Connected List, adding one");
          /* TODO: open by serial number */
-         device = new MantaMulti(this);
+         device = new MantaMulti;
          try
          {
             device->Connect(serialNumber);
-            post("manta: Connected to Manta %d", ConnectedManta->GetSerialNumber());
+            post("manta: Manta %d Connected", device->GetSerialNumber());
             MantaMutex.Lock();
+            post("manta: Attaching to manta %d", device->GetSerialNumber());
             device->AttachClient(this);
             device->ResendLEDState();
             ConnectedManta = device;
             ConnectedMantaList.push_back(ConnectedManta);
             if(ConnectedMantaList.size() == 1)
             {
+               shouldStop = false;
                /* start the polling thread if this is the first connected Manta */
                LaunchThread(PollConnectedMantas, NULL);
             }
@@ -124,10 +125,12 @@ void manta::Detach()
              * so stop the polling thread */
             MantaMutex.Unlock();
             shouldStop = true;
-            ThreadRunningCond.Lock();
+            // We really should lock and unlock around the condition check,
+            // but flext won't let us
+            // ThreadRunningCond.Lock();
             while(threadRunning)
                ThreadRunningCond.Wait();
-            ThreadRunningCond.Unlock();
+            // ThreadRunningCond.Unlock();
          }
          else
          {
@@ -247,5 +250,5 @@ FLEXT_CLASSDEF(flext)::ThrMutex manta::MantaMutex;
 list<MantaMulti *> manta::ConnectedMantaList;
 list<manta *> manta::MantaFlextList;
 FLEXT_CLASSDEF(flext)::ThrCond manta::ThreadRunningCond;
-volatile bool manta::shouldStop;
-volatile bool manta::threadRunning;
+volatile bool manta::shouldStop = false;
+volatile bool manta::threadRunning = false;
