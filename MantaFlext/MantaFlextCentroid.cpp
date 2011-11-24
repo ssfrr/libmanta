@@ -68,9 +68,9 @@ void MantaFlextCentroid::padFrameHandler(int argc, t_atom *argv)
       t_atom outVals[3];
 
       dormant = true;
-		SetFloat(outVals[0], 0);
-		SetFloat(outVals[1], 0);
-      SetFloat(outVals[2], 0);
+		SetFloat(outVals[0], -1);
+		SetFloat(outVals[1], -1);
+      SetFloat(outVals[2], -1);
       ToOutList(0, sizeof(outVals) / sizeof(t_atom), outVals);
 	}
 }

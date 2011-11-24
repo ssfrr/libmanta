@@ -32,6 +32,12 @@ void MantaFlextMaximum::padFrameHandler(int argc, t_atom *argv)
       }
       currentMask >>= 1;
    }
+   if(0 == max)
+   {
+      /* if no pads are hit, send -1 for both */
+      max = -1;
+      maxIndex = -1;
+   }
    if(max != lastMax)
    {
       t_atom args[2];
