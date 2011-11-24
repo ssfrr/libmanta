@@ -222,6 +222,15 @@ the library.;
 #X obj 250 669 disp;
 #X obj 284 669 disp;
 #X obj 319 670 disp;
+#X obj 48 560 s \$0-control;
+#X msg 48 539 turbo \$1;
+#X obj 48 520 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 49 643 s \$0-control;
+#X obj 49 603 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 49 622 raw \$1;
+#X text 17 491 Additional Controls;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -263,3 +272,7 @@ the library.;
 #X connect 53 0 31 0;
 #X connect 54 0 32 0;
 #X connect 55 0 33 0;
+#X connect 57 0 56 0;
+#X connect 58 0 57 0;
+#X connect 60 0 61 0;
+#X connect 61 0 59 0;

@@ -44,10 +44,8 @@ class manta:
    void SetLEDControl(t_symbol *control, int state);
    void Recalibrate();
    void ClearPadAndButtonLEDs();
-   /*
-   void SetTurboMode(bool Enabled);
-   void SetRawMode(bool Enabled);
-   */
+   void SetTurboMode(int Enabled);
+   void SetRawMode(int Enabled);
 
    private:
    LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
@@ -86,6 +84,8 @@ class manta:
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
    FLEXT_CALLBACK(Recalibrate)
    FLEXT_CALLBACK(ClearPadAndButtonLEDs)
+   FLEXT_CALLBACK_1(SetTurboMode, int)
+   FLEXT_CALLBACK_1(SetRawMode, int)
    FLEXT_CALLBACK(Attach)
 
    int lastSliderValue[2];

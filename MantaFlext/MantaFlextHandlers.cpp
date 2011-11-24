@@ -227,3 +227,22 @@ void manta::ClearPadAndButtonLEDs()
    }
    ConnectedManta->ClearPadAndButtonLEDs();
 }
+
+void manta::SetTurboMode(int state)
+{
+   if(! Attached())
+   {
+      return;
+   }
+   ConnectedManta->SetTurboMode(state);
+}
+
+void manta::SetRawMode(int state)
+{
+   if(! Attached())
+   {
+      return;
+   }
+   ConnectedManta->SetRawMode(state);
+}
+
