@@ -2,11 +2,12 @@
 #include "../core/MantaExceptions.h"
 #include <algorithm>
 
-FLEXT_LIB("manta",manta)
+FLEXT_LIB_V("manta",manta)
 
-manta::manta():
+manta::manta(int argc,t_atom *argv):
    ConnectedManta(NULL)
 { 
+   int requestedSerial;
 	AddInAnything();
 	AddInAnything();
 
@@ -45,9 +46,16 @@ manta::manta():
    padAndButtonSymbol = MakeSymbol("padandbutton");
    ledsOffSymbol = MakeSymbol("ledsoff");
 
-   // TODO: implement attaching by serial number
    MantaFlextList.push_back(this);
-   Attach();
+   if(argc > 0 && A_FLOAT == GetType(argv[0]))
+   {
+      requestedSerial = GetFloat(argv[0]);
+   }
+   else
+   {
+      requestedSerial = 0;
+   }
+   Attach(requestedSerial);
 } 
 
 manta::~manta()

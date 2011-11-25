@@ -16,7 +16,7 @@ class manta:
 	FLEXT_HEADER(manta, flext_base)
  
    public:
-	manta(); 
+	manta(int argc,t_atom *argv); 
 	~manta(); 
 
    void Attach(int serialNumber = 0);

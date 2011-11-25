@@ -84,9 +84,10 @@ void MantaUSB::Connect(int connectionSerial)
    if(! IsConnected())
    {
       DebugPrint("%s-%d: Manta %d Connecting...", __FILE__, __LINE__, MantaIndex);
-      DeviceHandle = GetMantaDeviceHandle(&SerialNumber);
+      DeviceHandle = GetMantaDeviceHandle(&connectionSerial);
       if(NULL == DeviceHandle)
          throw(MantaNotFoundException());
+      SerialNumber = connectionSerial;
 #if 0
       if(LIBUSB_SUCCESS != libusb_set_configuration(DeviceHandle, 1))
       {
@@ -198,6 +199,11 @@ void MantaUSB::CancelEvents(void)
    }
 }
 
+/* takes a pointer to a serial number and returns a matching device handle.
+ * If the serial number is 0 then the first matching manta is returned, and the
+ * serial number is set to the serial number of the device. If the serial number
+ * is nonzero then only a matching manta will be returned. If serial is NULL then
+ * NULL is always returned as the handle */
 libusb_device_handle *MantaUSB::GetMantaDeviceHandle(int *serial)
 {
    int status;
@@ -207,7 +213,13 @@ libusb_device_handle *MantaUSB::GetMantaDeviceHandle(int *serial)
    libusb_device_handle *handle;
    struct libusb_device_descriptor desc;
    unsigned char serialString[10];
+   int currentDeviceSerial;
    int i;
+
+   if(NULL == serial)
+   {
+      return NULL;
+   }
 
    devListSize = libusb_get_device_list(LibusbContext, &devList);
 
@@ -218,20 +230,23 @@ libusb_device_handle *MantaUSB::GetMantaDeviceHandle(int *serial)
       if(LIBUSB_SUCCESS == status)
       {
          status = libusb_get_device_descriptor(iter, &desc);
-         if(serial != NULL)
-         {
-            libusb_get_string_descriptor_ascii(handle, desc.iSerialNumber, serialString, sizeof(serialString));
-            *serial= atoi(reinterpret_cast<const char *>(serialString));
-         }
          if(desc.idVendor == VendorID && desc.idProduct == ProductID)
          {
-            if(1 == libusb_kernel_driver_active(handle, 0))
+            libusb_get_string_descriptor_ascii(handle, desc.iSerialNumber, serialString, sizeof(serialString));
+            /* yes, reinterpret_cast is usually a bad idea, but it seems to be
+             * the best way to pass a char* to a function expecting a const char* */
+            currentDeviceSerial= atoi(reinterpret_cast<const char *>(serialString));
+            if(*serial == 0 || currentDeviceSerial == *serial)
             {
-               libusb_detach_kernel_driver(handle, 0);
+               *serial = currentDeviceSerial;
+               if(1 == libusb_kernel_driver_active(handle, 0))
+               {
+                  libusb_detach_kernel_driver(handle, 0);
+               }
+               //libusb_claim_interface(handle, 0);
+               libusb_free_device_list(devList, 1);
+               return handle;
             }
-            //libusb_claim_interface(handle, 0);
-            libusb_free_device_list(devList, 1);
-            return handle;
          }
          else
          {

@@ -231,6 +231,7 @@ the library.;
 #X obj 338 673 disp -1;
 #X obj 284 672 disp -1;
 #X obj 229 672 disp -1;
+#X text 6 227 Also takes argument for serial number;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
