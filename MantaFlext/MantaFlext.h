@@ -46,6 +46,7 @@ class manta:
    void ClearPadAndButtonLEDs();
    void SetTurboMode(int Enabled);
    void SetRawMode(int Enabled);
+   void Connect(int argc, t_atom *argv);
 
    private:
    LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
@@ -86,7 +87,8 @@ class manta:
    FLEXT_CALLBACK(ClearPadAndButtonLEDs)
    FLEXT_CALLBACK_1(SetTurboMode, int)
    FLEXT_CALLBACK_1(SetRawMode, int)
-   FLEXT_CALLBACK(Attach)
+   /* declare Attach to be used with or without SerialNumber arg */
+   FLEXT_CALLBACK_V(Connect)
 
    int lastSliderValue[2];
 

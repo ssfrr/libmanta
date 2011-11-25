@@ -7,7 +7,6 @@ FLEXT_LIB_V("manta",manta)
 manta::manta(int argc,t_atom *argv):
    ConnectedManta(NULL)
 { 
-   int requestedSerial;
 	AddInAnything();
 	AddInAnything();
 
@@ -29,7 +28,7 @@ manta::manta(int argc,t_atom *argv):
    FLEXT_ADDMETHOD_(1, "ledsoff", ClearPadAndButtonLEDs);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
    FLEXT_ADDMETHOD_(0, "reset", Recalibrate);
-   FLEXT_ADDMETHOD_(0, "connect", Attach);
+   FLEXT_ADDMETHOD_(0, "connect", Connect);
    FLEXT_ADDMETHOD_1(0, "turbo", SetTurboMode, int);
    FLEXT_ADDMETHOD_1(0, "raw", SetRawMode, int);
    
@@ -47,15 +46,7 @@ manta::manta(int argc,t_atom *argv):
    ledsOffSymbol = MakeSymbol("ledsoff");
 
    MantaFlextList.push_back(this);
-   if(argc > 0 && A_FLOAT == GetType(argv[0]))
-   {
-      requestedSerial = GetFloat(argv[0]);
-   }
-   else
-   {
-      requestedSerial = 0;
-   }
-   Attach(requestedSerial);
+   Connect(argc, argv);
 } 
 
 manta::~manta()
