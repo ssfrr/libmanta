@@ -198,28 +198,25 @@ void manta::PollConnectedMantas(thr_params *p)
       while(!shouldStop)
       {
          MantaMutex.Lock();
-         /* TODO: this will become a static method */
-         ConnectedMantaList.front()->HandleEvents();
+         MantaUSB::HandleEvents();
          MantaMutex.Unlock();
       }
    }
    catch(MantaCommunicationException e)
    {
-      /* for now we only handle one connected manta at a time, so we assume
-       * that's the one that caused the issue */
-      MantaMulti *multi = ConnectedMantaList.front();
-      delete multi;
-      DetachAllMantaFlext(multi);
-      ConnectedMantaList.remove(multi);
+      MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
+      delete errorManta;
+      DetachAllMantaFlext(errorManta);
+      ConnectedMantaList.remove(errorManta);
       MantaMutex.Unlock();
       post("manta: Communication with Manta interrupted");
    }
    catch(MantaNotConnectedException e)
    {
-      MantaMulti *multi = ConnectedMantaList.front();
-      delete multi;
-      DetachAllMantaFlext(multi);
-      ConnectedMantaList.remove(multi);
+      MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
+      delete errorManta;
+      DetachAllMantaFlext(errorManta);
+      ConnectedMantaList.remove(errorManta);
       MantaMutex.Unlock();
       post("manta: Tried to poll with manta unconnected");
    }

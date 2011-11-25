@@ -5,6 +5,9 @@
  * whole header file */
 
 #include <stdint.h>
+#include <list>
+
+using namespace std;
 
 typedef struct libusb_transfer libusb_transfer;
 typedef struct libusb_context libusb_context;
@@ -18,9 +21,10 @@ class MantaUSB
       bool IsConnected(void);
       void Connect(int connectionSerial = 0);
       void Disconnect();
-      void HandleEvents(void);
       bool IsTransmitting(void);
       int GetSerialNumber(void);
+
+      static void HandleEvents(void);
 
    protected:
       void WriteFrame(uint8_t *frame);
@@ -50,10 +54,12 @@ class MantaUSB
       libusb_transfer *CurrentOutTransfer;
       libusb_transfer *CurrentInTransfer;
       bool OutTransferQueued;
-      bool TransferError;
       uint8_t QueuedOutFrame[OutPacketLen];
       uint8_t ReceivedFrame[InPacketLen];
-      
+      bool TransferError;
+
+      static list<MantaUSB *> mantaList;
+
       friend void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer);
       friend void MantaInTransferCompleteHandler(struct libusb_transfer *transfer);
 };

@@ -26,6 +26,7 @@ MantaUSB::MantaUSB(void) :
    }
 
    DebugPrint("%s-%d: Manta %d initialized", __FILE__, __LINE__, MantaIndex);
+   mantaList.push_back(this);
 }
 
 MantaUSB::~MantaUSB(void)
@@ -35,6 +36,7 @@ MantaUSB::~MantaUSB(void)
    {
       libusb_exit(LibusbContext);
    }
+   mantaList.remove(this);
 }
 
 void MantaUSB::WriteFrame(uint8_t *frame)
@@ -42,7 +44,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
    int status;
    if(NULL == DeviceHandle)
    {
-      throw(MantaNotConnectedException());
+      throw(MantaNotConnectedException(this));
    }
    /* if a transfer is in progress, just updated the queued
     * transfer frame */
@@ -69,7 +71,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
          libusb_free_transfer(CurrentOutTransfer);
          CurrentOutTransfer = NULL;
          Disconnect();
-         throw(MantaCommunicationException());
+         throw(MantaCommunicationException(this));
       }
    }
 }
@@ -115,22 +117,21 @@ void MantaUSB::Disconnect(void)
    }
 }
 
-/* TODO: this should be a static method because it handles events for all
- * connected mantas. Also, the exceptions thrown should indicate which
- * connected manta object caused the issue, so the application can handle
- * it accordingly */
+/* TODO: the exceptions thrown should indicate which connected manta object
+ * caused the issue, so the application can handle it accordingly */
 void MantaUSB::HandleEvents(void)
 {
-   if(! IsConnected())
+   list<MantaUSB *>::iterator i = mantaList.begin();
+   /* check to see if any attached mantas had an error */
+   while(mantaList.end() != i)
    {
-      throw(MantaNotConnectedException());
-   }
-   if(TransferError)
-   {
-      DebugPrint("%s-%d: Transfer error caught in HandleEvents on Manta %d", __FILE__, __LINE__, MantaIndex);
-      TransferError = false;
-      Disconnect();
-      throw(MantaCommunicationException());
+      if((*i)->TransferError)
+      {
+         (*i)->DebugPrint("%s-%d: Transfer error caught in HandleEvents on Manta %d", __FILE__, __LINE__, (*i)->GetSerialNumber());
+         (*i)->TransferError = false;
+         throw(MantaCommunicationException((*i)));
+      }
+      ++i;
    }
    libusb_handle_events(LibusbContext);
 }
@@ -162,7 +163,6 @@ void MantaUSB::BeginReadTransfer(void)
       DebugPrint("%s-%d: (BeginReadTransfer) libusb_submit_transfer failed with status %d on Manta %d", __FILE__, __LINE__, status, MantaIndex);
       libusb_free_transfer(CurrentInTransfer);
       CurrentInTransfer = NULL;
-      TransferError = true;
    }
 }
 
@@ -261,6 +261,7 @@ libusb_device_handle *MantaUSB::GetMantaDeviceHandle(int *serial)
 /* define static class members */
 int MantaUSB::DeviceCount = 0;
 libusb_context *MantaUSB::LibusbContext;
+list<MantaUSB *> MantaUSB::mantaList;
 
 /* define callback functions outside of the class */
 void MantaInTransferCompleteHandler(struct libusb_transfer *transfer)

@@ -324,7 +324,7 @@ void Manta::Recalibrate(void)
 {
    if(! IsConnected())
    {
-      throw MantaNotConnectedException();
+      throw MantaNotConnectedException(this);
    }
    
    CurrentOutReport[ConfigIndex] |= 0x40;
