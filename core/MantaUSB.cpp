@@ -2,12 +2,19 @@
 #include <cassert>
 #include "MantaUSB.h"
 #include "MantaExceptions.h"
+#include <cstdlib>
 
 /* declare the C-compatible callback functions */
 void MantaOutTransferCompleteHandler(struct libusb_transfer *transfer);
 void MantaInTransferCompleteHandler(struct libusb_transfer *transfer);
 
-MantaUSB::MantaUSB(void)
+MantaUSB::MantaUSB(void) :
+   SerialNumber(0),
+   DeviceHandle(NULL),
+   CurrentOutTransfer(NULL),
+   CurrentInTransfer(NULL),
+   OutTransferQueued(false),
+   TransferError(false)
 {
    MantaIndex = DeviceCount;
    if(DeviceCount++ == 0)
@@ -18,11 +25,6 @@ MantaUSB::MantaUSB(void)
       }
    }
 
-   DeviceHandle = NULL;
-   CurrentOutTransfer = NULL;
-   CurrentInTransfer = NULL;
-   OutTransferQueued = false;
-   TransferError = false;
    DebugPrint("%s-%d: Manta %d initialized", __FILE__, __LINE__, MantaIndex);
 }
 
@@ -77,12 +79,12 @@ bool MantaUSB::IsConnected(void)
    return DeviceHandle != NULL;
 }
 
-void MantaUSB::Connect(int serialNumber)
+void MantaUSB::Connect(int connectionSerial)
 {
    if(! IsConnected())
    {
       DebugPrint("%s-%d: Manta %d Connecting...", __FILE__, __LINE__, MantaIndex);
-      DeviceHandle = GetMantaDeviceHandle();;
+      DeviceHandle = GetMantaDeviceHandle(&SerialNumber);
       if(NULL == DeviceHandle)
          throw(MantaNotFoundException());
 #if 0
@@ -140,8 +142,9 @@ bool MantaUSB::IsTransmitting(void)
 int MantaUSB::GetSerialNumber(void)
 {
    /* TODO: get serial number */
-   return 1;
+   return SerialNumber;
 }
+
 /* these Begin*Transfer functions shouldn't throw exceptions directly
  * because they get called from the TransferComplete callbacks, which
  * in turn are called by libusb and don't get to clean up properly
@@ -195,7 +198,7 @@ void MantaUSB::CancelEvents(void)
    }
 }
 
-libusb_device_handle *MantaUSB::GetMantaDeviceHandle(void)
+libusb_device_handle *MantaUSB::GetMantaDeviceHandle(int *serial)
 {
    int status;
    libusb_device **devList;
@@ -215,9 +218,11 @@ libusb_device_handle *MantaUSB::GetMantaDeviceHandle(void)
       if(LIBUSB_SUCCESS == status)
       {
          status = libusb_get_device_descriptor(iter, &desc);
-#if 0
-         libusb_get_string_descriptor_ascii(handle, desc.iSerialNumber, serialString, sizeof(serialString));
-#endif
+         if(serial != NULL)
+         {
+            libusb_get_string_descriptor_ascii(handle, desc.iSerialNumber, serialString, sizeof(serialString));
+            *serial= atoi(reinterpret_cast<const char *>(serialString));
+         }
          if(desc.idVendor == VendorID && desc.idProduct == ProductID)
          {
             if(1 == libusb_kernel_driver_active(handle, 0))

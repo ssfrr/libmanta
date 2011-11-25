@@ -16,7 +16,7 @@ class MantaUSB
       MantaUSB(void);
       virtual ~MantaUSB(void);
       bool IsConnected(void);
-      void Connect(int serialNumber = 0);
+      void Connect(int connectionSerial = 0);
       void Disconnect();
       void HandleEvents(void);
       bool IsTransmitting(void);
@@ -42,13 +42,13 @@ class MantaUSB
       void BeginReadTransfer(void);
       void BeginQueuedTransfer(void);
       void CancelEvents(void);
-      libusb_device_handle *GetMantaDeviceHandle(void);
+      libusb_device_handle *GetMantaDeviceHandle(int *serial);
 
       static int DeviceCount;
       static libusb_context *LibusbContext;
       libusb_device_handle *DeviceHandle;
-      libusb_transfer *CurrentInTransfer;
       libusb_transfer *CurrentOutTransfer;
+      libusb_transfer *CurrentInTransfer;
       bool OutTransferQueued;
       bool TransferError;
       uint8_t QueuedOutFrame[OutPacketLen];
