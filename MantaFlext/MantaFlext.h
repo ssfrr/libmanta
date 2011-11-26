@@ -1,6 +1,7 @@
 #include <flext.h>
 #include "../core/MantaClient.h"
 #include "../core/MantaMulti.h"
+#include "../core/MantaServer.h"
 #include <list>
 
 using namespace std;
@@ -49,8 +50,8 @@ class manta:
    void Connect(int argc, t_atom *argv);
 
    private:
-   LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
-   LEDState ledStateFromInt(int stateSymbol);
+   MantaServer::LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
+   MantaServer::LEDState ledStateFromInt(int stateSymbol);
 
    /* we could be detached from the polling thread on communication error
     * so this SHOULD be volatile, but I got lazy */

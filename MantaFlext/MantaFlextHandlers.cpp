@@ -1,35 +1,35 @@
 #include "MantaFlext.h"
 #include "../core/MantaExceptions.h"
 
-LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
+MantaServer::LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
 {
    if(stateSymbol == amberSymbol)
    {
-      return Amber;
+      return MantaServer::Amber;
    }
    else if(stateSymbol == redSymbol)
    {
-      return Red;
+      return MantaServer::Red;
    }
    else
    {
-      return Off;
+      return MantaServer::Off;
    }
 }
 
-LEDState manta::ledStateFromInt(int state)
+MantaServer::LEDState manta::ledStateFromInt(int state)
 {
    if(state == 1)
    {
-      return Amber;
+      return MantaServer::Amber;
    }
    else if(state == 2)
    {
-      return Red;
+      return MantaServer::Red;
    }
    else
    {
-      return Off;
+      return MantaServer::Off;
    }
 }
 
@@ -45,11 +45,11 @@ void manta::SetLEDControl(t_symbol *control, int state)
       {
          ClearPadAndButtonLEDs();
       }
-      ConnectedManta->SetLEDControl(PadAndButton, state);
+      ConnectedManta->SetLEDControl(MantaServer::PadAndButton, state);
    }
    else if(control == sliderSymbol)
    {
-      ConnectedManta->SetLEDControl(Slider, state);
+      ConnectedManta->SetLEDControl(MantaServer::Slider, state);
    }
    else if(control == buttonSymbol)
    {
@@ -57,7 +57,7 @@ void manta::SetLEDControl(t_symbol *control, int state)
       {
          ConnectedManta->ClearButtonLEDs();
       }
-      ConnectedManta->SetLEDControl(Button, state);
+      ConnectedManta->SetLEDControl(MantaServer::Button, state);
    }
 }
 
@@ -67,7 +67,7 @@ void manta::SetPadLED(int argc, t_atom *argv)
    {
       return;
    }
-   LEDState parsedState;
+   MantaServer::LEDState parsedState;
    if(argc < 2 ||
          (!CanbeInt(argv[0]) && !IsSymbol(argv[0])))
    {
@@ -96,7 +96,7 @@ void manta::SetPadLEDRow(t_symbol *state, int row, int mask)
    {
       return;
    }
-   LEDState parsedState = ledStateFromSymbol(state);
+   MantaServer::LEDState parsedState = ledStateFromSymbol(state);
    ConnectedManta->SetPadLEDRow(parsedState, row, mask);
 }
 
@@ -106,7 +106,7 @@ void manta::SetPadLEDRowNum(int state, int row, int mask)
    {
       return;
    }
-   LEDState parsedState = ledStateFromInt(state);
+   MantaServer::LEDState parsedState = ledStateFromInt(state);
    ConnectedManta->SetPadLEDRow(parsedState, row, mask);
 }
 
@@ -116,7 +116,7 @@ void manta::SetPadLEDColumn(t_symbol *state, int column, int mask)
    {
       return;
    }
-   LEDState parsedState = ledStateFromSymbol(state);
+   MantaServer::LEDState parsedState = ledStateFromSymbol(state);
    ConnectedManta->SetPadLEDColumn(parsedState, column, mask);
 }
 
@@ -126,7 +126,7 @@ void manta::SetPadLEDColumnNum(int state, int column, int mask)
    {
       return;
    }
-   LEDState parsedState = ledStateFromInt(state);
+   MantaServer::LEDState parsedState = ledStateFromInt(state);
    ConnectedManta->SetPadLEDColumn(parsedState, column, mask);
 }
 
@@ -136,7 +136,7 @@ void manta::SetSliderLEDMask(t_symbol *state, int id, int mask)
    {
       return;
    }
-   LEDState parsedState = ledStateFromSymbol(state);
+   MantaServer::LEDState parsedState = ledStateFromSymbol(state);
    ConnectedManta->SetSliderLED(parsedState, id, mask);
 }
 
@@ -146,7 +146,7 @@ void manta::SetSliderLEDMaskNum(int state, int id, int mask)
    {
       return;
    }
-   LEDState parsedState = ledStateFromInt(state);
+   MantaServer::LEDState parsedState = ledStateFromInt(state);
    ConnectedManta->SetSliderLED(parsedState, id, mask);
 }
 
@@ -159,7 +159,7 @@ void manta::SetSliderLED(int id, t_symbol *state)
    if(state == offSymbol)
    {
       /* turn all LEDs on that slider off */
-      ConnectedManta->SetSliderLED(Off, id, 0xFF);
+      ConnectedManta->SetSliderLED(MantaServer::Off, id, 0xFF);
    }
 }
 
@@ -172,12 +172,12 @@ void manta::SetSliderLEDNum(int id, int ledNum)
    if(ledNum >= 0 && ledNum < 8)
    {
       uint8_t mask = 0x80 >> ledNum;
-      ConnectedManta->SetSliderLED(Amber, id, mask);
-      ConnectedManta->SetSliderLED(Off, id, ~mask);
+      ConnectedManta->SetSliderLED(MantaServer::Amber, id, mask);
+      ConnectedManta->SetSliderLED(MantaServer::Off, id, ~mask);
    }
    else if(ledNum == -1)
    {
-      ConnectedManta->SetSliderLED(Off, id, 0xFF);
+      ConnectedManta->SetSliderLED(MantaServer::Off, id, 0xFF);
    }
 }
 
@@ -187,7 +187,7 @@ void manta::SetButtonLED(int argc, t_atom *argv)
    {
       return;
    }
-   LEDState parsedState;
+   MantaServer::LEDState parsedState;
    if(argc < 2 ||
          (!CanbeInt(argv[0]) && !IsSymbol(argv[0])))
    {
