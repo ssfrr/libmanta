@@ -58,6 +58,7 @@ class MantaMidiSettings
     PadValMode      GetPad_Mode();
     void            SetPad_Mode(PadValMode mode);
     void            SetPad(int pad, unsigned char channel, unsigned char note);
+    void            CalibratePad(int pad, unsigned char value);
     void            SetAllPadOnColor(Manta::LEDState onColor);
     void            SetAllPadOffColor(Manta::LEDState offColor);
     void            SetAllPadInactiveColor(Manta::LEDState inactiveColor);
@@ -81,6 +82,7 @@ class MantaMidiSettings
     SliderMode GetSlider_Mode(int slider);
     void SetSlider_Mode(int slider, SliderMode mode);
     void SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode);
+    void
 
     /* Buttons */
     bool IsValidButtonIndex(int button);
@@ -118,6 +120,7 @@ protected:
     PadValMode m_padMode;
     unsigned char m_padEventChannel[numPads];
     unsigned char m_basePadMidi[numPads];
+    unsigned char m_padMaxValue[numPads];
     Manta::LEDState m_inactivePadColor[numPads];
     Manta::LEDState m_onPadColor[numPads];
     Manta::LEDState m_offPadColor[numPads];
@@ -130,6 +133,7 @@ protected:
     const static int numSliders = 2;
     unsigned char m_slider_EventChannel[numSliders];
     unsigned char m_slider_MidiNote[numSliders];
+    unsigned short m_slider_MaxValue[numSliders];
     SliderMode m_slider_Mode[numSliders];
 
     /* button */
@@ -137,6 +141,7 @@ protected:
     ButtonMode m_buttonMode[numButtons];
     unsigned char m_buttonEventChannel[numButtons];
     char m_buttonMidi[numButtons];
+    unsigned char m_buttonMaxValue[numButtons];
     Manta::LEDState m_inactiveButtonColor[numButtons];
     Manta::LEDState m_onButtonColor[numButtons];
     Manta::LEDState m_offButtonColor[numButtons];

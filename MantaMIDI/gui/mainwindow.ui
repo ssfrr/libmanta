@@ -1412,7 +1412,9 @@
      <string>Testing</string>
     </property>
     <addaction name="actionForce_Disconnect"/>
+    <addaction name="actionReconnect"/>
     <addaction name="actionRun_LED_Diagnostic"/>
+    <addaction name="actionCalibrate"/>
    </widget>
    <addaction name="menuOptions"/>
    <addaction name="menuTesting"/>
@@ -1458,10 +1460,37 @@
     <string>Run LED Diagnostic</string>
    </property>
   </action>
+  <action name="actionReconnect">
+   <property name="text">
+    <string>Reconnect</string>
+   </property>
+  </action>
+  <action name="actionCalibrate">
+   <property name="text">
+    <string>Calibrate</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionReconnect</sender>
+   <signal>triggered()</signal>
+   <receiver>actionReconnect</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <buttongroups>
   <buttongroup name="button4TypeGroup"/>
   <buttongroup name="padAftertouchModeGroup"/>

@@ -8,6 +8,13 @@
 #include "../MantaMidiSettings.h"
 #include "../midimanager/RtMidiManager.h"
 
+enum MantaMode
+{
+    eMode_Run = 0,
+    eMode_Diagnostic = 1,
+    eMode_Disabled
+};
+
 class MantaThread : public QThread
 {
     Q_OBJECT
@@ -28,18 +35,22 @@ protected:
 private slots:
     void ForceMantaDisconnect();
     void RunMantaDiagnostic();
+    void CalibrateMode();
     void RunManta();
 
 private:
     bool CheckMantaConnected();
 
+    void RunDiagnostic();
     void RunPadDiagnostic();
     void RunButtonDiagnostic();
     void RunSliderDiagnostic();
 
+    void RunCalibration();
+
     QMutex mutex;
     QWaitCondition condition;
-    bool bPause;
+    MantaMode m_runningMode;
 
     MantaMidiSettings *m_options;
     MidiManager *manta;

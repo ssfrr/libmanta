@@ -6,7 +6,7 @@
 #include <math.h>
 
 MidiManager::MidiManager(MantaMidiSettings *options) :
-  m_options(options), m_padAftertouchStackIndex(-1)
+  m_options(options), m_padAftertouchStackIndex(-1), m_bCalibrationMode(false)
 {
 }
 
@@ -17,6 +17,16 @@ MidiManager::~MidiManager()
 void MidiManager::ResetLEDS()
 {
     Initialize();
+}
+
+void MidiManager::SetCalibrateMode(bool bCalModeOn)
+{
+    m_bCalibrationMode = bCalModeOn;
+}
+
+bool MidiManager::GetCalibrationState()
+{
+    return m_bCalibrationMode;
 }
 
 void MidiManager::Initialize()

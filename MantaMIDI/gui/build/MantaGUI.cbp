@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+   <FileVersion major="1" minor="6" />
+   <Project>
+      <Option title="MantaGUI" />
+      <Option makefile_is_custom="1" />
+      <Option compiler="gcc" />
+      <Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\Applications\;CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\;CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\;CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\;CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\;CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\;CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Platform\;CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Compiler\;" />
+      <Build>
+      <Target title="all">
+         <Option working_dir="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; all" />
+            <CompileFile command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; &quot;$file&quot;" />
+            <Clean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+            <DistClean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="MantaGUI">
+         <Option output="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/MantaGUI.app/Contents/MacOS/MantaGUI" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build" />
+         <Option object_output="./" />
+         <Option type="0" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/opt/local/include" />
+            <Add directory="/opt/local/include/QtGui" />
+            <Add directory="/opt/local/include/QtCore" />
+            <Add directory="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui" />
+            <Add directory="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; MantaGUI" />
+            <CompileFile command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; &quot;$file&quot;" />
+            <Clean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+            <DistClean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="MantaGUI/fast">
+         <Option output="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/MantaGUI.app/Contents/MacOS/MantaGUI" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build" />
+         <Option object_output="./" />
+         <Option type="0" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/opt/local/include" />
+            <Add directory="/opt/local/include/QtGui" />
+            <Add directory="/opt/local/include/QtCore" />
+            <Add directory="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui" />
+            <Add directory="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; MantaGUI/fast" />
+            <CompileFile command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; &quot;$file&quot;" />
+            <Clean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+            <DistClean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="rebuild_cache">
+         <Option working_dir="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; rebuild_cache" />
+            <CompileFile command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; &quot;$file&quot;" />
+            <Clean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+            <DistClean command="/opt/local/bin/gmake -f &quot;/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/Makefile&quot; clean" />
+         </MakeCommands>
+      </Target>
+      </Build>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/LayoutMgr.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/MantaMidiSettings.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/moc_mainwindow.cxx">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/moc_mantathread.cxx">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/moc_qmantasettings.cxx">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/main.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/mainwindow.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/mantathread.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/qmantasettings.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/midimanager/MIDImanager.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/midimanager/RtMidiManager.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/rtmidi/RtMidi.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/core/Manta.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/core/MantaUSB.cpp">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/LayoutMgr.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/MantaMidiSettings.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/moc_mainwindow.cxx.rule">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/moc_mantathread.cxx.rule">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/moc_qmantasettings.cxx.rule">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/ui_mainwindow.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/mainwindow.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/mainwindow.ui">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/mantathread.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/qmantasettings.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/midimanager/MIDImanager.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/midimanager/RtMidiManager.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/rtmidi/RtMidi.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/core/Manta.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/core/MantaUSB.h">
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CMakeSystemSpecificInformation.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CMakeGenericSystem.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CMakeFindCodeBlocks.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CMakeCInformation.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CMakeCommonLanguageInclude.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CMakeCXXInformation.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CMakeCommonLanguageInclude.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/FindQt4.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/CheckSymbolExists.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/MacroAddFileDependencies.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Qt4Macros.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/FindPackageMessage.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Qt4ConfigDependentSettings.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/UseQt4.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/MacOSXBundleInfo.plist.in">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Platform/Darwin.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Platform\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Platform/UnixPaths.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Platform\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Platform/Darwin-GNU-C.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Platform\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Platform/Darwin-GNU.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Platform\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Platform/Darwin-GNU-CXX.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Platform\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Platform/Darwin-GNU.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Platform\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Compiler/GNU-C.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Compiler\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Compiler/GNU.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Compiler\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Compiler/GNU-CXX.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Compiler\" />
+      </Unit>
+      <Unit filename="/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/../../../../../../../../Applications/CMake 2.8-3.app/Contents/share/cmake-2.8/Modules/Compiler/GNU.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\Applications\CMake 2.8-3.app\Contents\share\cmake-2.8\Modules\Compiler\" />
+      </Unit>
+   </Project>
+</CodeBlocks_project_file>

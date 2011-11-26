@@ -38,6 +38,8 @@ class MidiManager : public Manta
 
   void Initialize();
   void ResetLEDS();
+  void SetCalibrateMode(bool bCalModeOn);
+  bool GetCalibrationState();
 
   MantaMidiSettings *GetOptions();
   
@@ -84,6 +86,8 @@ class MidiManager : public Manta
 
   int m_padAftertouchStack[MANTA_PADS];
   int m_padAftertouchStackIndex;
+
+  bool m_bCalibrationMode;
 };
 
 #endif

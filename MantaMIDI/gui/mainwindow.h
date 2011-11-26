@@ -21,6 +21,8 @@ public:
 signals:
     void MantaDiagnosticsSignal();
     void MantaDisconnectSignal();
+    void MantaReconnectSignal();
+    void MantaCalibrateSignal();
 
 private slots:
     void on_checkBox_clicked();
@@ -92,6 +94,8 @@ private slots:
 
     void on_actionRun_LED_Diagnostic_triggered();
     void on_actionForce_Disconnect_triggered();
+    void on_actionReconnect_triggered();
+    void on_actionCalibrate_triggered();
 
 private:
     void UpdateLayout(PadLayout padLayout);

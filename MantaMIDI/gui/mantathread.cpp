@@ -11,10 +11,14 @@ static void waitForTransmitComplete(MantaUSB &manta)
 MantaThread::MantaThread(QObject *parent) :
     QThread(parent), m_options(NULL), manta(NULL)
 {
+    m_runningMode = eMode_Disabled;
+
     connect(parent, SIGNAL(MantaDiagnosticsSignal()),
            this, SLOT(RunMantaDiagnostic()), Qt::QueuedConnection);
     connect(parent, SIGNAL(MantaDisconnectSignal()),
             this, SLOT(ForceMantaDisconnect()), Qt::QueuedConnection);
+    connect(parent, SIGNAL(MantaCalibrateSignal()),
+            this, SLOT(RunCalibrateMode()), Qt::QueuedConnection);
 }
 
 MantaThread::~MantaThread()
@@ -52,11 +56,48 @@ void MantaThread::ForceMantaDisconnect()
     if (manta->IsConnected())
     {
         waitForTransmitComplete(*manta);
+
+        m_runningMode = eMode_Disabled;
         //manta->Disconnect();
 
-        emit MantaConnectedMessage("Disconnect currently disabled.");
-        //emit MantaConnectedMessage("Manta Force Disconnected");
+        emit MantaConnectedMessage("Manta Force Disconnected");
     }
+}
+
+void MantaThread::RunMantaDiagnostic()
+{
+    m_runningMode = eMode_Diagnostic;
+}
+
+void MantaThread::CalibrateMode()
+{
+    bool bState = manta->GetCalibrationState();
+
+    if (bState)
+    {
+        emit UpdateStatusMessage("Calibration disabled.");
+        manta->SetCalibrateMode(false);
+    }
+    else
+    {
+        emit UpdateStatusMessage("Calibration Mode: Detecting max sensor values");
+        manta->SetCalibrateMode(true);
+    }
+}
+
+void MantaThread::RunDiagnostic()
+{
+    manta->SetLEDControl(Manta::PadAndButton, true);
+    waitForTransmitComplete(*manta);
+    manta->SetLEDControl(Manta::Slider, true);
+    waitForTransmitComplete(*manta);
+
+    RunPadDiagnostic();
+    RunButtonDiagnostic();
+    RunSliderDiagnostic();
+
+    manta->Initialize();
+    m_runningMode = eMode_Run;
 }
 
 bool MantaThread::CheckMantaConnected()
@@ -79,33 +120,6 @@ bool MantaThread::CheckMantaConnected()
     return manta->IsConnected();
 }
 
-void MantaThread::RunMantaDiagnostic()
-{
-    /*mutex.lock();
-    bPause = true;
-    condition.wait(&mutex);
-    mutex.unlock();*/
-
-    if (manta && CheckMantaConnected())
-    {
-        manta->SetLEDControl(Manta::PadAndButton, true);
-        waitForTransmitComplete(*manta);
-        manta->SetLEDControl(Manta::Slider, true);
-        waitForTransmitComplete(*manta);
-
-        RunPadDiagnostic();
-        RunButtonDiagnostic();
-        RunSliderDiagnostic();
-
-        manta->Initialize();
-    }
-
-    /*mutex.lock();
-    bPause = false;
-    condition.wait(&mutex);
-    mutex.unlock();*/
-}
-
 void MantaThread::RunManta()
 {
     if (manta && m_options && CheckMantaConnected())
@@ -115,8 +129,12 @@ void MantaThread::RunManta()
             manta->Initialize();
             forever
             {
-                if (!bPause)
+                if (m_runningMode == eMode_Run)
                     manta->HandleEvents();
+                else if (m_runningMode == eMode_Diagnostic)
+                    RunDiagnostic();
+                else if (m_runningMode == eMode_Disabled)
+                    usleep(200);
             }
         }
         catch(MantaCommunicationException &e)
@@ -131,7 +149,7 @@ void MantaThread::RunManta()
 
 void MantaThread::run()
 {
-    bPause = false;
+    m_runningMode = eMode_Run;
     forever
     {
         RunManta();

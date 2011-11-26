@@ -460,3 +460,13 @@ void MainWindow::on_actionForce_Disconnect_triggered()
 {
     emit MantaDisconnectSignal();
 }
+
+void MainWindow::on_actionReconnect_triggered()
+{
+    emit MantaReconnectSignal();
+}
+
+void MainWindow::on_actionCalibrate_triggered()
+{
+    emit MantaCalibrateSignal();
+}
