@@ -8,12 +8,14 @@ SRCS= MantaFlext.cpp \
       MantaFlextLibrary.cpp \
       MantaFlextCentroid.cpp \
       MantaFlextMaximum.cpp \
+      MantaFlextPoly.cpp \
       ../core/Manta.cpp \
       ../core/MantaUSB.cpp \
       ../core/MantaMulti.cpp
 HDRS= MantaFlext.h \
       MantaFlextCentroid.h \
       MantaFlextMaximum.h \
+      MantaFlextPoly.h \
       ../core/Manta.h \
       ../core/MantaUSB.h \
       ../core/MantaServer.h \

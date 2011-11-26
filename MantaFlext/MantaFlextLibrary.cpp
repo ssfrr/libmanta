@@ -9,6 +9,7 @@ static void mantaLibSetup(void)
    FLEXT_SETUP(manta);
    FLEXT_SETUP(MantaFlextCentroid);
    FLEXT_SETUP(MantaFlextMaximum);
+   FLEXT_SETUP(MantaFlextPoly);
    post("manta: PD / Max object by Spencer Russell");
    post("manta: Centroid Algorithm by R. Luke Dubois");
    post("manta: Velocity Algorithm by Angie Hugeback");
