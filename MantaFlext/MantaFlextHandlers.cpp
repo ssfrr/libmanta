@@ -221,7 +221,7 @@ void manta::Recalibrate()
 
 void manta::Connect(int argc, t_atom *argv)
 {
-   if(argc > 0 && A_FLOAT == GetType(argv[0]))
+   if(argc > 0 && CanbeFloat(argv[0]))
    {
       Attach(GetFloat(argv[0]));
    }

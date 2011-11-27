@@ -79,7 +79,6 @@ void manta::Attach(int serialNumber)
          try
          {
             device->Connect(serialNumber);
-            post("manta: Manta %d Connected", device->GetSerialNumber());
             MantaMutex.Lock();
             post("manta: Attaching to manta %d", device->GetSerialNumber());
             device->AttachClient(this);
