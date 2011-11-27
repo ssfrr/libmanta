@@ -108,7 +108,7 @@ void MantaUSB::Disconnect(void)
 {
    if(IsConnected())
    {
-      DebugPrint("%s-%d: Manta %d Disconnecting...", __FILE__, __LINE__, MantaIndex);
+      DebugPrint("%s-%d: Manta %d Disconnecting...", __FILE__, __LINE__, GetSerialNumber());
       CancelEvents();
       libusb_release_interface(DeviceHandle, 0);
       libusb_reset_device(DeviceHandle);
@@ -238,13 +238,17 @@ libusb_device_handle *MantaUSB::GetMantaDeviceHandle(int *serial)
             currentDeviceSerial= atoi(reinterpret_cast<const char *>(serialString));
             if(*serial == 0 || currentDeviceSerial == *serial)
             {
-               *serial = currentDeviceSerial;
                if(1 == libusb_kernel_driver_active(handle, 0))
                {
                   libusb_detach_kernel_driver(handle, 0);
                }
-               //libusb_claim_interface(handle, 0);
+               if(LIBUSB_SUCCESS != libusb_claim_interface(handle, 0))
+               {
+                  libusb_free_device_list(devList, 1);
+                  break;
+               }
                libusb_free_device_list(devList, 1);
+               *serial = currentDeviceSerial;
                return handle;
             }
          }
