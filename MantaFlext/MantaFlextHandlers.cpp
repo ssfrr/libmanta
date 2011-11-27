@@ -221,9 +221,9 @@ void manta::Recalibrate()
 
 void manta::Connect(int argc, t_atom *argv)
 {
-   if(argc > 0 && CanbeFloat(argv[0]))
+   if(argc > 0 && CanbeInt(argv[0]))
    {
-      Attach(GetFloat(argv[0]));
+      Attach(GetInt(argv[0]));
    }
    else
    {

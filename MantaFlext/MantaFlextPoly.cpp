@@ -5,7 +5,7 @@ FLEXT_LIB_V("manta.poly", MantaFlextPoly);
 MantaFlextPoly::MantaFlextPoly(int argc, t_atom *argv) :
    StoredValue(-1)
 {
-   if(argc > 0 && CanbeFloat(argv[0]))
+   if(argc > 0 && CanbeInt(argv[0]))
    {
       /* Voices initialized to empty vector, so all items are new
        * and initialized to -1 */
@@ -16,7 +16,7 @@ MantaFlextPoly::MantaFlextPoly(int argc, t_atom *argv) :
       Voices.assign(48, -1);
    }
    /* voice stealing is not yet implemented */
-   if(argc > 1 && CanbeFloat(argv[1]))
+   if(argc > 1 && CanbeInt(argv[1]))
    {
       Stealing = GetInt(argv[1]);
    }
