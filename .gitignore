@@ -1,6 +1,7 @@
 core/build
 MantaOSC/build
 MantaMIDI/build
+MantaMIDI/gui/build
 tests/build
 tags
 */tags

@@ -1,1 +1,0 @@
-/Users/cbjacoby/Documents/devel/manta/libmanta/MantaMIDI/gui/build/CMakeFiles/MantaGUI.dir

@@ -1,7 +1,0 @@
-# Hashes of file build rules.
-f62bdd054974265fecfbeb023267e514 moc_mainwindow.cxx
-73cc055d118009acc65f004cbc817295 moc_mantathread.cxx
-ba98762f681007f54583bc661b392d33 moc_padsettingsdialog.cxx
-ce7d12cca19c3c382888d802b001a283 moc_qmantasettings.cxx
-94f2ff6429abc35e2a7832afd5dadbac ui_mainwindow.h
-8ddc93aad946f1735e52a2efb9e5bd70 ui_padsettingsdialog.h
