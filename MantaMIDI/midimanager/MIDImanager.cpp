@@ -61,8 +61,13 @@ void MidiManager::PadEvent(int row, int column, int id, int value)
   if (m_options->GetDebugMode())
     std::cout << "PadEvent: " << id << ", " << value << "\n";
 
-  if (!m_options->GetUseVelocity())
-    SendPadMIDI(id, value);
+  if (!GetCalibrationState())
+  {
+      if (!m_options->GetUseVelocity())
+        SendPadMIDI(id, value);
+  }
+  else
+      m_options->CalibratePad(id, value);
 }
 
 void MidiManager::SliderEvent(int id, int value)
@@ -70,7 +75,10 @@ void MidiManager::SliderEvent(int id, int value)
   if (m_options->GetDebugMode())
     std::cout << "SliderEvent: " << id << ", " << value << "\n";
 
-    SendSliderMIDI(id, value);
+    if (!GetCalibrationState())
+        SendSliderMIDI(id, value);
+    else
+        m_options->CalibrateSlider(id, value);
 }
 
 void MidiManager::ButtonEvent(int id, int value)
@@ -78,8 +86,13 @@ void MidiManager::ButtonEvent(int id, int value)
   if (m_options->GetDebugMode())
     std::cout << "ButtonEvent: " << id << ", " << value << "\n";
 
-  if (!m_options->GetUseVelocity())
-    SendButtonMIDI(id, value);
+  if (!GetCalibrationState())
+  {
+    if (!m_options->GetUseVelocity())
+        SendButtonMIDI(id, value);
+  }
+  else
+    m_options->CalibrateButton(id, value);
 }
 
 void MidiManager::PadVelocityEvent(int row, int column, int id, int value)
@@ -127,9 +140,9 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
 	{
           if (m_options->GetPad_Mode() == pvmMonoAftertouch &&
 	      IsCurrentPadMaximum(noteNum, value))
-	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
+            Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
           else if (m_options->GetPad_Mode() == pvmPolyAftertouch)
-	    Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(value));
+            Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
           //else if (m_options->GetPadMode() == pvmPolyContinuous)
 	    //Send_ControlChange(channel, midiNote, value);
 	}
@@ -175,31 +188,48 @@ void MidiManager::SendSliderMIDI(int whichSlider, int value)
     char midiNote =  (char)m_options->GetSlider_MidiNote(whichSlider);
 
     if (value != 0x0000FFFF)
-      Send_ControlChange(channel, midiNote, TranslateSliderValueToCC(value));
+      Send_ControlChange(channel, midiNote, TranslateSliderValueToCC(whichSlider, value));
 }
 
-int MidiManager::TranslatePadValueToMIDI(int padValue)
+int MidiManager::TranslatePadValueToMIDI(int pad, int padValue)
 {
   int iRet = 0;
-  double transVal = (127.0 / 210.0);
+  unsigned char maxVal = m_options->GetPad_MaxVal(pad);
+  double transVal = (127.0 / maxVal);
 
   int tempPadValue = padValue;
-  if (tempPadValue > 210)
-    tempPadValue = 210;
+  if (tempPadValue > maxVal)
+    tempPadValue = maxVal;
   
-  iRet = (int)(round(padValue * transVal));
+  iRet = (int)(round(tempPadValue * transVal));
   
   return iRet;
 }
 
-int MidiManager::TranslateSliderValueToCC(int sliderValue)
+int MidiManager::TranslateSliderValueToCC(int slider, int sliderValue)
 {
   int iRet = 0;
-  double transVal = (127.0 / 4096.0);
+  unsigned short maxVal = m_options->GetSlider_MaxVal(slider);
+  double transVal = (127.0 / maxVal);
 
   iRet = (int)(round(sliderValue * transVal));
 
   return iRet;
+}
+
+int MidiManager::TranslateButtonValueToMIDI(int button, int buttonValue)
+{
+    int iRet = 0;
+    unsigned char maxVal = m_options->GetButton_MaxValue(button);
+    double transVal = 127.0 / maxVal;
+
+    int tempButtonVal = buttonValue;
+    if (tempButtonVal > maxVal)
+        tempButtonVal = maxVal;
+
+    iRet = (int)(round(tempButtonVal * transVal));
+
+    return iRet;
 }
 
 void MidiManager::SendButtonMIDI(int noteNum, int value)
@@ -213,7 +243,7 @@ void MidiManager::SendButtonMIDI(int noteNum, int value)
       
       if (m_options->GetUseVelocity())
 	{
-	  Send_NoteOn(channel, midiNote, value);
+          Send_NoteOn(channel, midiNote, TranslateButtonValueToMIDI(noteNum, value));
 	  if (value > 0) 
             SetButtonLED(m_options->GetButton_OnColor(noteNum), noteNum);
 	  else // value == 0

@@ -67,6 +67,7 @@ void MantaMidiSettings::SetUseVelocity(bool bUseVelocity) { m_bUseVelocity = bUs
 /* Pads */
 unsigned char MantaMidiSettings::GetPad_EventChannel(int pad) {return m_padEventChannel[pad]; }
 char MantaMidiSettings::GetPad_Midi(int pad) { return m_basePadMidi[pad]; }
+unsigned char MantaMidiSettings::GetPad_MaxVal(int pad) { return m_padMaxValue[pad]; }
 unsigned char MantaMidiSettings::GetPad_LEDChannel(int pad) { return m_padLEDChannel[pad]; }
 unsigned char MantaMidiSettings::GetPad_AmberLEDMidi(int pad) { return m_AmberLEDMidi[pad]; }
 unsigned char MantaMidiSettings::GetPad_RedLEDMidi(int pad) { return m_RedLEDMidi[pad]; }
@@ -110,6 +111,12 @@ void MantaMidiSettings::SetPad(int pad, unsigned char channel, unsigned char not
 {
     m_padEventChannel[pad] = channel;
     m_basePadMidi[pad] = note;
+}
+
+void MantaMidiSettings::CalibratePad(int pad, unsigned char value)
+{
+    if (m_padMaxValue[pad] < value)
+        m_padMaxValue[pad] = value;
 }
 
 void MantaMidiSettings::SetPadLED_MidiChannel(int pad, unsigned char channel)
@@ -157,47 +164,62 @@ bool MantaMidiSettings::IsValidSliderIndex(int slider) { return slider == 0 || s
 unsigned char MantaMidiSettings::GetSlider_EventChannel(int slider)
 {
     if ( IsValidSliderIndex(slider))
-        return m_slider_EventChannel[slider];
+        return m_sliderEventChannel[slider];
     else
         return 0;
 }
 void MantaMidiSettings::SetSlider_Channel(int slider, unsigned char channel)
 {
     if ( IsValidSliderIndex(slider) )
-        m_slider_EventChannel[slider] = channel;
+        m_sliderEventChannel[slider] = channel;
 }
 
 char MantaMidiSettings::GetSlider_MidiNote(int slider)
 {
     if ( IsValidSliderIndex(slider) )
-        return m_slider_MidiNote[slider];
+        return m_sliderMidiNote[slider];
     else
         return -1;
 }
+
 void MantaMidiSettings::SetSlider_Midi(int slider, char midi)
 {
     if ( IsValidSliderIndex(slider) )
-        m_slider_MidiNote[slider] = midi;
+        m_sliderMidiNote[slider] = midi;
+}
+
+unsigned short MantaMidiSettings::GetSlider_MaxVal(int slider)
+{
+    if ( IsValidSliderIndex(slider) )
+        return m_sliderMaxValue[slider];
+    else
+        return 4096;
 }
 
 SliderMode MantaMidiSettings::GetSlider_Mode(int slider)
 {
     if ( IsValidSliderIndex(slider) )
-        return m_slider_Mode[slider];
+        return m_sliderMode[slider];
     else
         return smContinuous;
 }
 void MantaMidiSettings::SetSlider_Mode(int slider, SliderMode mode)
 {
     if ( IsValidSliderIndex(slider) )
-        m_slider_Mode[slider] = mode;
+        m_sliderMode[slider] = mode;
 }
 
 void MantaMidiSettings::SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode)
 {
-    m_slider_EventChannel[slider] = channel;
-    m_slider_MidiNote[slider] = note;
-    m_slider_Mode[slider] = mode;
+    m_sliderEventChannel[slider] = channel;
+    m_sliderMidiNote[slider] = note;
+    m_sliderMode[slider] = mode;
+}
+
+void MantaMidiSettings::CalibrateSlider(int slider, int value)
+{
+    if (m_sliderMaxValue[slider] < value)
+        m_sliderMaxValue[slider] = value;
 }
 
 /* Buttons */
@@ -238,8 +260,16 @@ char MantaMidiSettings::GetButton_Midi(int button)
 }
 void MantaMidiSettings::SetButton_Midi(int button, char midi)
 {
-    if ( IsValidButtonIndex(button) < numButtons)
+    if ( IsValidButtonIndex(button))
         m_buttonMidi[button] = midi;
+}
+
+unsigned char MantaMidiSettings::GetButton_MaxValue(int button)
+{
+    if ( IsValidButtonIndex(button))
+        return m_buttonMaxValue[button];
+    else
+        return 255;
 }
 
 Manta::LEDState MantaMidiSettings::GetButton_OnColor(int button)
@@ -293,6 +323,12 @@ void MantaMidiSettings::SetButton(int button, unsigned char channel, unsigned ch
         m_offButtonColor[button] = offColor;
         m_inactiveButtonColor[button] = inactiveColor;
     }
+}
+
+void MantaMidiSettings::CalibrateButton(int button, int value)
+{
+    if (m_buttonMaxValue[button] < value)
+        m_buttonMaxValue[button] = value;
 }
 
 void MantaMidiSettings::PrintOptionStatus()

@@ -60,8 +60,9 @@ class MidiManager : public Manta
 
   void SendMIDI(unsigned char ucChannel, MidiActionType actionType, int noteNum, int value);
 
-  int TranslatePadValueToMIDI(int padValue);
-  int TranslateSliderValueToCC(int sliderValue);
+  int TranslatePadValueToMIDI(int pad, int padValue);
+  int TranslateSliderValueToCC(int slider, int sliderValue);
+  int TranslateButtonValueToMIDI(int button, int buttonValue);
 
   /* Handling functions */
   void SendPadMIDI(int noteNum, int value);

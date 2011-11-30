@@ -39,6 +39,7 @@ bool QMantaMidiSettings::Save(QString filename)
     {
         out << (quint8)m_padEventChannel[i];
         out << (quint8)m_basePadMidi[i];
+        out << (quint8)m_padMaxValue[i];
         out << (quint8)m_padLEDChannel[i];
         out << (quint8)m_AmberLEDMidi[i];
         out << (quint8)m_RedLEDMidi[i];
@@ -50,9 +51,10 @@ bool QMantaMidiSettings::Save(QString filename)
     // serialize slider settings
     for (unsigned char i = 0; i < numSliders; ++i)
     {
-        out << (quint8)m_slider_EventChannel[i];
-        out << (quint8)m_slider_MidiNote[i];
-        out << (quint8)m_slider_Mode[i];
+        out << (quint8)m_sliderEventChannel[i];
+        out << (quint8)m_sliderMidiNote[i];
+        out << (quint16)m_sliderMaxValue[i];
+        out << (quint8)m_sliderMode[i];
     }
 
     // Serialize Button settings
@@ -61,6 +63,7 @@ bool QMantaMidiSettings::Save(QString filename)
         out << (quint8)m_buttonMode[i];
         out << (quint8)m_buttonEventChannel[i];
         out << (quint8)m_buttonMidi[i];
+        out << (quint8)m_buttonMaxValue[i];
         out << (quint8)m_inactiveButtonColor[i];
         out << (quint8)m_onButtonColor[i];
         out << (quint8)m_offButtonColor[i];
@@ -77,6 +80,7 @@ bool QMantaMidiSettings::Load(QString filename)
     QDataStream in(&file);
 
     quint8 readByte = 0;
+    quint16 readWord = 0;
 
     quint32 magic;
     in >> magic;
@@ -100,6 +104,7 @@ bool QMantaMidiSettings::Load(QString filename)
     {
         in >> readByte; m_padEventChannel[i] = readByte;
         in >> readByte; m_basePadMidi[i] = readByte;
+        in >> readByte; m_padMaxValue[i] = readByte;
         in >> readByte; m_padLEDChannel[i] = readByte;
         in >> readByte; m_AmberLEDMidi[i] = readByte;
         in >> readByte; m_RedLEDMidi[i] = readByte;
@@ -111,9 +116,10 @@ bool QMantaMidiSettings::Load(QString filename)
     // serialize slider settings
     for (unsigned char i = 0; i < numSliders; ++i)
     {
-        in >> readByte; m_slider_EventChannel[i] = readByte;
-        in >> readByte; m_slider_MidiNote[i] = readByte;
-        in >> readByte; m_slider_Mode[i] = (SliderMode)readByte;
+        in >> readByte; m_sliderEventChannel[i] = readByte;
+        in >> readByte; m_sliderMidiNote[i] = readByte;
+        in >> readWord; m_sliderMaxValue[i] = readWord;
+        in >> readByte; m_sliderMode[i] = (SliderMode)readByte;
     }
 
     // Serialize Button settings
@@ -122,6 +128,7 @@ bool QMantaMidiSettings::Load(QString filename)
         in >> readByte; m_buttonMode[i] = (ButtonMode)readByte;
         in >> readByte; m_buttonEventChannel[i] = readByte;
         in >> readByte; m_buttonMidi[i] = readByte;
+        in >> readByte; m_buttonMaxValue[i] = readByte;
         in >> readByte; m_inactiveButtonColor[i] = (Manta::LEDState)readByte;
         in >> readByte; m_onButtonColor[i] = (Manta::LEDState)readByte;
         in >> readByte; m_offButtonColor[i] = (Manta::LEDState)readByte;

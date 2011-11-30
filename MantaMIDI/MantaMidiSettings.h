@@ -50,6 +50,7 @@ class MantaMidiSettings
     /* Pads Sends*/
     unsigned char   GetPad_EventChannel(int pad);
     char            GetPad_Midi(int pad);
+    unsigned char   GetPad_MaxVal(int pad);
     Manta::LEDState GetPad_InactiveColor(int pad);
     Manta::LEDState GetPad_OnColor(int pad);
     Manta::LEDState GetPad_OffColor(int pad);
@@ -79,10 +80,11 @@ class MantaMidiSettings
     void SetSlider_Channel(int slider, unsigned char channel);
     char GetSlider_MidiNote(int slider);
     void SetSlider_Midi(int slider, char midi);
+    unsigned short GetSlider_MaxVal(int slider);
     SliderMode GetSlider_Mode(int slider);
     void SetSlider_Mode(int slider, SliderMode mode);
     void SetSlider(int slider, unsigned char channel, unsigned char note, SliderMode mode);
-    void
+    void CalibrateSlider(int slider, int value);
 
     /* Buttons */
     bool IsValidButtonIndex(int button);
@@ -92,6 +94,7 @@ class MantaMidiSettings
     void SetButton_Channel(int button, unsigned char channel);
     char GetButton_Midi(int button);
     void SetButton_Midi(int button, char midi);
+    unsigned char GetButton_MaxValue(int button);
     Manta::LEDState GetButton_OnColor(int button);
     Manta::LEDState GetButton_OffColor(int button);
     Manta::LEDState GetButton_InactiveColor(int button);
@@ -99,6 +102,7 @@ class MantaMidiSettings
     void SetButton_OffColor(int button, Manta::LEDState color);
     void SetButton_InactiveColor(int button, Manta::LEDState color);
     void SetButton(int button, unsigned char channel, unsigned char key, ButtonMode mode, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor);
+    void CalibrateButton(int button, int value);
 
     void PrintOptionStatus();
     void Reset();
@@ -131,10 +135,10 @@ protected:
 
     /* Sliders */
     const static int numSliders = 2;
-    unsigned char m_slider_EventChannel[numSliders];
-    unsigned char m_slider_MidiNote[numSliders];
-    unsigned short m_slider_MaxValue[numSliders];
-    SliderMode m_slider_Mode[numSliders];
+    unsigned char m_sliderEventChannel[numSliders];
+    unsigned char m_sliderMidiNote[numSliders];
+    unsigned short m_sliderMaxValue[numSliders];
+    SliderMode m_sliderMode[numSliders];
 
     /* button */
     const static int numButtons = 4;
