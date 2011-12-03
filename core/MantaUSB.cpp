@@ -244,12 +244,16 @@ libusb_device_handle *MantaUSB::GetMantaDeviceHandle(int *serial)
                }
                if(LIBUSB_SUCCESS != libusb_claim_interface(handle, 0))
                {
-                  libusb_free_device_list(devList, 1);
+                  libusb_close(handle);
                   break;
                }
                libusb_free_device_list(devList, 1);
                *serial = currentDeviceSerial;
                return handle;
+            }
+            else
+            {
+               libusb_close(handle);
             }
          }
          else
