@@ -5,7 +5,8 @@
 FLEXT_LIB_V("manta",manta)
 
 manta::manta(int argc,t_atom *argv):
-   ConnectedManta(NULL)
+   ConnectedManta(NULL),
+   DebugEnabled(false)
 { 
 	AddInAnything();
 
@@ -30,6 +31,7 @@ manta::manta(int argc,t_atom *argv):
    FLEXT_ADDMETHOD_(0, "connect", Connect);
    FLEXT_ADDMETHOD_1(0, "turbo", SetTurboMode, int);
    FLEXT_ADDMETHOD_1(0, "raw", SetRawMode, int);
+   FLEXT_ADDMETHOD_1(0, "debug", EnableDebug, int);
    
    padSymbol = MakeSymbol("pad");
    sliderSymbol = MakeSymbol("slider");

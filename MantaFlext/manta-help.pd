@@ -73,7 +73,7 @@
 #X obj 247 95 r \$0-continuous;
 #X obj 266 166 r \$0-slider;
 #X obj 69 319 s \$0-padframe;
-#N canvas 359 227 802 578 LED_Examples 0;
+#N canvas 647 228 802 578 LED_Examples 0;
 #X msg 61 52 amber;
 #X msg 68 74 red;
 #X msg 51 28 off;
@@ -95,7 +95,7 @@
 #X text 300 167 Set a row of pad LEDs;
 #X text 566 169 Set a column of pads LEDs;
 #X obj 27 441 tgl 45 0 empty empty Pad_And_Button_LED_Control -20 -8
-0 10 -4034 -1 -1 1 1;
+0 10 -4034 -1 -1 0 1;
 #X obj 262 441 tgl 45 0 empty empty Slider_LED_Control -20 -8 0 10
 -4034 -1 -1 0 1;
 #X msg 27 507 ledcontrol padandbutton \$1;
@@ -226,9 +226,9 @@ the library.;
 #X msg 48 539 turbo \$1;
 #X obj 48 520 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 49 603 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 49 595 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 49 622 raw \$1;
+#X msg 49 614 raw \$1;
 #X text 17 491 Additional Controls;
 #X obj 247 503 disp -1;
 #X text 6 227 Also takes argument for serial number;
@@ -249,7 +249,11 @@ file to map pads to pitches;
 #X obj 43 254 r \$0-manta;
 #X obj 51 160 s \$0-manta;
 #X obj 48 560 s \$0-manta;
-#X obj 49 643 s \$0-manta;
+#X obj 49 635 s \$0-manta;
+#X obj 50 671 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 50 711 s \$0-manta;
+#X msg 50 690 debug \$1;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -294,3 +298,5 @@ file to map pads to pitches;
 #X connect 59 0 29 0;
 #X connect 60 0 28 0;
 #X connect 61 0 33 0;
+#X connect 65 0 67 0;
+#X connect 67 0 66 0;

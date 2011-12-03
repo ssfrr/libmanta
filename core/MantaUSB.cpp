@@ -56,6 +56,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
          QueuedOutFrame[i] = frame[i];
       }
       OutTransferQueued = true;
+      DebugPrint("%s-%d: (WriteFrame) Transfer Queued", __FILE__, __LINE__);
    }
    else
    {
