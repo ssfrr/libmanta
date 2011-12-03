@@ -20,7 +20,7 @@ MantaFlextPoly::MantaFlextPoly(int argc, t_atom *argv) :
    {
       Stealing = GetInt(argv[1]);
    }
-   AddInFloat();
+   AddInAnything();
    AddInFloat();
    AddOutFloat();
    AddOutFloat();
