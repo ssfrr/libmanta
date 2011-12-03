@@ -80,16 +80,14 @@ void manta::Attach(int serialNumber)
          {
             device->Connect(serialNumber);
             MantaMutex.Lock();
-            post("manta: Attaching to manta %d", device->GetSerialNumber());
+            post("manta: Connecting manta %d and attaching", device->GetSerialNumber());
             device->AttachClient(this);
             device->ResendLEDState();
             ConnectedManta = device;
             ConnectedMantaList.push_back(ConnectedManta);
             if(ConnectedMantaList.size() == 1)
             {
-               shouldStop = false;
-               /* start the polling thread if this is the first connected Manta */
-               LaunchThread(PollConnectedMantas, NULL);
+               StartThread();
             }
             MantaMutex.Unlock();
          }
@@ -114,41 +112,20 @@ void manta::Attach(int serialNumber)
 
 void manta::Detach()
 {
-   MantaMutex.Lock();
+   /* Stop the polling thread while we mess with the connection list */
+   StopThreadAndWait();
    if(Attached())
    {
+      post("manta: Detaching from manta %d", ConnectedManta->GetSerialNumber());
       if(ConnectedManta->GetReferenceCount() == 1)
       {
-         if(ConnectedMantaList.size() == 1)
-         {
-            /* this is the last connected Manta and we're about to detach,
-             * so stop the polling thread */
-            MantaMutex.Unlock();
-            shouldStop = true;
-            // We really should lock and unlock around the condition check,
-            // but flext won't let us
-            // ThreadRunningCond.Lock();
-            while(threadRunning)
-               ThreadRunningCond.Wait();
-            // ThreadRunningCond.Unlock();
-         }
-         else
-         {
-            MantaMutex.Unlock();
-         }
-         MantaMutex.Lock();
-         // it's possible that we got detached when we released the lock and
-         // let the polling thread finish up, so we need to check again
-         if(Attached())
-         {
-            /* TODO: if the polling thread is still running here and the callbacks
-             * get called for the cancelled USB transfers, there will probably
-             * be a segfault */
-            delete ConnectedManta;
-            ConnectedMantaList.remove(ConnectedManta);
-            ConnectedManta = NULL;
-         }
-         MantaMutex.Unlock();
+         /* TODO: if the polling thread is still running here and the callbacks
+          * get called for the cancelled USB transfers, there will probably
+          * be a segfault */
+         post("manta: no more connections to manta %d, destroying.",ConnectedManta->GetSerialNumber());
+         delete ConnectedManta;
+         ConnectedMantaList.remove(ConnectedManta);
+         ConnectedManta = NULL;
       }
       else
       {
@@ -156,12 +133,11 @@ void manta::Detach()
           * so just detach ourselves */
          ConnectedManta->DetachClient(this);
          ConnectedManta = NULL;
-         MantaMutex.Unlock();
       }
    }
-   else
+   if(! ConnectedMantaList.empty())
    {
-      MantaMutex.Unlock();
+      StartThread();
    }
 }
 
@@ -214,6 +190,26 @@ void manta::PollConnectedMantas(thr_params *p)
    threadRunning = false;
    ThreadRunningCond.Signal();
    ThreadRunningCond.Unlock();
+}
+
+/* make sure you're not holding another lock while calling this function,
+ * or a deadlock may occur */
+void manta::StopThreadAndWait()
+{
+   shouldStop = true;
+   // We really should lock and unlock around the condition check,
+   // but flext won't let us
+   // ThreadRunningCond.Lock();
+   while(threadRunning)
+      ThreadRunningCond.Wait();
+   // ThreadRunningCond.Unlock();
+}
+
+void manta::StartThread()
+{
+   shouldStop = false;
+   /* start the polling thread if this is the first connected Manta */
+   LaunchThread(PollConnectedMantas, NULL);
 }
 
 MantaMulti *manta::FindConnectedMantaBySerial(int serialNumber)

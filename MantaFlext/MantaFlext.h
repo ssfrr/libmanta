@@ -52,6 +52,8 @@ class manta:
    private:
    MantaServer::LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
    MantaServer::LEDState ledStateFromInt(int stateSymbol);
+   void StartThread();
+   void StopThreadAndWait();
 
    /* we could be detached from the polling thread on communication error
     * so this SHOULD be volatile, but I got lazy */
