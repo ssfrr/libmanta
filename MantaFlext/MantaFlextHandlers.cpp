@@ -9,7 +9,14 @@ MantaServer::LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
    }
    else if(stateSymbol == redSymbol)
    {
-      return MantaServer::Red;
+       if (ConnectedManta->GetSerialNumber() >= 70)
+       { 
+           return MantaServer::Red;
+       }
+       else
+       {
+           return MantaServer::Amber;
+       }
    }
    else
    {
@@ -25,7 +32,14 @@ MantaServer::LEDState manta::ledStateFromInt(int state)
    }
    else if(state == 2)
    {
-      return MantaServer::Red;
+       if (ConnectedManta->GetSerialNumber() >= 70)
+       { 
+           return MantaServer::Red;
+       }
+       else
+       {
+           return MantaServer::Amber;
+       }
    }
    else
    {
