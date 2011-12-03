@@ -159,32 +159,23 @@ void manta::PollConnectedMantas(thr_params *p)
       return;
    }
    threadRunning = true;
-   try
+   while(!shouldStop && !ConnectedMantaList.empty())
    {
-      while(!shouldStop)
+      try
       {
          MantaMutex.Lock();
          MantaUSB::HandleEvents();
          MantaMutex.Unlock();
       }
-   }
-   catch(MantaCommunicationException e)
-   {
-      MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
-      delete errorManta;
-      DetachAllMantaFlext(errorManta);
-      ConnectedMantaList.remove(errorManta);
-      MantaMutex.Unlock();
-      post("manta: Communication with Manta interrupted");
-   }
-   catch(MantaNotConnectedException e)
-   {
-      MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
-      delete errorManta;
-      DetachAllMantaFlext(errorManta);
-      ConnectedMantaList.remove(errorManta);
-      MantaMutex.Unlock();
-      post("manta: Tried to poll with manta unconnected");
+      catch(MantaCommunicationException e)
+      {
+         MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
+         post("manta: Communication with Manta %d interrupted", errorManta->GetSerialNumber());
+         delete errorManta;
+         DetachAllMantaFlext(errorManta);
+         ConnectedMantaList.remove(errorManta);
+         MantaMutex.Unlock();
+      }
    }
    ThreadRunningCond.Lock();
    threadRunning = false;
