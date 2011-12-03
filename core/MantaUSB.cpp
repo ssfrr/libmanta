@@ -56,7 +56,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
          QueuedOutFrame[i] = frame[i];
       }
       OutTransferQueued = true;
-      DebugPrint("%s-%d: (WriteFrame) Transfer Queued", __FILE__, __LINE__);
+      DebugPrint("%s-%d: (WriteFrame) Transfer Queued on Manta %d", __FILE__, __LINE__, GetSerialNumber());
    }
    else
    {
@@ -68,11 +68,20 @@ void MantaUSB::WriteFrame(uint8_t *frame)
       status = libusb_submit_transfer(CurrentOutTransfer);
       if(LIBUSB_SUCCESS != status)
       {
-         DebugPrint("%s-%d: (WriteFrame) libusb_submit_transfer failed with status %d on Manta %d", __FILE__, __LINE__, status, MantaIndex);
+         DebugPrint("%s-%d: (WriteFrame) libusb_submit_transfer failed with status %d on Manta %d", __FILE__, __LINE__, status, GetSerialNumber());
          libusb_free_transfer(CurrentOutTransfer);
          CurrentOutTransfer = NULL;
          Disconnect();
          throw(MantaCommunicationException(this));
+      }
+      else
+      {
+         DebugPrint("%s-%d: (WriteFrame) Frame Submitted to Manta %d:", __FILE__, __LINE__, GetSerialNumber());
+         for(int i = 0; i < 16; i += 8)
+         {
+            DebugPrint("\t\t%x %x %x %x %x %x %x %x", frame[i], frame[i+1], frame[i+2],
+                  frame[i+3], frame[i+4], frame[i+5], frame[i+6], frame[i+7]);
+         }
       }
    }
 }
@@ -180,6 +189,15 @@ void MantaUSB::BeginQueuedTransfer(void)
       libusb_free_transfer(CurrentOutTransfer);
       CurrentOutTransfer = NULL;
       TransferError = true;
+   }
+   else
+   {
+      DebugPrint("%s-%d: (BeginQueuedTransfer) Frame Submitted to Manta %d:", __FILE__, __LINE__, GetSerialNumber());
+      for(int i = 0; i < 16; i += 8)
+      {
+         DebugPrint("\t\t%x %x %x %x %x %x %x %x", QueuedOutFrame[i], QueuedOutFrame[i+1], QueuedOutFrame[i+2],
+               QueuedOutFrame[i+3], QueuedOutFrame[i+4], QueuedOutFrame[i+5], QueuedOutFrame[i+6], QueuedOutFrame[i+7]);
+      }
    }
 }
 
