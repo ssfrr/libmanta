@@ -8,24 +8,23 @@ manta::manta(int argc,t_atom *argv):
    ConnectedManta(NULL)
 { 
 	AddInAnything();
-	AddInAnything();
 
 	AddOutAnything("Pad Velocity");
 	AddOutAnything("Pad and Button Continuous");
 	AddOutAnything("Slider");
 	AddOutAnything("Processed");
 
-   FLEXT_ADDMETHOD_(1, "pad", SetPadLED);
-   FLEXT_ADDMETHOD_3(1, "row", SetPadLEDRow, t_symptr, int, int);
-   FLEXT_ADDMETHOD_3(1, "row", SetPadLEDRowNum, int, int, int);
-   FLEXT_ADDMETHOD_3(1, "column", SetPadLEDColumn, t_symptr, int, int);
-   FLEXT_ADDMETHOD_3(1, "column", SetPadLEDColumnNum, int, int, int);
-   FLEXT_ADDMETHOD_2(1, "slider", SetSliderLED, int, t_symptr);
-   FLEXT_ADDMETHOD_2(1, "slider", SetSliderLEDNum, int, int);
-   FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMask, t_symptr, int, int);
-   FLEXT_ADDMETHOD_3(1, "slidermask", SetSliderLEDMaskNum, int, int, int);
-   FLEXT_ADDMETHOD_(1, "button", SetButtonLED);
-   FLEXT_ADDMETHOD_(1, "ledsoff", ClearPadAndButtonLEDs);
+   FLEXT_ADDMETHOD_(0, "pad", SetPadLED);
+   FLEXT_ADDMETHOD_3(0, "row", SetPadLEDRow, t_symptr, int, int);
+   FLEXT_ADDMETHOD_3(0, "row", SetPadLEDRowNum, int, int, int);
+   FLEXT_ADDMETHOD_3(0, "column", SetPadLEDColumn, t_symptr, int, int);
+   FLEXT_ADDMETHOD_3(0, "column", SetPadLEDColumnNum, int, int, int);
+   FLEXT_ADDMETHOD_2(0, "slider", SetSliderLED, int, t_symptr);
+   FLEXT_ADDMETHOD_2(0, "slider", SetSliderLEDNum, int, int);
+   FLEXT_ADDMETHOD_3(0, "slidermask", SetSliderLEDMask, t_symptr, int, int);
+   FLEXT_ADDMETHOD_3(0, "slidermask", SetSliderLEDMaskNum, int, int, int);
+   FLEXT_ADDMETHOD_(0, "button", SetButtonLED);
+   FLEXT_ADDMETHOD_(0, "ledsoff", ClearPadAndButtonLEDs);
    FLEXT_ADDMETHOD_2(0, "ledcontrol", SetLEDControl, t_symptr, int);
    FLEXT_ADDMETHOD_(0, "reset", Recalibrate);
    FLEXT_ADDMETHOD_(0, "connect", Connect);
