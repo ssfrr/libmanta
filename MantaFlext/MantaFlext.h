@@ -49,6 +49,7 @@ class manta:
    void SetRawMode(int Enabled);
    void Connect(int argc, t_atom *argv);
    void EnableDebug(int enabled);
+   void SetOneIndexed(int enabled);
 
    private:
    MantaServer::LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
@@ -60,6 +61,7 @@ class manta:
     * so this SHOULD be volatile, but it was causing issues and I got lazy */
    MantaMulti *ConnectedManta;
    bool DebugEnabled;
+   bool OneIndexed;
 
 	static void PollConnectedMantas(thr_params *p);
    static MantaMulti *FindConnectedMantaBySerial(int serialNumber);
@@ -95,6 +97,7 @@ class manta:
    /* declare Attach to be used with or without SerialNumber arg */
    FLEXT_CALLBACK_V(Connect)
    FLEXT_CALLBACK_1(EnableDebug, int)
+   FLEXT_CALLBACK_1(SetOneIndexed, int)
 
    int lastSliderValue[2];
 
