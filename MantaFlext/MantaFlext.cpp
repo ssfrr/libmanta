@@ -169,6 +169,7 @@ void manta::PollConnectedMantas(thr_params *p)
          MantaMutex.Lock();
          MantaUSB::HandleEvents();
          MantaMutex.Unlock();
+         Sleep(0.001);
       }
       catch(MantaCommunicationException e)
       {

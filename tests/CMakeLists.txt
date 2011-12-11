@@ -8,11 +8,11 @@ find_path(USB-1.0_INCLUDE_DIR libusb-1.0/libusb.h)
 find_library(USB-1.0_LIBRARY usb-1.0)
 include_directories(${USB-1.0_INCLUDE_DIR} ${LO_INCLUDE_DIR})
 
-add_executable(MantaTest MantaTest.cpp ../core/Manta.cpp ../core/MantaUSB.cpp)
+add_executable(MantaTest MantaTest.cpp ../core/Manta.cpp ../core/MantaUSB.cpp ../core/extern/hidapi/linux/hid-libusb.c)
 target_link_libraries(MantaTest usb-1.0)
 
-add_executable(MantaUSBTest MantaUSBTest.cpp ../core/Manta.cpp ../core/MantaUSB.cpp)
+add_executable(MantaUSBTest MantaUSBTest.cpp ../core/MantaUSB.cpp ../core/extern/hidapi/linux/hid-libusb.c)
 target_link_libraries(MantaUSBTest usb-1.0)
 
-add_executable(MantaUSBTimer MantaUSBTimer.cpp ../core/Manta.cpp ../core/MantaUSB.cpp)
+add_executable(MantaUSBTimer MantaUSBTimer.cpp ../core/Manta.cpp ../core/MantaUSB.cpp ../core/extern/hidapi/linux/hid-libusb.c)
 target_link_libraries(MantaUSBTimer usb-1.0 rt)

@@ -9,10 +9,6 @@ using namespace std;
 class MantaUSBTimer : public MantaUSB
 {
    public:
-   void PublicWriteFrame(uint8_t *frame)
-   {
-      WriteFrame(frame);
-   }
    int lastDiff;
    private:
    virtual void FrameReceived(int8_t *frame)
@@ -39,6 +35,7 @@ int main()
    {
       outFile << dev.lastDiff << endl;
       dev.HandleEvents();
+      usleep(2000);
    }
    outFile.close();
    return 0;

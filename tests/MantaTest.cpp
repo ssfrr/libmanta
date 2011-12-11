@@ -39,21 +39,14 @@ class MantaTester: public Manta
       }
 };
 
-static void waitForTransmitComplete(MantaUSB &manta)
-{
-   while(manta.IsTransmitting())
-   {
-      manta.HandleEvents();
-   }
-}
 int main()
 {
    MantaTester manta;
    manta.Connect();
    manta.SetLEDControl(MantaServer::PadAndButton, true);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
    manta.SetLEDControl(MantaServer::Slider, true);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
 
    uint8_t effs[6];
    for(int i = 0; i < 6; ++i)
@@ -61,69 +54,69 @@ int main()
       effs[i] = 0xff;
    }
    manta.SetPadLEDFrame(MantaServer::Amber, effs);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
    usleep(200000);
    manta.SetPadLEDFrame(MantaServer::Red, effs);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
    usleep(200000);
    manta.SetPadLEDFrame(MantaServer::Amber, effs);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
    usleep(200000);
    manta.SetPadLEDFrame(MantaServer::Off, effs);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
    usleep(200000);
    for(int i = 0; i < 6; ++i)
    {
       manta.SetPadLEDRow(MantaServer::Amber, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetPadLEDRow(MantaServer::Red, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetPadLEDRow(MantaServer::Amber, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetPadLEDRow(MantaServer::Off, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
    }
    for(int i = 0; i < 8; ++i)
    {
       manta.SetPadLEDColumn(MantaServer::Amber, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetPadLEDColumn(MantaServer::Red, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetPadLEDColumn(MantaServer::Amber, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetPadLEDColumn(MantaServer::Off, i, 0xFF);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
    }
    manta.SetPadLED(MantaServer::Red, 0);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
    usleep(100000);
    for(int i = 1; i < 48; ++i)
    {
       manta.SetPadLED(MantaServer::Red, i);
       manta.SetPadLED(MantaServer::Amber, i - 1);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(100000);
    }
    manta.SetPadLEDFrame(MantaServer::Off, effs);
    for(int i = 0; i < 4; ++i)
    {
       manta.SetButtonLED(MantaServer::Amber, i);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetButtonLED(MantaServer::Red, i);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetButtonLED(MantaServer::Amber, i);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(200000);
       manta.SetButtonLED(MantaServer::Off, i);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
    }
 
    for(int i = 0x80, j = 0x01; i; i >>= 1, j <<= 1)
@@ -132,22 +125,23 @@ int main()
       manta.SetSliderLED(MantaServer::Off, 1, 0xFF);
       manta.SetSliderLED(MantaServer::Amber, 0, i);
       manta.SetSliderLED(MantaServer::Amber, 1, j);
-      waitForTransmitComplete(manta);
+      Manta::HandleEvents();
       usleep(100000);
    }
    manta.SetSliderLED(MantaServer::Off, 0, 0xFF);
    manta.SetSliderLED(MantaServer::Off, 1, 0xFF);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
 
 
    manta.SetLEDControl(MantaServer::PadAndButton, false);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
    manta.SetLEDControl(MantaServer::Slider, false);
-   waitForTransmitComplete(manta);
+   Manta::HandleEvents();
 
    while(1)
    {
-      manta.HandleEvents();
+      Manta::HandleEvents();
+      usleep(1000);
    }
 
    return 0;
