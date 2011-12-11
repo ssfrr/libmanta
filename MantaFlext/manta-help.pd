@@ -73,7 +73,7 @@
 #X obj 247 95 r \$0-continuous;
 #X obj 266 166 r \$0-slider;
 #X obj 69 319 s \$0-padframe;
-#N canvas 647 228 802 578 LED_Examples 0;
+#N canvas 598 228 802 578 LED_Examples 0;
 #X msg 61 52 amber;
 #X msg 68 74 red;
 #X msg 51 28 off;
@@ -219,17 +219,17 @@ pad data as input and calculates the centroid of all the pads;
 #X text 402 661 NOTE: the 'manta' object must be created before the
 manta.centroid and manta.maximum support object \, in order to load
 the library.;
-#X msg 200 411 skip 5;
-#X msg 169 441 noskip 5;
+#X msg 224 387 skip 5;
+#X msg 168 410 noskip 5;
 #X obj 51 89 bng 45 250 50 0 empty empty Click_to_Connect -20 -15 0
 15 -4034 -1 -1;
-#X msg 48 539 turbo \$1;
-#X obj 48 520 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X msg 45 536 turbo \$1;
+#X obj 45 517 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 49 595 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 46 584 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 49 614 raw \$1;
-#X text 17 491 Additional Controls;
+#X msg 46 603 raw \$1;
+#X text 17 431 Additional Controls;
 #X obj 247 503 disp -1;
 #X text 6 227 Also takes argument for serial number;
 #X msg 51 139 connect;
@@ -248,12 +248,16 @@ file to map pads to pitches;
 #X obj 229 672 disp -1;
 #X obj 43 254 r \$0-manta;
 #X obj 51 160 s \$0-manta;
-#X obj 48 560 s \$0-manta;
-#X obj 49 635 s \$0-manta;
-#X obj 50 671 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 45 557 s \$0-manta;
+#X obj 46 624 s \$0-manta;
+#X obj 47 656 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 50 711 s \$0-manta;
-#X msg 50 690 debug \$1;
+#X obj 47 696 s \$0-manta;
+#X msg 47 675 debug \$1;
+#X obj 45 452 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 45 492 s \$0-manta;
+#X msg 45 471 oneindex \$1;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -300,3 +304,6 @@ file to map pads to pitches;
 #X connect 61 0 33 0;
 #X connect 65 0 67 0;
 #X connect 67 0 66 0;
+#X connect 68 0 70 0;
+#X connect 70 0 69 0;
+#X connect 70 0 34 0;

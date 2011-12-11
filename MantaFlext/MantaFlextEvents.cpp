@@ -5,7 +5,7 @@
 void manta::PadEvent(int row, int column, int id, int value)
 {
    t_atom args[2];
-   SetFloat(args[0], id);
+   SetFloat(args[0], id + (OneIndexed ? 1 : 0));
    SetFloat(args[1], value);
    ToOutAnything(continuousOutlet, padSymbol, sizeof(args) / sizeof(t_atom), args);
 }
@@ -13,7 +13,7 @@ void manta::PadEvent(int row, int column, int id, int value)
 void manta::ButtonEvent(int id, int value)
 {
    t_atom args[2];
-   SetFloat(args[0], id);
+   SetFloat(args[0], id + (OneIndexed ? 1 : 0));
    SetFloat(args[1], value);
    ToOutAnything(continuousOutlet, buttonSymbol, sizeof(args) / sizeof(t_atom), args);
 }
@@ -21,7 +21,7 @@ void manta::ButtonEvent(int id, int value)
 void manta::SliderEvent(int id, int value)
 {
    t_atom args[3];
-   SetFloat(args[0], id);
+   SetFloat(args[0], id + (OneIndexed ? 1 : 0));
    SetFloat(args[1], (value != 0xFFFF) ? value : lastSliderValue[id]);
    SetFloat(args[2], (value != 0xFFFF) ? 1 : 0);
    ToOutList(sliderOutlet, sizeof(args) / sizeof(t_atom), args);
@@ -31,7 +31,7 @@ void manta::SliderEvent(int id, int value)
 void manta::PadVelocityEvent(int row, int column, int id, int value)
 {
    t_atom args[2];
-   SetFloat(args[0], id);
+   SetFloat(args[0], id + (OneIndexed ? 1 : 0));
    SetFloat(args[1], value);
    ToOutAnything(velocityOutlet, padSymbol, sizeof(args) / sizeof(t_atom), args);
 }
@@ -39,7 +39,7 @@ void manta::PadVelocityEvent(int row, int column, int id, int value)
 void manta::ButtonVelocityEvent(int id, int value)
 {
    t_atom args[2];
-   SetFloat(args[0], id);
+   SetFloat(args[0], id + (OneIndexed ? 1 : 0));
    SetFloat(args[1], value);
    ToOutAnything(velocityOutlet, buttonSymbol, sizeof(args) / sizeof(t_atom), args);
 }

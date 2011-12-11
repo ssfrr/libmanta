@@ -1,5 +1,6 @@
 #include "MantaFlext.h"
 #include "../core/MantaExceptions.h"
+#include <stdexcept>
 
 MantaServer::LEDState manta::ledStateFromSymbol(const t_symbol *stateSymbol)
 {
@@ -224,7 +225,14 @@ void manta::SetButtonLED(int argc, t_atom *argv)
    {
       if(CanbeInt(argv[i]))
       {
-         ConnectedManta->SetButtonLED(parsedState, GetInt(argv[i]) - (OneIndexed ? 1 : 0));
+         try
+         {
+            ConnectedManta->SetButtonLED(parsedState, GetInt(argv[i]) - (OneIndexed ? 1 : 0));
+         }
+         catch(std::invalid_argument e)
+         {
+            /* silently ignore */
+         }
       }
    }
 }
