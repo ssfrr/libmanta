@@ -68,6 +68,8 @@ bool MantaUSB::IsConnected(void)
 
 void MantaUSB::Connect(int connectionSerial)
 {
+   wchar_t serialString[10];
+
    if(IsConnected())
    {
       return;
@@ -77,7 +79,6 @@ void MantaUSB::Connect(int connectionSerial)
          __FILE__, __LINE__, connectionSerial);
    if(connectionSerial)
    {
-      wchar_t serialString[10];
       swprintf(serialString, 10, L"%d", connectionSerial);
       DeviceHandle = hid_open(VendorID, ProductID, serialString);
    }
@@ -87,7 +88,8 @@ void MantaUSB::Connect(int connectionSerial)
    }
    if(NULL == DeviceHandle)
       throw(MantaNotFoundException());
-   SerialNumber = connectionSerial;
+   hid_get_serial_number_string(DeviceHandle, serialString, 10);
+   SerialNumber = wcstol(serialString, NULL, 10);
 }
 
 void MantaUSB::Disconnect(void)

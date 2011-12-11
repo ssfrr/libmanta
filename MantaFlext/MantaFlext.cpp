@@ -83,7 +83,7 @@ void manta::Attach(int serialNumber)
          {
             device->Connect(serialNumber);
             MantaMutex.Lock();
-            post("manta: Connecting manta %d and attaching", device->GetSerialNumber());
+            post("manta: Connected to manta %d, attaching...", device->GetSerialNumber());
             device->AttachClient(this);
             device->ResendLEDState();
             ConnectedManta = device;
