@@ -11,7 +11,9 @@ SRCS= MantaFlext.cpp \
       MantaFlextPoly.cpp \
       ../core/Manta.cpp \
       ../core/MantaUSB.cpp \
-      ../core/MantaMulti.cpp
+      ../core/MantaMulti.cpp \
+#      ../core/extern/hidapi/linux/hid-libusb.c
+      ../core/extern/hidapi/mac/hid.c
 HDRS= MantaFlext.h \
       MantaFlextCentroid.h \
       MantaFlextMaximum.h \
