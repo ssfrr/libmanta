@@ -77,6 +77,8 @@ void manta::Attach(int serialNumber)
       else
       {
          MantaMutex.Unlock();
+         /* Stop the polling thread while we add a manta */
+         StopThreadAndWait();
          /* TODO: open by serial number */
          device = new MantaMulti;
          try
@@ -88,10 +90,6 @@ void manta::Attach(int serialNumber)
             device->ResendLEDState();
             ConnectedManta = device;
             ConnectedMantaList.push_back(ConnectedManta);
-            if(ConnectedMantaList.size() == 1)
-            {
-               StartThread();
-            }
             MantaMutex.Unlock();
          }
          catch(MantaNotFoundException e)
@@ -103,6 +101,11 @@ void manta::Attach(int serialNumber)
          {
             post("manta: Could not connect to attached Manta");
             delete device;
+         }
+
+         if(! ConnectedMantaList.empty())
+         {
+            StartThread();
          }
       }
    }
