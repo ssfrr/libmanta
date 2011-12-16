@@ -34,13 +34,15 @@ class Manta :
 
       static uint8_t byteReverse(uint8_t inByte);
       static int CalculateVelocity(int firstValue, int secondValue);
+      static int ScaleSensorValue(int rawValue, int index);
       static const int AmberIndex = 0;
       static const int RedIndex = 10;
       static const int SliderIndex = 7;
       static const int ButtonIndex = 6;
       static const int ConfigIndex = 9;
+      static const int MaxSensorValues[53];
 
-      int8_t LastInReport[InPacketLen];
+      uint8_t LastInReport[InPacketLen];
       uint8_t CurrentOutReport[OutPacketLen];
       bool VelocityWaiting[53];
       int MaximumPadID;

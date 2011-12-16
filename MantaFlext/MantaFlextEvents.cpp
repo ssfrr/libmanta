@@ -44,14 +44,14 @@ void manta::ButtonVelocityEvent(int id, int value)
    ToOutAnything(velocityOutlet, buttonSymbol, sizeof(args) / sizeof(t_atom), args);
 }
 
-void manta::FrameEvent(int8_t *frame)
+void manta::FrameEvent(uint8_t *frame)
 {
    /* TODO: the frame size and all the offset garbage shouldn't be here, and should
     * be pushed down into the parent classes */
    t_atom padValues[48];
    for(unsigned int i = 0; i < (sizeof(padValues) / sizeof(padValues[0])); ++i)
    {
-      SetFloat(padValues[i], frame[i+1] + 128);
+      SetFloat(padValues[i], frame[i+1]);
    }
    ToOutList(frameOutlet, sizeof(padValues) / sizeof(padValues[0]),
          padValues);

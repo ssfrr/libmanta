@@ -20,7 +20,7 @@ class MantaMulti : public Manta
       void ButtonEvent(int id, int value);
       void PadVelocityEvent(int row, int column, int id, int velocity);
       void ButtonVelocityEvent(int id, int velocity);
-      void FrameEvent(int8_t *frame);
+      void FrameEvent(uint8_t *frame);
       void DebugPrint(const char *fmt, ...);
       
    private:

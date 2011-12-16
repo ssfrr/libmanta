@@ -13,7 +13,7 @@ class MantaClient
       virtual void ButtonEvent(int id, int value) {}
       virtual void PadVelocityEvent(int row, int column, int id, int velocity) {}
       virtual void ButtonVelocityEvent(int id, int velocity) {}
-      virtual void FrameEvent(int8_t *frame) {}
+      virtual void FrameEvent(uint8_t *frame) {}
       virtual void DebugPrint(const char *fmt, ...) {}
 };
 #endif /* _MANTACLIENT_H */

@@ -26,7 +26,12 @@ Manta::Manta(void) {
 
 void Manta::FrameReceived(int8_t *frame)
 {
-   FrameEvent(frame);
+   uint8_t *uframe = (uint8_t *)frame;
+   for(int i = 1; i < 53; ++i)
+   {
+      uframe[i] = ScaleSensorValue(frame[i] + 128, i);
+   }
+   FrameEvent(uframe);
    /* input frames have one reportID byte at the beginning */
    for(int i = 1; i < 53; ++i)
    {
@@ -36,16 +41,16 @@ void Manta::FrameReceived(int8_t *frame)
       {
          if(i < 49)
             PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1,
-                  CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
+                  CalculateVelocity(LastInReport[i], uframe[i]));
          else
-            ButtonVelocityEvent(i - 49, CalculateVelocity(LastInReport[i] + 128, frame[i] + 128));
+            ButtonVelocityEvent(i - 49, CalculateVelocity(LastInReport[i], uframe[i]));
          VelocityWaiting[i] = false;
       }
 
-      if(frame[i] != LastInReport[i])
+      if(uframe[i] != LastInReport[i])
       {
          /* check to see if this is a release */
-         if(-128 == frame[i])
+         if(0 == uframe[i])
          {
             if(i < 49)
                PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1, 0);
@@ -53,28 +58,28 @@ void Manta::FrameReceived(int8_t *frame)
                ButtonVelocityEvent(i - 49, 0);
          }
          /* check to see if this is the first nonzero sample */
-         else if(-128 == LastInReport[i])
+         else if(0 == LastInReport[i])
          {
             VelocityWaiting[i] = true;
          }
          if(i < 49)
-            PadEvent((i - 1) / 8, (i - 1) % 8, i - 1, frame[i] + 128);
+            PadEvent((i - 1) / 8, (i - 1) % 8, i - 1, uframe[i]);
          else
-            ButtonEvent(i - 49, frame[i] + 128);
+            ButtonEvent(i - 49, uframe[i]);
       }
-      LastInReport[i] = frame[i];
+      LastInReport[i] = uframe[i];
    }
-   if(frame[53] != LastInReport[53] || frame[54] != LastInReport[54])
+   if(uframe[53] != LastInReport[53] || uframe[54] != LastInReport[54])
    {
-      SliderEvent(0, (frame[53] + 128) | ((frame[54] + 128) << 8 ));
+      SliderEvent(0, (uframe[53]) | ((uframe[54]) << 8 ));
    }
-   if(frame[55] != LastInReport[55] || frame[56] != LastInReport[56])
+   if(uframe[55] != LastInReport[55] || uframe[56] != LastInReport[56])
    {
-      SliderEvent(1, (frame[55] + 128) | ((frame[56] + 128) << 8 ));
+      SliderEvent(1, (uframe[55]) | ((uframe[56]) << 8 ));
    }
    for(int i = 53; i < 57; ++i)
    {
-      LastInReport[i] = frame[i];
+      LastInReport[i] = uframe[i];
    }
 }
 
@@ -401,6 +406,7 @@ uint8_t Manta::byteReverse(uint8_t inByte)
    outByte <<= s; // shift when inByte's highest bits are zero
    return outByte;
 }
+
 int Manta::CalculateVelocity(int LastValue, int CurrentValue)
 {
    float LOG1, LOG2;
@@ -470,3 +476,15 @@ int Manta::CalculateVelocity(int LastValue, int CurrentValue)
    VELint = (int)VELOCITY;
    return VELint;
 }
+
+int Manta::ScaleSensorValue(int rawValue, int index)
+{
+   float div = (float)rawValue / MaxSensorValues[index];
+   return (int)((div * 210) + 0.5);
+}
+
+const int Manta::MaxSensorValues[53] = 
+{0, 177, 184, 188, 189, 191, 190, 181, 181, 188, 193, 198, 200, 201, 199, 191,
+   189, 192, 197, 202, 205, 206, 204, 199, 192, 202, 207, 211, 216, 215, 213,
+   209, 201, 205, 210, 215, 220, 213, 218, 212, 204, 212, 216, 222, 227, 223,
+   227, 221, 213, 200, 170, 190, 185};
