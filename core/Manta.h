@@ -27,26 +27,26 @@ class Manta :
       virtual void SetLEDControl(LEDControlType control, bool state);
       virtual void SetTurboMode(bool Enabled);
       virtual void SetRawMode(bool Enabled);
+      virtual void SetMaxSensorValues(int *values);
 
    private:
       /* declare superclass callback implemented by this class */
       virtual void FrameReceived(int8_t *frame);
+      int ScaleSensorValue(int rawValue, int index);
 
       static uint8_t byteReverse(uint8_t inByte);
       static int CalculateVelocity(int firstValue, int secondValue);
-      static int ScaleSensorValue(int rawValue, int index);
       static const int AmberIndex = 0;
       static const int RedIndex = 10;
       static const int SliderIndex = 7;
       static const int ButtonIndex = 6;
       static const int ConfigIndex = 9;
-      static const int MaxSensorValues[53];
+      static const int AverageMaxSensorValues[53];
 
+      int MaxSensorValues[53];
       uint8_t LastInReport[InPacketLen];
       uint8_t CurrentOutReport[OutPacketLen];
       bool VelocityWaiting[53];
-      int MaximumPadID;
-      int MaximumPadValue;
       /* output modes */
       bool CentroidEnabled;
       bool MaximumEnabled;

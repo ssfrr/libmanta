@@ -32,5 +32,6 @@ class MantaServer
    virtual void SetLEDControl(LEDControlType control, bool state) = 0;
    virtual void SetTurboMode(bool Enabled) = 0;
    virtual void SetRawMode(bool Enabled) = 0;
+   virtual void SetMaxSensorValues(int *values) = 0;
 };
 #endif /* _MANTASERVER_H */

@@ -4,14 +4,14 @@
 #include "MantaExceptions.h"
 
 Manta::Manta(void) {
-   LastInReport[0] = 0;
-   for(int i = 1; i < 53; ++i)
+   for(int i = 0; i < 53; ++i)
    {
-      LastInReport[i] = -128;
+      LastInReport[i] = 0;
+      MaxSensorValues[i] = AverageMaxSensorValues[i];
    }
    for(int i = 53; i < 57; ++i)
    {
-      LastInReport[i] = 127;
+      LastInReport[i] = 0xFF;
    }
    for(unsigned int i = 0; i < sizeof(CurrentOutReport); ++i)
    {
@@ -21,7 +21,6 @@ Manta::Manta(void) {
    {
       VelocityWaiting[i] = false;
    }
-   MaximumPadValue = 0;
 }
 
 void Manta::FrameReceived(int8_t *frame)
@@ -391,6 +390,14 @@ void Manta::SetRawMode(bool Enabled)
    }
 }
 
+void Manta::SetMaxSensorValues(int *values)
+{
+   for(int i = 0; i < 53; ++i)
+   {
+      MaxSensorValues[i] = values[i];
+   }
+}
+
 uint8_t Manta::byteReverse(uint8_t inByte)
 {
    // Algorithm from Bit Twiddling Hacks
@@ -483,7 +490,7 @@ int Manta::ScaleSensorValue(int rawValue, int index)
    return (int)((div * 210) + 0.5);
 }
 
-const int Manta::MaxSensorValues[53] = 
+const int Manta::AverageMaxSensorValues[53] = 
 {0, 177, 184, 188, 189, 191, 190, 181, 181, 188, 193, 198, 200, 201, 199, 191,
    189, 192, 197, 202, 205, 206, 204, 199, 192, 202, 207, 211, 216, 215, 213,
    209, 201, 205, 210, 215, 220, 213, 218, 212, 204, 212, 216, 222, 227, 223,

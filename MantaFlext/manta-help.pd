@@ -1,4 +1,4 @@
-#N canvas 318 135 824 739 10;
+#N canvas 534 70 782 839 10;
 #X obj 246 218 dac~;
 #N canvas 8 73 402 472 slidernote 0;
 #X obj 93 253 osc~;
@@ -183,81 +183,83 @@ more than 54 LEDs on at any one time;
 #X connect 45 0 44 0;
 #X restore 241 40 pd LED_Examples;
 #X text 387 38 Open this subpatch for LED Examples;
-#X obj 243 268 list split 4;
-#X obj 243 289 unpack f f f f;
-#X floatatom 211 335 5 0 0 0 - - -;
-#X floatatom 258 335 5 0 0 0 - - -;
-#X floatatom 301 335 5 0 0 0 - - -;
-#X floatatom 348 335 5 0 0 0 - - -;
-#X obj 243 246 r \$0-padframe;
-#X text 395 274 DO NOT CONNECT TO A [print] OBJECT!!;
-#X text 397 370 Use this outlet to do any further processing on the
+#X obj 241 386 list split 4;
+#X obj 241 407 unpack f f f f;
+#X floatatom 209 453 5 0 0 0 - - -;
+#X floatatom 256 453 5 0 0 0 - - -;
+#X floatatom 299 453 5 0 0 0 - - -;
+#X floatatom 346 453 5 0 0 0 - - -;
+#X obj 241 364 r \$0-padframe;
+#X text 393 392 DO NOT CONNECT TO A [print] OBJECT!!;
+#X text 394 480 Use this outlet to do any further processing on the
 output.;
-#X obj 247 425 r \$0-padframe;
-#X obj 247 481 unpack f f;
-#X floatatom 247 526 5 0 0 0 - - -;
-#X floatatom 304 525 5 0 0 0 - - -;
-#X text 393 448 manta.maxumum is a support object that takes the full
+#X obj 248 536 r \$0-padframe;
+#X obj 248 592 unpack f f;
+#X floatatom 248 637 5 0 0 0 - - -;
+#X floatatom 305 636 5 0 0 0 - - -;
+#X text 394 559 manta.maxumum is a support object that takes the full
 pad data as input and gives you the pad index and value of the current
 maximum pad;
-#X text 336 459 <-------;
-#X text 396 306 The padframe outlet gives the value of all the pads
+#X text 337 570 <-------;
+#X text 394 424 The padframe outlet gives the value of all the pads
 at once as they're received over USB (around once every 6-8ms). Attempting
 to print it all out as it comes will choke your CPU. The data is simply
 a list of 48 ints.;
-#X floatatom 229 693 5 0 0 0 - - -;
-#X floatatom 284 693 5 0 0 0 - - -;
-#X floatatom 338 693 5 0 0 0 - - -;
-#X obj 250 649 unpack f f f;
-#X obj 250 583 r \$0-padframe;
+#X floatatom 230 804 5 0 0 0 - - -;
+#X floatatom 285 804 5 0 0 0 - - -;
+#X floatatom 339 804 5 0 0 0 - - -;
+#X obj 251 760 unpack f f f;
+#X obj 251 694 r \$0-padframe;
 #X obj 43 299 manta;
-#X obj 247 459 manta.maximum;
-#X obj 250 615 manta.centroid;
-#X text 344 613 <-------;
-#X text 401 602 manta.centroid is a support object that takes the full
+#X obj 248 570 manta.maximum;
+#X obj 251 726 manta.centroid;
+#X text 345 724 <-------;
+#X text 402 713 manta.centroid is a support object that takes the full
 pad data as input and calculates the centroid of all the pads;
-#X text 402 661 NOTE: the 'manta' object must be created before the
+#X text 403 772 NOTE: the 'manta' object must be created before the
 manta.centroid and manta.maximum support object \, in order to load
 the library.;
-#X msg 224 387 skip 5;
-#X msg 168 410 noskip 5;
+#X msg 225 498 skip 5;
+#X msg 169 521 noskip 5;
 #X obj 51 89 bng 45 250 50 0 empty empty Click_to_Connect -20 -15 0
 15 -4034 -1 -1;
-#X msg 45 536 turbo \$1;
-#X obj 45 517 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X msg 46 647 turbo \$1;
+#X obj 46 628 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 46 584 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 47 695 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 46 603 raw \$1;
-#X text 17 431 Additional Controls;
-#X obj 247 503 disp -1;
-#X text 6 227 Also takes argument for serial number;
+#X msg 47 714 raw \$1;
+#X text 18 542 Additional Controls;
+#X obj 248 614 disp -1;
+#X text -10 234 Also takes argument for serial number;
 #X msg 51 139 connect;
 #X text 111 137 Also takes arg for;
 #X text 143 151 serial number;
 #X text 393 135 Some Examples of controlling a simple single-oscillator
 monophonic synth. See the PadMap abstraction for loading a Manta Map
 file to map pads to pitches;
-#X obj 211 314 disp 0;
-#X obj 258 315 disp 0;
-#X obj 301 314 disp 0;
-#X obj 348 314 disp 0;
-#X obj 304 503 disp -1;
-#X obj 338 673 disp -1;
-#X obj 284 672 disp -1;
-#X obj 229 672 disp -1;
+#X obj 209 432 disp 0;
+#X obj 256 433 disp 0;
+#X obj 299 432 disp 0;
+#X obj 346 432 disp 0;
+#X obj 305 614 disp -1;
+#X obj 339 784 disp -1;
+#X obj 285 783 disp -1;
+#X obj 230 783 disp -1;
 #X obj 43 254 r \$0-manta;
 #X obj 51 160 s \$0-manta;
-#X obj 45 557 s \$0-manta;
-#X obj 46 624 s \$0-manta;
-#X obj 47 656 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 46 668 s \$0-manta;
+#X obj 47 735 s \$0-manta;
+#X obj 48 767 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 47 696 s \$0-manta;
-#X msg 47 675 debug \$1;
-#X obj 45 452 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 48 807 s \$0-manta;
+#X msg 48 786 debug \$1;
+#X obj 46 563 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 45 492 s \$0-manta;
-#X msg 45 471 oneindex \$1;
+#X obj 46 603 s \$0-manta;
+#X msg 46 582 oneindex \$1;
+#X obj 252 266 r \$0-velocity;
+#X obj 252 289 print;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -307,3 +309,4 @@ file to map pads to pitches;
 #X connect 68 0 70 0;
 #X connect 70 0 69 0;
 #X connect 70 0 34 0;
+#X connect 71 0 72 0;
