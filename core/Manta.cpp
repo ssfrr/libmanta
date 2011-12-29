@@ -30,6 +30,11 @@ void Manta::FrameReceived(int8_t *frame)
    {
       uframe[i] = ScaleSensorValue(frame[i] + 128, i);
    }
+   /* apply the offset to the slider bytes without scaling them */
+   for(int i = 53; i < 57; ++i)
+   {
+      uframe[i] = frame[i] + 128;
+   }
    FrameEvent(uframe);
    /* input frames have one reportID byte at the beginning */
    for(int i = 1; i < 53; ++i)
