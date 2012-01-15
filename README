@@ -53,7 +53,7 @@ no other instruction.
 7. './build.sh pd gcc' (yes, again)
 8. './build.sh pd gcc install'
 9. 'cd ../..'
-13. 'mkdir -p pd-linux/core/extern/hidapi/src' (or pd-darwin on osx)r
+13. 'mkdir -p pd-linux/core/extern/hidapi/mac' (or pd-darwin on osx)r
 10. 'extern/flext/build.sh pd gcc'
 11. 'sudo extern/flext/build.sh pd gcc install'
 12. You will get an error about "can't create output file"

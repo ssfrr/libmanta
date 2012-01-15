@@ -12,7 +12,7 @@ SRCS= MantaFlext.cpp \
       ../core/Manta.cpp \
       ../core/MantaUSB.cpp \
       ../core/MantaMulti.cpp \
-      ../core/extern/hidapi/src/hid-mac.c
+      ../core/extern/hidapi/mac/hid.c
 
 HDRS= MantaFlext.h \
       MantaFlextCentroid.h \
@@ -22,5 +22,6 @@ HDRS= MantaFlext.h \
       ../core/MantaUSB.h \
       ../core/MantaServer.h \
       ../core/MantaClient.h \
-      ../core/extern/hidapi/src/hidapi.h
+      ../core/extern/hidapi/hidapi/hidapi.h
 CXXFLAGS += -Wall
+CFLAGS += -I../core/extern/hidapi/hidapi
