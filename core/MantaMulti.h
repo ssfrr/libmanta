@@ -21,7 +21,7 @@ class MantaMulti : public Manta
       void PadVelocityEvent(int row, int column, int id, int velocity);
       void ButtonVelocityEvent(int id, int velocity);
       void FrameEvent(uint8_t *frame);
-      void DebugPrint(const char *fmt, ...);
+      //void DebugPrint(const char *fmt, ...);
       
    private:
       list<MantaClient *> ClientList;

@@ -57,6 +57,7 @@ void manta::FrameEvent(uint8_t *frame)
          padValues);
 }
 
+/*
 void manta::DebugPrint(const char *fmt, ...)
 {
    if(DebugEnabled)
@@ -69,3 +70,4 @@ void manta::DebugPrint(const char *fmt, ...)
       post(string);
    }
 }
+*/

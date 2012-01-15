@@ -258,10 +258,12 @@ void manta::Connect(int argc, t_atom *argv)
    }
 }
 
+/*
 void manta::EnableDebug(int enabled)
 {
    DebugEnabled = enabled;
 }
+*/
 
 void manta::ClearPadAndButtonLEDs()
 {

@@ -88,6 +88,7 @@ void MantaMulti::FrameEvent(uint8_t *frame)
    }
 }
 
+/*
 void MantaMulti::DebugPrint(const char *fmt, ...)
 {
    if(!ClientList.empty())
@@ -100,4 +101,5 @@ void MantaMulti::DebugPrint(const char *fmt, ...)
       ClientList.front()->DebugPrint(string);
    }
 }
+*/
 

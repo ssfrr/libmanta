@@ -29,7 +29,7 @@ class manta:
    void PadVelocityEvent(int row, int column, int id, int value);
    void ButtonVelocityEvent(int id, int value);
    void FrameEvent(uint8_t *frame);
-   void DebugPrint(const char *fmt, ...);
+   // void DebugPrint(const char *fmt, ...);
 
    protected:
    void SetPadLED(int argc, t_atom *argv);
@@ -48,7 +48,7 @@ class manta:
    void SetTurboMode(int Enabled);
    void SetRawMode(int Enabled);
    void Connect(int argc, t_atom *argv);
-   void EnableDebug(int enabled);
+   // void EnableDebug(int enabled);
    void SetOneIndexed(int enabled);
 
    private:
@@ -60,7 +60,7 @@ class manta:
    /* we could be detached from the polling thread on communication error
     * so this SHOULD be volatile, but it was causing issues and I got lazy */
    MantaMulti *ConnectedManta;
-   bool DebugEnabled;
+   // bool DebugEnabled;
    bool OneIndexed;
 
 	static void PollConnectedMantas(thr_params *p);
@@ -96,7 +96,7 @@ class manta:
    FLEXT_CALLBACK_1(SetRawMode, int)
    /* declare Attach to be used with or without SerialNumber arg */
    FLEXT_CALLBACK_V(Connect)
-   FLEXT_CALLBACK_1(EnableDebug, int)
+   // FLEXT_CALLBACK_1(EnableDebug, int)
    FLEXT_CALLBACK_1(SetOneIndexed, int)
 
    int lastSliderValue[2];

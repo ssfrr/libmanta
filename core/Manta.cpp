@@ -1,4 +1,3 @@
-#include <libusb-1.0/libusb.h>
 #include <cmath>
 #include "Manta.h"
 #include "MantaExceptions.h"
