@@ -23,7 +23,6 @@ included instructions before building and installing [manta].
 Prerequisites
 -----------------------------------------------------------
 
-libusb-1.0
 liblo (only for MantaOSC example)
 CMake (to build standalone library or non-flext examples)
 flext (for the PD/Max object) is included with this source package.
@@ -37,33 +36,8 @@ PureData / Max/MSP Object Build and Install Instructions
 Note: commands to be typed into the terminal will appear in single quotes with
 no other instruction.
 
-* OS X:
+* Building the PureData object (OSX and Linux only)
 
-1. Install XCode from your OS X CD.
-2. Download the latest version of libusb-1.0 from
-   http://sourceforge.net/projects/libusb/files/libusb-1.0/
-3. Extract the libusb-1.0 tarball
-4. in Terminal, navigate to the libusb directory
-5. './configure CC="gcc -m32"' (the CC flag is only needed if building for Max
-   instead of PD, since it can't do 64-bit)
-6. 'sudo make install'
-7. run the mantaswitch.sh script found in platform/osx to install the dummy driver
-   that prevents the OSX hid driver from blocking our access to the manta
-   NOTE: while this .kext file is installed you will be unable to use the
-   non-libmanta-based manta Max object or OSC client. To switch back simply
-   run the script again to uninstall it.  (only do this if you haven't     	already installed the MantaDummyDriver kext with the installer   	package.
-8. reboot
-9. Jump to 'Linux and OS X Common Instructions'
-
-* Linux:
-
-1. Install libusb-1.0 via your package manager
-2. Install the "build-essential" package
-3. Jump to 'Linux and OS X Common Instructions'
-
-* Linux and OS X Common Instructions for PD:
-
-PD on Linux or OS X
 1. Download the pd source from http://puredata.info/downloads and remember
    where you extract it.
 2. Navigate to extern/flext in the libmanta directory
@@ -73,15 +47,18 @@ PD on Linux or OS X
    b. PDPATH to point to the "pd" subdirectory of the pd source package you
       extracted in step 2
    c. INSTPATH to point to where your PD externals live
+   d. change the ARCH= line to read only ARCH=i386
 5. './build.sh pd gcc'
 6. (Mac Only) Edit config.txt and comment out the line "SIMD=1"
 7. './build.sh pd gcc' (yes, again)
 8. './build.sh pd gcc install'
-9. 'cd ../../MantaFlext'
-10. '../extern/flext/build.sh pd gcc'
-11. 'sudo ../extern/flext/build.sh pd gcc install'
+9. 'cd ../..'
+13. 'mkdir -p pd-linux/core/extern/hidapi/src' (or pd-darwin on osx)r
+10. 'extern/flext/build.sh pd gcc'
+11. 'sudo extern/flext/build.sh pd gcc install'
+12. You will get an error about "can't create output file"
 
-* OS X instructions for Max/MSP
+* Building The Max/MSP Object
 
 1. Download Max/MSP SDK from Cycling74.com and put it somewhere easy to find
 2. Place the MaxAPI.framework folder found inside the max-includes directory
