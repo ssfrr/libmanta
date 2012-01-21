@@ -17,16 +17,16 @@ class MantaUSB
    public:
       MantaUSB(void);
       virtual ~MantaUSB(void);
+      void WriteFrame(uint8_t *frame);
       bool IsConnected(void);
       void Connect(int connectionSerial = 0);
       void Disconnect();
-      bool IsTransmitting(void);
       int GetSerialNumber(void);
+      bool MessageQueued(void);
 
       static void HandleEvents(void);
 
    protected:
-      void WriteFrame(uint8_t *frame);
       virtual void FrameReceived(int8_t *frame) = 0;
       virtual void DebugPrint(const char *fmt, ...) {}
       static const int OutPacketLen = 16;

@@ -29,6 +29,7 @@ class MantaTester: public Manta
       {
          cout << "Button Velocity " << id << ": " << value << endl;
       }
+      /*
       virtual void DebugPrint(const char *fmt, ...)
       {
          va_list args;
@@ -37,6 +38,7 @@ class MantaTester: public Manta
          printf("\n");
          va_end (args);
       }
+      */
 };
 
 int main()

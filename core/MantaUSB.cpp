@@ -26,6 +26,11 @@ MantaUSB::~MantaUSB(void)
    }
 }
 
+bool MantaUSB::MessageQueued(void)
+{
+   return GetQueuedTxMessage() != NULL;
+}
+
 /* note: WriteFrame shares the message queue with HandleEvents, so the two
  * functions should be protected by a mutex from simultaneous access */
 void MantaUSB::WriteFrame(uint8_t *frame)
@@ -36,7 +41,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
       throw(MantaNotConnectedException(this));
    }
    MantaTxQueueEntry *queuedMessage = GetQueuedTxMessage();
-   if(queuedMessage != NULL)
+   if(queuedMessage)
    {
       /* replace the queued packet payload with the new one */
       for(int i = 0; i < OutPacketLen; ++i)
@@ -91,6 +96,7 @@ void MantaUSB::Connect(int connectionSerial)
       throw(MantaNotFoundException());
    hid_get_serial_number_string(DeviceHandle, serialString, SERIAL_STRING_SIZE);
    SerialNumber = wcstol(serialString, NULL, 10);
+   hid_set_nonblocking(DeviceHandle, 1);
 }
 
 void MantaUSB::Disconnect(void)
