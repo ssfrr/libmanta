@@ -1,5 +1,5 @@
-#N canvas 534 70 782 839 10;
-#X obj 246 218 dac~;
+#N canvas 299 22 813 693 10;
+#X obj 211 174 dac~;
 #N canvas 8 73 402 472 slidernote 0;
 #X obj 93 253 osc~;
 #X obj 95 132 + 60;
@@ -29,7 +29,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 0 0;
 #X connect 13 0 11 0;
-#X restore 266 187 pd slidernote;
+#X restore 231 143 pd slidernote;
 #N canvas 505 400 438 318 padnote 0;
 #X obj 189 80 inlet;
 #X obj 190 279 outlet~;
@@ -65,15 +65,15 @@
 #X connect 13 0 7 0;
 #X connect 13 1 7 1;
 #X connect 13 2 7 2;
-#X restore 247 140 pd padnote;
-#X obj 43 385 s \$0-velocity;
-#X obj 52 363 s \$0-continuous;
-#X obj 61 341 s \$0-slider;
-#X obj 247 119 route pad;
-#X obj 247 95 r \$0-continuous;
-#X obj 266 166 r \$0-slider;
-#X obj 69 319 s \$0-padframe;
-#N canvas 598 228 802 578 LED_Examples 0;
+#X restore 212 96 pd padnote;
+#X obj 8 341 s \$0-velocity;
+#X obj 17 319 s \$0-continuous;
+#X obj 26 297 s \$0-slider;
+#X obj 212 75 route pad;
+#X obj 212 51 r \$0-continuous;
+#X obj 231 122 r \$0-slider;
+#X obj 34 275 s \$0-padframe;
+#N canvas 498 95 802 578 LED_Examples 0;
 #X msg 61 52 amber;
 #X msg 68 74 red;
 #X msg 51 28 off;
@@ -95,7 +95,7 @@
 #X text 300 167 Set a row of pad LEDs;
 #X text 566 169 Set a column of pads LEDs;
 #X obj 27 441 tgl 45 0 empty empty Pad_And_Button_LED_Control -20 -8
-0 10 -4034 -1 -1 0 1;
+0 10 -4034 -1 -1 1 1;
 #X obj 262 441 tgl 45 0 empty empty Slider_LED_Control -20 -8 0 10
 -4034 -1 -1 0 1;
 #X msg 27 507 ledcontrol padandbutton \$1;
@@ -181,85 +181,85 @@ more than 54 LEDs on at any one time;
 #X connect 43 0 52 0;
 #X connect 44 0 53 0;
 #X connect 45 0 44 0;
-#X restore 241 40 pd LED_Examples;
-#X text 387 38 Open this subpatch for LED Examples;
-#X obj 241 386 list split 4;
-#X obj 241 407 unpack f f f f;
-#X floatatom 209 453 5 0 0 0 - - -;
-#X floatatom 256 453 5 0 0 0 - - -;
-#X floatatom 299 453 5 0 0 0 - - -;
-#X floatatom 346 453 5 0 0 0 - - -;
-#X obj 241 364 r \$0-padframe;
-#X text 393 392 DO NOT CONNECT TO A [print] OBJECT!!;
-#X text 394 480 Use this outlet to do any further processing on the
+#X restore 209 18 pd LED_Examples;
+#X text 355 16 Open this subpatch for LED Examples;
+#X obj 210 291 list split 4;
+#X obj 210 312 unpack f f f f;
+#X floatatom 178 358 5 0 0 0 - - -;
+#X floatatom 225 358 5 0 0 0 - - -;
+#X floatatom 268 358 5 0 0 0 - - -;
+#X floatatom 315 358 5 0 0 0 - - -;
+#X obj 210 269 r \$0-padframe;
+#X text 362 297 DO NOT CONNECT TO A [print] OBJECT!!;
+#X text 363 385 Use this outlet to do any further processing on the
 output.;
-#X obj 248 536 r \$0-padframe;
-#X obj 248 592 unpack f f;
-#X floatatom 248 637 5 0 0 0 - - -;
-#X floatatom 305 636 5 0 0 0 - - -;
-#X text 394 559 manta.maxumum is a support object that takes the full
+#X obj 219 396 r \$0-padframe;
+#X obj 219 452 unpack f f;
+#X floatatom 219 497 5 0 0 0 - - -;
+#X floatatom 276 496 5 0 0 0 - - -;
+#X text 365 419 manta.maxumum is a support object that takes the full
 pad data as input and gives you the pad index and value of the current
 maximum pad;
-#X text 337 570 <-------;
-#X text 394 424 The padframe outlet gives the value of all the pads
+#X text 308 430 <-------;
+#X text 363 329 The padframe outlet gives the value of all the pads
 at once as they're received over USB (around once every 6-8ms). Attempting
 to print it all out as it comes will choke your CPU. The data is simply
 a list of 48 ints.;
-#X floatatom 230 804 5 0 0 0 - - -;
-#X floatatom 285 804 5 0 0 0 - - -;
-#X floatatom 339 804 5 0 0 0 - - -;
-#X obj 251 760 unpack f f f;
-#X obj 251 694 r \$0-padframe;
-#X obj 43 299 manta;
-#X obj 248 570 manta.maximum;
-#X obj 251 726 manta.centroid;
-#X text 345 724 <-------;
-#X text 402 713 manta.centroid is a support object that takes the full
+#X floatatom 206 632 5 0 0 0 - - -;
+#X floatatom 261 632 5 0 0 0 - - -;
+#X floatatom 315 632 5 0 0 0 - - -;
+#X obj 227 588 unpack f f f;
+#X obj 227 522 r \$0-padframe;
+#X obj 8 255 manta;
+#X obj 219 430 manta.maximum;
+#X obj 227 554 manta.centroid;
+#X text 321 552 <-------;
+#X text 378 541 manta.centroid is a support object that takes the full
 pad data as input and calculates the centroid of all the pads;
-#X text 403 772 NOTE: the 'manta' object must be created before the
+#X text 379 600 NOTE: the 'manta' object must be created before the
 manta.centroid and manta.maximum support object \, in order to load
 the library.;
-#X msg 225 498 skip 5;
-#X msg 169 521 noskip 5;
-#X obj 51 89 bng 45 250 50 0 empty empty Click_to_Connect -20 -15 0
+#X msg 160 385 skip 5;
+#X msg 122 411 noskip 5;
+#X obj 16 45 bng 45 250 50 0 empty empty Click_to_Connect -20 -15 0
 15 -4034 -1 -1;
-#X msg 46 647 turbo \$1;
-#X obj 46 628 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X msg 17 507 turbo \$1;
+#X obj 17 488 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 47 695 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 18 555 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 47 714 raw \$1;
-#X text 18 542 Additional Controls;
-#X obj 248 614 disp -1;
-#X text -10 234 Also takes argument for serial number;
-#X msg 51 139 connect;
-#X text 111 137 Also takes arg for;
-#X text 143 151 serial number;
-#X text 393 135 Some Examples of controlling a simple single-oscillator
+#X msg 18 574 raw \$1;
+#X text -11 402 Additional Controls;
+#X obj 219 474 disp -1;
+#X text -45 190 Also takes argument for serial number;
+#X msg 16 95 connect;
+#X text 76 93 Also takes arg for;
+#X text 108 107 serial number;
+#X text 358 91 Some Examples of controlling a simple single-oscillator
 monophonic synth. See the PadMap abstraction for loading a Manta Map
 file to map pads to pitches;
-#X obj 209 432 disp 0;
-#X obj 256 433 disp 0;
-#X obj 299 432 disp 0;
-#X obj 346 432 disp 0;
-#X obj 305 614 disp -1;
-#X obj 339 784 disp -1;
-#X obj 285 783 disp -1;
-#X obj 230 783 disp -1;
-#X obj 43 254 r \$0-manta;
-#X obj 51 160 s \$0-manta;
-#X obj 46 668 s \$0-manta;
-#X obj 47 735 s \$0-manta;
-#X obj 48 767 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 178 337 disp 0;
+#X obj 225 338 disp 0;
+#X obj 268 337 disp 0;
+#X obj 315 337 disp 0;
+#X obj 276 474 disp -1;
+#X obj 315 612 disp -1;
+#X obj 261 611 disp -1;
+#X obj 206 611 disp -1;
+#X obj 8 210 r \$0-manta;
+#X obj 16 116 s \$0-manta;
+#X obj 17 528 s \$0-manta;
+#X obj 18 595 s \$0-manta;
+#X obj 19 627 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 48 807 s \$0-manta;
-#X msg 48 786 debug \$1;
-#X obj 46 563 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 19 667 s \$0-manta;
+#X msg 19 646 debug \$1;
+#X obj 17 423 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 46 603 s \$0-manta;
-#X msg 46 582 oneindex \$1;
-#X obj 252 266 r \$0-velocity;
-#X obj 252 289 print;
+#X obj 17 463 s \$0-manta;
+#X msg 17 442 oneindex \$1;
+#X obj 209 209 r \$0-velocity;
+#X obj 209 232 print;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;

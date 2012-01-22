@@ -17,7 +17,7 @@ class MantaUSB
    public:
       MantaUSB(void);
       virtual ~MantaUSB(void);
-      void WriteFrame(uint8_t *frame);
+      void WriteFrame(uint8_t *frame, bool forceQueued);
       bool IsConnected(void);
       void Connect(int connectionSerial = 0);
       void Disconnect();

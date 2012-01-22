@@ -58,7 +58,7 @@ void manta::SetLEDControl(t_symbol *control, int state)
    {
       if(0 == state)
       {
-         ClearPadAndButtonLEDs();
+         ConnectedManta->ClearPadAndButtonLEDs();
       }
       ConnectedManta->SetLEDControl(MantaServer::PadAndButton, state);
    }

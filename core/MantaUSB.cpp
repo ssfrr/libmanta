@@ -33,7 +33,7 @@ bool MantaUSB::MessageQueued(void)
 
 /* note: WriteFrame shares the message queue with HandleEvents, so the two
  * functions should be protected by a mutex from simultaneous access */
-void MantaUSB::WriteFrame(uint8_t *frame)
+void MantaUSB::WriteFrame(uint8_t *frame, bool forceQueued)
 {
    int status;
    if(NULL == DeviceHandle)
@@ -41,7 +41,7 @@ void MantaUSB::WriteFrame(uint8_t *frame)
       throw(MantaNotConnectedException(this));
    }
    MantaTxQueueEntry *queuedMessage = GetQueuedTxMessage();
-   if(queuedMessage)
+   if(queuedMessage && !forceQueued)
    {
       /* replace the queued packet payload with the new one */
       for(int i = 0; i < OutPacketLen; ++i)
@@ -174,7 +174,7 @@ int MantaUSB::GetSerialNumber(void)
 MantaUSB::MantaTxQueueEntry *MantaUSB::GetQueuedTxMessage()
 {
    list<MantaTxQueueEntry *>::iterator i = txQueue.begin();
-   /* read from each manta and trigger any events */
+   /* look for the first queued message matching this manta */
    while(txQueue.end() != i)
    {
       if((*i)->TargetManta == this)

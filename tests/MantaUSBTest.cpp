@@ -11,7 +11,7 @@ class MantaUSBTester : public MantaUSB
    public:
    void PublicWriteFrame(uint8_t *frame)
    {
-      WriteFrame(frame);
+      WriteFrame(frame, false);
    }
    private:
    virtual void FrameReceived(int8_t *frame)

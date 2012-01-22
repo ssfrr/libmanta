@@ -116,7 +116,7 @@ void Manta::SetPadLED(LEDState state, int ledID)
 
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -149,7 +149,7 @@ void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
    }
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -200,7 +200,7 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
 
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -234,7 +234,7 @@ void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
    }
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -260,7 +260,7 @@ void Manta::SetSliderLED(LEDState state, int id, uint8_t mask)
    }
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -290,7 +290,7 @@ void Manta::SetButtonLED(LEDState state, int id)
    }
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -298,7 +298,7 @@ void Manta::ResendLEDState(void)
 {
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -308,7 +308,7 @@ void Manta::ClearButtonLEDs(void)
 
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -324,7 +324,7 @@ void Manta::ClearPadAndButtonLEDs(void)
 
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -335,10 +335,12 @@ void Manta::Recalibrate(void)
       throw MantaNotConnectedException(this);
    }
    
+   /* make sure these messages get queued so that they
+    * don't just cancel each other out */
    CurrentOutReport[ConfigIndex] |= 0x40;
-   WriteFrame(CurrentOutReport);
+   WriteFrame(CurrentOutReport, true);
    CurrentOutReport[ConfigIndex] &= ~0x40;
-   WriteFrame(CurrentOutReport);
+   WriteFrame(CurrentOutReport, true);
 }
 
 void Manta::SetLEDControl(LEDControlType control, bool state)
@@ -366,7 +368,10 @@ void Manta::SetLEDControl(LEDControlType control, bool state)
       CurrentOutReport[ConfigIndex] &= ~flag;
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      /* if we're disabling LEDControl, we want to make sure that this
+       * message gets queued so that any pending LED messages get sent
+       * down before we disable LEDs */
+      WriteFrame(CurrentOutReport, !state);
    }
 }
 
@@ -378,7 +383,7 @@ void Manta::SetTurboMode(bool Enabled)
       CurrentOutReport[ConfigIndex] &= ~0x04;
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
@@ -390,7 +395,7 @@ void Manta::SetRawMode(bool Enabled)
       CurrentOutReport[ConfigIndex] &= ~0x08;
    if(IsConnected())
    {
-      WriteFrame(CurrentOutReport);
+      WriteFrame(CurrentOutReport, false);
    }
 }
 
