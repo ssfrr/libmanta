@@ -48,7 +48,8 @@ int main()
    dev.Connect();
    memset(outbuf, 0, 16);
    outbuf[9] |= 0x01 | 0x02;
-   for(int i = 0; i < 52; ++i)
+   /* light up all the yellow pad and button LEDs */
+   for(int i = 0; i < 48; ++i)
    {
       outbuf[i / 8] |= (1 << (i % 8));
       dev.PublicWriteFrame(outbuf);
@@ -56,13 +57,30 @@ int main()
       usleep(100000);
       outbuf[i / 8] &= ~(1 << (i % 8));
    }
-   for(int i = 0; i < 52; ++i)
+   for(int i = 0; i < 4; ++i)
+   {
+      outbuf[6] |= (1 << (i % 8));
+      dev.PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
+      usleep(100000);
+      outbuf[6] &= ~(1 << (i % 8));
+   }
+   /* light up all the red pad and button LEDs */
+   for(int i = 0; i < 48; ++i)
    {
       outbuf[i / 8 + 10] |= (1 << (i % 8));
       dev.PublicWriteFrame(outbuf);
       MantaUSB::HandleEvents();
       usleep(100000);
       outbuf[i / 8 + 10] &= ~(1 << (i % 8));
+   }
+   for(int i = 0; i < 4; ++i)
+   {
+      outbuf[6] |= (1 << (i % 8 + 4));
+      dev.PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
+      usleep(100000);
+      outbuf[6] &= ~(1 << (i % 8 + 4));
    }
    outbuf[7] = 1;
    while(outbuf[7])

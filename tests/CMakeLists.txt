@@ -1,5 +1,6 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
+SET(CMAKE_BUILD_TYPE "Debug")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    FIND_LIBRARY(IOKIT_LIB IOKit)
    FIND_LIBRARY(COREFOUND_LIB CoreFoundation)
@@ -27,3 +28,7 @@ ADD_EXECUTABLE(MantaUSBTimer MantaUSBTimer.cpp
                         ../core/MantaUSB.cpp
                         ${HIDAPI_SRC})
 TARGET_LINK_LIBRARIES(MantaUSBTimer ${SYSTEM_LIBS})
+
+ADD_EXECUTABLE(hidapiTest hidapiTest.cpp
+                        ${HIDAPI_SRC})
+TARGET_LINK_LIBRARIES(hidapiTest ${SYSTEM_LIBS})

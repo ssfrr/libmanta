@@ -102,7 +102,7 @@ int main()
       {
          dev.HandleEvents();
       }
-      dev.WriteFrame(outFrame);
+      dev.WriteFrame(outFrame, false);
       printPercentDone(i, trials);
    }
    stopTimeMeasuring(&tu);
