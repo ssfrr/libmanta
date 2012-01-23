@@ -120,20 +120,23 @@ void MantaUSB::HandleEvents(void)
    while(mantaList.end() != i)
    {
       MantaUSB *current = *i;
-      int bytesRead;
-      int8_t inFrame[InPacketLen];
+      if(current->IsConnected())
+      {
+         int bytesRead;
+         int8_t inFrame[InPacketLen];
 
-      bytesRead = hid_read(current->DeviceHandle,
-            reinterpret_cast<uint8_t *>(inFrame), InPacketLen);
-      if(bytesRead < 0)
-      {
-         current->DebugPrint("%s-%d: Read error on Manta %d",
-               __FILE__, __LINE__, current->GetSerialNumber());
-         throw(MantaCommunicationException(current));
-      }
-      else if(bytesRead)
-      {
-         current->FrameReceived(inFrame);
+         bytesRead = hid_read(current->DeviceHandle,
+               reinterpret_cast<uint8_t *>(inFrame), InPacketLen);
+         if(bytesRead < 0)
+         {
+            current->DebugPrint("%s-%d: Read error on Manta %d",
+                  __FILE__, __LINE__, current->GetSerialNumber());
+            throw(MantaCommunicationException(current));
+         }
+         else if(bytesRead)
+         {
+            current->FrameReceived(inFrame);
+         }
       }
       ++i;
    }
@@ -181,6 +184,7 @@ MantaUSB::MantaTxQueueEntry *MantaUSB::GetQueuedTxMessage()
       {
          return *i;
       }
+      ++i;
    }
    return NULL;
 }
