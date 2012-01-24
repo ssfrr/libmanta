@@ -1,0 +1,132 @@
+Classes
+=======
+
+MantaUSB
+   Methods:
+      Connect
+      Disconnect
+      WriteFrame
+      FrameReceived (virtual)
+      HandleEvents
+
+Manta(inherits MantaUSB, MantaServer, MantaClient)
+   Methods:
+      MantaServer methods - creates frame and calls down to USB
+      FrameReceived - Parses USB messages and calls MantaClient messages
+
+MultiManta (inherits Manta) - still one-to-one correspondence with manta hardware
+   Methods:
+      incoming message callbacks allow for delivery to a list of MantaClients
+      attachClient(client)
+         adds the client to the list of clients for message delivery
+         increments ref counter of MultiManta
+   New Members:
+      ClientList
+      ReferenceCount
+
+MantaClient (virtual class / interface)
+   Methods:
+      PadEvent
+      SliderEvent
+      etc.
+
+MantaServer (virtual class / interface)
+   Methods:
+      SetPadLED
+      SetPadLEDRow
+      etc.
+
+MantaFlext(inherits MantaClient)
+   class maintains list of MultiManta instances corresponding to actual mantas
+      
+MantaFlext Constructor or "connect" message
+   Lock MantaMutex
+   if matching manta is in connected list
+      attach to it
+      Unlock MantaMutex
+   else 
+      Unlock MantaMutex
+      create MultiManta
+      try to connect MultiManta to manta hardware
+      if connected
+         Lock MantaMutex
+         add it to connected list
+         attach to it
+         if this is the first connected manta
+            start polling thread
+         Unlock MantaMutex
+      else
+         destroy MultiManta
+         print "not found" message
+
+MantaFlext Destructor
+   Lock MantaMutex
+   if attached
+      if reference count of MultiManta is 1
+         if this is the only connected manta
+            Unlock MantaMutex
+            shouldStop = true
+            Lock RunningCond
+            while(running)
+               Wait for RunningCond
+            UnLock RunningCond
+         else
+            Unlock MantaMutex
+         Lock MantaMutex
+         if attached // it's possible that we got detached when we released the lock
+                     // and let the polling thread finish up
+            detach
+            disconnect MultiManta
+            remove from Connected List
+            delete MultiManta
+         Unlock MantaMutex
+      else
+         detach
+         Unlock MantaMutex
+   else
+      Unlock MantaMutex
+
+Polling Thread
+   running = true
+   while (! shouldStop)
+      Lock MantaMutex
+      run MantaMulti HandleEvents
+      UnLock MantaMutex
+   on Communication Error Exception
+      detach all connected MantaFlext instances
+      remove MultiManta from Connected List
+      delete MultiManta
+      Unlock MantaMutex
+   Lock RunningCond
+   running = false
+   Signal RunningCond
+   Unlock RunningCond
+
+Thread Concerns:
+   MantaFlext constructor and destructor always called from main thread
+   MantaMulti instances are created by the MantaFlext constructor, or with
+      the "connect" message, both called only through the main thread
+   Manta communication errors are caught by the polling thread, and can
+      result in a MantaMulti being deleted and removed from the connected list
+   the connected list needs to be protected by a mutex
+   The polling thread traverses a list of MantaFlext instances when an event
+      happens, so they mustn't be deleted while it's traversing the list
+
+   MantaMutex
+      locked when MantaFlext constructor adds a MantaMulti to the connectedList
+      locked when "connect" message adds a MantaMulti to the connectedList
+      locked when MantaFlext destructor removes a MantaMulti from the connected List
+      locked when 
+
+Allocation / Deallocation
+   New MantaMulti instance is created by MantaFlext constructor or "connect" handler
+      during the connection attempt. It is deleted if the connection fails.
+   New MantaMultiListEntry instance is created if a connection attempt succeeds
+      It is given a pointer to the recently-created MantaMulti instance, and a
+      pointer to it is put in the ConnectedMantaList
+   a MantaMulti and corresponding MantaMultiListEntry is deleted when its reference
+      counter goes to 0
+   MantaUSB destructor calls Disconnect(), which closes up all USB connectivity. It
+      cancels any ongoing transfers, but the transfers don't actually get freed until
+      handleEvents() is called. Because the polling thread is killed before the
+      base class destructor is called, those transfers will never be freed. LEAK.

@@ -3,7 +3,8 @@
 FLEXT_LIB("manta.maximum", MantaFlextMaximum);
 
 MantaFlextMaximum::MantaFlextMaximum() :
-   lastMax(0)
+   lastMax(0),
+   OneIndexed(false)
 {
    skippedPadsMask[0] = 0;
    skippedPadsMask[1] = 0;
@@ -12,6 +13,7 @@ MantaFlextMaximum::MantaFlextMaximum() :
    FLEXT_ADDMETHOD_V(0, padFrameHandler);
    FLEXT_ADDMETHOD_F(0, "skip", skipHandler);
    FLEXT_ADDMETHOD_F(0, "noskip", noskipHandler);
+   FLEXT_ADDMETHOD_1(0, "oneindex", SetOneIndexed, int);
 }
 
 void MantaFlextMaximum::padFrameHandler(int argc, t_atom *argv)
@@ -32,6 +34,16 @@ void MantaFlextMaximum::padFrameHandler(int argc, t_atom *argv)
       }
       currentMask >>= 1;
    }
+   if(0 == max)
+   {
+      /* if no pads are hit, send -1 for both */
+      max = -1;
+      maxIndex = -1;
+   }
+   else
+   {
+      maxIndex += (OneIndexed ? 1 : 0);
+   }
    if(max != lastMax)
    {
       t_atom args[2];
@@ -44,10 +56,29 @@ void MantaFlextMaximum::padFrameHandler(int argc, t_atom *argv)
 
 void MantaFlextMaximum::skipHandler(int pad)
 {
-   skippedPadsMask[pad / 32] |= (0x01 << (pad % 32));
+   if(OneIndexed)
+   {
+      pad -= 1;
+   }
+   if(pad >= 0 && pad <= 47)
+   {
+      skippedPadsMask[pad / 32] |= (0x01 << (pad % 32));
+   }
 }
 
 void MantaFlextMaximum::noskipHandler(int pad)
 {
-   skippedPadsMask[pad / 32] &= ~(0x01 << (pad % 32));
+   if(OneIndexed)
+   {
+      pad -= 1;
+   }
+   if(pad >= 0 && pad <= 47)
+   {
+      skippedPadsMask[pad / 32] &= ~(0x01 << (pad % 32));
+   }
+}
+
+void MantaFlextMaximum::SetOneIndexed(int enabled)
+{
+   OneIndexed = enabled;
 }

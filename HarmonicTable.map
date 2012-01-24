@@ -1,0 +1,53 @@
+# This map file describes the Harmonic Table layout used in the C-Thru AXiS
+# and the Jammer.
+#
+# See http://en.wikipedia.org/wiki/File:HarmonicTableMusicNoteLayout.png
+
+00 00
+01 04
+02 08
+03 12
+04 16
+05 20
+06 24
+07 28
+08 07
+09 11
+10 15
+11 19
+12 23
+13 27
+14 31
+15 35
+16 10
+17 14
+18 18
+19 22
+20 26
+21 30
+22 34
+23 38
+24 17
+25 21
+26 25
+27 29
+28 33
+29 37
+30 41
+31 45
+32 20
+33 24
+34 28
+35 32
+36 36
+37 40
+38 44
+39 48
+40 27
+41 31
+42 35
+43 39
+44 43
+45 47
+46 51
+47 55

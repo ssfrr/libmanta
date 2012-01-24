@@ -1,5 +1,10 @@
 #include <flext.h>
-#include "../core/Manta.h"
+#include "../core/MantaClient.h"
+#include "../core/MantaMulti.h"
+#include "../core/MantaServer.h"
+#include <list>
+
+using namespace std;
 
 #if !defined(FLEXT_VERSION) || (FLEXT_VERSION < 400)
 #error You need at least flext version 0.4.0
@@ -7,16 +12,26 @@
 
 class manta:
 	public flext_base,
-   public Manta
+   public MantaClient
 {
 	FLEXT_HEADER(manta, flext_base)
  
    public:
-	manta(); 
+	manta(int argc,t_atom *argv); 
 	~manta(); 
 
+   void Attach(int serialNumber = 0);
+   void Detach();
+   bool Attached();
+   void PadEvent(int row, int column, int id, int value);
+   void SliderEvent(int id, int value);
+   void ButtonEvent(int id, int value);
+   void PadVelocityEvent(int row, int column, int id, int value);
+   void ButtonVelocityEvent(int id, int value);
+   void FrameEvent(uint8_t *frame);
+   // void DebugPrint(const char *fmt, ...);
+
    protected:
-	void StartThread();
    void SetPadLED(int argc, t_atom *argv);
    void SetPadLEDRow(t_symbol *state, int row, int mask);
    void SetPadLEDRowNum(int state, int row, int mask);
@@ -28,27 +43,41 @@ class manta:
    void SetSliderLEDNum(int id, int ledNum);
    void SetButtonLED(int argc, t_atom *argv);
    void SetLEDControl(t_symbol *control, int state);
-   /*
-   void SetTurboMode(bool Enabled);
-   void SetRawMode(bool Enabled);
-   */
+   void Recalibrate();
+   void ClearPadAndButtonLEDs();
+   void SetTurboMode(int Enabled);
+   void SetRawMode(int Enabled);
+   void Connect(int argc, t_atom *argv);
+   // void EnableDebug(int enabled);
+   void SetOneIndexed(int enabled);
 
-private:
-   void PadEvent(int row, int column, int id, int value);
-   void SliderEvent(int id, int value);
-   void ButtonEvent(int id, int value);
-   void PadVelocityEvent(int row, int column, int id, int value);
-   void ButtonVelocityEvent(int id, int value);
-   void DebugPrint(const char *fmt, ...);
-   /* here we're actually co-opting the parent class's FrameReceived
-    * function, but it will call the parents version within */
-   void FrameReceived(int8_t *frame);
+   private:
+   MantaServer::LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
+   MantaServer::LEDState ledStateFromInt(int stateSymbol);
+   void StartThread();
+   void StopThreadAndWait();
 
-   LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
-   LEDState ledStateFromInt(int stateSymbol);
-	// declare threaded callback 
-	// the same syntax as with FLEXT_CALLBACK is used here
-	FLEXT_THREAD(StartThread)
+   /* we could be detached from the polling thread on communication error
+    * so this SHOULD be volatile, but it was causing issues and I got lazy */
+   MantaMulti *ConnectedManta;
+   // bool DebugEnabled;
+   bool OneIndexed;
+
+	static void PollConnectedMantas(thr_params *p);
+   static MantaMulti *FindConnectedMantaBySerial(int serialNumber);
+   static void DetachAllMantaFlext(MantaMulti *multi);
+
+   //! Shared list of all connected mantas
+   static list<MantaMulti *> ConnectedMantaList;
+   static list<manta *> MantaFlextList;
+   /* thread conditional to wait on to make sure
+    * that the polling thread has stopped */
+   static ThrCond ThreadRunningCond;
+   static volatile bool shouldStop;
+   static volatile bool threadRunning;
+   /* shared mutex used to prevent connection-related race conditions */
+   static ThrMutex MantaMutex;
+
    /* declare message handlers */
    FLEXT_CALLBACK_V(SetPadLED)
    FLEXT_CALLBACK_3(SetPadLEDRow, t_symptr, int, int)
@@ -63,12 +92,14 @@ private:
    FLEXT_CALLBACK_2(SetLEDControl, t_symptr, int)
    FLEXT_CALLBACK(Recalibrate)
    FLEXT_CALLBACK(ClearPadAndButtonLEDs)
+   FLEXT_CALLBACK_1(SetTurboMode, int)
+   FLEXT_CALLBACK_1(SetRawMode, int)
+   /* declare Attach to be used with or without SerialNumber arg */
+   FLEXT_CALLBACK_V(Connect)
+   // FLEXT_CALLBACK_1(EnableDebug, int)
+   FLEXT_CALLBACK_1(SetOneIndexed, int)
 
    int lastSliderValue[2];
-   /* thread conditional to wait on to make sure
-    * that the polling thread has stopped */
-   ThrCond cond;
-   volatile bool shouldStop;
 
    const t_symbol *padSymbol;
    const t_symbol *buttonSymbol;
@@ -87,4 +118,12 @@ private:
    static const int continuousOutlet = 1;
    static const int sliderOutlet = 2;
    static const int frameOutlet = 3;
+};
+
+struct MantaMultiListEntry
+{
+   MantaMultiListEntry();
+   ~MantaMultiListEntry();
+
+   MantaMulti *mantaServer;
 };

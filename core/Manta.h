@@ -2,48 +2,38 @@
 #define _MANTA_H
 
 #include "MantaUSB.h"
+#include "MantaClient.h"
+#include "MantaServer.h"
 
-class Manta : public MantaUSB
+class Manta :
+   public MantaUSB,
+   public MantaClient,
+   public MantaServer
 {
    public:
-      enum LEDState {
-         Off,
-         Amber,
-         Red,
-      };
-      enum LEDControlType {
-         PadAndButton,
-         Slider,
-         Button
-      };
-      typedef uint8_t LEDFrame[6];
-
       Manta(void);
-      void SetPadLED(LEDState state, int ledID);
-      void SetPadLEDRow(LEDState state, int row, uint8_t mask);
-      void SetPadLEDColumn(LEDState state, int column, uint8_t mask);
-      void SetPadLEDFrame(LEDState state, uint8_t mask[]);
-      void SetSliderLED(LEDState state, int id, uint8_t mask);
-      void SetButtonLED(LEDState state, int id);
-      void ResendLEDState(void);
-      void ClearPadAndButtonLEDs(void);
-      void ClearButtonLEDs(void);
-      void Recalibrate(void);
-      void SetLEDControl(LEDControlType control, bool state);
-      void SetTurboMode(bool Enabled);
-      void SetRawMode(bool Enabled);
 
-   protected:
-      /* declare callbacks to be implemented by subclasses */
-      virtual void PadEvent(int row, int column, int id, int value) = 0;
-      virtual void SliderEvent(int id, int value) = 0;
-      virtual void ButtonEvent(int id, int value) = 0;
-      virtual void PadVelocityEvent(int row, int column, int id, int velocity) = 0;
-      virtual void ButtonVelocityEvent(int id, int velocity) = 0;
-      /* declare superclass callbacks implemented by this class */
-      virtual void FrameReceived(int8_t *frame);
-      
+      /* MantaServer messages implemented here */
+      virtual void SetPadLED(LEDState state, int ledID);
+      virtual void SetPadLEDRow(LEDState state, int row, uint8_t mask);
+      virtual void SetPadLEDColumn(LEDState state, int column, uint8_t mask);
+      virtual void SetPadLEDFrame(LEDState state, uint8_t mask[]);
+      virtual void SetSliderLED(LEDState state, int id, uint8_t mask);
+      virtual void SetButtonLED(LEDState state, int id);
+      virtual void ResendLEDState(void);
+      virtual void ClearPadAndButtonLEDs(void);
+      virtual void ClearButtonLEDs(void);
+      virtual void Recalibrate(void);
+      virtual void SetLEDControl(LEDControlType control, bool state);
+      virtual void SetTurboMode(bool Enabled);
+      virtual void SetRawMode(bool Enabled);
+      virtual void SetMaxSensorValues(int *values);
+
    private:
+      /* declare superclass callback implemented by this class */
+      virtual void FrameReceived(int8_t *frame);
+      int ScaleSensorValue(int rawValue, int index);
+
       static uint8_t byteReverse(uint8_t inByte);
       static int CalculateVelocity(int firstValue, int secondValue);
       static const int AmberIndex = 0;
@@ -51,12 +41,12 @@ class Manta : public MantaUSB
       static const int SliderIndex = 7;
       static const int ButtonIndex = 6;
       static const int ConfigIndex = 9;
+      static const int AverageMaxSensorValues[53];
 
-      int8_t LastInReport[InPacketLen];
+      int MaxSensorValues[53];
+      uint8_t LastInReport[InPacketLen];
       uint8_t CurrentOutReport[OutPacketLen];
       bool VelocityWaiting[53];
-      int MaximumPadID;
-      int MaximumPadValue;
       /* output modes */
       bool CentroidEnabled;
       bool MaximumEnabled;

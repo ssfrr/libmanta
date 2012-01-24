@@ -1,4 +1,4 @@
-#N canvas 524 235 808 738 10;
+#N canvas 527 198 808 738 10;
 #X obj 31 21 mrpeach/udpreceive 8000;
 #X obj 31 42 mrpeach/unpackOSC;
 #X obj 31 63 mrpeach/routeOSC /Manta;
@@ -66,30 +66,22 @@
 #X msg 4 385 connect 127.0.0.1 8001;
 #X obj 221 689 mrpeach/udpsend;
 #X obj 198 266 hsl 128 15 0 7 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 8700 1;
+-1 -1 12700 1;
 #X obj 254 335 hsl 128 15 0 5 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 9800 1;
+-1 -1 12700 1;
 #N canvas 0 0 439 292 ChooseRow 0;
 #X obj 85 61 int;
 #X obj 85 90 select 0;
 #X obj 153 90 t f f;
 #X obj 85 37 inlet;
 #X obj 185 234 outlet;
-#X obj 219 163 f 0;
-#X obj 180 134 t f f b;
-#X msg 219 185 \$1 0;
 #X msg 155 184 \$1 255;
 #X connect 0 0 1 0;
 #X connect 1 1 2 0;
 #X connect 2 0 1 1;
-#X connect 2 1 6 0;
+#X connect 2 1 5 0;
 #X connect 3 0 0 0;
-#X connect 5 0 7 0;
-#X connect 6 0 8 0;
-#X connect 6 1 5 1;
-#X connect 6 2 5 0;
-#X connect 7 0 4 0;
-#X connect 8 0 4 0;
+#X connect 5 0 4 0;
 #X restore 251 353 pd ChooseRow;
 #N canvas 0 0 439 292 ChooseColumn 0;
 #X obj 85 61 int;
@@ -97,24 +89,16 @@
 #X obj 153 90 t f f;
 #X obj 85 37 inlet;
 #X obj 185 234 outlet;
-#X obj 219 163 f 0;
-#X obj 180 134 t f f b;
-#X msg 219 185 \$1 0;
 #X msg 155 184 \$1 255;
 #X connect 0 0 1 0;
 #X connect 1 1 2 0;
 #X connect 2 0 1 1;
-#X connect 2 1 6 0;
+#X connect 2 1 5 0;
 #X connect 3 0 0 0;
-#X connect 5 0 7 0;
-#X connect 6 0 8 0;
-#X connect 6 1 5 1;
-#X connect 6 2 5 0;
-#X connect 7 0 4 0;
-#X connect 8 0 4 0;
+#X connect 5 0 4 0;
 #X restore 195 285 pd ChooseColumn;
 #X obj 290 410 hsl 128 15 0 7 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 6100 1;
+-1 -1 6200 1;
 #X msg 195 306 send /Manta/LED/Pad/Column Amber \$1 \$2;
 #X msg 102 197 send /Manta/LEDControl PadAndButton \$1;
 #X msg 135 236 send /Manta/LEDControl Slider \$1;

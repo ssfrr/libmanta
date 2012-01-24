@@ -1,6 +1,8 @@
 #include <flext.h>
 #include "MantaFlextCentroid.h"
 #include "MantaFlext.h"
+#include "MantaFlextVersion.h"
+#include "../core/MantaVersion.h"
 
 static void mantaLibSetup(void)
 {
@@ -9,6 +11,9 @@ static void mantaLibSetup(void)
    FLEXT_SETUP(manta);
    FLEXT_SETUP(MantaFlextCentroid);
    FLEXT_SETUP(MantaFlextMaximum);
+   FLEXT_SETUP(MantaFlextPoly);
+   post("manta: MantaFlext V %02d.%02d",
+         MANTAFLEXT_MAJOR_VERSION,MANTAFLEXT_MINOR_VERSION);
    post("manta: PD / Max object by Spencer Russell");
    post("manta: Centroid Algorithm by R. Luke Dubois");
    post("manta: Velocity Algorithm by Angie Hugeback");

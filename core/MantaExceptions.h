@@ -15,10 +15,12 @@ class LibusbInitException : public std::runtime_error
 class MantaNotConnectedException : public std::runtime_error
 {
    public:
-      MantaNotConnectedException() :
-            runtime_error("Attempted to access the Manta without connecting")
+      MantaNotConnectedException(MantaUSB *manta) :
+            runtime_error("Attempted to access the Manta without connecting"),
+            errorManta(manta)
          {
          }
+      MantaUSB *errorManta;
 };
 
 class MantaNotFoundException : public std::runtime_error
@@ -42,10 +44,12 @@ class MantaOpenException : public std::runtime_error
 class MantaCommunicationException : public std::runtime_error
 {
    public:
-      MantaCommunicationException() :
-            runtime_error("Communication with Manta interrupted")
+      MantaCommunicationException(MantaUSB *manta = NULL) :
+            runtime_error("Communication with Manta interrupted"),
+            errorManta(manta)
          {
          }
+      MantaUSB *errorManta;
 };
 
 #endif // _MANTAEXCEPTIONS_H

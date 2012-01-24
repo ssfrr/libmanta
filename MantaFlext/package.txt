@@ -8,11 +8,20 @@ SRCS= MantaFlext.cpp \
       MantaFlextLibrary.cpp \
       MantaFlextCentroid.cpp \
       MantaFlextMaximum.cpp \
+      MantaFlextPoly.cpp \
       ../core/Manta.cpp \
-      ../core/MantaUSB.cpp
+      ../core/MantaUSB.cpp \
+      ../core/MantaMulti.cpp
+
 HDRS= MantaFlext.h \
       MantaFlextCentroid.h \
       MantaFlextMaximum.h \
+      MantaFlextPoly.h \
       ../core/Manta.h \
-      ../core/MantaUSB.h
+      ../core/MantaUSB.h \
+      ../core/MantaServer.h \
+      ../core/MantaClient.h \
+      ../core/MantaVersion.h \
+      ../core/extern/hidapi/hidapi/hidapi.h
 CXXFLAGS += -Wall
+CFLAGS += -I../core/extern/hidapi/hidapi
