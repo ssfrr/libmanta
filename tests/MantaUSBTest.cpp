@@ -42,17 +42,20 @@ class MantaUSBTester : public MantaUSB
 
 int main()
 {
-   MantaUSBTester dev;
+   MantaUSBTester dev[2];
    uint8_t outbuf[16];
    
-   dev.Connect();
+   dev[0].Connect(118);
+   dev[1].Connect(58);
    memset(outbuf, 0, 16);
    outbuf[9] |= 0x01 | 0x02;
    /* light up all the yellow pad and button LEDs */
    for(int i = 0; i < 48; ++i)
    {
       outbuf[i / 8] |= (1 << (i % 8));
-      dev.PublicWriteFrame(outbuf);
+      dev[0].PublicWriteFrame(outbuf);
+      dev[1].PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
       MantaUSB::HandleEvents();
       usleep(100000);
       outbuf[i / 8] &= ~(1 << (i % 8));
@@ -60,7 +63,9 @@ int main()
    for(int i = 0; i < 4; ++i)
    {
       outbuf[6] |= (1 << (i % 8));
-      dev.PublicWriteFrame(outbuf);
+      dev[0].PublicWriteFrame(outbuf);
+      dev[1].PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
       MantaUSB::HandleEvents();
       usleep(100000);
       outbuf[6] &= ~(1 << (i % 8));
@@ -69,7 +74,9 @@ int main()
    for(int i = 0; i < 48; ++i)
    {
       outbuf[i / 8 + 10] |= (1 << (i % 8));
-      dev.PublicWriteFrame(outbuf);
+      dev[0].PublicWriteFrame(outbuf);
+      dev[1].PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
       MantaUSB::HandleEvents();
       usleep(100000);
       outbuf[i / 8 + 10] &= ~(1 << (i % 8));
@@ -77,7 +84,9 @@ int main()
    for(int i = 0; i < 4; ++i)
    {
       outbuf[6] |= (1 << (i % 8 + 4));
-      dev.PublicWriteFrame(outbuf);
+      dev[0].PublicWriteFrame(outbuf);
+      dev[1].PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
       MantaUSB::HandleEvents();
       usleep(100000);
       outbuf[6] &= ~(1 << (i % 8 + 4));
@@ -85,7 +94,9 @@ int main()
    outbuf[7] = 1;
    while(outbuf[7])
    {
-      dev.PublicWriteFrame(outbuf);
+      dev[0].PublicWriteFrame(outbuf);
+      dev[1].PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
       MantaUSB::HandleEvents();
       usleep(100000);
       outbuf[7] <<= 1;
@@ -93,13 +104,17 @@ int main()
    outbuf[8] = 1;
    while(outbuf[8])
    {
-      dev.PublicWriteFrame(outbuf);
+      dev[0].PublicWriteFrame(outbuf);
+      dev[1].PublicWriteFrame(outbuf);
+      MantaUSB::HandleEvents();
       MantaUSB::HandleEvents();
       usleep(100000);
       outbuf[8] <<= 1;
    }
    outbuf[9] = 0;
-   dev.PublicWriteFrame(outbuf);
+   dev[0].PublicWriteFrame(outbuf);
+   dev[1].PublicWriteFrame(outbuf);
+   MantaUSB::HandleEvents();
    MantaUSB::HandleEvents();
 
    while(1)

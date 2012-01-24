@@ -21,6 +21,7 @@ HDRS= MantaFlext.h \
       ../core/MantaUSB.h \
       ../core/MantaServer.h \
       ../core/MantaClient.h \
+      ../core/MantaVersion.h \
       ../core/extern/hidapi/hidapi/hidapi.h
 CXXFLAGS += -Wall
 CFLAGS += -I../core/extern/hidapi/hidapi
