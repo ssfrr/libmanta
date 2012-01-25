@@ -1,13 +1,5 @@
 #include "mantathread.h"
 
-static void waitForTransmitComplete(MantaUSB &manta)
-{
-   while(manta.IsTransmitting())
-   {
-      manta.HandleEvents();
-   }
-}
-
 MantaThread::MantaThread(QObject *parent) :
     QThread(parent), m_options(NULL), manta(NULL)
 {
@@ -23,7 +15,7 @@ MantaThread::MantaThread(QObject *parent) :
 
 MantaThread::~MantaThread()
 {
-    if (manta)
+    /*if (manta)
     {
         if (this->isRunning())
             this->exit(0);
@@ -37,7 +29,7 @@ MantaThread::~MantaThread()
         }
 
         delete manta;
-    }
+    }*/
 }
 
 void MantaThread::Setup(MantaMidiSettings *options)
@@ -53,15 +45,15 @@ void MantaThread::ReloadLEDS()
 
 void MantaThread::ForceMantaDisconnect()
 {
-    if (manta->IsConnected())
+    /*if (manta->IsConnected())
     {
-        waitForTransmitComplete(*manta);
+        Manta::HandleEvents();
 
         m_runningMode = eMode_Disabled;
         //manta->Disconnect();
 
         emit MantaConnectedMessage("Manta Force Disconnected");
-    }
+    }*/
 }
 
 void MantaThread::RunMantaDiagnostic()
@@ -88,9 +80,9 @@ void MantaThread::CalibrateMode()
 void MantaThread::RunDiagnostic()
 {
     manta->SetLEDControl(Manta::PadAndButton, true);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
     manta->SetLEDControl(Manta::Slider, true);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
 
     RunPadDiagnostic();
     RunButtonDiagnostic();
@@ -167,60 +159,60 @@ void MantaThread::RunPadDiagnostic()
     for(int i = 0; i < 6; ++i)
     {
        manta->SetPadLEDRow(Manta::Amber, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(200000);
        manta->SetPadLEDRow(Manta::Red, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(200000);
        manta->SetPadLEDRow(Manta::Amber, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(200000);
        manta->SetPadLEDRow(Manta::Off, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
     }
     for(int i = 0; i < 8; ++i)
     {
        manta->SetPadLEDColumn(Manta::Amber, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(200000);
        manta->SetPadLEDColumn(Manta::Red, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(200000);
        manta->SetPadLEDColumn(Manta::Amber, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(200000);
        manta->SetPadLEDColumn(Manta::Off, i, 0xFF);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
     }
     manta->SetPadLED(Manta::Red, 0);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
     usleep(100000);
     for(int i = 1; i < 48; ++i)
     {
        manta->SetPadLED(Manta::Red, i);
        manta->SetPadLED(Manta::Amber, i - 1);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(100000);
     }
 
     // Clear all LEDs
     manta->SetPadLEDFrame(Manta::Off, effs);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
     usleep(250000);
 
     // Test all Amber LEDs
     manta->SetPadLEDFrame(Manta::Amber, effs);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
     usleep(250000);
 
     // Red
     manta->SetPadLEDFrame(Manta::Red, effs);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
     usleep(250000);
 
     // Clear
     manta->SetPadLEDFrame(Manta::Off, effs);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
     usleep(250000);
 }
 
@@ -229,16 +221,16 @@ void MantaThread::RunButtonDiagnostic()
     for(int i = 0; i < 4; ++i)
     {
        manta->SetButtonLED(Manta::Amber, i);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(250000);
        manta->SetButtonLED(Manta::Red, i);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(250000);
        manta->SetButtonLED(Manta::Amber, i);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(250000);
        manta->SetButtonLED(Manta::Off, i);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
     }
 }
 
@@ -250,10 +242,10 @@ void MantaThread::RunSliderDiagnostic()
        manta->SetSliderLED(Manta::Off, 1, 0xFF);
        manta->SetSliderLED(Manta::Amber, 0, i);
        manta->SetSliderLED(Manta::Amber, 1, j);
-       waitForTransmitComplete(*manta);
+       Manta::HandleEvents();
        usleep(100000);
     }
     manta->SetSliderLED(Manta::Off, 0, 0xFF);
     manta->SetSliderLED(Manta::Off, 1, 0xFF);
-    waitForTransmitComplete(*manta);
+    Manta::HandleEvents();
 }
