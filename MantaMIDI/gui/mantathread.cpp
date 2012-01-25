@@ -9,27 +9,30 @@ MantaThread::MantaThread(QObject *parent) :
            this, SLOT(RunMantaDiagnostic()), Qt::QueuedConnection);
     connect(parent, SIGNAL(MantaDisconnectSignal()),
             this, SLOT(ForceMantaDisconnect()), Qt::QueuedConnection);
+    connect(parent, SIGNAL(MantaReconnectSignal()),
+            this, SLOT(MantaReconnect()), Qt::QueuedConnection);
     connect(parent, SIGNAL(MantaCalibrateSignal()),
             this, SLOT(RunCalibrateMode()), Qt::QueuedConnection);
 }
 
 MantaThread::~MantaThread()
 {
-    /*if (manta)
+    if (manta)
     {
-        if (this->isRunning())
-            this->exit(0);
-
         if (manta->IsConnected())
         {
             //mutex.lock();
-            //manta->Disconnect();
+            manta->Disconnect();
+            Manta::HandleEvents();
             //condition.wait(&mutex);
             //mutex.unlock();
         }
 
         delete manta;
-    }*/
+    }
+
+    //if (this->isRunning())
+    //    this->exit(0);
 }
 
 void MantaThread::Setup(MantaMidiSettings *options)
@@ -45,15 +48,25 @@ void MantaThread::ReloadLEDS()
 
 void MantaThread::ForceMantaDisconnect()
 {
-    /*if (manta->IsConnected())
+    if (manta->IsConnected())
     {
         Manta::HandleEvents();
 
         m_runningMode = eMode_Disabled;
-        //manta->Disconnect();
+        manta->Disconnect();
 
         emit MantaConnectedMessage("Manta Force Disconnected");
-    }*/
+    }
+}
+
+void MantaThread::MantaReconnect()
+{
+    if (!manta->IsConnected())
+    {
+        manta->Connect();
+        m_runningMode = eMode_Run;
+        emit MantaConnectedMessage("Manta Connected");
+    }
 }
 
 void MantaThread::RunMantaDiagnostic()

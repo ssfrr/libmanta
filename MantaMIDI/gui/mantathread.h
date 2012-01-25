@@ -34,6 +34,7 @@ protected:
 
 private slots:
     void ForceMantaDisconnect();
+    void MantaReconnect();
     void RunMantaDiagnostic();
     void CalibrateMode();
     void RunManta();
