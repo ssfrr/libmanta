@@ -19,20 +19,17 @@ MantaThread::~MantaThread()
 {
     if (manta)
     {
+        m_runningMode = eMode_Exit;
+        usleep(10);
+
         if (manta->IsConnected())
         {
-            //mutex.lock();
             manta->Disconnect();
             Manta::HandleEvents();
-            //condition.wait(&mutex);
-            //mutex.unlock();
         }
 
         delete manta;
     }
-
-    //if (this->isRunning())
-    //    this->exit(0);
 }
 
 void MantaThread::Setup(MantaMidiSettings *options)
@@ -105,48 +102,45 @@ void MantaThread::RunDiagnostic()
     m_runningMode = eMode_Run;
 }
 
-bool MantaThread::CheckMantaConnected()
+void MantaThread::RunManta()
 {
-    while (!manta->IsConnected())
+    if (manta && m_options)
     {
         try
         {
             manta->Connect();
-
-            emit MantaConnectedMessage("Manta Connected");
-        }
-        catch(MantaNotFoundException &e)
-        {
-            emit UpdateStatusMessage("Could not find an attached Manta. Retrying...");
-            sleep(1);
-        }
-    }
-
-    return manta->IsConnected();
-}
-
-void MantaThread::RunManta()
-{
-    if (manta && m_options && CheckMantaConnected())
-    {
-        try
-        {
             manta->Initialize();
-            forever
+
+            if (manta->IsConnected())
+                emit MantaConnectedMessage("Manta Connected");
+
+            while (m_runningMode != eMode_Exit)
             {
                 if (m_runningMode == eMode_Run)
+                {
                     manta->HandleEvents();
+                    usleep(1000);
+                }
                 else if (m_runningMode == eMode_Diagnostic)
                     RunDiagnostic();
                 else if (m_runningMode == eMode_Disabled)
                     usleep(200);
             }
         }
+        catch(MantaNotFoundException &e)
+        {
+            emit UpdateStatusMessage("No Mantas Attached!");
+            emit MantaConnectedMessage("Manta Not Connected");
+        }
         catch(MantaCommunicationException &e)
         {
             emit UpdateStatusMessage("Communication with Manta interrrupted...");
             emit MantaConnectedMessage("Manta Not Connected");
         }
+
+        // Retry, assuming the manta was disconnected intentionally
+        if (m_runningMode != eMode_Exit)
+            sleep(1);
     }
     else
         emit UpdateStatusMessage("Manta Object Not initialized!!!");
@@ -155,7 +149,7 @@ void MantaThread::RunManta()
 void MantaThread::run()
 {
     m_runningMode = eMode_Run;
-    forever
+    while (m_runningMode != eMode_Exit)
     {
         RunManta();
     }

@@ -12,7 +12,8 @@ enum MantaMode
 {
     eMode_Run = 0,
     eMode_Diagnostic = 1,
-    eMode_Disabled
+    eMode_Disabled = 2,
+    eMode_Exit = 3
 };
 
 class MantaThread : public QThread
@@ -40,8 +41,6 @@ private slots:
     void RunManta();
 
 private:
-    bool CheckMantaConnected();
-
     void RunDiagnostic();
     void RunPadDiagnostic();
     void RunButtonDiagnostic();
