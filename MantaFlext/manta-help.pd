@@ -1,5 +1,5 @@
 #N canvas 299 22 813 693 10;
-#X obj 211 174 dac~;
+#X obj 243 137 dac~;
 #N canvas 8 73 402 472 slidernote 0;
 #X obj 93 253 osc~;
 #X obj 95 132 + 60;
@@ -29,7 +29,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 0 0;
 #X connect 13 0 11 0;
-#X restore 231 143 pd slidernote;
+#X restore 285 95 pd slidernote;
 #N canvas 505 400 438 318 padnote 0;
 #X obj 189 80 inlet;
 #X obj 190 279 outlet~;
@@ -71,7 +71,7 @@
 #X obj 26 279 s \$0-slider;
 #X obj 212 75 route pad;
 #X obj 212 51 r \$0-continuous;
-#X obj 231 122 r \$0-slider;
+#X obj 285 74 r \$0-slider;
 #X obj 34 257 s \$0-padframe;
 #N canvas 498 95 802 578 LED_Examples 0;
 #X msg 61 52 amber;
@@ -209,16 +209,13 @@ a list of 48 ints.;
 #X floatatom 261 632 5 0 0 0 - - -;
 #X floatatom 315 632 5 0 0 0 - - -;
 #X obj 227 588 unpack f f f;
-#X obj 227 522 r \$0-padframe;
+#X obj 227 544 r \$0-padframe;
 #X obj 8 237 manta;
 #X obj 219 430 manta.maximum;
-#X obj 227 554 manta.centroid;
-#X text 321 552 <-------;
-#X text 378 541 manta.centroid is a support object that takes the full
+#X obj 227 566 manta.centroid;
+#X text 321 564 <-------;
+#X text 378 553 manta.centroid is a support object that takes the full
 pad data as input and calculates the centroid of all the pads;
-#X text 379 600 NOTE: the 'manta' object must be created before the
-manta.centroid and manta.maximum support object \, in order to load
-the library.;
 #X msg 160 385 skip 5;
 #X msg 122 411 noskip 5;
 #X obj 16 45 bng 45 250 50 0 empty empty Click_to_Connect -20 -15 0
@@ -235,7 +232,7 @@ the library.;
 #X msg 16 95 connect;
 #X text 76 93 Also takes arg for;
 #X text 108 107 serial number;
-#X text 358 91 Some Examples of controlling a simple single-oscillator
+#X text 384 76 Some Examples of controlling a simple single-oscillator
 monophonic synth. See the PadMap abstraction for loading a Manta Map
 file to map pads to pitches;
 #X obj 178 337 disp 0;
@@ -258,11 +255,18 @@ file to map pads to pitches;
 1;
 #X obj 17 463 s \$0-manta;
 #X msg 17 442 oneindex \$1;
-#X obj 262 178 r \$0-velocity;
-#X obj 262 198 route pad;
-#X obj 262 218 unpack f f;
-#X floatatom 319 239 5 0 0 0 - - -;
-#X floatatom 262 238 5 0 0 0 - - -;
+#X obj 225 173 r \$0-velocity;
+#X obj 225 193 route pad;
+#X obj 225 213 unpack f f;
+#X floatatom 282 234 5 0 0 0 - - -;
+#X floatatom 225 233 5 0 0 0 - - -;
+#X text 363 195 Take care connecting to a print object. The velocity
+output can output data very quickly and sometimes can overload the
+GUI and cause it to hang;
+#X text 379 600 NOTE: the 'manta' object must be created before the
+manta.centroid and manta.maximum support object \, in order to load
+the library. Alternatively \, add "manta" to your list of libraries
+to load on startup;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
@@ -271,17 +275,17 @@ file to map pads to pitches;
 #X connect 7 0 6 0;
 #X connect 8 0 1 0;
 #X connect 12 0 13 0;
-#X connect 13 0 53 0;
-#X connect 13 1 54 0;
-#X connect 13 2 55 0;
-#X connect 13 3 56 0;
+#X connect 13 0 52 0;
+#X connect 13 1 53 0;
+#X connect 13 2 54 0;
+#X connect 13 3 55 0;
 #X connect 18 0 12 0;
 #X connect 21 0 34 0;
-#X connect 22 0 47 0;
-#X connect 22 1 57 0;
-#X connect 31 0 60 0;
-#X connect 31 1 59 0;
-#X connect 31 2 58 0;
+#X connect 22 0 46 0;
+#X connect 22 1 56 0;
+#X connect 31 0 59 0;
+#X connect 31 1 58 0;
+#X connect 31 2 57 0;
 #X connect 32 0 35 0;
 #X connect 33 0 3 0;
 #X connect 33 1 4 0;
@@ -289,30 +293,30 @@ file to map pads to pitches;
 #X connect 33 3 9 0;
 #X connect 34 0 22 0;
 #X connect 35 0 31 0;
+#X connect 38 0 34 0;
 #X connect 39 0 34 0;
-#X connect 40 0 34 0;
-#X connect 41 0 49 0;
-#X connect 42 0 63 0;
-#X connect 43 0 42 0;
-#X connect 44 0 45 0;
-#X connect 45 0 64 0;
-#X connect 47 0 23 0;
-#X connect 49 0 62 0;
-#X connect 53 0 14 0;
-#X connect 54 0 15 0;
-#X connect 55 0 16 0;
-#X connect 56 0 17 0;
-#X connect 57 0 24 0;
-#X connect 58 0 30 0;
-#X connect 59 0 29 0;
-#X connect 60 0 28 0;
-#X connect 61 0 33 0;
-#X connect 65 0 67 0;
-#X connect 67 0 66 0;
-#X connect 68 0 70 0;
-#X connect 70 0 69 0;
-#X connect 70 0 34 0;
+#X connect 40 0 48 0;
+#X connect 41 0 62 0;
+#X connect 42 0 41 0;
+#X connect 43 0 44 0;
+#X connect 44 0 63 0;
+#X connect 46 0 23 0;
+#X connect 48 0 61 0;
+#X connect 52 0 14 0;
+#X connect 53 0 15 0;
+#X connect 54 0 16 0;
+#X connect 55 0 17 0;
+#X connect 56 0 24 0;
+#X connect 57 0 30 0;
+#X connect 58 0 29 0;
+#X connect 59 0 28 0;
+#X connect 60 0 33 0;
+#X connect 64 0 66 0;
+#X connect 66 0 65 0;
+#X connect 67 0 69 0;
+#X connect 69 0 68 0;
+#X connect 69 0 34 0;
+#X connect 70 0 71 0;
 #X connect 71 0 72 0;
-#X connect 72 0 73 0;
-#X connect 73 0 75 0;
-#X connect 73 1 74 0;
+#X connect 72 0 74 0;
+#X connect 72 1 73 0;
