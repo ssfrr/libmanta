@@ -204,3 +204,4 @@ void manta::DetachAllMantaFlext(MantaMulti *multi)
 
 list<MantaMulti *> manta::ConnectedMantaList;
 list<manta *> manta::MantaFlextList;
+flext::Timer manta::PollTimer;
