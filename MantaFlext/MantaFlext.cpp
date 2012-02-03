@@ -48,6 +48,7 @@ manta::manta(int argc,t_atom *argv):
    padAndButtonSymbol = MakeSymbol("padandbutton");
    ledsOffSymbol = MakeSymbol("ledsoff");
 
+   PollTimer.SetCallback(PollConnectedMantas);
    MantaFlextList.push_back(this);
    Connect(argc, argv);
 } 
@@ -62,7 +63,6 @@ manta::~manta()
  * not connect that Manta instance to an actual hardware manta */
 void manta::Attach(int serialNumber)
 {
-   MantaMutex.Lock();
    if(! Attached())
    {
       MantaMulti *device = FindConnectedMantaBySerial(serialNumber);
@@ -72,25 +72,19 @@ void manta::Attach(int serialNumber)
          post("manta: Attaching to manta %d", device->GetSerialNumber());
          device->AttachClient(this);
          ConnectedManta = device;
-         MantaMutex.Unlock();
       }
       else
       {
-         MantaMutex.Unlock();
-         /* Stop the polling thread while we add a manta */
-         StopThreadAndWait();
          /* TODO: open by serial number */
          device = new MantaMulti;
          try
          {
             device->Connect(serialNumber);
-            MantaMutex.Lock();
             post("manta: Connected to manta %d, attaching...", device->GetSerialNumber());
             device->AttachClient(this);
             device->ResendLEDState();
             ConnectedManta = device;
             ConnectedMantaList.push_back(ConnectedManta);
-            MantaMutex.Unlock();
          }
          catch(MantaNotFoundException e)
          {
@@ -105,21 +99,18 @@ void manta::Attach(int serialNumber)
 
          if(! ConnectedMantaList.empty())
          {
-            StartThread();
+            SchedulePollTimer();
          }
       }
    }
    else
    {
-      MantaMutex.Unlock();
       post("manta: already attached");
    }
 }
 
 void manta::Detach()
 {
-   /* Stop the polling thread while we mess with the connection list */
-   StopThreadAndWait();
    if(Attached())
    {
       post("manta: Detaching from manta %d", ConnectedManta->GetSerialNumber());
@@ -141,9 +132,9 @@ void manta::Detach()
          ConnectedManta = NULL;
       }
    }
-   if(! ConnectedMantaList.empty())
+   if(ConnectedMantaList.empty())
    {
-      StartThread();
+      CancelPollTimer();
    }
 }
 
@@ -152,62 +143,36 @@ bool manta::Attached()
    return ConnectedManta != NULL;
 }
 
-void manta::PollConnectedMantas(thr_params *p)
+void manta::PollConnectedMantas(void *param)
 {
-   if(threadRunning)
-   {
-      post("manta: Thread Already Running!");
-      return;
-   }
    if(ConnectedMantaList.empty())
    {
-      post("manta: Polling thread started with no connected mantas");
+      post("manta: Attempting to poll with no connected mantas");
       return;
    }
-   threadRunning = true;
-   while(!shouldStop && !ConnectedMantaList.empty())
+
+   try
    {
-      try
-      {
-         MantaMutex.Lock();
-         MantaUSB::HandleEvents();
-         MantaMutex.Unlock();
-         Sleep(0.002);
-      }
-      catch(MantaCommunicationException e)
-      {
-         MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
-         post("manta: Communication with Manta %d interrupted", errorManta->GetSerialNumber());
-         delete errorManta;
-         DetachAllMantaFlext(errorManta);
-         ConnectedMantaList.remove(errorManta);
-         MantaMutex.Unlock();
-      }
+      MantaUSB::HandleEvents();
    }
-   ThreadRunningCond.Lock();
-   threadRunning = false;
-   ThreadRunningCond.Signal();
-   ThreadRunningCond.Unlock();
+   catch(MantaCommunicationException e)
+   {
+      MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
+      post("manta: Communication with Manta %d interrupted", errorManta->GetSerialNumber());
+      delete errorManta;
+      DetachAllMantaFlext(errorManta);
+      ConnectedMantaList.remove(errorManta);
+   }
 }
 
-/* make sure you're not holding another lock while calling this function,
- * or a deadlock may occur */
-void manta::StopThreadAndWait()
+void manta::SchedulePollTimer(void)
 {
-   shouldStop = true;
-   // We really should lock and unlock around the condition check,
-   // but flext won't let us
-   // ThreadRunningCond.Lock();
-   while(threadRunning)
-      ThreadRunningCond.Wait();
-   // ThreadRunningCond.Unlock();
+   PollTimer.Periodic(0.002);
 }
 
-void manta::StartThread()
+void manta::CancelPollTimer(void)
 {
-   shouldStop = false;
-   /* start the polling thread if this is the first connected Manta */
-   LaunchThread(PollConnectedMantas, NULL);
+   PollTimer.Reset();
 }
 
 MantaMulti *manta::FindConnectedMantaBySerial(int serialNumber)
@@ -237,9 +202,5 @@ void manta::DetachAllMantaFlext(MantaMulti *multi)
    }
 }
 
-FLEXT_CLASSDEF(flext)::ThrMutex manta::MantaMutex;
 list<MantaMulti *> manta::ConnectedMantaList;
 list<manta *> manta::MantaFlextList;
-FLEXT_CLASSDEF(flext)::ThrCond manta::ThreadRunningCond;
-volatile bool manta::shouldStop = false;
-volatile bool manta::threadRunning = false;
