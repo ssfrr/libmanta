@@ -2,6 +2,19 @@
 #include "Manta.h"
 #include "MantaExceptions.h"
 
+
+/************************************************************************//**
+ * \brief 
+ * \param
+ * \return
+ ****************************************************************************/
+/************************************************************************//**
+ * \brief Manta constructor
+ * \param none
+ * \return none
+ *
+ * The Constructor for the Manta class just initializes internal data
+ ****************************************************************************/
 Manta::Manta(void) {
    for(int i = 0; i < 53; ++i)
    {
@@ -22,6 +35,11 @@ Manta::Manta(void) {
    }
 }
 
+/************************************************************************//**
+ * \brief   Implements the FrameReceived() callback from the MantaUSB superclass
+ * \param   frame   pointer to the frame that was just received
+ * \return  none
+ ****************************************************************************/
 void Manta::FrameReceived(int8_t *frame)
 {
    uint8_t *uframe = (uint8_t *)frame;
@@ -86,6 +104,12 @@ void Manta::FrameReceived(int8_t *frame)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets a single LED
+ * \param   state    Off, Yellow, or Red
+ * \param   ledID    The ID of the LED to be set (0 - 47)
+ * \return  none
+ ****************************************************************************/
 void Manta::SetPadLED(LEDState state, int ledID)
 {
    int row = ledID / 8;

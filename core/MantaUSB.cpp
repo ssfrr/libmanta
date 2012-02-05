@@ -31,8 +31,26 @@ bool MantaUSB::MessageQueued(void)
    return GetQueuedTxMessage() != NULL;
 }
 
-/* note: WriteFrame shares the message queue with HandleEvents, so the two
- * functions should be protected by a mutex from simultaneous access */
+/************************************************************************//**
+ * \brief Writs a USB transfer frame down to the Manta
+ * \param   frame          Pointer to the frame to be transmitted
+ * \param   forceQueued    Forces this message to be queued instead of merged
+ * \return  none
+ *
+ * WriteFrame() is meant to be called by the Manta subclass, which defines
+ * methods for the individual messages (setLED, etc). libmanta maintains a
+ * message queue that gets popped from in the HandleEvents() handler.
+ *
+ * The default behavior is that if a message is already queued up for a given
+ * Manta, subsequent message will be merged into the waiting message instead of
+ * being further queued (the queued frame will be the end result of all queued
+ * messages). forceQueued can be set to true to force the message to be queued
+ * as a separate message instead of being merged
+ *
+ * Note: Because WriteFrame() accesses the same message queue that
+ * HandleEvents() does, they should be protected from each other by a mutex on
+ * the application level if they're being called from parallel threads.
+ ****************************************************************************/
 void MantaUSB::WriteFrame(uint8_t *frame, bool forceQueued)
 {
    int status;
@@ -111,8 +129,21 @@ void MantaUSB::Disconnect(void)
    DeviceHandle = NULL;
 }
 
-/* TODO: the exceptions thrown should indicate which connected manta object
- * caused the issue, so the application can handle it accordingly */
+/************************************************************************//**
+ * \brief   Services USB communciation with the Manta
+ * \param   none
+ * \return  none
+ *
+ * HandleEvents should be called periodically to poll all connected Mantas for
+ * incoming USB frames as well as to send any messages that have been queued
+ * up with WriteFrame(). It should be called at least once every 6ms, but you
+ * may get improved results polling as fast as every 1ms if your application
+ * supports it.
+ *
+ * Note: Because WriteFrame() accesses the same message queue that HandleEvents()
+ * does, they should be protected from each other by a mutex on the application
+ * level if they're being called from parallel threads.
+ ****************************************************************************/
 void MantaUSB::HandleEvents(void)
 {
    list<MantaUSB *>::iterator i = mantaList.begin();

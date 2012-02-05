@@ -1,0 +1,1079 @@
+\hypertarget{classManta}{\section{\-Manta \-Class \-Reference}
+\label{classManta}\index{\-Manta@{\-Manta}}
+}
+
+
+\-Superclass that provides an interface to the \hyperlink{classManta}{\-Manta}.  
+
+
+
+
+{\ttfamily \#include $<$\-Manta.\-h$>$}
+
+
+
+\-Inheritance diagram for \-Manta\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=322pt]{classManta__inherit__graph}
+\end{center}
+\end{figure}
+
+
+\-Collaboration diagram for \-Manta\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classManta__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classManta_a03d7d49f5dcce38a1a6652fb711e4d65}{\-Manta} (void)
+\begin{DoxyCompactList}\small\item\em \hyperlink{classManta}{\-Manta} constructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classManta_a57659b89bd28a2677fd22915d9ee1571}{\-Set\-Pad\-L\-E\-D} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int led\-I\-D)
+\begin{DoxyCompactList}\small\item\em \-Sets a single \-L\-E\-D. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classManta_a8573c492bc32332221a5f305d64128c3}{\-Set\-Pad\-L\-E\-D\-Row} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int row, uint8\-\_\-t mask)
+\item 
+virtual void \hyperlink{classManta_a539d6084bb4338ab21c55ef2da3ff989}{\-Set\-Pad\-L\-E\-D\-Column} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int column, uint8\-\_\-t mask)
+\item 
+virtual void \hyperlink{classManta_ae142d20041f7621e45c530b349310e91}{\-Set\-Pad\-L\-E\-D\-Frame} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, uint8\-\_\-t mask\mbox{[}$\,$\mbox{]})
+\item 
+virtual void \hyperlink{classManta_a842a4ca78371a4b224e1608aaed4a9f2}{\-Set\-Slider\-L\-E\-D} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int id, uint8\-\_\-t mask)
+\item 
+virtual void \hyperlink{classManta_af1d99e787eb026b1def9ca0691ce2aee}{\-Set\-Button\-L\-E\-D} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int id)
+\item 
+virtual void \hyperlink{classManta_a19fc4f642b9b53a9bd6ab23d58188775}{\-Resend\-L\-E\-D\-State} (void)
+\item 
+virtual void \hyperlink{classManta_a2483e6e579a859261814c3bf36c8c145}{\-Clear\-Pad\-And\-Button\-L\-E\-Ds} (void)
+\item 
+virtual void \hyperlink{classManta_a398d2ad7c1a067c95c8fee72cee34c53}{\-Clear\-Button\-L\-E\-Ds} (void)
+\item 
+virtual void \hyperlink{classManta_adc8baf40798df6854e7c4860269a266c}{\-Recalibrate} (void)
+\item 
+virtual void \hyperlink{classManta_ad5d0775822065e7f662aae069cdd8c20}{\-Set\-L\-E\-D\-Control} (\hyperlink{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cd}{\-L\-E\-D\-Control\-Type} control, bool state)
+\item 
+virtual void \hyperlink{classManta_a92f058b946ffde6493788906805c61a4}{\-Set\-Turbo\-Mode} (bool \-Enabled)
+\item 
+virtual void \hyperlink{classManta_abdf1e1e34a59e1afb6fb674788f64baf}{\-Set\-Raw\-Mode} (bool \-Enabled)
+\item 
+virtual void \hyperlink{classManta_a3ce1847f6201b5cfe70df249143813ab}{\-Set\-Max\-Sensor\-Values} (int $\ast$values)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classManta_ae2de440aa98c29ddc39c5870d6936112}{\-Frame\-Received} (int8\-\_\-t $\ast$frame)
+\begin{DoxyCompactList}\small\item\em \-Implements the \hyperlink{classManta_ae2de440aa98c29ddc39c5870d6936112}{\-Frame\-Received()} callback from the \hyperlink{classMantaUSB}{\-Manta\-U\-S\-B} superclass. \end{DoxyCompactList}\item 
+int \hyperlink{classManta_a12f40ff1118f2caac03b68e113545628}{\-Scale\-Sensor\-Value} (int raw\-Value, int index)
+\end{DoxyCompactItemize}
+\subsection*{\-Static \-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+static uint8\-\_\-t \hyperlink{classManta_a8b6496e36a796fac975c872b50c31d16}{byte\-Reverse} (uint8\-\_\-t in\-Byte)
+\item 
+static int \hyperlink{classManta_af9c0a055915d74f028329b49ff67e1d9}{\-Calculate\-Velocity} (int first\-Value, int second\-Value)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classManta_aaec4ef50d24285ace0deda24d941185d}{\-Max\-Sensor\-Values} \mbox{[}53\mbox{]}
+\item 
+uint8\-\_\-t \hyperlink{classManta_a85dabdaeb8266210f46aa7b0e6a9b484}{\-Last\-In\-Report} \mbox{[}\hyperlink{classMantaUSB_a13d2528c9c12d91dd34a8f99b3fed0b3}{\-In\-Packet\-Len}\mbox{]}
+\item 
+uint8\-\_\-t \hyperlink{classManta_aeaac3f532708dd87197c963a5a9ee5d4}{\-Current\-Out\-Report} \mbox{[}\hyperlink{classMantaUSB_a32fd2c8f871a3639bf913f599c2f3b04}{\-Out\-Packet\-Len}\mbox{]}
+\item 
+bool \hyperlink{classManta_a88d174f57a8df8b83d6f9d1facc68d77}{\-Velocity\-Waiting} \mbox{[}53\mbox{]}
+\item 
+bool \hyperlink{classManta_a0db6605ab921fe05ce67a0dfef004591}{\-Centroid\-Enabled}
+\item 
+bool \hyperlink{classManta_ae0f462eb61007d202aaf12035a07117d}{\-Maximum\-Enabled}
+\item 
+bool \hyperlink{classManta_a1830d160b3a333fdc922757b6632bf09}{\-Pad\-Frame\-Enabled}
+\end{DoxyCompactItemize}
+\subsection*{\-Static \-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const int \hyperlink{classManta_a569d3ec1846c16d58fa157dee5944d5a}{\-Amber\-Index} = 0
+\item 
+static const int \hyperlink{classManta_a266da06045425ae8a1b1a53ed3d97d34}{\-Red\-Index} = 10
+\item 
+static const int \hyperlink{classManta_a710903745e9671b0da9281abb9b9dbf7}{\-Slider\-Index} = 7
+\item 
+static const int \hyperlink{classManta_a8316d17328d2d50f1e87940d8228c18e}{\-Button\-Index} = 6
+\item 
+static const int \hyperlink{classManta_ae651e21fe2506164f9f0a011e740b889}{\-Config\-Index} = 9
+\item 
+static const int \hyperlink{classManta_aea784dc40ed322b1eefba43e9d714eac}{\-Average\-Max\-Sensor\-Values} \mbox{[}53\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Superclass that provides an interface to the \hyperlink{classManta}{\-Manta}. 
+
+\-The \hyperlink{classManta}{\-Manta} class is intended to use as a base class within your application. \-In order to use libmanta, subclass this and define implementations for any callback functions that you would like your application to be notified of. \-The event functions are declared in the \hyperlink{classMantaClient}{\-Manta\-Client} interface.
+
+\-Creating an instance of the \hyperlink{classManta}{\-Manta} class (or a subclass) will not initiate a connection to any plugged-\/in mantas. \-Before you can start communicating with the \hyperlink{classManta}{\-Manta} you must call its \hyperlink{classMantaUSB_a51e68daa5edfbc7ced89b6f9faa86ed5}{\-Connect()} method to connect to a physical \hyperlink{classManta}{\-Manta} over \-U\-S\-B.
+
+\-Once connected, your application should periodically call the static method \hyperlink{classMantaUSB_a4d55c1c1d9e769ce7a0ef532a72221e8}{\-Handle\-Events()}. \-This will take care of servicing the low-\/level \-U\-S\-B communication for all connected \-Mantas. 
+
+\-Definition at line 26 of file \-Manta.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classManta_a03d7d49f5dcce38a1a6652fb711e4d65}{\index{\-Manta@{\-Manta}!\-Manta@{\-Manta}}
+\index{\-Manta@{\-Manta}!Manta@{\-Manta}}
+\subsubsection[{\-Manta}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Manta\-::\-Manta} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classManta_a03d7d49f5dcce38a1a6652fb711e4d65}
+
+
+\hyperlink{classManta}{\-Manta} constructor. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em $\backslash$return} & \\
+\hline
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+none
+\end{DoxyReturn}
+\-The \-Constructor for the \hyperlink{classManta}{\-Manta} class just initializes internal data 
+
+\-Definition at line 18 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+                 {
+   for(int i = 0; i < 53; ++i)
+   {
+      LastInReport[i] = 0;
+      MaxSensorValues[i] = AverageMaxSensorValues[i];
+   }
+   for(int i = 53; i < 57; ++i)
+   {
+      LastInReport[i] = 0xFF;
+   }
+   for(unsigned int i = 0; i < sizeof(CurrentOutReport); ++i)
+   {
+      CurrentOutReport[i] = 0;
+   }
+   for(unsigned int i = 0; i < sizeof(VelocityWaiting) / sizeof(VelocityWaiting
+      [0]); ++i)
+   {
+      VelocityWaiting[i] = false;
+   }
+}
+\end{DoxyCode}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classManta_a8b6496e36a796fac975c872b50c31d16}{\index{\-Manta@{\-Manta}!byte\-Reverse@{byte\-Reverse}}
+\index{byte\-Reverse@{byte\-Reverse}!Manta@{\-Manta}}
+\subsubsection[{byte\-Reverse}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t {\bf \-Manta\-::byte\-Reverse} (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{in\-Byte}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_a8b6496e36a796fac975c872b50c31d16}
+
+
+\-Definition at line 434 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   // Algorithm from Bit Twiddling Hacks
+   uint8_t outByte = inByte; // first get LSB of inByte
+   int s = 7; // extra shift needed at end
+
+   for (inByte >>= 1; inByte; inByte >>= 1)
+   {   
+      outByte <<= 1;
+      outByte |= inByte & 1;
+      s--;
+   }
+   outByte <<= s; // shift when inByte's highest bits are zero
+   return outByte;
+}
+\end{DoxyCode}
+\hypertarget{classManta_af9c0a055915d74f028329b49ff67e1d9}{\index{\-Manta@{\-Manta}!\-Calculate\-Velocity@{\-Calculate\-Velocity}}
+\index{\-Calculate\-Velocity@{\-Calculate\-Velocity}!Manta@{\-Manta}}
+\subsubsection[{\-Calculate\-Velocity}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Manta\-::\-Calculate\-Velocity} (
+\begin{DoxyParamCaption}
+\item[{int}]{first\-Value, }
+\item[{int}]{second\-Value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_af9c0a055915d74f028329b49ff67e1d9}
+
+
+\-Definition at line 450 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   float LOG1, LOG2;
+   float MAX;
+   float MIN;
+   float RELATIVE1, RELATIVE2;
+   float LOG_RELATIVE1, LOG_RELATIVE2;
+   float SUM_RAW;
+   float LOG_SUM_RAW;
+   float LOG_SUM_RELATIVE;
+   float UP1;
+   float VELOCITY = 0;
+   int VELint = 0;
+
+
+   // now do the velocity calculation
+   LOG1 = log(1.0 + (float)LastValue);
+   LOG2 = log(1.0 + (float)CurrentValue);
+
+   MIN = LastValue;
+   if (CurrentValue < MIN)
+   {
+      MIN = CurrentValue;
+   }
+   MAX = LastValue;
+   if (CurrentValue > MAX)
+   {
+      MAX = CurrentValue;
+   }
+   RELATIVE1 = LastValue/MAX;
+   RELATIVE2 = CurrentValue/MAX;
+   LOG_RELATIVE1 = log(1.0 + RELATIVE1);
+   LOG_RELATIVE2 = log(1.0 + RELATIVE2);
+   SUM_RAW = LastValue+CurrentValue;
+   LOG_SUM_RAW = log(1.0 + SUM_RAW);
+   LOG_SUM_RELATIVE = log(1.0 + SUM_RAW/MAX);
+   UP1 = 0;
+   if (CurrentValue>LastValue) { UP1 = 1; }
+   VELOCITY =
+      -14.997037  +
+      LastValue      *  0.009361  +
+      MIN           * -0.014234  +
+      LOG1          *  1.099763  +
+      RELATIVE2     * -9.588311  +
+      LOG_RELATIVE1  *-27.595303  +
+      LOG_RELATIVE2  * -8.803761  +
+      LOG_SUM_RELATIVE * 44.013138  +
+      UP1           *  0.221622;
+   //Then trim value to [0.4] range:
+   if (VELOCITY < 0.)
+   {
+      VELOCITY = 0.;
+   }
+   if (VELOCITY > 4.)
+   {
+      VELOCITY = 4.;
+   }
+   //get it to 0. to 1. range
+   VELOCITY = VELOCITY / 4.;
+   // curve it exponentially
+   VELOCITY = VELOCITY * VELOCITY;
+   //get it to 0-126 range
+   VELOCITY = VELOCITY * 126;
+   //get it to 1-127 range
+   VELOCITY = VELOCITY+ 1;
+   //round to ints
+   VELint = (int)VELOCITY;
+   return VELint;
+}
+\end{DoxyCode}
+\hypertarget{classManta_a398d2ad7c1a067c95c8fee72cee34c53}{\index{\-Manta@{\-Manta}!\-Clear\-Button\-L\-E\-Ds@{\-Clear\-Button\-L\-E\-Ds}}
+\index{\-Clear\-Button\-L\-E\-Ds@{\-Clear\-Button\-L\-E\-Ds}!Manta@{\-Manta}}
+\subsubsection[{\-Clear\-Button\-L\-E\-Ds}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Clear\-Button\-L\-E\-Ds} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a398d2ad7c1a067c95c8fee72cee34c53}
+
+
+\-Implements \hyperlink{classMantaServer_a1c929d8dbd3bd45b635b427cf1e5ec93}{\-Manta\-Server}.
+
+
+
+\-Definition at line 329 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   CurrentOutReport[ButtonIndex] = 0;
+
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a2483e6e579a859261814c3bf36c8c145}{\index{\-Manta@{\-Manta}!\-Clear\-Pad\-And\-Button\-L\-E\-Ds@{\-Clear\-Pad\-And\-Button\-L\-E\-Ds}}
+\index{\-Clear\-Pad\-And\-Button\-L\-E\-Ds@{\-Clear\-Pad\-And\-Button\-L\-E\-Ds}!Manta@{\-Manta}}
+\subsubsection[{\-Clear\-Pad\-And\-Button\-L\-E\-Ds}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Clear\-Pad\-And\-Button\-L\-E\-Ds} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a2483e6e579a859261814c3bf36c8c145}
+
+
+\-Implements \hyperlink{classMantaServer_a3b8a0de3b2e6ec6ac80a4a07b0589057}{\-Manta\-Server}.
+
+
+
+\-Definition at line 339 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
+   {
+      CurrentOutReport[AmberIndex + i] = 0;
+      CurrentOutReport[RedIndex + i] = 0;
+   }
+
+   CurrentOutReport[ButtonIndex] = 0;
+
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_ae2de440aa98c29ddc39c5870d6936112}{\index{\-Manta@{\-Manta}!\-Frame\-Received@{\-Frame\-Received}}
+\index{\-Frame\-Received@{\-Frame\-Received}!Manta@{\-Manta}}
+\subsubsection[{\-Frame\-Received}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Frame\-Received} (
+\begin{DoxyParamCaption}
+\item[{int8\-\_\-t $\ast$}]{frame}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private, virtual\mbox{]}}}}\label{classManta_ae2de440aa98c29ddc39c5870d6936112}
+
+
+\-Implements the \hyperlink{classManta_ae2de440aa98c29ddc39c5870d6936112}{\-Frame\-Received()} callback from the \hyperlink{classMantaUSB}{\-Manta\-U\-S\-B} superclass. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em frame} & pointer to the frame that was just received \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+none 
+\end{DoxyReturn}
+
+
+\-Implements \hyperlink{classMantaUSB_abcf3545bb86f2175148bd06574b81632}{\-Manta\-U\-S\-B}.
+
+
+
+\-Definition at line 43 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   uint8_t *uframe = (uint8_t *)frame;
+   for(int i = 1; i < 53; ++i)
+   {
+      uframe[i] = ScaleSensorValue(frame[i] + 128, i);
+   }
+   /* apply the offset to the slider bytes without scaling them */
+   for(int i = 53; i < 57; ++i)
+   {
+      uframe[i] = frame[i] + 128;
+   }
+   FrameEvent(uframe);
+   /* input frames have one reportID byte at the beginning */
+   for(int i = 1; i < 53; ++i)
+   {
+      /* check to see if there's a previous sample waiting to have
+       * the velocity algorithm run */
+      if(true == VelocityWaiting[i])
+      {
+         if(i < 49)
+            PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1,
+                  CalculateVelocity(LastInReport[i], uframe[i]));
+         else
+            ButtonVelocityEvent(i - 49, CalculateVelocity(LastInReport[i], 
+      uframe[i]));
+         VelocityWaiting[i] = false;
+      }
+
+      if(uframe[i] != LastInReport[i])
+      {
+         /* check to see if this is a release */
+         if(0 == uframe[i])
+         {
+            if(i < 49)
+               PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1, 0);
+            else
+               ButtonVelocityEvent(i - 49, 0);
+         }
+         /* check to see if this is the first nonzero sample */
+         else if(0 == LastInReport[i])
+         {
+            VelocityWaiting[i] = true;
+         }
+         if(i < 49)
+            PadEvent((i - 1) / 8, (i - 1) % 8, i - 1, uframe[i]);
+         else
+            ButtonEvent(i - 49, uframe[i]);
+      }
+      LastInReport[i] = uframe[i];
+   }
+   if(uframe[53] != LastInReport[53] || uframe[54] != LastInReport[54])
+   {
+      SliderEvent(0, (uframe[53]) | ((uframe[54]) << 8 ));
+   }
+   if(uframe[55] != LastInReport[55] || uframe[56] != LastInReport[56])
+   {
+      SliderEvent(1, (uframe[55]) | ((uframe[56]) << 8 ));
+   }
+   for(int i = 53; i < 57; ++i)
+   {
+      LastInReport[i] = uframe[i];
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_adc8baf40798df6854e7c4860269a266c}{\index{\-Manta@{\-Manta}!\-Recalibrate@{\-Recalibrate}}
+\index{\-Recalibrate@{\-Recalibrate}!Manta@{\-Manta}}
+\subsubsection[{\-Recalibrate}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Recalibrate} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_adc8baf40798df6854e7c4860269a266c}
+
+
+\-Implements \hyperlink{classMantaServer_af75ab0cd5a17619b740ce653660a5879}{\-Manta\-Server}.
+
+
+
+\-Definition at line 355 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(! IsConnected())
+   {
+      throw MantaNotConnectedException(this);
+   }
+   
+   /* make sure these messages get queued so that they
+    * don't just cancel each other out */
+   CurrentOutReport[ConfigIndex] |= 0x40;
+   WriteFrame(CurrentOutReport, true);
+   CurrentOutReport[ConfigIndex] &= ~0x40;
+   WriteFrame(CurrentOutReport, true);
+}
+\end{DoxyCode}
+\hypertarget{classManta_a19fc4f642b9b53a9bd6ab23d58188775}{\index{\-Manta@{\-Manta}!\-Resend\-L\-E\-D\-State@{\-Resend\-L\-E\-D\-State}}
+\index{\-Resend\-L\-E\-D\-State@{\-Resend\-L\-E\-D\-State}!Manta@{\-Manta}}
+\subsubsection[{\-Resend\-L\-E\-D\-State}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Resend\-L\-E\-D\-State} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a19fc4f642b9b53a9bd6ab23d58188775}
+
+
+\-Implements \hyperlink{classMantaServer_a9d6664bb445e720b2dc1fe3554d370d5}{\-Manta\-Server}.
+
+
+
+\-Definition at line 321 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a12f40ff1118f2caac03b68e113545628}{\index{\-Manta@{\-Manta}!\-Scale\-Sensor\-Value@{\-Scale\-Sensor\-Value}}
+\index{\-Scale\-Sensor\-Value@{\-Scale\-Sensor\-Value}!Manta@{\-Manta}}
+\subsubsection[{\-Scale\-Sensor\-Value}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Manta\-::\-Scale\-Sensor\-Value} (
+\begin{DoxyParamCaption}
+\item[{int}]{raw\-Value, }
+\item[{int}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_a12f40ff1118f2caac03b68e113545628}
+
+
+\-Definition at line 520 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   float div = (float)rawValue / MaxSensorValues[index];
+   return (int)((div * 210) + 0.5);
+}
+\end{DoxyCode}
+\hypertarget{classManta_af1d99e787eb026b1def9ca0691ce2aee}{\index{\-Manta@{\-Manta}!\-Set\-Button\-L\-E\-D@{\-Set\-Button\-L\-E\-D}}
+\index{\-Set\-Button\-L\-E\-D@{\-Set\-Button\-L\-E\-D}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Button\-L\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Button\-L\-E\-D} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_af1d99e787eb026b1def9ca0691ce2aee}
+
+
+\-Implements \hyperlink{classMantaServer_ab4f3b02d6c91e253387c709bcd4a9388}{\-Manta\-Server}.
+
+
+
+\-Definition at line 291 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(id < 0 || id > 3)
+   {
+      throw std::invalid_argument("Invalid Button Index");
+   }
+   
+   switch(state)
+   {
+      case Amber:
+         CurrentOutReport[ButtonIndex] |= (0x01 << (id));
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id + 4));
+         break;
+      case Red:
+         CurrentOutReport[ButtonIndex] |= (0x01 << (id + 4));
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id));
+         break;
+      case Off:
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id + 4));
+         CurrentOutReport[ButtonIndex] &= ~(0x01 << (id));
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_ad5d0775822065e7f662aae069cdd8c20}{\index{\-Manta@{\-Manta}!\-Set\-L\-E\-D\-Control@{\-Set\-L\-E\-D\-Control}}
+\index{\-Set\-L\-E\-D\-Control@{\-Set\-L\-E\-D\-Control}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-L\-E\-D\-Control}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-L\-E\-D\-Control} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-Control\-Type}}]{control, }
+\item[{bool}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_ad5d0775822065e7f662aae069cdd8c20}
+
+
+\-Implements \hyperlink{classMantaServer_af2b466b8500247e961262c8208c2ad8e}{\-Manta\-Server}.
+
+
+
+\-Definition at line 370 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   uint8_t flag;
+   
+   switch(control)
+   {
+      case PadAndButton:
+         flag = 0x01;
+         break;
+      case Slider:
+         flag = 0x02;
+         break;
+      case Button:
+         flag = 0x20;
+         break;
+      default:
+         throw std::invalid_argument("Invalid Control Type");
+   }
+
+   if(state)
+      CurrentOutReport[ConfigIndex] |= flag;
+   else
+      CurrentOutReport[ConfigIndex] &= ~flag;
+   if(IsConnected())
+   {
+      /* if we're disabling LEDControl, we want to make sure that this
+       * message gets queued so that any pending LED messages get sent
+       * down before we disable LEDs */
+      WriteFrame(CurrentOutReport, !state);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a3ce1847f6201b5cfe70df249143813ab}{\index{\-Manta@{\-Manta}!\-Set\-Max\-Sensor\-Values@{\-Set\-Max\-Sensor\-Values}}
+\index{\-Set\-Max\-Sensor\-Values@{\-Set\-Max\-Sensor\-Values}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Max\-Sensor\-Values}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Max\-Sensor\-Values} (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{values}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a3ce1847f6201b5cfe70df249143813ab}
+
+
+\-Implements \hyperlink{classMantaServer_a835960d5e48aafa2e83f05709a8acd2e}{\-Manta\-Server}.
+
+
+
+\-Definition at line 426 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   for(int i = 0; i < 53; ++i)
+   {
+      MaxSensorValues[i] = values[i];
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a57659b89bd28a2677fd22915d9ee1571}{\index{\-Manta@{\-Manta}!\-Set\-Pad\-L\-E\-D@{\-Set\-Pad\-L\-E\-D}}
+\index{\-Set\-Pad\-L\-E\-D@{\-Set\-Pad\-L\-E\-D}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Pad\-L\-E\-D} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{led\-I\-D}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a57659b89bd28a2677fd22915d9ee1571}
+
+
+\-Sets a single \-L\-E\-D. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-Off, \-Yellow, or \-Red \\
+\hline
+{\em led\-I\-D} & \-The \-I\-D of the \-L\-E\-D to be set (0 -\/ 47) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+none 
+\end{DoxyReturn}
+
+
+\-Implements \hyperlink{classMantaServer_acc71650a8cdab5c9d0408370978c8c39}{\-Manta\-Server}.
+
+
+
+\-Definition at line 113 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   int row = ledID / 8;
+   int column = ledID % 8;
+
+   if(ledID < 0 || ledID > 47)
+   {
+      throw std::invalid_argument("Invalid Pad Index");
+   }
+
+   switch(state)
+   {
+      case Amber:
+         CurrentOutReport[AmberIndex + row] |= (1 << column);
+         CurrentOutReport[RedIndex + row] &= ~(1 << column);
+         break;
+      case Red:
+         CurrentOutReport[RedIndex + row] |= (1 << column);
+         CurrentOutReport[AmberIndex + row] &= ~(1 << column);
+         break;
+      case Off:
+         CurrentOutReport[AmberIndex + row] &= ~(1 << column);
+         CurrentOutReport[RedIndex + row] &= ~(1 << column);
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
+
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a539d6084bb4338ab21c55ef2da3ff989}{\index{\-Manta@{\-Manta}!\-Set\-Pad\-L\-E\-D\-Column@{\-Set\-Pad\-L\-E\-D\-Column}}
+\index{\-Set\-Pad\-L\-E\-D\-Column@{\-Set\-Pad\-L\-E\-D\-Column}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D\-Column}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Pad\-L\-E\-D\-Column} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{column, }
+\item[{uint8\-\_\-t}]{mask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a539d6084bb4338ab21c55ef2da3ff989}
+
+
+\-Implements \hyperlink{classMantaServer_a6e1e9838d80b8303d49cf846afa2f96c}{\-Manta\-Server}.
+
+
+
+\-Definition at line 180 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(column < 0 || column > 7)
+   {
+      throw std::invalid_argument("Invalid Column Index");
+   }
+   
+   MantaClient::DebugPrint("Called SetPadLEDColumn(%s, %d, %X)",
+         state == Off ? "Off" : state == Amber ? "Amber" : "Red", column, mask)
+      ;
+   switch(state)
+   {
+      case Amber:
+         for(int i = 0; i < 6; ++i)
+         {
+            if((mask >> i) & 0x01)
+            {
+               CurrentOutReport[AmberIndex + i] |= (0x01 << column);
+               CurrentOutReport[RedIndex + i] &= ~(0x01 << column);
+            }
+         }
+         break;
+      case Red:
+         for(int i = 0; i < 6; ++i)
+         {
+            if((mask >> i) & 0x01)
+            {
+               CurrentOutReport[RedIndex + i] |= (0x01 << column);
+               CurrentOutReport[AmberIndex + i] &= ~(0x01 << column);
+            }
+         }
+         break;
+      case Off:
+         for(int i = 0; i < 6; ++i)
+         {
+            if((mask >> i) & 0x01)
+            {
+               CurrentOutReport[RedIndex + i] &= ~(0x01 << column);
+               CurrentOutReport[AmberIndex + i] &= ~(0x01 << column);
+            }
+         }
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
+
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_ae142d20041f7621e45c530b349310e91}{\index{\-Manta@{\-Manta}!\-Set\-Pad\-L\-E\-D\-Frame@{\-Set\-Pad\-L\-E\-D\-Frame}}
+\index{\-Set\-Pad\-L\-E\-D\-Frame@{\-Set\-Pad\-L\-E\-D\-Frame}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Pad\-L\-E\-D\-Frame} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{uint8\-\_\-t}]{mask\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_ae142d20041f7621e45c530b349310e91}
+
+
+\-Implements \hyperlink{classMantaServer_a2f02250f2cafd333cbc5b574b2d9c09b}{\-Manta\-Server}.
+
+
+
+\-Definition at line 231 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   switch(state)
+   {
+      case Amber:
+         for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
+         {
+            CurrentOutReport[AmberIndex + i] = byteReverse(mask[i]);
+            CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
+         }
+         break;
+      case Red:
+         for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
+         {
+            CurrentOutReport[RedIndex + i] = byteReverse(mask[i]);
+            CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
+         }
+         break;
+      case Off:
+         for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
+         {
+            CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
+            CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
+         }
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a8573c492bc32332221a5f305d64128c3}{\index{\-Manta@{\-Manta}!\-Set\-Pad\-L\-E\-D\-Row@{\-Set\-Pad\-L\-E\-D\-Row}}
+\index{\-Set\-Pad\-L\-E\-D\-Row@{\-Set\-Pad\-L\-E\-D\-Row}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D\-Row}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Pad\-L\-E\-D\-Row} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{row, }
+\item[{uint8\-\_\-t}]{mask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a8573c492bc32332221a5f305d64128c3}
+
+
+\-Implements \hyperlink{classMantaServer_adcd2b175a3e35ac7cc1c59fef15c11d6}{\-Manta\-Server}.
+
+
+
+\-Definition at line 147 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(row < 0 || row > 5)
+   {
+      throw std::invalid_argument("Invalid Row Index");
+   }
+
+   MantaClient::DebugPrint("Called SetPadLEDRow(%s, %d, %X)",
+         state == Off ? "Off" : state == Amber ? "Amber" : "Red", row, mask);
+   MantaClient::DebugPrint("ByteReverse(0x%X) = 0x%X", 0xA0, byteReverse(0xA0))
+      ;
+   switch(state)
+   {
+      case Amber:
+         CurrentOutReport[AmberIndex + row] |= byteReverse(mask);
+         CurrentOutReport[RedIndex + row] &= ~byteReverse(mask);
+         break;
+      case Red:
+         CurrentOutReport[RedIndex + row] |= byteReverse(mask);
+         CurrentOutReport[AmberIndex + row] &= ~byteReverse(mask);
+         break;
+      case Off:
+         CurrentOutReport[RedIndex + row] &= ~byteReverse(mask);
+         CurrentOutReport[AmberIndex + row] &= ~byteReverse(mask);
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_abdf1e1e34a59e1afb6fb674788f64baf}{\index{\-Manta@{\-Manta}!\-Set\-Raw\-Mode@{\-Set\-Raw\-Mode}}
+\index{\-Set\-Raw\-Mode@{\-Set\-Raw\-Mode}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Raw\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Raw\-Mode} (
+\begin{DoxyParamCaption}
+\item[{bool}]{\-Enabled}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_abdf1e1e34a59e1afb6fb674788f64baf}
+
+
+\-Implements \hyperlink{classMantaServer_a60d6de14f77cf8608b0f734421e05e3f}{\-Manta\-Server}.
+
+
+
+\-Definition at line 414 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(Enabled)
+      CurrentOutReport[ConfigIndex] |= 0x08;
+   else
+      CurrentOutReport[ConfigIndex] &= ~0x08;
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a842a4ca78371a4b224e1608aaed4a9f2}{\index{\-Manta@{\-Manta}!\-Set\-Slider\-L\-E\-D@{\-Set\-Slider\-L\-E\-D}}
+\index{\-Set\-Slider\-L\-E\-D@{\-Set\-Slider\-L\-E\-D}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Slider\-L\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Slider\-L\-E\-D} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{id, }
+\item[{uint8\-\_\-t}]{mask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a842a4ca78371a4b224e1608aaed4a9f2}
+
+
+\-Implements \hyperlink{classMantaServer_a8a20350aa6d784c0e7b60642afdd0c0c}{\-Manta\-Server}.
+
+
+
+\-Definition at line 265 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(id < 0 || id > 1)
+   {
+      throw std::invalid_argument("Invalid Slider Index");
+   }
+   switch(state)
+   {
+      case Amber:
+         CurrentOutReport[SliderIndex + id] |= byteReverse(mask);
+         break;
+      case Red:
+         /* no Red slider LEDs, do nothing */
+         break;
+      case Off:
+         CurrentOutReport[SliderIndex + id] &= ~byteReverse(mask);
+         break;
+      default:
+         throw std::invalid_argument("Invalid state");
+   }
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+\hypertarget{classManta_a92f058b946ffde6493788906805c61a4}{\index{\-Manta@{\-Manta}!\-Set\-Turbo\-Mode@{\-Set\-Turbo\-Mode}}
+\index{\-Set\-Turbo\-Mode@{\-Set\-Turbo\-Mode}!Manta@{\-Manta}}
+\subsubsection[{\-Set\-Turbo\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Manta\-::\-Set\-Turbo\-Mode} (
+\begin{DoxyParamCaption}
+\item[{bool}]{\-Enabled}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{classManta_a92f058b946ffde6493788906805c61a4}
+
+
+\-Implements \hyperlink{classMantaServer_a6946dd0d8614b8bb32ef218bfa867cfe}{\-Manta\-Server}.
+
+
+
+\-Definition at line 402 of file \-Manta.\-cpp.
+
+
+\begin{DoxyCode}
+{
+   if(Enabled)
+      CurrentOutReport[ConfigIndex] |= 0x04;
+   else
+      CurrentOutReport[ConfigIndex] &= ~0x04;
+   if(IsConnected())
+   {
+      WriteFrame(CurrentOutReport, false);
+   }
+}
+\end{DoxyCode}
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classManta_a569d3ec1846c16d58fa157dee5944d5a}{\index{\-Manta@{\-Manta}!\-Amber\-Index@{\-Amber\-Index}}
+\index{\-Amber\-Index@{\-Amber\-Index}!Manta@{\-Manta}}
+\subsubsection[{\-Amber\-Index}]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf \-Manta\-::\-Amber\-Index} = 0\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_a569d3ec1846c16d58fa157dee5944d5a}
+
+
+\-Definition at line 57 of file \-Manta.\-h.
+
+\hypertarget{classManta_aea784dc40ed322b1eefba43e9d714eac}{\index{\-Manta@{\-Manta}!\-Average\-Max\-Sensor\-Values@{\-Average\-Max\-Sensor\-Values}}
+\index{\-Average\-Max\-Sensor\-Values@{\-Average\-Max\-Sensor\-Values}!Manta@{\-Manta}}
+\subsubsection[{\-Average\-Max\-Sensor\-Values}]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf \-Manta\-::\-Average\-Max\-Sensor\-Values}\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_aea784dc40ed322b1eefba43e9d714eac}
+{\bfseries \-Initial value\-:}
+\begin{DoxyCode}
+ 
+{0, 177, 184, 188, 189, 191, 190, 181, 181, 188, 193, 198, 200, 201, 199, 191,
+   189, 192, 197, 202, 205, 206, 204, 199, 192, 202, 207, 211, 216, 215, 213,
+   209, 201, 205, 210, 215, 220, 213, 218, 212, 204, 212, 216, 222, 227, 223,
+   227, 221, 213, 200, 170, 190, 185}
+\end{DoxyCode}
+
+
+\-Definition at line 62 of file \-Manta.\-h.
+
+\hypertarget{classManta_a8316d17328d2d50f1e87940d8228c18e}{\index{\-Manta@{\-Manta}!\-Button\-Index@{\-Button\-Index}}
+\index{\-Button\-Index@{\-Button\-Index}!Manta@{\-Manta}}
+\subsubsection[{\-Button\-Index}]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf \-Manta\-::\-Button\-Index} = 6\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_a8316d17328d2d50f1e87940d8228c18e}
+
+
+\-Definition at line 60 of file \-Manta.\-h.
+
+\hypertarget{classManta_a0db6605ab921fe05ce67a0dfef004591}{\index{\-Manta@{\-Manta}!\-Centroid\-Enabled@{\-Centroid\-Enabled}}
+\index{\-Centroid\-Enabled@{\-Centroid\-Enabled}!Manta@{\-Manta}}
+\subsubsection[{\-Centroid\-Enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Manta\-::\-Centroid\-Enabled}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_a0db6605ab921fe05ce67a0dfef004591}
+
+
+\-Definition at line 69 of file \-Manta.\-h.
+
+\hypertarget{classManta_ae651e21fe2506164f9f0a011e740b889}{\index{\-Manta@{\-Manta}!\-Config\-Index@{\-Config\-Index}}
+\index{\-Config\-Index@{\-Config\-Index}!Manta@{\-Manta}}
+\subsubsection[{\-Config\-Index}]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf \-Manta\-::\-Config\-Index} = 9\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_ae651e21fe2506164f9f0a011e740b889}
+
+
+\-Definition at line 61 of file \-Manta.\-h.
+
+\hypertarget{classManta_aeaac3f532708dd87197c963a5a9ee5d4}{\index{\-Manta@{\-Manta}!\-Current\-Out\-Report@{\-Current\-Out\-Report}}
+\index{\-Current\-Out\-Report@{\-Current\-Out\-Report}!Manta@{\-Manta}}
+\subsubsection[{\-Current\-Out\-Report}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t {\bf \-Manta\-::\-Current\-Out\-Report}\mbox{[}{\bf \-Out\-Packet\-Len}\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_aeaac3f532708dd87197c963a5a9ee5d4}
+
+
+\-Definition at line 66 of file \-Manta.\-h.
+
+\hypertarget{classManta_a85dabdaeb8266210f46aa7b0e6a9b484}{\index{\-Manta@{\-Manta}!\-Last\-In\-Report@{\-Last\-In\-Report}}
+\index{\-Last\-In\-Report@{\-Last\-In\-Report}!Manta@{\-Manta}}
+\subsubsection[{\-Last\-In\-Report}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t {\bf \-Manta\-::\-Last\-In\-Report}\mbox{[}{\bf \-In\-Packet\-Len}\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_a85dabdaeb8266210f46aa7b0e6a9b484}
+
+
+\-Definition at line 65 of file \-Manta.\-h.
+
+\hypertarget{classManta_ae0f462eb61007d202aaf12035a07117d}{\index{\-Manta@{\-Manta}!\-Maximum\-Enabled@{\-Maximum\-Enabled}}
+\index{\-Maximum\-Enabled@{\-Maximum\-Enabled}!Manta@{\-Manta}}
+\subsubsection[{\-Maximum\-Enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Manta\-::\-Maximum\-Enabled}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_ae0f462eb61007d202aaf12035a07117d}
+
+
+\-Definition at line 70 of file \-Manta.\-h.
+
+\hypertarget{classManta_aaec4ef50d24285ace0deda24d941185d}{\index{\-Manta@{\-Manta}!\-Max\-Sensor\-Values@{\-Max\-Sensor\-Values}}
+\index{\-Max\-Sensor\-Values@{\-Max\-Sensor\-Values}!Manta@{\-Manta}}
+\subsubsection[{\-Max\-Sensor\-Values}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Manta\-::\-Max\-Sensor\-Values}\mbox{[}53\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_aaec4ef50d24285ace0deda24d941185d}
+
+
+\-Definition at line 64 of file \-Manta.\-h.
+
+\hypertarget{classManta_a1830d160b3a333fdc922757b6632bf09}{\index{\-Manta@{\-Manta}!\-Pad\-Frame\-Enabled@{\-Pad\-Frame\-Enabled}}
+\index{\-Pad\-Frame\-Enabled@{\-Pad\-Frame\-Enabled}!Manta@{\-Manta}}
+\subsubsection[{\-Pad\-Frame\-Enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Manta\-::\-Pad\-Frame\-Enabled}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_a1830d160b3a333fdc922757b6632bf09}
+
+
+\-Definition at line 71 of file \-Manta.\-h.
+
+\hypertarget{classManta_a266da06045425ae8a1b1a53ed3d97d34}{\index{\-Manta@{\-Manta}!\-Red\-Index@{\-Red\-Index}}
+\index{\-Red\-Index@{\-Red\-Index}!Manta@{\-Manta}}
+\subsubsection[{\-Red\-Index}]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf \-Manta\-::\-Red\-Index} = 10\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_a266da06045425ae8a1b1a53ed3d97d34}
+
+
+\-Definition at line 58 of file \-Manta.\-h.
+
+\hypertarget{classManta_a710903745e9671b0da9281abb9b9dbf7}{\index{\-Manta@{\-Manta}!\-Slider\-Index@{\-Slider\-Index}}
+\index{\-Slider\-Index@{\-Slider\-Index}!Manta@{\-Manta}}
+\subsubsection[{\-Slider\-Index}]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf \-Manta\-::\-Slider\-Index} = 7\hspace{0.3cm}{\ttfamily  \mbox{[}static, private\mbox{]}}}}\label{classManta_a710903745e9671b0da9281abb9b9dbf7}
+
+
+\-Definition at line 59 of file \-Manta.\-h.
+
+\hypertarget{classManta_a88d174f57a8df8b83d6f9d1facc68d77}{\index{\-Manta@{\-Manta}!\-Velocity\-Waiting@{\-Velocity\-Waiting}}
+\index{\-Velocity\-Waiting@{\-Velocity\-Waiting}!Manta@{\-Manta}}
+\subsubsection[{\-Velocity\-Waiting}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Manta\-::\-Velocity\-Waiting}\mbox{[}53\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{classManta_a88d174f57a8df8b83d6f9d1facc68d77}
+
+
+\-Definition at line 67 of file \-Manta.\-h.
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Manta_8h}{\-Manta.\-h}\item 
+\hyperlink{Manta_8cpp}{\-Manta.\-cpp}\end{DoxyCompactItemize}

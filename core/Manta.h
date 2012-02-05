@@ -5,6 +5,24 @@
 #include "MantaClient.h"
 #include "MantaServer.h"
 
+/************************************************************************//**
+ * \class Manta
+ * \brief Superclass that provides an interface to the Manta
+ *
+ * The Manta class is intended to use as a base class within your application.
+ * In order to use libmanta, subclass this and define implementations for any
+ * callback functions that you would like your application to be notified of.
+ * The event functions are declared in the MantaClient interface.
+ *
+ * Creating an instance of the Manta class (or a subclass) will not initiate
+ * a connection to any plugged-in mantas. Before you can start communicating
+ * with the Manta you must call its Connect() method to connect to a physical
+ * Manta over USB.
+ *
+ * Once connected, your application should periodically call the static method
+ * HandleEvents(). This will take care of servicing the low-level USB
+ * communication for all connected Mantas.
+ ****************************************************************************/
 class Manta :
    public MantaUSB,
    public MantaClient,

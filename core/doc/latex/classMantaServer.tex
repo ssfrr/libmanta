@@ -1,0 +1,336 @@
+\hypertarget{classMantaServer}{\section{\-Manta\-Server \-Class \-Reference}
+\label{classMantaServer}\index{\-Manta\-Server@{\-Manta\-Server}}
+}
+
+
+\-Interface defining all the \-Messages that can be sent to a \hyperlink{classManta}{\-Manta}.  
+
+
+
+
+{\ttfamily \#include $<$\-Manta\-Server.\-h$>$}
+
+
+
+\-Inheritance diagram for \-Manta\-Server\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=152pt]{classMantaServer__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} \{ \hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288da8a4b0be3cf43d33ac398855cb9938738}{\-Off}, 
+\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288da2a786ff004fc9b7ab92f93655bcba70f}{\-Amber}, 
+\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288daa59fd3455577ea618dd10aece086d2f4}{\-Red}
+ \}
+\item 
+enum \hyperlink{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cd}{\-L\-E\-D\-Control\-Type} \{ \hyperlink{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cda5abecbdbb97befa40117e9700d269762}{\-Pad\-And\-Button}, 
+\hyperlink{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cdaff76cf85b95f9f4979cf5778a3bc423b}{\-Slider}, 
+\hyperlink{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cda22707822d22e50f84d81179dce34ec0f}{\-Button}
+ \}
+\item 
+typedef uint8\-\_\-t \hyperlink{classMantaServer_a2ccc3326a971007da61a979a28c4ca98}{\-L\-E\-D\-Frame} \mbox{[}6\mbox{]}
+\end{DoxyCompactItemize}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classMantaServer_a5a99da525e6e23f6114dce15ee97b72a}{$\sim$\-Manta\-Server} ()
+\item 
+virtual void \hyperlink{classMantaServer_acc71650a8cdab5c9d0408370978c8c39}{\-Set\-Pad\-L\-E\-D} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int led\-I\-D)=0
+\item 
+virtual void \hyperlink{classMantaServer_adcd2b175a3e35ac7cc1c59fef15c11d6}{\-Set\-Pad\-L\-E\-D\-Row} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int row, uint8\-\_\-t mask)=0
+\item 
+virtual void \hyperlink{classMantaServer_a6e1e9838d80b8303d49cf846afa2f96c}{\-Set\-Pad\-L\-E\-D\-Column} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int column, uint8\-\_\-t mask)=0
+\item 
+virtual void \hyperlink{classMantaServer_a2f02250f2cafd333cbc5b574b2d9c09b}{\-Set\-Pad\-L\-E\-D\-Frame} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, uint8\-\_\-t mask\mbox{[}$\,$\mbox{]})=0
+\item 
+virtual void \hyperlink{classMantaServer_a8a20350aa6d784c0e7b60642afdd0c0c}{\-Set\-Slider\-L\-E\-D} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int id, uint8\-\_\-t mask)=0
+\item 
+virtual void \hyperlink{classMantaServer_ab4f3b02d6c91e253387c709bcd4a9388}{\-Set\-Button\-L\-E\-D} (\hyperlink{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\-L\-E\-D\-State} state, int id)=0
+\item 
+virtual void \hyperlink{classMantaServer_a9d6664bb445e720b2dc1fe3554d370d5}{\-Resend\-L\-E\-D\-State} (void)=0
+\item 
+virtual void \hyperlink{classMantaServer_a3b8a0de3b2e6ec6ac80a4a07b0589057}{\-Clear\-Pad\-And\-Button\-L\-E\-Ds} (void)=0
+\item 
+virtual void \hyperlink{classMantaServer_a1c929d8dbd3bd45b635b427cf1e5ec93}{\-Clear\-Button\-L\-E\-Ds} (void)=0
+\item 
+virtual void \hyperlink{classMantaServer_af75ab0cd5a17619b740ce653660a5879}{\-Recalibrate} (void)=0
+\item 
+virtual void \hyperlink{classMantaServer_af2b466b8500247e961262c8208c2ad8e}{\-Set\-L\-E\-D\-Control} (\hyperlink{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cd}{\-L\-E\-D\-Control\-Type} control, bool state)=0
+\item 
+virtual void \hyperlink{classMantaServer_a6946dd0d8614b8bb32ef218bfa867cfe}{\-Set\-Turbo\-Mode} (bool \-Enabled)=0
+\item 
+virtual void \hyperlink{classMantaServer_a60d6de14f77cf8608b0f734421e05e3f}{\-Set\-Raw\-Mode} (bool \-Enabled)=0
+\item 
+virtual void \hyperlink{classMantaServer_a835960d5e48aafa2e83f05709a8acd2e}{\-Set\-Max\-Sensor\-Values} (int $\ast$values)=0
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Interface defining all the \-Messages that can be sent to a \hyperlink{classManta}{\-Manta}. 
+
+\-The \hyperlink{classMantaServer}{\-Manta\-Server} virtual class defines all the \-Messages that the \hyperlink{classManta}{\-Manta} understands, as well as the data structures used as arguments. \-If you need a pointer to a \hyperlink{classManta}{\-Manta} in your code, you can make it more general by using a \hyperlink{classMantaServer}{\-Manta\-Server} pointer instead of a pointer to your specific subclass. 
+
+\-Definition at line 13 of file \-Manta\-Server.\-h.
+
+
+
+\subsection{\-Member \-Typedef \-Documentation}
+\hypertarget{classMantaServer_a2ccc3326a971007da61a979a28c4ca98}{\index{\-Manta\-Server@{\-Manta\-Server}!\-L\-E\-D\-Frame@{\-L\-E\-D\-Frame}}
+\index{\-L\-E\-D\-Frame@{\-L\-E\-D\-Frame}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-L\-E\-D\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint8\-\_\-t {\bf \-Manta\-Server\-::\-L\-E\-D\-Frame}\mbox{[}6\mbox{]}}}\label{classMantaServer_a2ccc3326a971007da61a979a28c4ca98}
+
+
+\-Definition at line 27 of file \-Manta\-Server.\-h.
+
+
+
+\subsection{\-Member \-Enumeration \-Documentation}
+\hypertarget{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cd}{\index{\-Manta\-Server@{\-Manta\-Server}!\-L\-E\-D\-Control\-Type@{\-L\-E\-D\-Control\-Type}}
+\index{\-L\-E\-D\-Control\-Type@{\-L\-E\-D\-Control\-Type}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-L\-E\-D\-Control\-Type}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf \-Manta\-Server\-::\-L\-E\-D\-Control\-Type}}}\label{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cd}
+\begin{Desc}
+\item[\-Enumerator\-: ]\par
+\begin{description}
+\index{\-Pad\-And\-Button@{\-Pad\-And\-Button}!\-Manta\-Server@{\-Manta\-Server}}\index{\-Manta\-Server@{\-Manta\-Server}!\-Pad\-And\-Button@{\-Pad\-And\-Button}}\item[{\em 
+\hypertarget{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cda5abecbdbb97befa40117e9700d269762}{\-Pad\-And\-Button}\label{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cda5abecbdbb97befa40117e9700d269762}
+}]\index{\-Slider@{\-Slider}!\-Manta\-Server@{\-Manta\-Server}}\index{\-Manta\-Server@{\-Manta\-Server}!\-Slider@{\-Slider}}\item[{\em 
+\hypertarget{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cdaff76cf85b95f9f4979cf5778a3bc423b}{\-Slider}\label{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cdaff76cf85b95f9f4979cf5778a3bc423b}
+}]\index{\-Button@{\-Button}!\-Manta\-Server@{\-Manta\-Server}}\index{\-Manta\-Server@{\-Manta\-Server}!\-Button@{\-Button}}\item[{\em 
+\hypertarget{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cda22707822d22e50f84d81179dce34ec0f}{\-Button}\label{classMantaServer_a4f86e1f91a11c2e3f40765a8166ac1cda22707822d22e50f84d81179dce34ec0f}
+}]\end{description}
+\end{Desc}
+
+
+
+\-Definition at line 22 of file \-Manta\-Server.\-h.
+
+
+\begin{DoxyCode}
+                       {
+      PadAndButton,
+      Slider,
+      Button
+   };
+\end{DoxyCode}
+\hypertarget{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}{\index{\-Manta\-Server@{\-Manta\-Server}!\-L\-E\-D\-State@{\-L\-E\-D\-State}}
+\index{\-L\-E\-D\-State@{\-L\-E\-D\-State}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-L\-E\-D\-State}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf \-Manta\-Server\-::\-L\-E\-D\-State}}}\label{classMantaServer_aefb7bb68319a53280ef9e9f84147288d}
+\begin{Desc}
+\item[\-Enumerator\-: ]\par
+\begin{description}
+\index{\-Off@{\-Off}!\-Manta\-Server@{\-Manta\-Server}}\index{\-Manta\-Server@{\-Manta\-Server}!\-Off@{\-Off}}\item[{\em 
+\hypertarget{classMantaServer_aefb7bb68319a53280ef9e9f84147288da8a4b0be3cf43d33ac398855cb9938738}{\-Off}\label{classMantaServer_aefb7bb68319a53280ef9e9f84147288da8a4b0be3cf43d33ac398855cb9938738}
+}]\index{\-Amber@{\-Amber}!\-Manta\-Server@{\-Manta\-Server}}\index{\-Manta\-Server@{\-Manta\-Server}!\-Amber@{\-Amber}}\item[{\em 
+\hypertarget{classMantaServer_aefb7bb68319a53280ef9e9f84147288da2a786ff004fc9b7ab92f93655bcba70f}{\-Amber}\label{classMantaServer_aefb7bb68319a53280ef9e9f84147288da2a786ff004fc9b7ab92f93655bcba70f}
+}]\index{\-Red@{\-Red}!\-Manta\-Server@{\-Manta\-Server}}\index{\-Manta\-Server@{\-Manta\-Server}!\-Red@{\-Red}}\item[{\em 
+\hypertarget{classMantaServer_aefb7bb68319a53280ef9e9f84147288daa59fd3455577ea618dd10aece086d2f4}{\-Red}\label{classMantaServer_aefb7bb68319a53280ef9e9f84147288daa59fd3455577ea618dd10aece086d2f4}
+}]\end{description}
+\end{Desc}
+
+
+
+\-Definition at line 17 of file \-Manta\-Server.\-h.
+
+
+\begin{DoxyCode}
+                 {
+      Off,
+      Amber,
+      Red,
+   };
+\end{DoxyCode}
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classMantaServer_a5a99da525e6e23f6114dce15ee97b72a}{\index{\-Manta\-Server@{\-Manta\-Server}!$\sim$\-Manta\-Server@{$\sim$\-Manta\-Server}}
+\index{$\sim$\-Manta\-Server@{$\sim$\-Manta\-Server}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{$\sim$\-Manta\-Server}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf \-Manta\-Server\-::$\sim$\-Manta\-Server} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}\label{classMantaServer_a5a99da525e6e23f6114dce15ee97b72a}
+
+
+\-Definition at line 29 of file \-Manta\-Server.\-h.
+
+
+\begin{DoxyCode}
+{}
+\end{DoxyCode}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classMantaServer_a1c929d8dbd3bd45b635b427cf1e5ec93}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Clear\-Button\-L\-E\-Ds@{\-Clear\-Button\-L\-E\-Ds}}
+\index{\-Clear\-Button\-L\-E\-Ds@{\-Clear\-Button\-L\-E\-Ds}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Clear\-Button\-L\-E\-Ds}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Clear\-Button\-L\-E\-Ds} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a1c929d8dbd3bd45b635b427cf1e5ec93}
+
+
+\-Implemented in \hyperlink{classManta_a398d2ad7c1a067c95c8fee72cee34c53}{\-Manta}.
+
+\hypertarget{classMantaServer_a3b8a0de3b2e6ec6ac80a4a07b0589057}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Clear\-Pad\-And\-Button\-L\-E\-Ds@{\-Clear\-Pad\-And\-Button\-L\-E\-Ds}}
+\index{\-Clear\-Pad\-And\-Button\-L\-E\-Ds@{\-Clear\-Pad\-And\-Button\-L\-E\-Ds}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Clear\-Pad\-And\-Button\-L\-E\-Ds}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Clear\-Pad\-And\-Button\-L\-E\-Ds} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a3b8a0de3b2e6ec6ac80a4a07b0589057}
+
+
+\-Implemented in \hyperlink{classManta_a2483e6e579a859261814c3bf36c8c145}{\-Manta}.
+
+\hypertarget{classMantaServer_af75ab0cd5a17619b740ce653660a5879}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Recalibrate@{\-Recalibrate}}
+\index{\-Recalibrate@{\-Recalibrate}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Recalibrate}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Recalibrate} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_af75ab0cd5a17619b740ce653660a5879}
+
+
+\-Implemented in \hyperlink{classManta_adc8baf40798df6854e7c4860269a266c}{\-Manta}.
+
+\hypertarget{classMantaServer_a9d6664bb445e720b2dc1fe3554d370d5}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Resend\-L\-E\-D\-State@{\-Resend\-L\-E\-D\-State}}
+\index{\-Resend\-L\-E\-D\-State@{\-Resend\-L\-E\-D\-State}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Resend\-L\-E\-D\-State}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Resend\-L\-E\-D\-State} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a9d6664bb445e720b2dc1fe3554d370d5}
+
+
+\-Implemented in \hyperlink{classManta_a19fc4f642b9b53a9bd6ab23d58188775}{\-Manta}.
+
+\hypertarget{classMantaServer_ab4f3b02d6c91e253387c709bcd4a9388}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Button\-L\-E\-D@{\-Set\-Button\-L\-E\-D}}
+\index{\-Set\-Button\-L\-E\-D@{\-Set\-Button\-L\-E\-D}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Button\-L\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Button\-L\-E\-D} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_ab4f3b02d6c91e253387c709bcd4a9388}
+
+
+\-Implemented in \hyperlink{classManta_af1d99e787eb026b1def9ca0691ce2aee}{\-Manta}.
+
+\hypertarget{classMantaServer_af2b466b8500247e961262c8208c2ad8e}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-L\-E\-D\-Control@{\-Set\-L\-E\-D\-Control}}
+\index{\-Set\-L\-E\-D\-Control@{\-Set\-L\-E\-D\-Control}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-L\-E\-D\-Control}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-L\-E\-D\-Control} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-Control\-Type}}]{control, }
+\item[{bool}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_af2b466b8500247e961262c8208c2ad8e}
+
+
+\-Implemented in \hyperlink{classManta_ad5d0775822065e7f662aae069cdd8c20}{\-Manta}.
+
+\hypertarget{classMantaServer_a835960d5e48aafa2e83f05709a8acd2e}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Max\-Sensor\-Values@{\-Set\-Max\-Sensor\-Values}}
+\index{\-Set\-Max\-Sensor\-Values@{\-Set\-Max\-Sensor\-Values}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Max\-Sensor\-Values}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Max\-Sensor\-Values} (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{values}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a835960d5e48aafa2e83f05709a8acd2e}
+
+
+\-Implemented in \hyperlink{classManta_a3ce1847f6201b5cfe70df249143813ab}{\-Manta}.
+
+\hypertarget{classMantaServer_acc71650a8cdab5c9d0408370978c8c39}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Pad\-L\-E\-D@{\-Set\-Pad\-L\-E\-D}}
+\index{\-Set\-Pad\-L\-E\-D@{\-Set\-Pad\-L\-E\-D}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Pad\-L\-E\-D} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{led\-I\-D}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_acc71650a8cdab5c9d0408370978c8c39}
+
+
+\-Implemented in \hyperlink{classManta_a57659b89bd28a2677fd22915d9ee1571}{\-Manta}.
+
+\hypertarget{classMantaServer_a6e1e9838d80b8303d49cf846afa2f96c}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Pad\-L\-E\-D\-Column@{\-Set\-Pad\-L\-E\-D\-Column}}
+\index{\-Set\-Pad\-L\-E\-D\-Column@{\-Set\-Pad\-L\-E\-D\-Column}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D\-Column}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Pad\-L\-E\-D\-Column} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{column, }
+\item[{uint8\-\_\-t}]{mask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a6e1e9838d80b8303d49cf846afa2f96c}
+
+
+\-Implemented in \hyperlink{classManta_a539d6084bb4338ab21c55ef2da3ff989}{\-Manta}.
+
+\hypertarget{classMantaServer_a2f02250f2cafd333cbc5b574b2d9c09b}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Pad\-L\-E\-D\-Frame@{\-Set\-Pad\-L\-E\-D\-Frame}}
+\index{\-Set\-Pad\-L\-E\-D\-Frame@{\-Set\-Pad\-L\-E\-D\-Frame}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Pad\-L\-E\-D\-Frame} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{uint8\-\_\-t}]{mask\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a2f02250f2cafd333cbc5b574b2d9c09b}
+
+
+\-Implemented in \hyperlink{classManta_ae142d20041f7621e45c530b349310e91}{\-Manta}.
+
+\hypertarget{classMantaServer_adcd2b175a3e35ac7cc1c59fef15c11d6}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Pad\-L\-E\-D\-Row@{\-Set\-Pad\-L\-E\-D\-Row}}
+\index{\-Set\-Pad\-L\-E\-D\-Row@{\-Set\-Pad\-L\-E\-D\-Row}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Pad\-L\-E\-D\-Row}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Pad\-L\-E\-D\-Row} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{row, }
+\item[{uint8\-\_\-t}]{mask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_adcd2b175a3e35ac7cc1c59fef15c11d6}
+
+
+\-Implemented in \hyperlink{classManta_a8573c492bc32332221a5f305d64128c3}{\-Manta}.
+
+\hypertarget{classMantaServer_a60d6de14f77cf8608b0f734421e05e3f}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Raw\-Mode@{\-Set\-Raw\-Mode}}
+\index{\-Set\-Raw\-Mode@{\-Set\-Raw\-Mode}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Raw\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Raw\-Mode} (
+\begin{DoxyParamCaption}
+\item[{bool}]{\-Enabled}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a60d6de14f77cf8608b0f734421e05e3f}
+
+
+\-Implemented in \hyperlink{classManta_abdf1e1e34a59e1afb6fb674788f64baf}{\-Manta}.
+
+\hypertarget{classMantaServer_a8a20350aa6d784c0e7b60642afdd0c0c}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Slider\-L\-E\-D@{\-Set\-Slider\-L\-E\-D}}
+\index{\-Set\-Slider\-L\-E\-D@{\-Set\-Slider\-L\-E\-D}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Slider\-L\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Slider\-L\-E\-D} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-L\-E\-D\-State}}]{state, }
+\item[{int}]{id, }
+\item[{uint8\-\_\-t}]{mask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a8a20350aa6d784c0e7b60642afdd0c0c}
+
+
+\-Implemented in \hyperlink{classManta_a842a4ca78371a4b224e1608aaed4a9f2}{\-Manta}.
+
+\hypertarget{classMantaServer_a6946dd0d8614b8bb32ef218bfa867cfe}{\index{\-Manta\-Server@{\-Manta\-Server}!\-Set\-Turbo\-Mode@{\-Set\-Turbo\-Mode}}
+\index{\-Set\-Turbo\-Mode@{\-Set\-Turbo\-Mode}!MantaServer@{\-Manta\-Server}}
+\subsubsection[{\-Set\-Turbo\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-Manta\-Server\-::\-Set\-Turbo\-Mode} (
+\begin{DoxyParamCaption}
+\item[{bool}]{\-Enabled}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classMantaServer_a6946dd0d8614b8bb32ef218bfa867cfe}
+
+
+\-Implemented in \hyperlink{classManta_a92f058b946ffde6493788906805c61a4}{\-Manta}.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{MantaServer_8h}{\-Manta\-Server.\-h}\end{DoxyCompactItemize}

@@ -12,6 +12,19 @@ using namespace std;
 
 typedef struct hid_device_ hid_device;
 
+/************************************************************************//**
+ * \class MantaUSB
+ * \brief Superclass that handles the low-level USB communication with the
+ * Manta
+ *
+ * The MantaUSB class handles the low-level USB communication with the Manta
+ * over hidAPI, a cross-platform HID library.
+ *
+ * The public methods of this class are meant to be used by applciations using
+ * libmanta to manage the connection to a physical Manta, as well as servicing
+ * the low-level USB drivers by periodically calling the HandleEvents()
+ * function.
+ ****************************************************************************/
 class MantaUSB
 {
    public:
