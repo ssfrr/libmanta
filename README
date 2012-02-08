@@ -72,18 +72,20 @@ no other instruction.
 * Building The Max/MSP Object
 
 1. Download Max/MSP SDK from Cycling74.com and put it somewhere easy to find
-2. Place the MaxAPI.framework folder found inside the max-includes directory
-   into Library/Frameworks 
-3. in Terminal, navigate to extern/flext in the libmanta directory
+2. a. Place the MaxAPI.framework folder found inside the c74suppport/max-includes directory
+   into /Library/Frameworks
+   b. Place the MaxAudioAPI.framework folder found inside the c74support/msp-includes directory 
+   into /Library/Frameworks
+3. in Terminal, navigate to MantaFlext/extern/flext in the libmanta directory
 4. './build.sh max gcc'
-5. Edit buildsys/config-mac-max-gcc.txt and change:
+5. Edit MantaFlext/extern/flext/buildsys/config-mac-max-gcc.txt and change:
    a. MAXSDKPATH to point to the subdirectory of the Max SDK you extracted
       in step 1 (should be the directory right above the max-includes
       directory, like MaxSDK-5.1.6/c74support/)
    b. INSTPATH to point to where your Max externals live
-   c. comment out the ARCH= line
+   c. Edit ARCH= line to include say only "ARCH=i386"
 6. './build.sh max gcc'
-7. Edit config.txt and comment out the line "SIMD=1"
+7. Edit MantaFlext/extern/flext/config.txt and comment out the line "SIMD=1"
 8. './build.sh max gcc' (yes, again)
 9. 'sudo ./build.sh max gcc install'
 10. 'cd ../..'
@@ -92,3 +94,5 @@ no other instruction.
 13. 'mkdir -p max-darwin/core/extern/hidapi/mac'
 14. './extern/flext/build.sh max gcc' (again)
 15. 'sudo ./extern/flext/build.sh max gcc install'
+
+To update and rebuild, start at step 11.
