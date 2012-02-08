@@ -54,8 +54,6 @@ class manta:
    private:
    MantaServer::LEDState ledStateFromSymbol(const t_symbol *stateSymbol);
    MantaServer::LEDState ledStateFromInt(int stateSymbol);
-   void StartThread();
-   void StopThreadAndWait();
 
    /* we could be detached from the polling thread on communication error
     * so this SHOULD be volatile, but it was causing issues and I got lazy */
@@ -63,20 +61,16 @@ class manta:
    // bool DebugEnabled;
    bool OneIndexed;
 
-	static void PollConnectedMantas(thr_params *p);
+   static Timer PollTimer;
+   static void SchedulePollTimer(void);
+   static void CancelPollTimer(void);
+	static void PollConnectedMantas(void *param);
    static MantaMulti *FindConnectedMantaBySerial(int serialNumber);
    static void DetachAllMantaFlext(MantaMulti *multi);
 
    //! Shared list of all connected mantas
    static list<MantaMulti *> ConnectedMantaList;
    static list<manta *> MantaFlextList;
-   /* thread conditional to wait on to make sure
-    * that the polling thread has stopped */
-   static ThrCond ThreadRunningCond;
-   static volatile bool shouldStop;
-   static volatile bool threadRunning;
-   /* shared mutex used to prevent connection-related race conditions */
-   static ThrMutex MantaMutex;
 
    /* declare message handlers */
    FLEXT_CALLBACK_V(SetPadLED)
