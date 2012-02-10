@@ -32,10 +32,9 @@ bool MantaUSB::MessageQueued(void)
 }
 
 /************************************************************************//**
- * \brief Writs a USB transfer frame down to the Manta
+ * \brief Writes a USB transfer frame down to the Manta
  * \param   frame          Pointer to the frame to be transmitted
  * \param   forceQueued    Forces this message to be queued instead of merged
- * \return  none
  *
  * WriteFrame() is meant to be called by the Manta subclass, which defines
  * methods for the individual messages (setLED, etc). libmanta maintains a
@@ -84,11 +83,28 @@ void MantaUSB::WriteFrame(uint8_t *frame, bool forceQueued)
    }
 }
 
+/************************************************************************//**
+ * \brief Queries connection status of the Manta
+ * \returns true if this instance is connected to a physical Manta, false
+ *          if not
+ *
+ ****************************************************************************/
 bool MantaUSB::IsConnected(void)
 {
    return DeviceHandle != NULL;
 }
 
+/************************************************************************//**
+ * \brief Connects this instance to a Manta
+ * \param connectionSerial The serial number of the manta to search for.
+ *
+ * If connectionSerial is left out or given as 0 then any connected Manta will
+ * match. If a serial number is given then libmanta will attempt to connect to
+ * that Manta. If no matching manta is found then Connect will throw a
+ * MantaNotFoundException. If no exception is thrown then the connection can be
+ * assumed to have been successful.
+ *
+ ****************************************************************************/
 void MantaUSB::Connect(int connectionSerial)
 {
 #define SERIAL_STRING_SIZE 32
@@ -117,6 +133,9 @@ void MantaUSB::Connect(int connectionSerial)
    hid_set_nonblocking(DeviceHandle, 1);
 }
 
+/************************************************************************//**
+ * \brief Disconnects this instance from an attached Manta
+ ****************************************************************************/
 void MantaUSB::Disconnect(void)
 {
    if(! IsConnected())
@@ -131,8 +150,6 @@ void MantaUSB::Disconnect(void)
 
 /************************************************************************//**
  * \brief   Services USB communciation with the Manta
- * \param   none
- * \return  none
  *
  * HandleEvents should be called periodically to poll all connected Mantas for
  * incoming USB frames as well as to send any messages that have been queued
@@ -199,6 +216,11 @@ void MantaUSB::HandleEvents(void)
    }
 }
 
+/************************************************************************//**
+ * \brief   Queries the serial number of the attached Manta
+ *
+ * \returns The serial number as an int
+ ****************************************************************************/
 int MantaUSB::GetSerialNumber(void)
 {
    /* TODO: get serial number */

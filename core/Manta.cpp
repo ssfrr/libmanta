@@ -4,14 +4,7 @@
 
 
 /************************************************************************//**
- * \brief 
- * \param
- * \return
- ****************************************************************************/
-/************************************************************************//**
  * \brief Manta constructor
- * \param none
- * \return none
  *
  * The Constructor for the Manta class just initializes internal data
  ****************************************************************************/
@@ -38,7 +31,6 @@ Manta::Manta(void) {
 /************************************************************************//**
  * \brief   Implements the FrameReceived() callback from the MantaUSB superclass
  * \param   frame   pointer to the frame that was just received
- * \return  none
  ****************************************************************************/
 void Manta::FrameReceived(int8_t *frame)
 {
@@ -106,9 +98,8 @@ void Manta::FrameReceived(int8_t *frame)
 
 /************************************************************************//**
  * \brief   Sets a single LED
- * \param   state    Off, Yellow, or Red
+ * \param   state    Off, Amber, or Red
  * \param   ledID    The ID of the LED to be set (0 - 47)
- * \return  none
  ****************************************************************************/
 void Manta::SetPadLED(LEDState state, int ledID)
 {
@@ -144,6 +135,13 @@ void Manta::SetPadLED(LEDState state, int ledID)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets a row of LEDs
+ * \param   state    Off, Amber, or Red. All LEDs with their bit set to one
+ *                   in the mask will be set to this state
+ * \param   row      The row index, starting with 0 at the bottom
+ * \param   mask     A mask representing the row. The lsb is the rightmost LED
+ ****************************************************************************/
 void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
 {
    if(row < 0 || row > 5)
@@ -177,6 +175,13 @@ void Manta::SetPadLEDRow(LEDState state, int row, uint8_t mask)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets a column of LEDs
+ * \param   state    Off, Amber, or Red. All LEDs with their bit set to one
+ *                   in the mask will be set to this state
+ * \param   column   The column index, starting with 0 on the left
+ * \param   mask     A mask representing the column. The lsb is the bottom LED
+ ****************************************************************************/
 void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
 {
    if(column < 0 || column > 7)
@@ -228,6 +233,13 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets all the pad LEDs at the same time
+ * \param   state    Off, Amber, or Red. All LEDs with their bit set to one
+ *                   in the mask will be set to this state
+ * \param   mask     A 6-byte mask representing all the pads. The first byte
+ *                   is the bottom row, and the lsb is the leftmost LED
+ ****************************************************************************/
 void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
 {
    switch(state)
@@ -262,6 +274,13 @@ void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets the slider LEDs
+ * \param   state    Off, Amber, or Red. All LEDs with their bit set to one
+ *                   in the mask will be set to this state
+ * \param   id       0 for the bottom slider, 1 for the top slider
+ * \param   mask     A mask representing the slider. The lsb is the rightmost LED
+ ****************************************************************************/
 void Manta::SetSliderLED(LEDState state, int id, uint8_t mask)
 {
    if(id < 0 || id > 1)
@@ -288,6 +307,11 @@ void Manta::SetSliderLED(LEDState state, int id, uint8_t mask)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets a button LED
+ * \param   state    Off, Amber, or Red.
+ * \param   id       ID of the button LED you'd like to set
+ ****************************************************************************/
 void Manta::SetButtonLED(LEDState state, int id)
 {
    if(id < 0 || id > 3)
@@ -318,6 +342,9 @@ void Manta::SetButtonLED(LEDState state, int id)
    }
 }
 
+/************************************************************************//**
+ * \brief   Resends the currently-stored LED State
+ ****************************************************************************/
 void Manta::ResendLEDState(void)
 {
    if(IsConnected())
@@ -326,6 +353,9 @@ void Manta::ResendLEDState(void)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets all the Button LEDs to Off
+ ****************************************************************************/
 void Manta::ClearButtonLEDs(void)
 {
    CurrentOutReport[ButtonIndex] = 0;
@@ -336,6 +366,9 @@ void Manta::ClearButtonLEDs(void)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets all the Pad and Button LEDs to Off
+ ****************************************************************************/
 void Manta::ClearPadAndButtonLEDs(void)
 {
    for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
@@ -352,6 +385,9 @@ void Manta::ClearPadAndButtonLEDs(void)
    }
 }
 
+/************************************************************************//**
+ * \brief   Toggles the Recalibrate bit on the Manta
+ ****************************************************************************/
 void Manta::Recalibrate(void)
 {
    if(! IsConnected())
@@ -367,6 +403,17 @@ void Manta::Recalibrate(void)
    WriteFrame(CurrentOutReport, true);
 }
 
+/************************************************************************//**
+ * \brief   Sets the current LED Control mode
+ * \param   control  Which control set will be toggled
+ * \param   state    false for disabled, true for enabled
+ *
+ * LEDs on the Manta can either be controlled automatically by the Manta itself
+ * in response to touch, or driven my messages by the host. This method
+ * determines how the LEDs are controlled in the Manta. Setting a zone of LEDs
+ * to Enabled causes them to be controlled by the host, and Disabled will hand
+ * control to the Manta.
+ ****************************************************************************/
 void Manta::SetLEDControl(LEDControlType control, bool state)
 {
    uint8_t flag;
@@ -399,6 +446,12 @@ void Manta::SetLEDControl(LEDControlType control, bool state)
    }
 }
 
+/************************************************************************//**
+ * \brief   Enables or Disables Turbo Mode
+ * \param   Enabled    false for disabled, true for enabled
+ *
+ * TBD - need to ask Jeff exactly how Turbo Mode works
+ ****************************************************************************/
 void Manta::SetTurboMode(bool Enabled)
 {
    if(Enabled)
@@ -411,6 +464,16 @@ void Manta::SetTurboMode(bool Enabled)
    }
 }
 
+/************************************************************************//**
+ * \brief   Enables or Disables Raw Mode
+ * \param   Enabled    false for disabled, true for enabled
+ *
+ * Normally the Manta does some pre-processing of its output to remove
+ * low-level noise from the sensors. By enabling Raw mode you can bypass the
+ * filtering to get the raw values delivered by the sensor. This causes lots
+ * of noise on individual pads, but is sometimes useful in conjunction with
+ * centroid detection.
+ ****************************************************************************/
 void Manta::SetRawMode(bool Enabled)
 {
    if(Enabled)
@@ -423,6 +486,26 @@ void Manta::SetRawMode(bool Enabled)
    }
 }
 
+/************************************************************************//**
+ * \brief   Sets the maximum sensor values used for scaling
+ * \param   values    array of 52 ints to set new scaling values
+ *
+ * libmanta scales the incoming values from the Manta to equalize the
+ * sensitivity of the pads. Without this scaling, some pads tend to be more
+ * or less sensitive depending on their location, and manufacturing variations.
+ *
+ * libmanta comes with built-in scaling factors that should be suitable for
+ * most Mantas, but this method allows your application to tune those scaling
+ * factors to an individual user's Manta. After scaling, the pads each should
+ * output a number from 0 - 210.
+ *
+ * To calibrate a Manta
+ * \li Build an array of 52 ints and set them all to 210
+ * \li Call SetMaxSensorValues() with your array set to 210 to disable scaling
+ * \li Instruct the user to press each pad with their full thumb and record
+ *     the maximum values in your array
+ * \li call SetMaxSensorValues() with the new array
+ ****************************************************************************/
 void Manta::SetMaxSensorValues(int *values)
 {
    for(int i = 0; i < 53; ++i)
@@ -528,3 +611,9 @@ const int Manta::AverageMaxSensorValues[53] =
    189, 192, 197, 202, 205, 206, 204, 199, 192, 202, 207, 211, 216, 215, 213,
    209, 201, 205, 210, 215, 220, 213, 218, 212, 204, 212, 216, 222, 227, 223,
    227, 221, 213, 200, 170, 190, 185};
+
+/************************************************************************//**
+ * \brief 
+ * \param
+ * \return
+ ****************************************************************************/
