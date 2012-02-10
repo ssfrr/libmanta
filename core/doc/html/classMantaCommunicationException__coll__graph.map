@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" title="STL class." alt="" coords="246,5,373,33"/>
-<area shape="rect" id="node4" title="STL class." alt="" coords="6,5,109,33"/>
-<area shape="rect" id="node6" href="$classMantaUSB.html" title="Superclass that handles the low&#45;level USB communication with the Manta." alt="" coords="266,134,352,162"/>
-<area shape="rect" id="node17" href="$structMantaUSB_1_1MantaTxQueueEntry.html" title="MantaUSB::MantaTxQueueEntry" alt="" coords="499,241,715,269"/>
-</map>
