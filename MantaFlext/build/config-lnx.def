@@ -1,2 +1,0 @@
-SRCS += ../core/extern/hidapi/linux/hid-libusb.c
-CFLAGS += -I/usr/include/libusb-1.0
