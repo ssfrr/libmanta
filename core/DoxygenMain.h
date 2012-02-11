@@ -28,5 +28,7 @@
  *
  * To include libmanta in your application, simply add the following files
  * to your build system to link them into your application.
+ * \li Manta.cpp
+ * \li MantaUSB.cpp
  *
  ****************************************************************************/
