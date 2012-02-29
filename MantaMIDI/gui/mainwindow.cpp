@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "qmantalogging.h"
 #include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -13,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
            this, SLOT(DisplayConnectionMessage(const QString &)));
     connect(&thread, SIGNAL(UpdateStatusMessage(const QString &)),
             this, SLOT(DisplayStatusMessage(const QString &)));
+    connect(&thread, SIGNAL(SendDebugMessage(const QString &)),
+            this, SLOT(WriteDebugMessage(const QString &)));
 
     thread.Setup(&options);
     thread.start();

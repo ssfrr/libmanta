@@ -1,4 +1,5 @@
 #include "../MantaMidiSettings.h"
+#include "../gui/qmantalogging.h"
 #include "MIDImanager.h"
 #include <cstring>
 #include <stdio.h>
@@ -61,13 +62,14 @@ void MidiManager::PadEvent(int row, int column, int id, int value)
   if (m_options->GetDebugMode())
     std::cout << "PadEvent: " << id << ", " << value << "\n";
 
-  if (!GetCalibrationState())
-  {
+
+  /*if (!GetCalibrationState())
+  {*/
       if (!m_options->GetUseVelocity())
         SendPadMIDI(id, value);
-  }
+  /*}
   else
-      m_options->CalibratePad(id, value);
+      m_options->CalibratePad(id, value);*/
 }
 
 void MidiManager::SliderEvent(int id, int value)
@@ -407,3 +409,4 @@ void MidiManager::SendMIDI(unsigned char ucChannel, MidiActionType actionType, i
   
   SendMIDI(data, nBytes);
 }
+

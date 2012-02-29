@@ -1,4 +1,5 @@
 #include "mantathread.h"
+#include "qmantalogging.h"
 
 MantaThread::MantaThread(QObject *parent) :
     QThread(parent), m_options(NULL), manta(NULL)
@@ -17,6 +18,7 @@ MantaThread::MantaThread(QObject *parent) :
 
 MantaThread::~MantaThread()
 {
+    MantaLogging::LogMessage("begin MantaThread::~MantaThread()");
     if (manta)
     {
         m_runningMode = eMode_Exit;
@@ -30,6 +32,7 @@ MantaThread::~MantaThread()
 
         delete manta;
     }
+    MantaLogging::LogMessage("end MantaThread::~MantaThread()");
 }
 
 void MantaThread::Setup(MantaMidiSettings *options)
@@ -45,6 +48,8 @@ void MantaThread::ReloadLEDS()
 
 void MantaThread::ForceMantaDisconnect()
 {
+    MantaLogging::LogMessage("begin MantaThread::ForceMantaDisconnect()");
+
     if (manta->IsConnected())
     {
         Manta::HandleEvents();
@@ -54,6 +59,8 @@ void MantaThread::ForceMantaDisconnect()
 
         emit MantaConnectedMessage("Manta Force Disconnected");
     }
+
+    MantaLogging::LogMessage("end MantaThread::ForceMantaDisconnect()");
 }
 
 void MantaThread::MantaReconnect()
@@ -73,6 +80,7 @@ void MantaThread::RunMantaDiagnostic()
 
 void MantaThread::CalibrateMode()
 {
+    MantaLogging::LogMessage("begin MantaThread::CalibrateMode()");
     bool bState = manta->GetCalibrationState();
 
     if (bState)
@@ -85,10 +93,13 @@ void MantaThread::CalibrateMode()
         emit UpdateStatusMessage("Calibration Mode: Detecting max sensor values");
         manta->SetCalibrateMode(true);
     }
+    MantaLogging::LogMessage("end MantaThread::CalibrateMode()");
 }
 
 void MantaThread::RunDiagnostic()
 {
+    MantaLogging::LogMessage("begin MantaThread::RunDiagnostic()");
+
     manta->SetLEDControl(Manta::PadAndButton, true);
     Manta::HandleEvents();
     manta->SetLEDControl(Manta::Slider, true);
@@ -100,6 +111,8 @@ void MantaThread::RunDiagnostic()
 
     manta->Initialize();
     m_runningMode = eMode_Run;
+
+    MantaLogging::LogMessage("end MantaThread::RunDiagnostic()");
 }
 
 void MantaThread::RunManta()

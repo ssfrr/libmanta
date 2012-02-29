@@ -29,6 +29,7 @@ public:
 signals:
     void MantaConnectedMessage(const QString &output);
     void UpdateStatusMessage(const QString &output);
+    void SendDebugMessage(const QString &output);
 
 protected:
     void run();

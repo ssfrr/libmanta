@@ -71,12 +71,14 @@ set(MantaGUI_SOURCES
     mainwindow.cpp
     mantathread.cpp
     qmantasettings.cpp
+    qmantalogging.cpp
 )
 
 set(MantaGUI_MOC_HEADERS
     mainwindow.h
     mantathread.h
     qmantasettings.h
+    qmantalogging.h
 )
 
 set(MantaGUI_UIS
