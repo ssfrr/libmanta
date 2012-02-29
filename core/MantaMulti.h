@@ -6,6 +6,15 @@
 
 using namespace std;
 
+/************************************************************************//**
+ * \class MantaMulti
+ * \brief Superclass that adds functionality for multiple access to a single
+ *        Manta
+ *
+ * This class can be used by an application that wants to have multiple
+ * MantaClients that connect to a single Manta using the MantaServer API.
+ * If you only need single-access you should use the Manta class instead
+ ****************************************************************************/
 class MantaMulti : public Manta
 {
    public:
