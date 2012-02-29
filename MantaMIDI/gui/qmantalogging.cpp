@@ -2,16 +2,6 @@
 #include <QFile>
 #include <QDataStream>
 
-MantaLogging::MantaLogging()
-{
-    bIsOpen = false;
-}
-
-MantaLogging::~MantaLogging()
-{
-
-}
-
 void MantaLogging::LogMessage(QString message, QString filename)
 {
     QFile file(filename);

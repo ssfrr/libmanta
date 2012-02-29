@@ -6,10 +6,6 @@
 class MantaLogging
 {
 public:
-    MantaLogging();
-    ~MantaLogging();
-    static bool bIsOpen;
-
     static void LogMessage(QString message, QString filename="manta.log");
 };
 

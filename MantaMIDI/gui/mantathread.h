@@ -5,7 +5,7 @@
 #include <QThread>
 #include <QWaitCondition>
 
-#include "../MantaMidiSettings.h"
+#include "../settings/MantaMidiSettings.h"
 #include "../midimanager/RtMidiManager.h"
 
 enum MantaMode

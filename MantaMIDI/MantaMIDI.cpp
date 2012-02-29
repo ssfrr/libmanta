@@ -1,4 +1,4 @@
-#include "OptionHolder.h"
+#include "settings/MantaMidiSettings.h"
 #include "midimanager/RtMidiManager.h"
 #include <cstring>
 #include <stdio.h>
@@ -16,8 +16,8 @@ void usage()
 
 int main(int argc, char* argv[])
 {
-  OptionHolder options(argc-1, argv+1);
-  MidiManager *manta = new RtMidiManager(options);
+  MantaMidiSettings options(argc-1, argv+1);
+  RtMidiManager *manta = new RtMidiManager(&options);
   
   do
     {

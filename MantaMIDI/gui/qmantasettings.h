@@ -1,7 +1,7 @@
 #ifndef _QMANTASETTINGS_H
 #define _QMANTASETTINGS_H
 
-#include "../MantaMidiSettings.h"
+#include "../settings/MantaMidiSettings.h"
 #include <QString>
 
 class QMantaMidiSettings : public MantaMidiSettings

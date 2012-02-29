@@ -1,4 +1,4 @@
-#include "../MantaMidiSettings.h"
+#include "../settings/MantaMidiSettings.h"
 #include "../gui/qmantalogging.h"
 #include "MIDImanager.h"
 #include <cstring>

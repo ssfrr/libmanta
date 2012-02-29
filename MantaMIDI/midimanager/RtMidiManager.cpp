@@ -1,4 +1,4 @@
-#include "../MantaMidiSettings.h"
+#include "../settings/MantaMidiSettings.h"
 #include "RtMidiManager.h"
 #include <stdio.h>
 #include <cstdlib>
