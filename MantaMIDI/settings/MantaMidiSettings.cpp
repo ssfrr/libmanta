@@ -1,4 +1,7 @@
 #include "MantaMidiSettings.h"
+#include <iostream>
+
+using namespace std;
 
 MantaMidiSettings::MantaMidiSettings()
 {
@@ -312,6 +315,7 @@ void MantaMidiSettings::SetButton_InactiveColor(int button, Manta::LEDState colo
         m_inactiveButtonColor[button] = color;
 }
 
+
 void MantaMidiSettings::SetButton(int button, unsigned char channel, unsigned char key, ButtonMode mode, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor)
 {
     if ( IsValidButtonIndex(button) )
@@ -333,6 +337,18 @@ void MantaMidiSettings::CalibrateButton(int button, int value)
 
 void MantaMidiSettings::PrintOptionStatus()
 {
+    cout << "Settings Initialized.\n";
+    cout << "Pad Mode:";
+    switch(GetPad_Mode())
+    {
+        case plHoneycomb: cout << "honeycomb" << endl; break;
+        case plPiano: cout << "piano" << endl; break;
+        case plChromatic: cout << "chromatic" << endl; break;
+        case plDuet: cout << "duet" << endl; break;
+        default:
+            break;
+    }
+
     /*printf("Debug Mode: %d\n", (int)m_bDebugMode);
     printf("Velocity: %d\n\n", (int)m_bUseVelocity);
 
@@ -340,9 +356,9 @@ void MantaMidiSettings::PrintOptionStatus()
     printf("Base Pad MIDI: %d\n", m_basePadMidi);
     printf("Pad LED Channel: %d\n", m_padLEDChannel);
     printf("Pad Layout: %d\n", m_padLayout);
-    printf("Pad Mode: %d\n\n", m_padMode);*/
+    printf("Pad Mode: %d\n\n", m_padMode);
 
-    /*printf("Slider 0 Event Channel: %d\n", m_slider0_EventChannel);
+    printf("Slider 0 Event Channel: %d\n", m_slider0_EventChannel);
     printf("Slider 0 Midi Note: %d\n", m_slider0_MidiNote);
     printf("Slider 0 Mode: %d\n\n", m_slider0_Mode);
     printf("Slider 1 Event Channel: %d\n", m_slider1_EventChannel);
@@ -363,6 +379,13 @@ void MantaMidiSettings::Reset()
 {
     m_bDebugMode = false;
     m_bUseVelocity = false;
+
+    for (int i = 0; i < numPads; ++i)
+        m_padMaxValue[i] = defaultMaxPadVal;
+    for (int i = 0; i < numSliders; ++i)
+        m_sliderMaxValue[i] = defaultMaxSliderVal;
+    for (int i = 0; i < numButtons; ++i)
+        m_buttonMaxValue[i] = defaultMaxButtonVal;
 
     SetPad_Layout(plHoneycomb);
     m_padMode = pvmMonoAftertouch;

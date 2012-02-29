@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <iostream>
 
+using namespace std;
+
 void ErrorHandler(int num, const char *m, const char *path);
 
 void usage()
@@ -17,36 +19,35 @@ void usage()
 int main(int argc, char* argv[])
 {
   MantaMidiSettings options(argc-1, argv+1);
-  RtMidiManager *manta = new RtMidiManager(&options);
-  
-  do
-    {
-      try
-	{
-	  manta->Connect();
-	}
-      catch(MantaNotFoundException &e)
-	{
-	  std::cout << "Could not find an attached Manta. Retrying..." << std::endl;
-	  sleep(1);
-	}
-    } while(! manta->IsConnected());
+  RtMidiManager manta = RtMidiManager(&options);
 
-  std::cout << "Manta Connected" << std::endl;
-  try
-    {
-      manta->Initialize();
-      while(1)
-	{
-	  manta->HandleEvents();
-	}
-    }
-  catch(MantaCommunicationException &e)
-    {
-      std::cout << "Communication with Manta interrupted, exiting..." << std::endl;
-    }
+  bool bRun = true;
   
-  delete manta;
+  while (bRun)
+  {
+      try
+      {
+          manta.Connect();
+          while (bRun)
+          {
+              manta.HandleEvents();
+              usleep(5000);
+          }
+      }
+      catch (MantaNotFoundException e)
+      {
+          cout << "Couldn't find a manta...retrying" << endl;
+      }
+      catch (MantaCommunicationException e)
+      {
+          cout << "Connection with Manta Interrupted...retrying" << endl;
+      }
+      if(bRun)
+      {
+          // This is a retry, not a quit, so wait a bit before retrying
+          sleep(1);
+      }
+  }
   
   return 0;
 }

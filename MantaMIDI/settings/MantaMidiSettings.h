@@ -120,6 +120,7 @@ protected:
 
     /* Pad Send*/
     const static int numPads = 48;
+    const static int defaultMaxPadVal = 210;
     PadLayout m_padLayout;
     PadValMode m_padMode;
     unsigned char m_padEventChannel[numPads];
@@ -135,6 +136,7 @@ protected:
 
     /* Sliders */
     const static int numSliders = 2;
+    const static int defaultMaxSliderVal = 4096;
     unsigned char m_sliderEventChannel[numSliders];
     unsigned char m_sliderMidiNote[numSliders];
     unsigned short m_sliderMaxValue[numSliders];
@@ -142,6 +144,7 @@ protected:
 
     /* button */
     const static int numButtons = 4;
+    const static int defaultMaxButtonVal = 210;
     ButtonMode m_buttonMode[numButtons];
     unsigned char m_buttonEventChannel[numButtons];
     char m_buttonMidi[numButtons];

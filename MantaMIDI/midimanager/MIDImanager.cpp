@@ -59,7 +59,7 @@ MantaMidiSettings *MidiManager::GetOptions()
 
 void MidiManager::PadEvent(int row, int column, int id, int value)
 {
-  if (m_options->GetDebugMode())
+  if (m_options->GetDebugMode()  && !m_options->GetUseVelocity())
     std::cout << "PadEvent: " << id << ", " << value << "\n";
 
 
@@ -99,7 +99,7 @@ void MidiManager::ButtonEvent(int id, int value)
 
 void MidiManager::PadVelocityEvent(int row, int column, int id, int value)
 {
-  if (m_options->GetDebugMode())
+  if (m_options->GetDebugMode() && m_options->GetUseVelocity())
     std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
 
   if (m_options->GetUseVelocity())
@@ -140,13 +140,24 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
       // Aftertouch
       else if (value > 0 && note.lastValue > 0)
 	{
-          if (m_options->GetPad_Mode() == pvmMonoAftertouch &&
-	      IsCurrentPadMaximum(noteNum, value))
-            Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
-          else if (m_options->GetPad_Mode() == pvmPolyAftertouch)
-            Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
-          //else if (m_options->GetPadMode() == pvmPolyContinuous)
-	    //Send_ControlChange(channel, midiNote, value);
+          if (m_options->GetPad_Mode() == pvmMonoAftertouch && IsCurrentPadMaximum(noteNum, value))
+          {
+              if (m_options->GetDebugMode()) cout << "MonoAftertouch: ";
+
+              Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
+          }
+          else if (m_options->GetPad_Mode() == pvmPolyAftertouch)            
+          {
+              if (m_options->GetDebugMode()) cout << "PolyAftertouch: ";
+
+              Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
+          }
+          else if (m_options->GetPad_Mode() == pvmPolyContinuous)
+          {
+              if (m_options->GetDebugMode()) cout << "PolyContinuous: ";
+
+              Send_ControlChange(channel, midiNote, value);
+          }
 	}
       else // Note Off
 	{
@@ -158,7 +169,7 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
 	    PopAftertouch(noteNum);
 	}
 
-      note.lastValue = value;
+      note.lastValue = note.curValue;
       note.curValue = value;
     }
 }
