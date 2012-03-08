@@ -82,7 +82,7 @@ void MainWindow::on_layoutRB_Custom_clicked()
 
 void MainWindow::on_padAftertouch_Monophonic_clicked()
 {
-    options.SetPad_Mode(pvmMonoAftertouch);
+    options.SetPad_Mode(pvmMonoContinuous);
 }
 
 void MainWindow::on_padAftertouch_Polyphonic_clicked()
@@ -374,7 +374,7 @@ void MainWindow::ReloadForms()
         ui->slider2mode_pitchbend->setChecked(true);
 
     // Pads
-    if (pvmMonoAftertouch == options.GetPad_Mode())
+    if (pvmMonoContinuous == options.GetPad_Mode())
         ui->padAftertouch_Monophonic->setChecked(true);
     else if (pvmPolyAftertouch == options.GetPad_Mode())
         ui->padAftertouch_Polyphonic->setChecked(true);

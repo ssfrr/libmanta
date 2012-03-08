@@ -58,7 +58,7 @@ SET(MantaMidi_Srcs
         ./midimanager/MIDImanager.cpp
         ./midimanager/RtMidiManager.cpp
         ./settings/MantaMidiSettings.cpp
-        ./layout/LayoutMgr.cpp
+        #./layout/LayoutMgr.cpp
 
         ${Manta_Core_Srcs}
         ${Manta_RtMidi_Srcs}
@@ -157,8 +157,7 @@ IF(MINGW)
 ENDIF(MINGW)
 
 # link the "qtprojet" target against the Qt libraries. which libraries exactly is defined by the "include(${QT_USE_FILE})" line above, which sets up this variable
-target_link_libraries(MantaGUI ${QT_LIBRARIES} ${LO_LIBRARY}
-${USB-1.0_LIBRARY} m)
-target_link_libraries(MantaMIDI ${QT_LIBRARIES} ${LO_LIBRARY} ${USB-1.0_LIBRARY} m)
+target_link_libraries(MantaGUI ${QT_LIBRARIES} ${LO_LIBRARY} ${USB-1.0_LIBRARY} m)
+target_link_libraries(MantaMIDI ${LO_LIBRARY} ${USB-1.0_LIBRARY} m)
 
 

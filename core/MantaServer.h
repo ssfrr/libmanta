@@ -1,6 +1,15 @@
 #ifndef _MANTASERVER_H
 #define _MANTASERVER_H
 
+/************************************************************************//**
+ * \class MantaServer
+ * \brief Interface defining all the Messages that can be sent to a Manta
+ *
+ * The MantaServer virtual class defines all the Messages that the Manta
+ * understands, as well as the data structures used as arguments. If you
+ * need a pointer to a Manta in your code, you can make it more general by
+ * using a MantaServer pointer instead of a pointer to your specific subclass.
+ ****************************************************************************/
 class MantaServer
 {
    public:
