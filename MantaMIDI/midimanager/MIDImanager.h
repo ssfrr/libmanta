@@ -65,9 +65,16 @@ class MidiManager : public Manta
   int TranslateButtonValueToMIDI(int button, int buttonValue);
 
   /* Handling functions */
-  void SendPadMIDI(int noteNum, int value);
+  void SendPadMIDI(int noteNum, int value, bool bVelocityEvent);
+  void SendPadNoteOn(int channel, int midiNote, int noteNum, int value);
+  void SendPadAftertouch(int channel, int midiNote, int noteNum, int value);
+  void SendPadNoteOff(int channel, int midiNote, int noteNum);
+
   void SendSliderMIDI(int whichSlider, int value);
-  void SendButtonMIDI(int noteNum, int value);
+  void SendButtonMIDI(int noteNum, int value, bool bVelocityEvent);
+  void SendButtonNoteOn(int channel, int midiNote, int noteNum, int value);
+  void SendButtonAftertouch(int channel, int midiNote, int noteNum, int value);
+  void SendButtonNoteOff(int channel, int midiNote, int noteNum);
 
   /* MIDI handling */
   void Send_NoteOn(int channel, int noteNum, int value);
@@ -80,11 +87,18 @@ class MidiManager : public Manta
 
   void PushAftertouch(int key);
   void PopAftertouch(int key);
-  bool IsCurrentPadMaximum(int noteNum, int value);
+  bool IsCurrentPadMaximum(int value);
+
+  void SetPadValue(int pad, int value)                              { m_padValues[pad] = value; }
+  int GetPadValue(int pad)                                          { return m_padValues[pad]; }
+  void SetButtonValue(int button, int value)                        { m_buttonValues[button] = value; }
+  int GetButtonValue(int button)                                    { return m_buttonValues[button]; }
 
   MidiNote m_padNotes[MAX_MIDI_NOTES];
   MidiNote m_buttonNotes[MAX_MIDI_NOTES];
+  int m_buttonValues[MANTA_BUTTONS];
 
+  int m_padValues[MANTA_PADS];
   int m_padAftertouchStack[MANTA_PADS];
   int m_padAftertouchStackIndex;
 

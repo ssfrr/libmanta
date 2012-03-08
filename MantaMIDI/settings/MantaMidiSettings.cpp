@@ -42,7 +42,7 @@ MantaMidiSettings::MantaMidiSettings(int argc, char **argv)
              switch(argv[i][0])
                {
                case '1':
-                 m_padMode = pvmPolyAftertouch;
+                 m_padMode = pvmMonoContinuous;
                  break;
                case '2':
                  m_padMode = pvmPolyAftertouch;
@@ -70,6 +70,7 @@ void MantaMidiSettings::SetUseVelocity(bool bUseVelocity) { m_bUseVelocity = bUs
 /* Pads */
 unsigned char MantaMidiSettings::GetPad_EventChannel(int pad) {return m_padEventChannel[pad]; }
 char MantaMidiSettings::GetPad_Midi(int pad) { return m_basePadMidi[pad]; }
+char MantaMidiSettings::GetPad_MonoCCNumber() { return m_padMonoCCNumber; }
 unsigned char MantaMidiSettings::GetPad_MaxVal(int pad) { return m_padMaxValue[pad]; }
 unsigned char MantaMidiSettings::GetPad_LEDChannel(int pad) { return m_padLEDChannel[pad]; }
 unsigned char MantaMidiSettings::GetPad_AmberLEDMidi(int pad) { return m_AmberLEDMidi[pad]; }
@@ -114,6 +115,11 @@ void MantaMidiSettings::SetPad(int pad, unsigned char channel, unsigned char not
 {
     m_padEventChannel[pad] = channel;
     m_basePadMidi[pad] = note;
+}
+
+void  MantaMidiSettings::SetPad_MonoCCNumber(int ccnum)
+{
+    m_padMonoCCNumber = ccnum;
 }
 
 void MantaMidiSettings::CalibratePad(int pad, unsigned char value)
@@ -338,8 +344,8 @@ void MantaMidiSettings::CalibrateButton(int button, int value)
 void MantaMidiSettings::PrintOptionStatus()
 {
     cout << "Settings Initialized.\n";
-    cout << "Pad Mode:";
-    switch(GetPad_Mode())
+    cout << "Pad Layout:";
+    switch(GetPad_Layout())
     {
         case plHoneycomb: cout << "honeycomb" << endl; break;
         case plPiano: cout << "piano" << endl; break;
@@ -388,15 +394,16 @@ void MantaMidiSettings::Reset()
         m_buttonMaxValue[i] = defaultMaxButtonVal;
 
     SetPad_Layout(plHoneycomb);
-    m_padMode = pvmMonoAftertouch;
+    m_padMode = pvmMonoContinuous;
+    m_padMonoCCNumber = 11;
 
-    SetSlider(0, 1, 20, smContinuous);
-    SetSlider(1, 1, 20, smContinuous);
+    SetSlider(0, 0, 1, smContinuous);
+    SetSlider(1, 0, 2, smContinuous);
 
-    SetButton(0, 2, 102, bmNote, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(1, 2, 103, bmNote, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(2, 2, 104, bmNote, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(3, 2, 105, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(0, 1, 102, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(1, 1, 103, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(2, 1, 104, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    SetButton(3, 1, 105, bmNote, Manta::Red, Manta::Off, Manta::Off);
 }
 
 void MantaMidiSettings::SetPad_Layout(PadLayout layout)

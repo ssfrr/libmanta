@@ -17,7 +17,7 @@ enum PadLayout
 
 enum PadValMode
   {
-    pvmMonoAftertouch = 0,
+    pvmMonoContinuous = 0,
     pvmPolyAftertouch = 1,
     pvmPolyContinuous
   };
@@ -50,6 +50,7 @@ class MantaMidiSettings
     /* Pads Sends*/
     unsigned char   GetPad_EventChannel(int pad);
     char            GetPad_Midi(int pad);
+    char            GetPad_MonoCCNumber();
     unsigned char   GetPad_MaxVal(int pad);
     Manta::LEDState GetPad_InactiveColor(int pad);
     Manta::LEDState GetPad_OnColor(int pad);
@@ -59,6 +60,7 @@ class MantaMidiSettings
     PadValMode      GetPad_Mode();
     void            SetPad_Mode(PadValMode mode);
     void            SetPad(int pad, unsigned char channel, unsigned char note);
+    void            SetPad_MonoCCNumber(int ccnum);
     void            CalibratePad(int pad, unsigned char value);
     void            SetAllPadOnColor(Manta::LEDState onColor);
     void            SetAllPadOffColor(Manta::LEDState offColor);
@@ -124,6 +126,7 @@ protected:
     PadLayout m_padLayout;
     PadValMode m_padMode;
     unsigned char m_padEventChannel[numPads];
+    unsigned char m_padMonoCCNumber;
     unsigned char m_basePadMidi[numPads];
     unsigned char m_padMaxValue[numPads];
     Manta::LEDState m_inactivePadColor[numPads];

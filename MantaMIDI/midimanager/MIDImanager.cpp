@@ -1,5 +1,4 @@
 #include "../settings/MantaMidiSettings.h"
-#include "../gui/qmantalogging.h"
 #include "MIDImanager.h"
 #include <cstring>
 #include <stdio.h>
@@ -65,8 +64,8 @@ void MidiManager::PadEvent(int row, int column, int id, int value)
 
   /*if (!GetCalibrationState())
   {*/
-      if (!m_options->GetUseVelocity())
-        SendPadMIDI(id, value);
+    SetPadValue(id, value);
+    SendPadMIDI(id, value, false);
   /*}
   else
       m_options->CalibratePad(id, value);*/
@@ -77,10 +76,10 @@ void MidiManager::SliderEvent(int id, int value)
   if (m_options->GetDebugMode())
     std::cout << "SliderEvent: " << id << ", " << value << "\n";
 
-    if (!GetCalibrationState())
+    //if (!GetCalibrationState())
         SendSliderMIDI(id, value);
-    else
-        m_options->CalibrateSlider(id, value);
+    /*else
+         m_options->CalibrateSlider(id, value);*/
 }
 
 void MidiManager::ButtonEvent(int id, int value)
@@ -88,13 +87,13 @@ void MidiManager::ButtonEvent(int id, int value)
   if (m_options->GetDebugMode())
     std::cout << "ButtonEvent: " << id << ", " << value << "\n";
 
-  if (!GetCalibrationState())
-  {
-    if (!m_options->GetUseVelocity())
-        SendButtonMIDI(id, value);
-  }
+  /*if (!GetCalibrationState())
+  {*/
+  SetButtonValue(id, value);
+  SendButtonMIDI(id, value, false);
+  /*}
   else
-    m_options->CalibrateButton(id, value);
+    m_options->CalibrateButton(id, value);*/
 }
 
 void MidiManager::PadVelocityEvent(int row, int column, int id, int value)
@@ -102,20 +101,18 @@ void MidiManager::PadVelocityEvent(int row, int column, int id, int value)
   if (m_options->GetDebugMode() && m_options->GetUseVelocity())
     std::cout << "PadVelocityEvent: " << id << ", " << value << "\n";
 
-  if (m_options->GetUseVelocity())
-    SendPadMIDI(id, value);
+    SendPadMIDI(id, value, true);
 }
 
 void MidiManager::ButtonVelocityEvent(int id, int value)
 {
-  if (m_options->GetDebugMode())
+  if (m_options->GetDebugMode() && m_options->GetUseVelocity())
     std::cout << "ButtonVelocityEvent: " << id << ", " << value << "\n";
 
-  if (m_options->GetUseVelocity())
-    SendButtonMIDI(id, value);
+    SendButtonMIDI(id, value, true);
 }
 
-void MidiManager::SendPadMIDI(int noteNum, int value)
+void MidiManager::SendPadMIDI(int noteNum, int value, bool bVelocityEvent)
 {
   int channel = m_options->GetPad_EventChannel(noteNum);
   int midiNote = m_options->GetPad_Midi(noteNum);
@@ -124,57 +121,92 @@ void MidiManager::SendPadMIDI(int noteNum, int value)
     {
       MidiNote &note = m_padNotes[midiNote];
 
-      // Note On
-      if (value > 0 && note.lastValue == 0)
-	{
-          if (m_options->GetUseVelocity())
-	    Send_NoteOn(channel, midiNote, value);
-	  else
-	    Send_NoteOn(channel, midiNote, 100);
-
-          SetPadLED(m_options->GetPad_OnColor(noteNum), noteNum);
-	  
-          if (m_options->GetPad_Mode() == pvmMonoAftertouch)
-	    PushAftertouch(noteNum);
-	}
-      // Aftertouch
-      else if (value > 0 && note.lastValue > 0)
-	{
-          if (m_options->GetPad_Mode() == pvmMonoAftertouch && IsCurrentPadMaximum(noteNum, value))
-          {
-              if (m_options->GetDebugMode()) cout << "MonoAftertouch: ";
-
-              Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
-          }
-          else if (m_options->GetPad_Mode() == pvmPolyAftertouch)            
-          {
-              if (m_options->GetDebugMode()) cout << "PolyAftertouch: ";
-
-              Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
-          }
-          else if (m_options->GetPad_Mode() == pvmPolyContinuous)
-          {
-              if (m_options->GetDebugMode()) cout << "PolyContinuous: ";
-
-              Send_ControlChange(channel, midiNote, value);
-          }
-	}
-      else // Note Off
-	{
-	  Send_NoteOff(channel, midiNote, 0);
-
-          SetPadLED(m_options->GetPad_OffColor(noteNum), noteNum);
-	  
-          if (m_options->GetPad_Mode() == pvmMonoAftertouch)
-	    PopAftertouch(noteNum);
-	}
+        // note on
+        if (value > 0)
+        {
+            // Velocity Mode is on, and we got a velocity event, so we know it's a NoteOn or NoteOff
+            if (m_options->GetUseVelocity() && bVelocityEvent)
+            {
+                SendPadNoteOn(channel, midiNote, noteNum, value);
+            }
+            // not a note on or note off, but a positive value; therefore aftertouch
+            else if (m_options->GetUseVelocity() && !bVelocityEvent)
+            {
+                SendPadAftertouch(channel, midiNote, noteNum, value);
+            }
+            else // velocity mode is off
+            {
+                // Note On
+                if (note.lastValue == 0 && !bVelocityEvent)
+                {
+                    SendPadNoteOn(channel, midiNote, noteNum, 100);
+                    SendPadAftertouch(channel, midiNote, noteNum, value);
+                }
+                // Aftertouch
+                else if (note.lastValue > 0)
+                {
+                   SendPadAftertouch(channel, midiNote, noteNum, value);
+                }
+            }
+        }
+        else // note off
+        {
+            // we're just ignoring velocity events with velocity zero to avoid redundant values
+            // (because padevent is already sending them)
+            if (!bVelocityEvent)
+                SendPadNoteOff(channel, midiNote, noteNum);
+        }
 
       note.lastValue = note.curValue;
       note.curValue = value;
     }
 }
 
-bool MidiManager::IsCurrentPadMaximum(int noteNum, int value)
+void MidiManager::SendPadNoteOn(int channel, int midiNote, int noteNum, int value)
+{
+    Send_NoteOn(channel, midiNote, value);
+
+    SetPadLED(m_options->GetPad_OnColor(noteNum), noteNum);
+
+    if (m_options->GetPad_Mode() == pvmMonoContinuous)
+        PushAftertouch(noteNum);
+}
+
+void MidiManager::SendPadAftertouch(int channel, int midiNote, int noteNum, int value)
+{
+    if (m_options->GetPad_Mode() == pvmMonoContinuous && IsCurrentPadMaximum(value))
+    {
+       if (m_options->GetDebugMode()) cout << "MonoAftertouch: ";
+
+       Send_ControlChange(channel, m_options->GetPad_MonoCCNumber(), TranslatePadValueToMIDI(noteNum, value));
+    }
+    else if (m_options->GetPad_Mode() == pvmPolyAftertouch)
+    {
+       if (m_options->GetDebugMode()) cout << "PolyAftertouch: ";
+
+       Send_Aftertouch(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
+    }
+    else if (m_options->GetPad_Mode() == pvmPolyContinuous)
+    {
+       if (m_options->GetDebugMode()) cout << "PolyContinuous: ";
+
+       Send_ControlChange(channel, midiNote, TranslatePadValueToMIDI(noteNum, value));
+    }
+}
+
+void MidiManager::SendPadNoteOff(int channel, int midiNote, int noteNum)
+{
+    Send_NoteOff(channel, midiNote, 0);
+
+    SetPadLED(m_options->GetPad_OffColor(noteNum), noteNum);
+
+    if (m_options->GetPad_Mode() == pvmMonoContinuous)
+        PopAftertouch(noteNum);
+
+    SendPadAftertouch(channel, midiNote, noteNum, 0);
+}
+
+bool MidiManager::IsCurrentPadMaximum(int value)
 {
   bool bRet = false;
   int curMax = 0;
@@ -182,14 +214,13 @@ bool MidiManager::IsCurrentPadMaximum(int noteNum, int value)
   // Loop through and get the maximum of the current pad values
   for(int i = 0; i <= m_padAftertouchStackIndex; ++i)
     {
-      int midiNote = m_options->GetPad_Midi(m_padAftertouchStack[i]);
-      MidiNote &note = m_padNotes[midiNote];
+      int padValue = GetPadValue(m_padAftertouchStack[i]);
     
-      if (note.curValue > curMax)
-	curMax = note.curValue;
+      if (padValue > curMax)
+        curMax = padValue;
     }
 
-  if (value > curMax)
+  if (value >= curMax)
     bRet = true;
 
   return bRet;
@@ -245,7 +276,7 @@ int MidiManager::TranslateButtonValueToMIDI(int button, int buttonValue)
     return iRet;
 }
 
-void MidiManager::SendButtonMIDI(int noteNum, int value)
+void MidiManager::SendButtonMIDI(int noteNum, int value, bool bVelocityEvent)
 {
   int channel = m_options->GetButton_EventChannel(noteNum);
   int midiNote = m_options->GetButton_Midi(noteNum);
@@ -254,31 +285,69 @@ void MidiManager::SendButtonMIDI(int noteNum, int value)
     {
       MidiNote &note = m_buttonNotes[midiNote];
       
-      if (m_options->GetUseVelocity())
-	{
-          Send_NoteOn(channel, midiNote, TranslateButtonValueToMIDI(noteNum, value));
-	  if (value > 0) 
-            SetButtonLED(m_options->GetButton_OnColor(noteNum), noteNum);
-	  else // value == 0
-            SetButtonLED(m_options->GetButton_OffColor(noteNum), noteNum);
-	}
-      else
-	{
-	  if (0 == note.lastValue && value > 0)
-	    {
-	      Send_NoteOn(channel, midiNote, 100);
-              SetButtonLED(m_options->GetButton_OnColor(noteNum), noteNum);
-	    }
-	  else if (value == 0)
-	    {
-	      Send_NoteOff(channel, midiNote, 0);
-              SetButtonLED(m_options->GetButton_OffColor(noteNum), noteNum);
-	    }
-	}
-      
+      if (value > 0)
+      {
+          // velocity mode on - it's a noteon or noteoff
+          if (m_options->GetUseVelocity() && bVelocityEvent)
+              SendButtonNoteOn(channel, midiNote, noteNum, value);
+          // not note on or note off, but positive, so it's aftertouch
+          else if (m_options->GetUseVelocity() && !bVelocityEvent)
+              SendButtonAftertouch(channel, midiNote, noteNum, value);
+          else // velocity off
+          {
+              // Note On
+              if (note.lastValue == 0 && !bVelocityEvent)
+              {
+                  SendButtonNoteOn(channel, midiNote, noteNum, 100);
+                  SendButtonAftertouch(channel, midiNote, noteNum, value);
+              }
+              // Aftertouch
+              else if (note.lastValue > 0)
+                  SendButtonAftertouch(channel, midiNote, noteNum, value);
+          }
+      }
+      else // note off
+      {
+          // ignore velocity events 'cause they're redundant
+          if (!bVelocityEvent)
+              SendButtonNoteOff(channel, midiNote, noteNum);
+      }
+
       note.lastValue = value;
+      note.curValue = value;
     }
 }
+
+void MidiManager::SendButtonNoteOn(int channel, int midiNote, int noteNum, int value)
+{
+    Send_NoteOn(channel, midiNote, value);
+
+    SetButtonLED(m_options->GetButton_OnColor(noteNum), noteNum);
+}
+
+void MidiManager::SendButtonAftertouch(int channel, int midiNote, int noteNum, int value)
+{
+    if (m_options->GetButton_Mode(noteNum) == bmNote)
+    {
+       if (m_options->GetDebugMode()) cout << "Button Note: ";
+
+       Send_Aftertouch(channel, midiNote, TranslateButtonValueToMIDI(noteNum, value));
+    }
+    else if (m_options->GetButton_Mode(noteNum) == bmController)
+    {
+       if (m_options->GetDebugMode()) cout << "Button CC: ";
+
+       Send_ControlChange(channel, midiNote, TranslateButtonValueToMIDI(noteNum, value));
+    }
+}
+
+void MidiManager::SendButtonNoteOff(int channel, int midiNote, int noteNum)
+{
+    Send_NoteOff(channel, midiNote, 0);
+    SetButtonLED(m_options->GetButton_OffColor(noteNum), noteNum);
+    SendButtonAftertouch(channel, midiNote, noteNum, 0);
+}
+
 
 void MidiManager::Send_NoteOff(int channel, int noteNum, int velocity)
 {
@@ -323,7 +392,7 @@ void MidiManager::Send_PitchWheelChange(int channel, int value)
     }
 }
 
-void MidiManager::PushAftertouch(int key)
+void MidiManager:: PushAftertouch(int key)
 { 
   m_padAftertouchStack[++m_padAftertouchStackIndex] = key;
 }
