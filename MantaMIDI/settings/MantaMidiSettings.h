@@ -42,6 +42,10 @@ class MantaMidiSettings
 
     ~MantaMidiSettings();
 
+    /* Arg and input handling */
+    bool LoadArgs(int argc, char **argv);
+    void PrintUsage();
+
     /* Master settings */
     bool            GetDebugMode();
     bool            GetUseVelocity();

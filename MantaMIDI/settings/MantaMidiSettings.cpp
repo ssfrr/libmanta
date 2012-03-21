@@ -11,13 +11,24 @@ MantaMidiSettings::MantaMidiSettings()
 MantaMidiSettings::MantaMidiSettings(int argc, char **argv)
 {
     Reset();
+}
+
+MantaMidiSettings::~MantaMidiSettings()
+{
+}
+
+bool MantaMidiSettings::LoadArgs(int argc, char **argv)
+{
+    bool bRet = true;
 
     for (int i = 0; i < argc; ++i)
     {
      if ( 0 == strcmp(argv[i], "-d") )
-       m_bDebugMode = true;
+        m_bDebugMode = true;
      else if ( 0 == strcmp(argv[i], "-v" ) )
-       m_bUseVelocity = true;
+        m_bUseVelocity = true;
+     else if ( 0 == strcmp(argv[i], "-h") )
+         bRet = false;
      else if ( 0 == strcmp(argv[i], "-padlayout") )
        {
          if ( i + 1 < argc && argv[++i])
@@ -55,11 +66,35 @@ MantaMidiSettings::MantaMidiSettings(int argc, char **argv)
        }
     }
 
-    PrintOptionStatus();
+    if (bRet)
+        PrintOptionStatus();
+
+    return bRet;
 }
 
-MantaMidiSettings::~MantaMidiSettings()
+void MantaMidiSettings::PrintUsage()
 {
+  printf("Usage: MantaMIDI [options]\n");
+  printf("\n");
+  printf("Options:\n");
+  printf("\t-d : debug mode (prints Manta and MIDI events)\n");
+  printf("\t-h : print usage / help\n");
+  printf("\t-v : Use Velocity\n");
+  printf("\t-padlayout [layout] : Set Pad Layout\n");
+  printf("\t\tLayouts\n");
+  printf("\t\tP : Piano\n");
+  printf("\t\tC : Chromatic\n");
+  printf("\t\tD : Hayden Duet (default)\n");
+  printf("\t\tH : Honeycomb\n");
+  printf("\t-padmode [mode] : Set Pad Mode\n");
+  printf("\t\tModes\n");
+  printf("\t\t1 : Monophonic Continuous (default)\n");
+  printf("\t\t2 : Polyphonic Aftertouch\n");
+  printf("\t\t3 : Polyphonic Continuous\n");
+  printf("\n");
+  printf("Examples:\n\n");
+  printf("\tMantaMIDI -padlayout D -padmode 2\n");
+  printf("\tMantaMIDI -v -padlayout P -padmode 3\n");
 }
 
 /* Master settings */
@@ -393,7 +428,7 @@ void MantaMidiSettings::Reset()
     for (int i = 0; i < numButtons; ++i)
         m_buttonMaxValue[i] = defaultMaxButtonVal;
 
-    SetPad_Layout(plHoneycomb);
+    SetPad_Layout(plDuet);
     m_padMode = pvmMonoContinuous;
     m_padMonoCCNumber = 11;
 

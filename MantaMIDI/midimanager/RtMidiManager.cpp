@@ -6,7 +6,7 @@
 
 void MidiReadThread( double deltatime, std::vector< unsigned char > *message, void *userData )
 {
-  /*unsigned int nBytes = message->size();
+ /* unsigned int nBytes = message->size();
   for ( unsigned int i=0; i<nBytes; i++ )
     std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
   if ( nBytes > 0 )
@@ -18,13 +18,45 @@ void MidiReadThread( double deltatime, std::vector< unsigned char > *message, vo
   int second = message->at(1);
   int third = message->at(2);
 
+  int padIndex = -1;
+  int velocity = 0;
+
   Manta::LEDState resultColor = Manta::Off;
-  int index = manta->GetOptions()->GetPadFromMidi(second, resultColor);
+
+  if (first == 144)
+  {
+      if (second >= 1 && second <= 48)
+      {
+          padIndex = second - 1;
+          velocity = third;
+
+          if(velocity > 64)
+              resultColor = Manta::Red;
+          else if (velocity > 0)
+              resultColor = Manta::Amber;
+          else
+              resultColor = Manta::Off;
+
+      }
+  }
+  else if (first == 128)
+    {
+        if (second >= 1 && second <= 48)
+        {
+            padIndex = second - 1;
+            resultColor = Manta::Off;
+        }
+    }
+
+  //int index = manta->GetOptions()->GetPadFromMidi(second, resultColor);
       
-  if ( 0 == third )
-    resultColor = Manta::Off;
+  /*if ( 0 == third )
+    resultColor = Manta::Off;*/
       
-    manta->SetPadLED(resultColor, index);
+  if (padIndex >= 0)
+  {
+        manta->SetPadLED(resultColor, padIndex);
+  }
 }
 
 RtMidiManager::RtMidiManager(MantaMidiSettings *options) :

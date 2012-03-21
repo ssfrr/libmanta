@@ -8,6 +8,7 @@
 MidiManager::MidiManager(MantaMidiSettings *options) :
   m_options(options), m_padAftertouchStackIndex(-1), m_bCalibrationMode(false)
 {
+    ResetLEDS();
 }
 
 MidiManager::~MidiManager()
