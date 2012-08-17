@@ -64,6 +64,7 @@ class MantaMidiSettings
     PadValMode      GetPad_Mode();
     void            SetPad_Mode(PadValMode mode);
     void            SetPad(int pad, unsigned char channel, unsigned char note);
+    void            SetPad_MIDINote(int pad, unsigned char note);
     void            SetPad_MonoCCNumber(int ccnum);
     void            CalibratePad(int pad, unsigned char value);
     void            SetAllPadOnColor(Manta::LEDState onColor);
@@ -119,7 +120,11 @@ class MantaMidiSettings
     void AssignHoneycombLayout();
     void AssignHaydenDuetLayout();
 
+    void LoadSettings(bool bPrint=false);
+
 protected:
+    char m_layoutPath[255];
+
     /* Master Program Settings */
     bool m_bDebugMode;
     bool m_bUseVelocity;

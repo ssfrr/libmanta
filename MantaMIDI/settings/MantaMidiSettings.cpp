@@ -1,4 +1,5 @@
 #include "MantaMidiSettings.h"
+#include "settings/MantaSettingsParser.h"
 #include <iostream>
 
 using namespace std;
@@ -20,6 +21,8 @@ MantaMidiSettings::~MantaMidiSettings()
 bool MantaMidiSettings::LoadArgs(int argc, char **argv)
 {
     bool bRet = true;
+    bool bLoadSettings = false;
+    bool bShowSettings = false;
 
     for (int i = 0; i < argc; ++i)
     {
@@ -29,7 +32,17 @@ bool MantaMidiSettings::LoadArgs(int argc, char **argv)
         m_bUseVelocity = true;
      else if ( 0 == strcmp(argv[i], "-h") )
          bRet = false;
-     else if ( 0 == strcmp(argv[i], "-padlayout") )
+     else if ( 0 == strcmp(argv[i], "-layoutfile"))
+     {
+        if ( i + 1 < argc && argv[++i])
+        {
+            strcpy(m_layoutPath, argv[i]);
+            bLoadSettings = true;
+        }
+     }
+     else if (0 == strcmp(argv[i], "-showsettings"))
+        bShowSettings = true;
+     /*else if ( 0 == strcmp(argv[i], "-padlayout") )
        {
          if ( i + 1 < argc && argv[++i])
            {
@@ -45,26 +58,11 @@ bool MantaMidiSettings::LoadArgs(int argc, char **argv)
                  break;
                }
            }
-       }
-     else if ( 0 == strcmp(argv[i], "-padmode") )
-       {
-         if ( i + 1 < argc && argv[++i])
-           {
-             switch(argv[i][0])
-               {
-               case '1':
-                 m_padMode = pvmMonoContinuous;
-                 break;
-               case '2':
-                 m_padMode = pvmPolyAftertouch;
-                 break;
-               default:
-                 m_padMode = pvmPolyContinuous;
-                 break;
-               }
-           }
-       }
+       }*/
     }
+
+    if (bLoadSettings)
+        LoadSettings(bShowSettings);
 
     if (bRet)
         PrintOptionStatus();
@@ -149,6 +147,11 @@ void MantaMidiSettings::SetPad_Mode(PadValMode mode)
 void MantaMidiSettings::SetPad(int pad, unsigned char channel, unsigned char note)
 {
     m_padEventChannel[pad] = channel;
+    m_basePadMidi[pad] = note;
+}
+
+void MantaMidiSettings::SetPad_MIDINote(int pad, unsigned char note)
+{
     m_basePadMidi[pad] = note;
 }
 
@@ -389,37 +392,11 @@ void MantaMidiSettings::PrintOptionStatus()
         default:
             break;
     }
-
-    /*printf("Debug Mode: %d\n", (int)m_bDebugMode);
-    printf("Velocity: %d\n\n", (int)m_bUseVelocity);
-
-    printf("Pad Event Channel: %d\n", m_padEventChannel);
-    printf("Base Pad MIDI: %d\n", m_basePadMidi);
-    printf("Pad LED Channel: %d\n", m_padLEDChannel);
-    printf("Pad Layout: %d\n", m_padLayout);
-    printf("Pad Mode: %d\n\n", m_padMode);
-
-    printf("Slider 0 Event Channel: %d\n", m_slider0_EventChannel);
-    printf("Slider 0 Midi Note: %d\n", m_slider0_MidiNote);
-    printf("Slider 0 Mode: %d\n\n", m_slider0_Mode);
-    printf("Slider 1 Event Channel: %d\n", m_slider1_EventChannel);
-    printf("Slider 1 Event Channel: %d\n", m_slider1_MidiNote);
-    printf("Slider 1 Mode: %d\n\n", m_slider1_Mode);
-
-    printf("Button %d Event Channel: %d\n", 1, m_buttonEventChannel[0]);
-    printf("Button %d Event Channel: %d\n", 2, m_buttonEventChannel[1]);
-    printf("Button %d Event Channel: %d\n", 3, m_buttonEventChannel[2]);
-    printf("Button %d Event Channel: %d\n", 4, m_buttonEventChannel[3]);
-    printf("Button %d Mode: %d\n\n", 1, m_buttonMode[0]);
-    printf("Button %d Mode: %d\n\n", 2, m_buttonMode[1]);
-    printf("Button %d Mode: %d\n\n", 3, m_buttonMode[2]);
-    printf("Button %d Mode: %d\n\n", 4, m_buttonMode[3]);*/
 }
 
 void MantaMidiSettings::Reset()
 {
     m_bDebugMode = false;
-    m_bUseVelocity = false;
 
     for (int i = 0; i < numPads; ++i)
         m_padMaxValue[i] = defaultMaxPadVal;
@@ -428,17 +405,7 @@ void MantaMidiSettings::Reset()
     for (int i = 0; i < numButtons; ++i)
         m_buttonMaxValue[i] = defaultMaxButtonVal;
 
-    SetPad_Layout(plDuet);
-    m_padMode = pvmMonoContinuous;
-    m_padMonoCCNumber = 11;
-
-    SetSlider(0, 0, 1, smContinuous);
-    SetSlider(1, 0, 2, smContinuous);
-
-    SetButton(0, 1, 102, bmNote, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(1, 1, 103, bmNote, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(2, 1, 104, bmNote, Manta::Red, Manta::Off, Manta::Off);
-    SetButton(3, 1, 105, bmNote, Manta::Red, Manta::Off, Manta::Off);
+    LoadSettings();
 }
 
 void MantaMidiSettings::SetPad_Layout(PadLayout layout)
@@ -646,3 +613,15 @@ void MantaMidiSettings::AssignHaydenDuetLayout()
     SetPad(47, channel, 106); //
 }
 
+void MantaMidiSettings::LoadSettings(bool bPrint)
+{
+    MantaSettingsParser settingsParser = MantaSettingsParser(this);
+
+    if ( strlen(m_layoutPath) > 0)
+        settingsParser.ReadCollFile(m_layoutPath);
+
+    if (bPrint)
+        settingsParser.PrintSettings();
+
+    settingsParser.UpdateSettings();
+}
