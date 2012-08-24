@@ -1,0 +1,64 @@
+Velocity, 1;
+Pad_Channel, 1;
+Pad_Aftertouch 0; 
+Pad_InactiveColor 0; 
+Pad_OnColor 1; 
+Pad_OffColor 2;
+
+Pad_1 32;
+Pad_2 35;
+Pad_3 38;
+Pad_4 53; 
+Pad_5 56;
+Pad_6 59;
+Pad_7 62;
+Pad_8 77;
+Pad_9 40;
+Pad_10 43;
+Pad_11 46; 
+Pad_12 61;
+Pad_13 64;
+Pad_14 67;
+Pad_15 70;
+Pad_16 85;
+Pad_17 24;
+Pad_18 36; 
+Pad_19 39;
+Pad_20 54;
+Pad_21 57;
+Pad_22 60;
+Pad_23 75;
+Pad_24 78;
+Pad_25 41; 
+Pad_26 44;
+Pad_27 47;
+Pad_28 62;
+Pad_29 65;
+Pad_30 68;
+Pad_31 71; 
+Pad_32 86;
+Pad_33 34;
+Pad_34 37;
+Pad_35 52;
+Pad_36 55;
+Pad_37 58;
+Pad_38 73; 
+Pad_39 76;
+Pad_40 79;
+Pad_41 42;
+Pad_42 45;
+Pad_43 48;
+Pad_44 63;
+Pad_45 66; 
+Pad_46 69;
+Pad_47 72;
+Pad_48 87;
+
+; Pad_Channel     // Assigns value for all pads
+; Pad_CC          /
+; Pad_Midi
+; Pad_InactiveColor
+; Pad_OnColor
+; Pad_OffColor
+
+; Pad_[Index] [Midi Note] <Midi Chan>
