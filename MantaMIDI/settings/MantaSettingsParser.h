@@ -21,9 +21,11 @@ public:
     void PrintSettings();
 
 private:
-    bool IsValidKey(std::string key);
-    void AssignKeyToValue(std::string key, std::string value);
+    bool IsValidKey(string key);
+    void AssignKeyToValue(string key, string value);
     bool UpdateSetting(const string& key, const string& val);
+    void ParseKey(const string key, string &type, string &function, unsigned long &index);
+    void ParseMidiValue(const string &value, int &midiNote, int &midiChan);
 
     MantaMidiSettings *m_pSettings;
     map<string, string> m_configDefaults;

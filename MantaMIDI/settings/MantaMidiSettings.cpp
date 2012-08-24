@@ -78,21 +78,10 @@ void MantaMidiSettings::PrintUsage()
   printf("\t-d : debug mode (prints Manta and MIDI events)\n");
   printf("\t-h : print usage / help\n");
   printf("\t-v : Use Velocity\n");
-  printf("\t-padlayout [layout] : Set Pad Layout\n");
-  printf("\t\tLayouts\n");
-  printf("\t\tP : Piano\n");
-  printf("\t\tC : Chromatic\n");
-  printf("\t\tD : Hayden Duet (default)\n");
-  printf("\t\tH : Honeycomb\n");
-  printf("\t-padmode [mode] : Set Pad Mode\n");
-  printf("\t\tModes\n");
-  printf("\t\t1 : Monophonic Continuous (default)\n");
-  printf("\t\t2 : Polyphonic Aftertouch\n");
-  printf("\t\t3 : Polyphonic Continuous\n");
-  printf("\n");
-  printf("Examples:\n\n");
-  printf("\tMantaMIDI -padlayout D -padmode 2\n");
-  printf("\tMantaMIDI -v -padlayout P -padmode 3\n");
+  printf("\t-layoutfile <filename> : Select the preferences file to use\n");
+  printf("\t-showsettings : Show the loaded settings at runtime\n");
+  printf("\nExamples:\n");
+  printf("\tMantaMIDI -layoutfile Hayden.txt\n");
 }
 
 /* Master settings */
@@ -153,6 +142,14 @@ void MantaMidiSettings::SetPad(int pad, unsigned char channel, unsigned char not
 void MantaMidiSettings::SetPad_MIDINote(int pad, unsigned char note)
 {
     m_basePadMidi[pad] = note;
+}
+
+void MantaMidiSettings::SetPad_Channel(unsigned char channel)
+{
+    for (int i = 0; i < numPads; i++)
+    {
+        m_padEventChannel[i] = channel;
+    }
 }
 
 void  MantaMidiSettings::SetPad_MonoCCNumber(int ccnum)

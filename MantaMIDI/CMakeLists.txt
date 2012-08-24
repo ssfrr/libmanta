@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 2.6.0)
 
 #add /opt/local to cmake search prefix to find MacPorts-installed libs on OSX
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /opt/local)
+#set(CMAKE_OSX_ARCHITECTURES "i386")
+set(SimpleJSONPath extern/SimpleJSON/)
 
 find_package(Qt4 REQUIRED) # find and setup Qt4 for this project
 
@@ -52,10 +54,12 @@ SET(MantaMidi_Srcs
         ./midimanager/MIDImanager.cpp
         ./midimanager/RtMidiManager.cpp
         ./settings/MantaMidiSettings.cpp
+        ./settings/MantaSettingsParser.cpp
         #./layout/LayoutMgr.cpp
 
         ${Manta_Core_Srcs}
         ${Manta_RtMidi_Srcs}
+        ${SimpleJSON_SOURCS}
 )
 
 # MantaGUI_SOURCES contains all the .cpp files for this project
@@ -66,6 +70,12 @@ set(MantaGUI_SOURCES
     ./gui/mantathread.cpp
     ./gui/qmantasettings.cpp
     ./gui/qmantalogging.cpp
+)
+
+# SimpleJSON sources
+set(SimpleJSON_SOURCS
+    ${SimpleJSONPath}/src/JSON.cpp
+    ${SimpleJSONPath}/src/JSONValue.cpp
 )
 
 # MantaMIDI_Sources contains the .cpp files for the command-line only project
@@ -153,5 +163,3 @@ ENDIF(MINGW)
 # link the "qtprojet" target against the Qt libraries. which libraries exactly is defined by the "include(${QT_USE_FILE})" line above, which sets up this variable
 target_link_libraries(MantaGUI ${QT_LIBRARIES} m)
 target_link_libraries(MantaMIDI m)
-
-

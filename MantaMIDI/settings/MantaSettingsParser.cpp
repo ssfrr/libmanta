@@ -35,6 +35,7 @@ MantaSettingsParser::MantaSettingsParser(MantaMidiSettings *pSettings)
     DEFINE_CONFIG_DEFAULT("Pad_InactiveColor", "0");
     DEFINE_CONFIG_DEFAULT("Pad_OnColor", "1");
     DEFINE_CONFIG_DEFAULT("Pad_OffColor", "0");
+    DEFINE_CONFIG_DEFAULT("Pad_Channel", "1");
 
     // Master Pad Settings
 
@@ -43,11 +44,8 @@ MantaSettingsParser::MantaSettingsParser(MantaMidiSettings *pSettings)
     // Individual Pad Settings
     for(int i=1; i <= 48; ++i)
     {
-        sprintf(strResult, "Pad_%d_Channel", i);
-        DEFINE_CONFIG_DEFAULT(strResult, "1");
-
-        sprintf(strResult, "Pad_%d_MIDINote", i);
-        sprintf(extra, "%d", i + 32);
+        sprintf(strResult, "Pad_%d", i);
+        sprintf(extra, "%d 1", i + 32);
         DEFINE_CONFIG_DEFAULT(strResult, extra);
     }
 
@@ -60,11 +58,7 @@ MantaSettingsParser::MantaSettingsParser(MantaMidiSettings *pSettings)
     for (int i = 1; i <= 4; ++i)
     {
         sprintf(strResult, "Button_%d_MIDI", i);
-        sprintf(extra, "%d", 102 + i);
-        DEFINE_CONFIG_DEFAULT(strResult, extra);
-
-        sprintf(strResult, "Button_%d_Channel", i);
-        sprintf(extra, "%d", 1);
+        sprintf(extra, "%d 1", 102 + i);
         DEFINE_CONFIG_DEFAULT(strResult, extra);
 
         sprintf(strResult, "Button_%d_Mode", i);
@@ -86,10 +80,8 @@ MantaSettingsParser::MantaSettingsParser(MantaMidiSettings *pSettings)
 
     // Slider Settings
     /* Sliders */
-    DEFINE_CONFIG_DEFAULT("Slider_0_Channel", "11");
-    DEFINE_CONFIG_DEFAULT("Slider_1_Channel", "0");
-    DEFINE_CONFIG_DEFAULT("Slider_0_MIDI", "1");
-    DEFINE_CONFIG_DEFAULT("Slider_1_MIDI", "2");
+    DEFINE_CONFIG_DEFAULT("Slider_0_MIDI", "1 1");
+    DEFINE_CONFIG_DEFAULT("Slider_1_MIDI", "2 1");
     DEFINE_CONFIG_DEFAULT("Slider_0_Mode", "0");
     DEFINE_CONFIG_DEFAULT("Slider_1_Mode", "0");
 }
@@ -114,13 +106,17 @@ bool MantaSettingsParser::ReadCollFile(const char *fileName)
             commaPos = line.find(',');
             colonPos = line.find(';');
 
-            string key = trim(line.substr(0, commaPos));
-            string value = trim(line.substr(commaPos + 1, colonPos - commaPos - 1));
+            string testStr = line.substr(0, colonPos);
+
+            string key = trim(testStr.substr(0, commaPos));
+            string value = trim(testStr.substr(commaPos + 1, testStr.length() - commaPos - 1));
 
             if (IsValidKey(key))
                 AssignKeyToValue(key, value);
-            else
+            else if (key.length() > 0)
+            {
                 cout << "PARSE ERROR: Invalid key \"" << key << "\"" << endl;
+            }
         }
     }
     else
@@ -142,6 +138,43 @@ bool MantaSettingsParser::IsValidKey(string key)
 void MantaSettingsParser::AssignKeyToValue(string key, string value)
 {
     m_configDefaults[key] = value;
+}
+
+void MantaSettingsParser::ParseKey(const string key, string &type, string &function, unsigned long &index)
+{
+    const size_t _first = key.find_first_of("_");
+    const size_t _last = key.find_last_of("_");
+    type = key.substr(0, _first);
+    function = key.substr(_last + 1);
+    index = string::npos;
+    if (_first != _last)
+        index = atoi(key.substr(_first + 1, (_last - _first - 1)).c_str());
+    else
+    {
+        int iTmp = atoi(function.c_str());
+        // If the atoi is zero, it didn't work, so the function is a word instead of a number
+        if (0 != iTmp)
+            // if it's a number, it's an index.
+            index = iTmp;
+    }
+}
+
+void MantaSettingsParser::ParseMidiValue(const string &value, int &midiNote, int &midiChan)
+{
+    const char *strValue = value.c_str();
+    char * pch;
+    pch = strtok((char *)strValue, " ");
+
+    if (pch != NULL)
+    {
+        midiNote = atoi(pch);
+
+        pch = strtok (NULL, " " );
+        if (pch != NULL)
+            midiChan = atoi(pch);
+        else
+            midiChan = 1;
+    }
 }
 
 bool MantaSettingsParser::UpdateSettings()
@@ -167,13 +200,10 @@ bool MantaSettingsParser::UpdateSetting(const string& key, const string& val)
     int iVal = atoi(val.c_str());
     if (IsValidKey(key))
     {
-        const size_t _first = key.find_first_of("_");
-        const size_t _last = key.find_last_of("_");
-        string type = key.substr(0, _first);
-        string function = key.substr(_last + 1);
-        unsigned long index = string::npos;
-        if (_first != _last)
-            index = atoi(key.substr(_first + 1, (_last - _first - 1)).c_str());
+        string type, function;
+        unsigned long index;
+
+        ParseKey(key, type, function, index);
 
         if (type == "Pad")
         {
@@ -190,37 +220,44 @@ bool MantaSettingsParser::UpdateSetting(const string& key, const string& val)
             else if (function == "OffColor")
                 m_pSettings->SetAllPadOffColor((Manta::LEDState)iVal);
             else if (function == "Channel")
-                m_pSettings->SetPadLED_MidiChannel(index - 1, iVal);
-            else if (function == "MIDINote")
-                m_pSettings->SetPad_MIDINote(index - 1, iVal);
+                m_pSettings->SetPad_Channel(iVal);
             else
             {
-                if (debug) cout << "Invalid Pad Setting!!!" << endl;
+                int midi = -1;
+                int chan = 1;
+                ParseMidiValue(val, midi, chan);
+                if (debug) cout << " Pad " << index << " Midi: " << midi << " " << chan << endl;
+                m_pSettings->SetPad(index - 1, chan - 1, midi - 1);
             }
         }
         else if (type == "Button")
         {
             if (function == "MIDI")
             {
+                int midi = -1;
+                int chan = 1;
+                ParseMidiValue(val, midi, chan);
+
                 if (index == 1 || index == string::npos)
-                    m_pSettings->SetButton_Midi(0, iVal);
+                {
+                    m_pSettings->SetButton_Midi(0, midi);
+                    m_pSettings->SetButton_Channel(0, chan);
+                }
                 else if (index == 2 || index == string::npos)
-                    m_pSettings->SetButton_Midi(1, iVal);
+                {
+                    m_pSettings->SetButton_Midi(1, midi);
+                    m_pSettings->SetButton_Channel(0, chan);
+                }
                 else if (index == 3 || index == string::npos)
-                    m_pSettings->SetButton_Midi(2, iVal);
+                {
+                    m_pSettings->SetButton_Midi(2, midi);
+                    m_pSettings->SetButton_Channel(0, chan);
+                }
                 else if (index == 4 || index == string::npos)
-                    m_pSettings->SetButton_Midi(3, iVal);
-            }
-            else if (function == "Channel")
-            {
-                if (index == 1 || index == string::npos)
-                    m_pSettings->SetButton_Channel(0, iVal);
-                else if (index == 2 || index == string::npos)
-                    m_pSettings->SetButton_Channel(1, iVal);
-                else if (index == 3 || index == string::npos)
-                    m_pSettings->SetButton_Channel(2, iVal);
-                else if (index == 4 || index == string::npos)
-                    m_pSettings->SetButton_Channel(3, iVal);
+                {
+                    m_pSettings->SetButton_Midi(3, midi);
+                    m_pSettings->SetButton_Channel(0, chan);
+                }
             }
             else if (function == "Mode")
             {
@@ -269,19 +306,22 @@ bool MantaSettingsParser::UpdateSetting(const string& key, const string& val)
         }
         else if (type == "Slider")
         {
-            if (function == "Channel")
+            if (function == "MIDI")
             {
+                int midi = -1;
+                int chan = 1;
+                ParseMidiValue(val, midi, chan);
+
                 if (index == 0 || index == string::npos)
-                    m_pSettings->SetSlider_Channel(0, iVal);
+                {
+                    m_pSettings->SetSlider_Midi(0, midi);
+                    m_pSettings->SetSlider_Channel(0, chan);
+                }
                 else if (index == 1 || index == string::npos)
-                    m_pSettings->SetSlider_Channel(1, iVal);
-            }
-            else if (function == "MIDI")
-            {
-                if (index == 0 || index == string::npos)
-                    m_pSettings->SetSlider_Midi(0, iVal);
-                else if (index == 1 || index == string::npos)
-                    m_pSettings->SetSlider_Midi(1, iVal);
+                {
+                    m_pSettings->SetSlider_Midi(1, midi);
+                    m_pSettings->SetSlider_Channel(1, chan);
+                }
             }
             else if (function == "Mode")
             {

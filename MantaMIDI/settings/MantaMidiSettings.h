@@ -65,6 +65,7 @@ class MantaMidiSettings
     void            SetPad_Mode(PadValMode mode);
     void            SetPad(int pad, unsigned char channel, unsigned char note);
     void            SetPad_MIDINote(int pad, unsigned char note);
+    void            SetPad_Channel(unsigned char channel);
     void            SetPad_MonoCCNumber(int ccnum);
     void            CalibratePad(int pad, unsigned char value);
     void            SetAllPadOnColor(Manta::LEDState onColor);
