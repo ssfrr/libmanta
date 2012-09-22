@@ -122,6 +122,7 @@ ELSEIF(APPLE)
     ADD_CUSTOM_COMMAND(
         TARGET MantaGUI
         POST_BUILD
+        COMMAND rm -f MantaGUI.dmg
         COMMAND macdeployqt MantaGUI.app -dmg -no-plugins
     )
 ELSEIF(WIN32)

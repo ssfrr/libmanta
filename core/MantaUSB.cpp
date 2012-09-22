@@ -52,7 +52,6 @@ bool MantaUSB::MessageQueued(void)
  ****************************************************************************/
 void MantaUSB::WriteFrame(uint8_t *frame, bool forceQueued)
 {
-   int status;
    if(NULL == DeviceHandle)
    {
       throw(MantaNotConnectedException(this));
