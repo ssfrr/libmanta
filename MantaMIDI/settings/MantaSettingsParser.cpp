@@ -120,7 +120,10 @@ bool MantaSettingsParser::ReadCollFile(const char *fileName)
         }
     }
     else
-        cout << "No file of this name" << endl;
+    {
+        cout << "No file of this name: aborting..." << endl;
+        exit(-1);
+    }
 
     fin.close();
 
@@ -209,16 +212,25 @@ bool MantaSettingsParser::UpdateSetting(const string& key, const string& val)
         {
             if (function == "Mode")
                 m_pSettings->SetPad_Mode((PadValMode)iVal);
-            else if (function == "Layout")
-                m_pSettings->SetPad_Layout((PadLayout)iVal);
+            else if (function == "LayoutTitle")
+                m_pSettings->SetPadLayoutTitle(val.c_str());
             else if (function == "MonoCC")
                 m_pSettings->SetPad_MonoCCNumber(iVal);
             else if (function == "InactiveColor")
+            {
                 m_pSettings->SetAllPadInactiveColor((Manta::LEDState)iVal);
+                if (debug) cout << " Pad Inactive Color: " << iVal << endl;
+            }
             else if (function == "OnColor")
+            {
                 m_pSettings->SetAllPadOnColor((Manta::LEDState)iVal);
+                if (debug) cout << " Pad On Color: " << iVal << endl;
+            }
             else if (function == "OffColor")
+            {
                 m_pSettings->SetAllPadOffColor((Manta::LEDState)iVal);
+                if (debug) cout << " Pad Off Color: " << iVal << endl;
+            }
             else if (function == "Channel")
                 m_pSettings->SetPad_Channel(iVal);
             else

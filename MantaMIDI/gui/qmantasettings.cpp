@@ -32,7 +32,6 @@ bool QMantaMidiSettings::Save(QString filename)
     out << m_bUseVelocity;
 
     // Serialize Pad Settings
-    out << (quint8)m_padLayout;
     out << (quint8)m_padMode;
 
     for (unsigned char i = 0; i < numPads; ++i)
@@ -97,7 +96,6 @@ bool QMantaMidiSettings::Load(QString filename)
     in >> m_bUseVelocity;
 
     // Read Pad Settings
-    in >> readByte; m_padLayout = (PadLayout)readByte;
     in >> readByte; m_padMode = (PadValMode)readByte;
 
     for (unsigned char i = 0; i < numPads; ++i)

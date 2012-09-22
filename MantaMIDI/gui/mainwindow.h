@@ -31,12 +31,6 @@ private slots:
     void DisplayStatusMessage(const QString &text);
     void WriteDebugMessage(const QString &text);
 
-    void on_layoutRB_HaydenDuet_clicked();
-    void on_layoutRB_Honeycomb_clicked();
-    void on_layoutRB_Piano_clicked();
-    void on_layoutRB_Chromatic_clicked();
-    void on_layoutRB_Custom_clicked();
-
     void on_padAftertouch_Monophonic_clicked();
     void on_padAftertouch_Polyphonic_clicked();
     void on_padAftertouch_PolyphonicController_clicked();
@@ -98,7 +92,6 @@ private slots:
     void on_actionCalibrate_triggered();
 
 private:
-    void UpdateLayout(PadLayout padLayout);
     void ReloadForms();
 
     void SetPadMIDIFormFromIndex(int index);

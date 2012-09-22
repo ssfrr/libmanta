@@ -59,7 +59,6 @@ SET(MantaMidi_Srcs
 
         ${Manta_Core_Srcs}
         ${Manta_RtMidi_Srcs}
-        ${SimpleJSON_SOURCS}
 )
 
 # MantaGUI_SOURCES contains all the .cpp files for this project
@@ -70,12 +69,6 @@ set(MantaGUI_SOURCES
     ./gui/mantathread.cpp
     ./gui/qmantasettings.cpp
     ./gui/qmantalogging.cpp
-)
-
-# SimpleJSON sources
-set(SimpleJSON_SOURCS
-    ${SimpleJSONPath}/src/JSON.cpp
-    ${SimpleJSONPath}/src/JSONValue.cpp
 )
 
 # MantaMIDI_Sources contains the .cpp files for the command-line only project

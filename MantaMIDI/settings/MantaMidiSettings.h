@@ -1,3 +1,10 @@
+/*
+ * MantaMidiSettings.h
+ *
+ * MantaMidiSettings stores all state, and provides an interface to it.
+ *
+ */
+
 #ifndef _OPTIONHOLDER_H
 #define _OPTIONHOLDER_H
 
@@ -5,15 +12,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MANTA_PAD_ROWS  6
+class MantaSettingsParser;
 
-enum PadLayout
-  {
-    plHoneycomb = 0,
-    plPiano,
-    plChromatic,
-    plDuet
-  };
+#define MANTA_PAD_ROWS  6
 
 enum PadValMode
   {
@@ -31,7 +32,9 @@ enum SliderMode
 enum ButtonMode
   {
     bmNote = 0,
-    bmController = 1
+    bmController = 1,
+    bmOctaveDecrement,
+    bmOctaveIncrement
   };
 
 class MantaMidiSettings
@@ -50,6 +53,8 @@ class MantaMidiSettings
     bool            GetDebugMode();
     bool            GetUseVelocity();
     void            SetUseVelocity(bool bUseVelocity);
+    void            SetPadLayoutTitle(const char *strTitle);
+    const char *    GetPadLayoutTitle();
 
     /* Pads Sends*/
     unsigned char   GetPad_EventChannel(int pad);
@@ -59,8 +64,6 @@ class MantaMidiSettings
     Manta::LEDState GetPad_InactiveColor(int pad);
     Manta::LEDState GetPad_OnColor(int pad);
     Manta::LEDState GetPad_OffColor(int pad);
-    PadLayout       GetPad_Layout();
-    void            SetPad_Layout(PadLayout layout);
     PadValMode      GetPad_Mode();
     void            SetPad_Mode(PadValMode mode);
     void            SetPad(int pad, unsigned char channel, unsigned char note);
@@ -110,21 +113,22 @@ class MantaMidiSettings
     void SetButton_OffColor(int button, Manta::LEDState color);
     void SetButton_InactiveColor(int button, Manta::LEDState color);
     void SetButton(int button, unsigned char channel, unsigned char key, ButtonMode mode, Manta::LEDState onColor, Manta::LEDState offColor, Manta::LEDState inactiveColor);
+    void IncrementOctaveOffset();
+    void DecrementOctaveOffset();
+    char GetOctaveOffset();
+    char GetOctaveMidiOffset();
     void CalibrateButton(int button, int value);
-
-    void PrintOptionStatus();
     void Reset();
   
- private:    
-    void AssignPianoLayout();
-    void AssignChromaticLayout();
-    void AssignHoneycombLayout();
-    void AssignHaydenDuetLayout();
+ private:
+    void LoadSettings();
+    void PrintSettings();
 
-    void LoadSettings(bool bPrint=false);
+    MantaSettingsParser *m_pSettingsParser;
 
 protected:
     char m_layoutPath[255];
+    char m_layoutTitle[255];
 
     /* Master Program Settings */
     bool m_bDebugMode;
@@ -133,7 +137,6 @@ protected:
     /* Pad Send*/
     const static int numPads = 48;
     const static int defaultMaxPadVal = 210;
-    PadLayout m_padLayout;
     PadValMode m_padMode;
     unsigned char m_padEventChannel[numPads];
     unsigned char m_padMonoCCNumber;
@@ -158,6 +161,7 @@ protected:
     /* button */
     const static int numButtons = 4;
     const static int defaultMaxButtonVal = 210;
+    char m_cOctaveOffset;
     ButtonMode m_buttonMode[numButtons];
     unsigned char m_buttonEventChannel[numButtons];
     char m_buttonMidi[numButtons];

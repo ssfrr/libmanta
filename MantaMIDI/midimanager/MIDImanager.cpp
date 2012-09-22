@@ -32,24 +32,40 @@ bool MidiManager::GetCalibrationState()
 
 void MidiManager::Initialize()
 {
+    if (m_options->GetDebugMode()) cout << "MidiManger::Initialize() Start" << endl;
+
     SetLEDControl(Manta::PadAndButton, true);
     SetLEDControl(Manta::Slider, false);
 
     for(int i = 0; i < MANTA_BUTTONS; ++i)
     {
         if (-1 == (char)m_options->GetButton_Midi(i))
+        {
             SetButtonLED(m_options->GetButton_InactiveColor(i), i);
+            if (m_options->GetDebugMode()) cout << "[Off] Set Button Color" << i << " " << m_options->GetButton_InactiveColor(i) << endl;
+        }
         else
+        {
             SetButtonLED(m_options->GetButton_OffColor(i), i);
+            if (m_options->GetDebugMode()) cout << "Set Button Color" << i << " " << m_options->GetButton_OffColor(i) << endl;
+        }
     }
 
     for(int i = 0; i < MANTA_PADS; ++i)
     {
         if (-1 == (char)m_options->GetPad_Midi(i))
+        {
             SetPadLED(m_options->GetPad_InactiveColor(i), i);
+            if (m_options->GetDebugMode()) cout << "[Off] Set Pad Color [" << (int)m_options->GetPad_Midi(i) << "] " << i << " " << m_options->GetPad_InactiveColor(i) << endl;
+        }
         else
+        {
             SetPadLED(m_options->GetPad_OffColor(i), i);
+            if (m_options->GetDebugMode()) cout << "Set Pad Color [" << (int)m_options->GetPad_Midi(i) << "] " << i << " " << m_options->GetPad_OffColor(i) << endl;
+        }
     }
+
+    if (m_options->GetDebugMode()) cout << "MidiManger::Initialize() End" << endl;
 }
 
 MantaMidiSettings *MidiManager::GetOptions()
@@ -91,7 +107,18 @@ void MidiManager::ButtonEvent(int id, int value)
   /*if (!GetCalibrationState())
   {*/
   SetButtonValue(id, value);
-  SendButtonMIDI(id, value, false);
+  if (m_options->GetButton_Mode(id) == bmOctaveDecrement)
+  {
+    m_options->DecrementOctaveOffset();
+    UpdateOffsetLEDs();
+  }
+  else if (m_options->GetButton_Mode(id) == bmOctaveIncrement)
+  {
+    m_options->IncrementOctaveOffset();
+    UpdateOffsetLEDs();
+  }
+  else
+    SendButtonMIDI(id, value, false);
   /*}
   else
     m_options->CalibrateButton(id, value);*/
@@ -128,25 +155,25 @@ void MidiManager::SendPadMIDI(int noteNum, int value, bool bVelocityEvent)
             // Velocity Mode is on, and we got a velocity event, so we know it's a NoteOn or NoteOff
             if (m_options->GetUseVelocity() && bVelocityEvent)
             {
-                SendPadNoteOn(channel, midiNote, noteNum, value);
+                SendPadNoteOn(channel, midiNote + m_options->GetOctaveMidiOffset(), noteNum, value);
             }
             // not a note on or note off, but a positive value; therefore aftertouch
             else if (m_options->GetUseVelocity() && !bVelocityEvent)
             {
-                SendPadAftertouch(channel, midiNote, noteNum, value);
+                SendPadAftertouch(channel, midiNote + m_options->GetOctaveMidiOffset(), noteNum, value);
             }
             else // velocity mode is off
             {
                 // Note On
                 if (note.lastValue == 0 && !bVelocityEvent)
                 {
-                    SendPadNoteOn(channel, midiNote, noteNum, 100);
-                    SendPadAftertouch(channel, midiNote, noteNum, value);
+                    SendPadNoteOn(channel, midiNote + m_options->GetOctaveMidiOffset(), noteNum, 100);
+                    SendPadAftertouch(channel, midiNote + m_options->GetOctaveMidiOffset(), noteNum, value);
                 }
                 // Aftertouch
                 else if (note.lastValue > 0)
                 {
-                   SendPadAftertouch(channel, midiNote, noteNum, value);
+                   SendPadAftertouch(channel, midiNote + m_options->GetOctaveMidiOffset(), noteNum, value);
                 }
             }
         }
@@ -155,7 +182,7 @@ void MidiManager::SendPadMIDI(int noteNum, int value, bool bVelocityEvent)
             // we're just ignoring velocity events with velocity zero to avoid redundant values
             // (because padevent is already sending them)
             if (!bVelocityEvent)
-                SendPadNoteOff(channel, midiNote, noteNum);
+                SendPadNoteOff(channel, midiNote + m_options->GetOctaveMidiOffset(), noteNum);
         }
 
       note.lastValue = note.curValue;
@@ -225,6 +252,38 @@ bool MidiManager::IsCurrentPadMaximum(int value)
     bRet = true;
 
   return bRet;
+}
+
+void MidiManager::UpdateOffsetLEDs()
+{
+    for(int i=0; i < 4; ++i)
+    {
+        if (m_options->GetButton_Mode(i) == bmOctaveDecrement)
+            SetNegOffsetColor(i);
+        else if (m_options->GetButton_Mode(i) == bmOctaveIncrement)
+            SetPosOffsetColor(i);
+    }
+}
+
+void MidiManager::SetPosOffsetColor(int button)
+{
+    switch(m_options->GetOctaveOffset())
+    {
+    case 2: SetButtonLED(Manta::Red, button);
+    case 1: SetButtonLED(Manta::Amber, button);
+    default: SetButtonLED(Manta::Off, button);
+    }
+}
+
+void MidiManager::SetNegOffsetColor(int button)
+{
+    m_options->DecrementOctaveOffset();
+    switch(m_options->GetOctaveOffset())
+    {
+    case -2: SetButtonLED(Manta::Red, button);
+    case -1: SetButtonLED(Manta::Amber, button);
+    default: SetButtonLED(Manta::Off, button);
+    }
 }
 
 void MidiManager::SendSliderMIDI(int whichSlider, int value)

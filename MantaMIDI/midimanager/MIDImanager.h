@@ -94,6 +94,10 @@ class MidiManager : public Manta
   void SetButtonValue(int button, int value)                        { m_buttonValues[button] = value; }
   int GetButtonValue(int button)                                    { return m_buttonValues[button]; }
 
+  void SetPosOffsetColor(int button);
+  void SetNegOffsetColor(int button);
+  void UpdateOffsetLEDs();
+
   MidiNote m_padNotes[MAX_MIDI_NOTES];
   MidiNote m_buttonNotes[MAX_MIDI_NOTES];
   int m_buttonValues[MANTA_BUTTONS];

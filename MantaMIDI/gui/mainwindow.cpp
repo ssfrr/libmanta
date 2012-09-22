@@ -50,36 +50,6 @@ void MainWindow::WriteDebugMessage(const QString &text)
     ui->debugOutput->append(text);
 }
 
-void MainWindow::UpdateLayout(PadLayout padLayout)
-{
-    options.SetPad_Layout(padLayout);
-    thread.ReloadLEDS();
-}
-
-void MainWindow::on_layoutRB_HaydenDuet_clicked()
-{
-    UpdateLayout(plDuet);
-}
-
-void MainWindow::on_layoutRB_Honeycomb_clicked()
-{
-    UpdateLayout(plHoneycomb);
-}
-
-void MainWindow::on_layoutRB_Piano_clicked()
-{
-    UpdateLayout(plPiano);
-}
-
-void MainWindow::on_layoutRB_Chromatic_clicked()
-{
-    UpdateLayout(plChromatic);
-}
-
-void MainWindow::on_layoutRB_Custom_clicked()
-{
-}
-
 void MainWindow::on_padAftertouch_Monophonic_clicked()
 {
     options.SetPad_Mode(pvmMonoContinuous);
