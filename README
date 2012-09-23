@@ -37,9 +37,10 @@ Note: commands to be typed into the terminal will appear in single quotes with
 no other instruction.
 
 
-* Linux and OS X Common Instructions for PD:
 
-PD on Linux or OS X
+
+
+**********  PureData on Linux or OS X  *********
 1. Download the pd source from http://puredata.info/downloads and remember
    where you extract it.
 2. Navigate to extern/flext in the libmanta directory
@@ -57,8 +58,9 @@ PD on Linux or OS X
 10. 'extern/flext/build.sh pd gcc'
 11. 'sudo extern/flext/build.sh pd gcc install'
 
-* OS X instructions for Max/MSP
 
+
+**********  Max/MSP on OS X  ************
 1. Download Max/MSP SDK from Cycling74.com and put it somewhere easy to find
 2. Place the MaxAPI.framework folder found inside the max-includes directory
    into Library/Frameworks 
