@@ -8,6 +8,19 @@
 MidiManager::MidiManager(MantaMidiSettings *options) :
   m_options(options), m_padAftertouchStackIndex(-1), m_bCalibrationMode(false)
 {
+    for(int i = 0; i < MAX_MIDI_NOTES; ++i)
+    {
+        m_padNotes[i].lastValue = 0;
+        m_buttonNotes[i].lastValue = 0;
+    }
+    for(int i = 0; i < MANTA_PADS; ++i)
+    {
+        m_padValues[i] = 0;
+    }
+    for(int i = 0; i < MANTA_BUTTONS; ++i)
+    {
+        m_buttonValues[i] = 0;
+    }
     ResetLEDS();
 }
 
@@ -41,13 +54,13 @@ void MidiManager::Initialize()
     {
         if (-1 == (char)m_options->GetButton_Midi(i))
         {
-            SetButtonLED(m_options->GetButton_InactiveColor(i), i);
             if (m_options->GetDebugMode()) cout << "[Off] Set Button Color" << i << " " << m_options->GetButton_InactiveColor(i) << endl;
+            SetButtonLED(m_options->GetButton_InactiveColor(i), i);
         }
         else
         {
-            SetButtonLED(m_options->GetButton_OffColor(i), i);
             if (m_options->GetDebugMode()) cout << "Set Button Color" << i << " " << m_options->GetButton_OffColor(i) << endl;
+            SetButtonLED(m_options->GetButton_OffColor(i), i);
         }
     }
 

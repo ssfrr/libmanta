@@ -386,11 +386,21 @@ void MantaMidiSettings::Reset()
     m_cOctaveOffset = 0;
 
     for (int i = 0; i < numPads; ++i)
+    {
         m_padMaxValue[i] = defaultMaxPadVal;
+        m_inactivePadColor[i] = Manta::Off;
+        m_onPadColor[i] = Manta::Amber;
+        m_offPadColor[i] = Manta::Off;
+    }
     for (int i = 0; i < numSliders; ++i)
         m_sliderMaxValue[i] = defaultMaxSliderVal;
     for (int i = 0; i < numButtons; ++i)
+    {
         m_buttonMaxValue[i] = defaultMaxButtonVal;
+        m_inactiveButtonColor[i] = Manta::Off;
+        m_onButtonColor[i] = Manta::Amber;
+        m_offButtonColor[i] = Manta::Off;
+    }
 }
 
 void MantaMidiSettings::LoadSettings()
