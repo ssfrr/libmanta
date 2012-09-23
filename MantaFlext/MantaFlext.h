@@ -64,7 +64,7 @@ class manta:
    static Timer PollTimer;
    static void SchedulePollTimer(void);
    static void CancelPollTimer(void);
-	static void PollConnectedMantas(void *param);
+   static void PollConnectedMantas(void *param);
    static MantaMulti *FindConnectedMantaBySerial(int serialNumber);
    static void DetachAllMantaFlext(MantaMulti *multi);
 

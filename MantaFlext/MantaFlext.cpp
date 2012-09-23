@@ -145,12 +145,6 @@ bool manta::Attached()
 
 void manta::PollConnectedMantas(void *param)
 {
-   if(ConnectedMantaList.empty())
-   {
-      post("manta: Attempting to poll with no connected mantas");
-      return;
-   }
-
    try
    {
       MantaUSB::HandleEvents();
@@ -158,7 +152,8 @@ void manta::PollConnectedMantas(void *param)
    catch(MantaCommunicationException e)
    {
       MantaMulti *errorManta = static_cast<MantaMulti *>(e.errorManta);
-      post("manta: Communication with Manta %d interrupted", errorManta->GetSerialNumber());
+      post("manta: Communication with Manta %d interrupted",
+              errorManta->GetSerialNumber());
       delete errorManta;
       DetachAllMantaFlext(errorManta);
       ConnectedMantaList.remove(errorManta);
