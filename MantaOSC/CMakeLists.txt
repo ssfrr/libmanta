@@ -3,8 +3,22 @@ cmake_minimum_required (VERSION 2.6)
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /opt/local)
 find_path(LO_INCLUDE_DIR lo/lo.h)
 find_library(LO_LIBRARY lo)
-find_path(USB-1.0_INCLUDE_DIR libusb-1.0/libusb.h)
-find_library(USB-1.0_LIBRARY usb-1.0)
-include_directories(${USB-1.0_INCLUDE_DIR} ${LO_INCLUDE_DIR})
-add_executable(MantaOSC MantaOSC.cpp ../core/Manta.cpp ../core/MantaUSB.cpp)
-target_link_libraries(MantaOSC ${LO_LIBRARY} ${USB-1.0_LIBRARY} m)
+include_directories(${LO_INCLUDE_DIR})
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   FIND_LIBRARY(IOKIT_LIB IOKit)
+   FIND_LIBRARY(COREFOUND_LIB CoreFoundation)
+   SET(SYSTEM_LIBS ${IOKIT_LIB} ${COREFOUND_LIB})
+   SET(HIDAPI_SRC "../core/extern/hidapi/mac/hid.c")
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+   SET(HIDAPI_SRC "../core/extern/hidapi/linux/hid-libusb.c")
+   SET(SYSTEM_LIBS)
+ENDIF()
+INCLUDE_DIRECTORIES("../core/extern/hidapi/hidapi")
+
+add_executable(MantaOSC MantaOSC.cpp 
+                        ../core/Manta.cpp
+                        ../core/MantaUSB.cpp
+                        ${HIDAPI_SRC})
+
+target_link_libraries(MantaOSC ${LO_LIBRARY} ${SYSTEM_LIBS} m)
