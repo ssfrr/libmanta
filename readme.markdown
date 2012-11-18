@@ -40,10 +40,10 @@ no other instruction.
 2. Navigate to extern/flext in the libmanta directory
 3. './build.sh pd gcc'
 4. Edit buildsys/config-lnx-pd-gcc.txt (or config-mac-pd-gcc.txt) and change:
-   a. (Linux ONLY) the last line to OFLAGS+=-march=native
-   b. PDPATH to point to the "pd" subdirectory of the pd source package you
-      extracted in step 2
-   c. INSTPATH to point to where your PD externals live
+    1. (Linux ONLY) the last line to OFLAGS+=-march=native
+    2. PDPATH to point to the "pd" subdirectory of the pd source package you
+       extracted in step 2
+    3. INSTPATH to point to where your PD externals live
 5. './build.sh pd gcc'
 6. (Mac Only) Edit config.txt and comment out the line "SIMD=1"
 7. './build.sh pd gcc' (yes, again)
@@ -62,10 +62,11 @@ no other instruction.
 3. in Terminal, navigate to MantaFlext/extern/flext in the libmanta directory
 4. './build.sh max gcc'
 5. Edit buildsys/config-mac-max-gcc.txt and change:
-   b. MAXSDKPATH to point to the subdirectory of the Max SDK you extracted 	in step 1 (should be the directory right above the max-includes   	directory,
-	like MaxSDK-5.1.6/c74support/)
-   c. INSTPATH to point to where your Max externals live
-   d. change the ARCH= line to read only ARCH=i386
+    1. MAXSDKPATH to point to the subdirectory of the Max SDK you
+       extracted in step 1 (should be the directory right above the
+       max-includes directory, like MaxSDK-5.1.6/c74support/)
+    2. INSTPATH to point to where your Max externals live
+    3. change the ARCH= line to read only ARCH=i386
 6. './build.sh max gcc'
 7. Edit config.txt and comment out the line "SIMD=1"
 8. './build.sh max gcc' (yes, again)
