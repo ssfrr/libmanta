@@ -1,9 +1,8 @@
 libmanta
 =========
 
------------------------------------------------------------
 Introduction
------------------------------------------------------------
+------------
 
 libmanta is a library and set of example programs, and a PD/Max object for
 interfacing with the Snyderphonics Manta, a touch-sensitive usb controller with
@@ -14,14 +13,13 @@ starting points to show how the library may be used. The [manta] object for
 Pure Data and Max/MSP will be a user-facing release released in both source and
 binary forms.
 
-[manta] (the pd/max object) is built on an abstraction layer called flext by
+manta the pd/max object is built on an abstraction layer called flext by
 Thomas Grill. It allows an external to be compiled for both PD and Max and on
 OS X, Linux, and Windows. You will need to build and install flext using the
-included instructions before building and installing [manta].
+included instructions before building and installing the external.
 
------------------------------------------------------------
 Prerequisites
------------------------------------------------------------
+-------------
 
 liblo (only for MantaOSC example)
 CMake (to build standalone library or non-flext examples)
@@ -29,18 +27,14 @@ flext (for the PD/Max object) is included with this source package.
    If you have another version installed feel free to use that instead, and
    modify the instructions accordingly.
 
------------------------------------------------------------
 PureData / Max/MSP Object Build and Install Instructions
------------------------------------------------------------
+--------------------------------------------------------
 
 Note: commands to be typed into the terminal will appear in single quotes with
 no other instruction.
 
+### PureData on Linux or OS X
 
-
-
-
-**********  PureData on Linux or OS X  *********
 1. Download the pd source from http://puredata.info/downloads and remember
    where you extract it.
 2. Navigate to extern/flext in the libmanta directory
@@ -60,7 +54,8 @@ no other instruction.
 
 
 
-**********  Max/MSP on OS X  ************
+### Max/MSP on OS X
+
 1. Download Max/MSP SDK from Cycling74.com and put it somewhere easy to find
 2. Place the MaxAPI.framework folder found inside the max-includes directory
    into Library/Frameworks 
@@ -81,4 +76,3 @@ no other instruction.
 13. in MantaFlext/max-darwin create an empty folder called 'core'
 14. 'extern/flext/build.sh max gcc' (again)
 15. 'sudo extern/flext/build.sh max gcc install'
-
