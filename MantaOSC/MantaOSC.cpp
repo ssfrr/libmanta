@@ -53,17 +53,17 @@ MantaOSC::LEDState getLEDStateFromString(const char *stateString);
 
 MantaOSC::MantaOSC()
 {
-   OSCAddress = lo_address_new("localhost","8000");
-   OSCServerThread = lo_server_thread_new("8001", ErrorHandler);
+   OSCAddress = lo_address_new("127.0.0.1","31416");
+   OSCServerThread = lo_server_thread_new("31417", ErrorHandler);
    /* the callbacks are static, so we need to pass the "this" pointer so that object methods
     * can be called from within the callbacks */
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LEDControl", "si", LEDControlHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Pad", "si", LEDPadHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Pad/Row", "sii", LEDRowHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Pad/Column", "sii", LEDColumnHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Pad/Frame", "ss", LEDFrameHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Slider", "sii", LEDSliderHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/Manta/LED/Button", "si", LEDButtonHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/ledcontrol", "si", LEDControlHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/led/pad", "si", LEDPadHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/led/pad/row", "sii", LEDRowHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/led/pad/column", "sii", LEDColumnHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/led/pad/frame", "ss", LEDFrameHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/led/slider", "sii", LEDSliderHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/led/button", "si", LEDButtonHandler, this);
    lo_server_thread_start(OSCServerThread);
 }
 
@@ -76,27 +76,32 @@ MantaOSC::~MantaOSC()
 
 void MantaOSC::PadEvent(int row, int column, int id, int value)
 {
-   lo_send(OSCAddress, "/Manta/Continuous/Pad", "ii", id, value);
+   int retVal;
+   retVal = lo_send(OSCAddress, "/manta/continuous/pad", "ii", id, value);
+   if(retVal == -1)
+   {
+       printf("Error Sending: \"%s\"\n", lo_address_errstr(OSCAddress));
+   }
 }
 
 void MantaOSC::SliderEvent(int id, int value)
 {
-   lo_send(OSCAddress, "/Manta/Continuous/Slider", "ii", id, value);
+   lo_send(OSCAddress, "/manta/continuous/slider", "ii", id, value);
 }
 
 void MantaOSC::ButtonEvent(int id, int value)
 {
-   lo_send(OSCAddress, "/Manta/Continuous/Button", "ii", id, value);
+   lo_send(OSCAddress, "/manta/continuous/button", "ii", id, value);
 }
 
 void MantaOSC::PadVelocityEvent(int row, int column, int id, int value)
 {
-   lo_send(OSCAddress, "/Manta/Velocity/Pad", "ii", id, value);
+   lo_send(OSCAddress, "/manta/velocity/pad", "ii", id, value);
 }
 
 void MantaOSC::ButtonVelocityEvent(int id, int value)
 {
-   lo_send(OSCAddress, "/Manta/Velocity/Button", "ii", id, value);
+   lo_send(OSCAddress, "/manta/velocity/button", "ii", id, value);
 }
 
 int main(void)
@@ -120,6 +125,7 @@ int main(void)
       while(1)
       {
          manta.HandleEvents();
+         usleep(2000);
       }
    }
    catch(MantaCommunicationException &e)
@@ -132,15 +138,15 @@ int main(void)
 int LEDControlHandler(const char *path, const char *types, lo_arg **argv, int argc,
       void *data, void *instancePointer)
 {
-   if(strcmp(&argv[0]->s, "PadAndButton") == 0)
+   if(strcmp(&argv[0]->s, "padandbutton") == 0)
    {
       static_cast<MantaOSC *>(instancePointer)->SetLEDControl(MantaOSC::PadAndButton, argv[1]->i);
    }
-   else if(strcmp(&argv[0]->s, "Slider") == 0)
+   else if(strcmp(&argv[0]->s, "slider") == 0)
    {
       static_cast<MantaOSC *>(instancePointer)->SetLEDControl(MantaOSC::Slider, argv[1]->i);
    }
-   else if(strcmp(&argv[0]->s, "Button") == 0)
+   else if(strcmp(&argv[0]->s, "button") == 0)
    {
       static_cast<MantaOSC *>(instancePointer)->SetLEDControl(MantaOSC::Button, argv[1]->i);
    }
