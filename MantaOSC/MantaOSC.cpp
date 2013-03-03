@@ -53,7 +53,7 @@ MantaOSC::LEDState getLEDStateFromString(const char *stateString);
 
 MantaOSC::MantaOSC()
 {
-   OSCAddress = lo_address_new("127.0.0.1","31416");
+   OSCAddress = lo_address_new("127.0.0.1", "31416");
    OSCServerThread = lo_server_thread_new("31417", ErrorHandler);
    /* the callbacks are static, so we need to pass the "this" pointer so that object methods
     * can be called from within the callbacks */
