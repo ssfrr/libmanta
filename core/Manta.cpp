@@ -48,37 +48,56 @@ void Manta::FrameReceived(int8_t *frame)
    /* input frames have one reportID byte at the beginning */
    for(int i = 1; i < 53; ++i)
    {
+      /*
+       * overall pad logic:
+       * if there's a velocity waiting to be calculated, send a note-on
+       * if this is the first zero value, send a note-off
+       * if the pad changed, send a padValue
+       */
+      int padIndex = i - 1;
+      /* track whether this pad just went high for a single sample,
+       * so we don't trigger a simultaneous note-on and note-off */
+      bool singleSample = false;
       /* check to see if there's a previous sample waiting to have
        * the velocity algorithm run */
-      if(true == VelocityWaiting[i])
+      if(VelocityWaiting[i])
       {
-         if(i < 49)
-            PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1,
-                  CalculateVelocity(LastInReport[i], uframe[i]));
+         if(uframe[i] == 0)
+         {
+            // we were waiting for a 2nd sample for velocity but we got zero.
+            singleSample = true;
+         }
          else
-            ButtonVelocityEvent(i - 49, CalculateVelocity(LastInReport[i], uframe[i]));
+         {
+            if(padIndex < 48)
+               PadVelocityEvent(padIndex / 8, padIndex % 8, padIndex,
+                     CalculateVelocity(LastInReport[i], uframe[i]));
+            else
+               ButtonVelocityEvent(padIndex - 48,
+                       CalculateVelocity(LastInReport[i], uframe[i]));
+         }
          VelocityWaiting[i] = false;
       }
 
       if(uframe[i] != LastInReport[i])
       {
          /* check to see if this is a release */
-         if(0 == uframe[i])
+         if(0 == uframe[i] && !singleSample)
          {
-            if(i < 49)
-               PadVelocityEvent((i - 1) / 8, (i - 1) % 8, i - 1, 0);
+            if(padIndex < 48)
+               PadVelocityEvent(padIndex / 8, padIndex % 8, padIndex, 0);
             else
-               ButtonVelocityEvent(i - 49, 0);
+               ButtonVelocityEvent(padIndex - 48, 0);
          }
          /* check to see if this is the first nonzero sample */
          else if(0 == LastInReport[i])
          {
             VelocityWaiting[i] = true;
          }
-         if(i < 49)
-            PadEvent((i - 1) / 8, (i - 1) % 8, i - 1, uframe[i]);
+         if(padIndex < 48)
+            PadEvent(padIndex / 8, padIndex % 8, padIndex, uframe[i]);
          else
-            ButtonEvent(i - 49, uframe[i]);
+            ButtonEvent(padIndex - 48, uframe[i]);
       }
       LastInReport[i] = uframe[i];
    }
