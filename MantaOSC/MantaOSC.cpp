@@ -11,7 +11,7 @@
 class MantaOSC : public Manta
 {
    public:
-      MantaOSC();
+      MantaOSC(int serverPort, int clientPort);
       ~MantaOSC();
    private:
       virtual void PadEvent(int row, int column, int id, int value);
@@ -52,10 +52,14 @@ int LEDButtonHandler(const char *path,
 
 MantaOSC::LEDState getLEDStateFromString(const char *stateString);
 
-MantaOSC::MantaOSC()
+MantaOSC::MantaOSC(int serverPort, int clientPort)
 {
-   OSCAddress = lo_address_new("127.0.0.1", "31416");
-   OSCServerThread = lo_server_thread_new("31417", ErrorHandler);
+   char clientPortString[16];
+   char serverPortString[16];
+   sprintf(clientPortString, "%d", clientPort);
+   sprintf(serverPortString, "%d", serverPort);
+   OSCAddress = lo_address_new("127.0.0.1", clientPortString);
+   OSCServerThread = lo_server_thread_new(serverPortString, ErrorHandler);
    /* the callbacks are static, so we need to pass the "this" pointer so that object methods
     * can be called from within the callbacks */
    lo_server_thread_add_method(OSCServerThread, "/manta/ledcontrol", "si", LEDControlHandler, this);
@@ -107,8 +111,12 @@ void MantaOSC::ButtonVelocityEvent(int id, int value)
 
 int main(int argc, char *argv[])
 {
-   MantaOSC manta;
    int serial;
+   int serverPort, clientPort;
+   /* current usage is MantaOSC [SERIAL [SERVERPORT [CLIENTPORT]]]
+    * if you want to supply a port you have to supply a serial number. At some
+    * point this should do proper arg handling.
+    */
    if(argc < 2)
    {
        serial = 0;
@@ -116,7 +124,24 @@ int main(int argc, char *argv[])
    else
    {
        serial = atoi(argv[1]);
+       if(argc < 3)
+       {
+           serverPort = 31417;
+       }
+       else
+       {
+           serverPort = atoi(argv[2]);
+           if(argc < 4)
+           {
+               clientPort = 31416;
+           }
+           else
+           {
+               clientPort = atoi(argv[3]);
+           }
+       }
    }
+   MantaOSC manta(serverPort, clientPort);
    do
    {
       try
