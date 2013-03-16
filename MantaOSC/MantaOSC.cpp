@@ -2,6 +2,7 @@
 #include "../core/MantaExceptions.h"
 #include <lo/lo.h>
 #include <cstring>
+#include <cstdlib>
 #include <unistd.h>
 #include <stdio.h>
 #include <iostream>
@@ -104,14 +105,23 @@ void MantaOSC::ButtonVelocityEvent(int id, int value)
    lo_send(OSCAddress, "/manta/velocity/button", "ii", id, value);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
    MantaOSC manta;
+   int serial;
+   if(argc < 2)
+   {
+       serial = 0;
+   }
+   else
+   {
+       serial = atoi(argv[1]);
+   }
    do
    {
       try
       {
-         manta.Connect();
+         manta.Connect(serial);
       }
       catch(MantaNotFoundException &e)
       {
