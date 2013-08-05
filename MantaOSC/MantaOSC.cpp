@@ -54,12 +54,12 @@ MantaOSC::LEDState getLEDStateFromString(const char *stateString);
 
 MantaOSC::MantaOSC(int serverPort, int clientPort)
 {
-   char clientPortString[16];
    char serverPortString[16];
-   sprintf(clientPortString, "%d", clientPort);
+   char clientPortString[16];
    sprintf(serverPortString, "%d", serverPort);
-   OSCAddress = lo_address_new("127.0.0.1", clientPortString);
+   sprintf(clientPortString, "%d", clientPort);
    OSCServerThread = lo_server_thread_new(serverPortString, ErrorHandler);
+   OSCAddress = lo_address_new("127.0.0.1", clientPortString);
    /* the callbacks are static, so we need to pass the "this" pointer so that object methods
     * can be called from within the callbacks */
    lo_server_thread_add_method(OSCServerThread, "/manta/ledcontrol", "si", LEDControlHandler, this);
@@ -109,6 +109,9 @@ void MantaOSC::ButtonVelocityEvent(int id, int value)
    lo_send(OSCAddress, "/manta/velocity/button", "ii", id, value);
 }
 
+#define DEFAULT_SERVER_PORT 31417
+#define DEFAULT_CLIENT_PORT 31416
+
 int main(int argc, char *argv[])
 {
    int serial;
@@ -120,20 +123,23 @@ int main(int argc, char *argv[])
    if(argc < 2)
    {
        serial = 0;
+       serverPort = DEFAULT_SERVER_PORT;
+       clientPort = DEFAULT_CLIENT_PORT;
    }
    else
    {
        serial = atoi(argv[1]);
        if(argc < 3)
        {
-           serverPort = 31417;
+           serverPort = DEFAULT_SERVER_PORT;
+           clientPort = DEFAULT_CLIENT_PORT;
        }
        else
        {
            serverPort = atoi(argv[2]);
            if(argc < 4)
            {
-               clientPort = 31416;
+               clientPort = DEFAULT_CLIENT_PORT;
            }
            else
            {

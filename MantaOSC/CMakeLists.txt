@@ -16,6 +16,7 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 ENDIF()
 INCLUDE_DIRECTORIES("../core/extern/hidapi/hidapi")
 
+INSTALL(PROGRAMS build/MantaOSC DESTINATION bin)
 add_executable(MantaOSC MantaOSC.cpp 
                         ../core/Manta.cpp
                         ../core/MantaUSB.cpp
