@@ -18,6 +18,12 @@ Thomas Grill. It allows an external to be compiled for both PD and Max and on
 OS X, Linux, and Windows. You will need to build and install flext using the
 included instructions before building and installing the external.
 
+Documentation
+-------------
+
+If you'd like to develop an application using libmanta, there's developer
+documentation available at http://ssfrr.github.io/libmanta/.
+
 Prerequisites
 -------------
 
