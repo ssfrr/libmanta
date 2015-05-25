@@ -222,7 +222,6 @@ void MantaUSB::HandleEvents(void)
  ****************************************************************************/
 int MantaUSB::GetSerialNumber(void)
 {
-   /* TODO: get serial number */
    return SerialNumber;
 }
 
