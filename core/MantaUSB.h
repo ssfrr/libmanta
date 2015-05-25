@@ -35,6 +35,7 @@ class MantaUSB
       void Connect(int connectionSerial = 0);
       void Disconnect();
       int GetSerialNumber(void);
+      int GetHardwareVersion(void);
       bool MessageQueued(void);
 
       static void HandleEvents(void);

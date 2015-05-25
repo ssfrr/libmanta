@@ -225,6 +225,16 @@ int MantaUSB::GetSerialNumber(void)
    return SerialNumber;
 }
 
+/************************************************************************//**
+ * \brief   Returns the Hardware Version (1 or 2) of the attached Manta
+ *
+ * \returns The hardware version
+ ****************************************************************************/
+int MantaUSB::GetHardwareVersion(void)
+{
+   return (SerialNumber < 70) ? 1 : 2;
+}
+
 MantaUSB::MantaTxQueueEntry *MantaUSB::GetQueuedTxMessage()
 {
    list<MantaTxQueueEntry *>::iterator i = txQueue.begin();
