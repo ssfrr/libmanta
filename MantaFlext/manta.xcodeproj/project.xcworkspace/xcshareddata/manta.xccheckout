@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>37A77258-F33A-4B3F-90BA-61C2194F0749</string>
+	<key>IDESourceControlProjectName</key>
+	<string>manta</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>631002F5DA199AD453EBB50722ED0E94C8063896</key>
+		<string>github.com:ssfrr/libmanta.git</string>
+		<key>CEFA51304EEA3F1C1D79558F5205A3E0C21AA387</key>
+		<string>git://github.com/signal11/hidapi.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>MantaFlext/manta.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>631002F5DA199AD453EBB50722ED0E94C8063896</key>
+		<string>../../..</string>
+		<key>CEFA51304EEA3F1C1D79558F5205A3E0C21AA387</key>
+		<string>../../..core/extern/hidapi</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:ssfrr/libmanta.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>631002F5DA199AD453EBB50722ED0E94C8063896</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>CEFA51304EEA3F1C1D79558F5205A3E0C21AA387</string>
+			<key>IDESourceControlWCCName</key>
+			<string>hidapi</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>631002F5DA199AD453EBB50722ED0E94C8063896</string>
+			<key>IDESourceControlWCCName</key>
+			<string>libmanta_fresh</string>
+		</dict>
+	</array>
+</dict>
+</plist>
