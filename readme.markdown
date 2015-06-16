@@ -92,7 +92,7 @@ no other instruction.
 It looks like that name has been deprecated for some time and now doesn't work
 any more. Change vecLib to Accelerate in buildsys/mac/gnumake-gcc.inc
 
-#### `make[1]: *** No rule to make target '../core/extern/hidapi/hidapi/hidapi.h'`
+#### No rule to make target '../core/extern/hidapi/hidapi/hidapi.h'
 
 hidapi is included as a git submodule. Go to the root of the libmanta
 repository and run:
@@ -101,7 +101,7 @@ repository and run:
 git submodule update --init
 ```
 
-#### `error: unable to open output file 'max-darwin/release-multi/../core/extern/hidapi/mac/hid.o_i386'`
+#### error: unable to open output file 'max-darwin/release-multi/../core/extern/hidapi/mac/hid.o_i386'
 
 Due to some weird path handling you need to run:
 `mkdir -p max-darwin/core/extern/hidapi/mac` to manually
