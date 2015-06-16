@@ -1,3 +1,6 @@
 [submodule "core/extern/hidapi"]
 	path = core/extern/hidapi
 	url = git://github.com/signal11/hidapi.git
+[submodule "MantaFlext/extern/flext"]
+	path = MantaFlext/extern/flext
+	url = git@github.com:grrrr/flext.git
