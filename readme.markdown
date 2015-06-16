@@ -77,12 +77,12 @@ no other instruction.
 7. Edit config.txt and comment out the line "SIMD=1"
 8. './build.sh max gcc' (yes, again)
 9. 'sudo ./build.sh max gcc install'
-10. 'cd ../..'
-11. 'extern/flext/build.sh max gcc'
-12. 'extern/flext/build.sh max gcc' (again)
-13. in MantaFlext/max-darwin create an empty folder called 'core'
-14. 'extern/flext/build.sh max gcc' (again)
-15. 'sudo extern/flext/build.sh max gcc install'
+10. Open the included xcode project `manta.xcodeproj`
+11. In the Build Settings tab set the variable `maxsdk` to be the c74support
+    folder inside the Max/MSP SDK
+12. Build the project
+13. copy the manta.mxo object from the Products folder on the left into your
+    Max externals directory
 
 
 ### Troubleshooting FAQ
