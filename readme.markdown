@@ -63,7 +63,7 @@ no other instruction.
 ### Max/MSP on OS X
 
 1. Download Max/MSP SDK from Cycling74.com and put it somewhere easy to find
-2. Place the MaxAPI.framework folder found inside the max-includes directory
+2. Place the MaxAPI.framework folder found in source/c74support/max-includes
    into Library/Frameworks 
 3. in Terminal, navigate to MantaFlext/extern/flext in the libmanta directory
 4. './build.sh max gcc'
@@ -83,3 +83,26 @@ no other instruction.
 13. in MantaFlext/max-darwin create an empty folder called 'core'
 14. 'extern/flext/build.sh max gcc' (again)
 15. 'sudo extern/flext/build.sh max gcc install'
+
+
+### Troubleshooting FAQ
+
+#### ld: framework not found vecLib
+
+It looks like that name has been deprecated for some time and now doesn't work
+any more. Change vecLib to Accelerate in buildsys/mac/gnumake-gcc.inc
+
+#### `make[1]: *** No rule to make target '../core/extern/hidapi/hidapi/hidapi.h'`
+
+hidapi is included as a git submodule. Go to the root of the libmanta
+repository and run:
+
+```
+git submodule update --init
+```
+
+#### `error: unable to open output file 'max-darwin/release-multi/../core/extern/hidapi/mac/hid.o_i386'`
+
+Due to some weird path handling you need to run:
+`mkdir -p max-darwin/core/extern/hidapi/mac` to manually
+create the right destination directory
