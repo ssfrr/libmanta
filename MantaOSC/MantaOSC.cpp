@@ -156,11 +156,20 @@ int main(int argc, char *argv[])
       }
       catch(MantaNotFoundException &e)
       {
-         std::cout << "Could not find an attached Manta. Retrying..." << std::endl;
+         if(serial == 0) {
+            std::cout << "Could not find an attached Manta. Retrying..." << std::endl;
+         }
+         else {
+            std::cout << "Could not find a Manta with serial " << serial <<". Retrying..." << std::endl;
+         }
          sleep(1);
       }
    } while(! manta.IsConnected());
-   std::cout << "Manta Connected" << std::endl;
+   std::cout << "Connected to Manta" << std::endl;
+   std::cout << "  Serial Number: " << manta.GetSerialNumber() << std::endl;
+   std::cout << "  Firmware Version: " << manta.GetHardwareVersion() << std::endl;
+   std::cout << "Listening for OSC Messages on port " << serverPort << std::endl;
+   std::cout << "Sending OSC Messages to port " << clientPort << std::endl;
    try
    {
       while(1)
@@ -314,7 +323,7 @@ int LEDButtonHandler(const char *path, const char *types, lo_arg **argv, int arg
 
 void ErrorHandler(int num, const char *msg, const char *path)
 {
-   std::cout << "liblo server error " << num << " in path " << path << 
+   std::cout << "liblo server error " << num << " in path " << path <<
       ": " << msg << std::endl;
 }
 
