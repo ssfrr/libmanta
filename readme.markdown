@@ -115,14 +115,11 @@ If the Manta is not recognised on your system, try to run the program with `sudo
 Linux (e.g. Ubuntu)
 -------------------
 
-Add a file to `/etc/udev/rules.d` called `50-manta.conf` with the following contents:
-
-```
-SUBSYSTEM=="usb", ATTR{idVendor}=="2424", ATTR{idProduct}=="2424", MODE="0666"
-```
+Copy the file `99-manta.rules` from `platform/linux` into your system's `/etc/udev/rules.d` directory.
 
 Unplug the Manta, run `sudo /etc/init.d/udev restart`, then plug in the Manta.
 
+If that doesn't work, try editing the file and changing `ATTRS` to `ATTR` and/or try changing `MODE:="0666"` to `MODE="0666"`.
 
 Arch Linux
 ----------
