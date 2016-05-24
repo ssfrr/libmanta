@@ -106,3 +106,42 @@ git submodule update --init
 Due to some weird path handling you need to run:
 `mkdir -p max-darwin/core/extern/hidapi/mac` to manually
 create the right destination directory
+
+
+#### Can't connect to Manta
+
+If the Manta is not recognised on your system, try to run the program with `sudo`. If this works, it is a permission problem that can be fixed with a udev rule.
+
+Linux (e.g. Ubuntu)
+-------------------
+
+Add a file to `/etc/udev/rules.d` called `50-manta.conf` with the following contents:
+
+```
+SUBSYSTEM=="usb", ATTR{idVendor}=="2424", ATTR{idProduct}=="2424", MODE="0666"
+```
+
+Unplug the Manta, run `sudo /etc/init.d/udev restart`, then plug in the Manta.
+
+
+Arch Linux
+----------
+
+On Arch Linux, the udev system works a bit differently. To see the used variables, attach a manta and run the following command
+
+```
+udevadm info -a -p /sys/class/hidraw/hidraw0
+```
+
+It shows all udev-related items attached to ´´´hidraw0´´´, The manta should show up here. According to the udev system description on the [arch linux wiki](https://wiki.archlinux.org/index.php/Udev), config files have to end on `.rules`. The config file therefore will be something like `/etc/udev/rules.d/50-manta.rules`. According to the output of the `udevadm info` from above, its content should be something like
+
+```
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="2424", ATTRS{idProduct}=="2424", MODE="0666"
+```
+
+To reload the udev rules, run
+```
+sudo udevadm control --reload-rules
+```
+
+Re-plug the manta and re-run your libmanta-based application.
