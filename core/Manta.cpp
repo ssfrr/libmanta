@@ -207,7 +207,7 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
    {
       throw std::invalid_argument("Invalid Column Index");
    }
-   
+
    MantaClient::DebugPrint("Called SetPadLEDColumn(%s, %d, %X)",
          state == Off ? "Off" : state == Amber ? "Amber" : "Red", column, mask);
    switch(state)
@@ -257,7 +257,7 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
  * \param   state    Off, Amber, or Red. All LEDs with their bit set to one
  *                   in the mask will be set to this state
  * \param   mask     A 6-byte mask representing all the pads. The first byte
- *                   is the bottom row, and the lsb is the leftmost LED
+ *                   is the bottom row, and the lsb is the rightmost LED
  ****************************************************************************/
 void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
 {
@@ -337,7 +337,7 @@ void Manta::SetButtonLED(LEDState state, int id)
    {
       throw std::invalid_argument("Invalid Button Index");
    }
-   
+
    switch(state)
    {
       case Amber:
@@ -413,7 +413,7 @@ void Manta::Recalibrate(void)
    {
       throw MantaNotConnectedException(this);
    }
-   
+
    /* make sure these messages get queued so that they
     * don't just cancel each other out */
    CurrentOutReport[ConfigIndex] |= 0x40;
@@ -436,7 +436,7 @@ void Manta::Recalibrate(void)
 void Manta::SetLEDControl(LEDControlType control, bool state)
 {
    uint8_t flag;
-   
+
    switch(control)
    {
       case PadAndButton:
@@ -540,7 +540,7 @@ uint8_t Manta::byteReverse(uint8_t inByte)
    int s = 7; // extra shift needed at end
 
    for (inByte >>= 1; inByte; inByte >>= 1)
-   {   
+   {
       outByte <<= 1;
       outByte |= inByte & 1;
       s--;
@@ -625,14 +625,14 @@ int Manta::ScaleSensorValue(int rawValue, int index)
    return (int)((div * 210) + 0.5);
 }
 
-const int Manta::AverageMaxSensorValues[53] = 
+const int Manta::AverageMaxSensorValues[53] =
 {0, 177, 184, 188, 189, 191, 190, 181, 181, 188, 193, 198, 200, 201, 199, 191,
    189, 192, 197, 202, 205, 206, 204, 199, 192, 202, 207, 211, 216, 215, 213,
    209, 201, 205, 210, 215, 220, 213, 218, 212, 204, 212, 216, 222, 227, 223,
    227, 221, 213, 200, 170, 190, 185};
 
 /************************************************************************//**
- * \brief 
+ * \brief
  * \param
  * \return
  ****************************************************************************/
