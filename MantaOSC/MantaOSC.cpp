@@ -66,7 +66,7 @@ MantaOSC::MantaOSC(int serverPort, int clientPort)
    lo_server_thread_add_method(OSCServerThread, "/manta/led/pad", "si", LEDPadHandler, this);
    lo_server_thread_add_method(OSCServerThread, "/manta/led/pad/row", "sii", LEDRowHandler, this);
    lo_server_thread_add_method(OSCServerThread, "/manta/led/pad/column", "sii", LEDColumnHandler, this);
-   lo_server_thread_add_method(OSCServerThread, "/manta/led/pad/frame", "ss", LEDFrameHandler, this);
+   lo_server_thread_add_method(OSCServerThread, "/manta/led/pad/frame", "sb", LEDFrameHandler, this);
    lo_server_thread_add_method(OSCServerThread, "/manta/led/slider", "sii", LEDSliderHandler, this);
    lo_server_thread_add_method(OSCServerThread, "/manta/led/button", "si", LEDButtonHandler, this);
    lo_server_thread_start(OSCServerThread);
@@ -267,16 +267,21 @@ int LEDFrameHandler(const char *path, const char *types, lo_arg **argv, int argc
       void *data, void *instancePointer)
 {
    MantaOSC::LEDState state;
+   uint8_t rowdata[6];
    try
    {
       state = getLEDStateFromString(&argv[0]->s);
       /* SetPadLEDFrame doesn't know how long the frame is, so we've got to check here */
-      if(strlen(&argv[1]->s) != sizeof(MantaOSC::LEDFrame))
-      {
-         /* return unhandled, invalid frame length */
-         return 1;
+      int n = lo_blob_datasize(argv[1]);
+      uint8_t *msgdata = (uint8_t *)lo_blob_dataptr(argv[1]);
+      int i;
+      for(i = 0; i < n && i < 6; ++i) {
+         rowdata[i] = msgdata[i];
       }
-      static_cast<MantaOSC *>(instancePointer)->SetPadLEDFrame(state, &argv[1]->c);
+      for(; i < 6; ++i) {
+         rowdata[i] = 0;
+      }
+      static_cast<MantaOSC *>(instancePointer)->SetPadLEDFrame(state, rowdata);
       return 0;
    }
    catch(std::exception e)

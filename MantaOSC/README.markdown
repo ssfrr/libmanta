@@ -83,8 +83,9 @@ be set to the given color.
 
 ### "/manta/led/pad/frame"
 
-Takes two strings. The first is a color string and the second is
-interpreted as a set of bitmasks for all 6 pad rows.
+Takes a string and a binary blob. The first is a color string and the second is
+interpreted as a set of bitmasks for all 6 pad rows. If fewer than 6 bytes are
+given, the rest are considered zero. If more are given they are ignored.
 
 ### "/manta/led/slider"
 
