@@ -266,14 +266,14 @@ void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
       case Amber:
          for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
          {
-            CurrentOutReport[AmberIndex + i] = byteReverse(mask[i]);
+            CurrentOutReport[AmberIndex + i] |= byteReverse(mask[i]);
             CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
          }
          break;
       case Red:
          for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
          {
-            CurrentOutReport[RedIndex + i] = byteReverse(mask[i]);
+            CurrentOutReport[RedIndex + i] |= byteReverse(mask[i]);
             CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
          }
          break;
