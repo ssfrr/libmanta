@@ -254,10 +254,15 @@ void Manta::SetPadLEDColumn(LEDState state, int column, uint8_t mask)
 
 /************************************************************************//**
  * \brief   Sets all the pad LEDs at the same time
- * \param   state    Off, Amber, or Red. All LEDs with their bit set to one
- *                   in the mask will be set to this state
+ * \param   state    Off, Amber, Red, or All. If the state is Off, Amber, or
+ *                   Red, all LEDs with their bit set to one in the mask will be
+ *                   set to this state. If the state is All, then an amber and
+ *                   red mask should both be given.
  * \param   mask     A 6-byte mask representing all the pads. The first byte
- *                   is the bottom row, and the lsb is the rightmost LED
+ *                   is the bottom row, and the lsb is the rightmost LED.
+ *                   If the state is All then a full 12-byte mask should be
+ *                   given and it will set both the amber and red LEDs. In this
+ *                   case any bits set to zero in both masks will be turned off.
  ****************************************************************************/
 void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
 {
@@ -282,6 +287,18 @@ void Manta::SetPadLEDFrame(LEDState state, LEDFrame mask)
          {
             CurrentOutReport[RedIndex + i] &= ~byteReverse(mask[i]);
             CurrentOutReport[AmberIndex + i] &= ~byteReverse(mask[i]);
+         }
+         break;
+      case All:
+         // when setting both colors we use two frames at once
+         for(unsigned int i = 0; i < sizeof(LEDFrame); ++i)
+         {
+            uint8_t amberMask = mask[i];
+            uint8_t redMask = mask[i+sizeof(LEDFrame)];
+            // turn off any amber LEDs if there's a red LED in that position
+            amberMask &= ~redMask;
+            CurrentOutReport[RedIndex + i] = byteReverse(redMask);
+            CurrentOutReport[AmberIndex + i] = byteReverse(amberMask);
          }
          break;
       default:

@@ -18,6 +18,7 @@ class MantaServer
       Off,
       Amber,
       Red,
+      All, // only used in SetPadLEDFrame
    };
    enum LEDControlType {
       PadAndButton,

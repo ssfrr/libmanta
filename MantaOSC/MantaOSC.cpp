@@ -267,18 +267,20 @@ int LEDFrameHandler(const char *path, const char *types, lo_arg **argv, int argc
       void *data, void *instancePointer)
 {
    MantaOSC::LEDState state;
-   uint8_t rowdata[6];
+   uint8_t rowdata[12];
    try
    {
       state = getLEDStateFromString(&argv[0]->s);
+      // a state of All means we should be sending two frames, or 12 bytes
+      int framesize = (state == MantaOSC::All ? 12 : 6);
       /* SetPadLEDFrame doesn't know how long the frame is, so we've got to check here */
       int n = lo_blob_datasize(argv[1]);
       uint8_t *msgdata = (uint8_t *)lo_blob_dataptr(argv[1]);
       int i;
-      for(i = 0; i < n && i < 6; ++i) {
+      for(i = 0; i < n && i < framesize; ++i) {
          rowdata[i] = msgdata[i];
       }
-      for(; i < 6; ++i) {
+      for(; i < framesize; ++i) {
          rowdata[i] = 0;
       }
       static_cast<MantaOSC *>(instancePointer)->SetPadLEDFrame(state, rowdata);
@@ -343,6 +345,11 @@ MantaOSC::LEDState getLEDStateFromString(const char *stateString)
          strcmp(stateString, "amber") == 0)
    {
       return MantaOSC::Amber;
+   }
+   else if(strcmp(stateString, "All") == 0 ||
+         strcmp(stateString, "all") == 0)
+   {
+      return MantaOSC::All;
    }
    else if(strcmp(stateString, "Off") == 0 ||
          strcmp(stateString, "off") == 0)

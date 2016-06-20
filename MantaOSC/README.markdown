@@ -87,6 +87,10 @@ Takes a string and a binary blob. The first is a color string and the second is
 interpreted as a set of bitmasks for all 6 pad rows. If fewer than 6 bytes are
 given, the rest are considered zero. If more are given they are ignored.
 
+If instead of a color the first argument is "all", the binary blob should be 12
+bytes and sets both the amber and red LEDs (in that order). Any bits set to zero
+in both masks cause the corresponding LED to be turned off.
+
 ### "/manta/led/slider"
 
 Takes a color string and two integers. The first integer is the slider
