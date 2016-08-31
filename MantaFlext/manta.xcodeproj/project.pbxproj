@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA13203B1D777B9D00F841B9 /* manta.maxhelp in CopyFiles */ = {isa = PBXBuildFile; fileRef = DA13203A1D777B9500F841B9 /* manta.maxhelp */; };
 		DA854A211B30C47E00607844 /* Manta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA854A171B30C47E00607844 /* Manta.cpp */; };
 		DA854A221B30C47E00607844 /* Manta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA854A171B30C47E00607844 /* Manta.cpp */; };
 		DA854A231B30C47E00607844 /* Manta.h in Headers */ = {isa = PBXBuildFile; fileRef = DA854A181B30C47E00607844 /* Manta.h */; };
@@ -55,18 +56,20 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		E9974EC207708C9300206F68 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			dstPath = "~/Documents/Max 7/Library";
 			dstSubfolderSpec = 0;
 			files = (
 				DA854A5F1B30D5E100607844 /* manta.mxo in CopyFiles */,
+				DA13203B1D777B9D00F841B9 /* manta.maxhelp in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D2AAC09D05546B4700DB518D /* manta.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = manta.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA13203A1D777B9500F841B9 /* manta.maxhelp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = manta.maxhelp; sourceTree = "<group>"; };
 		DA854A171B30C47E00607844 /* Manta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Manta.cpp; path = ../core/Manta.cpp; sourceTree = "<group>"; };
 		DA854A181B30C47E00607844 /* Manta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Manta.h; path = ../core/Manta.h; sourceTree = "<group>"; };
 		DA854A191B30C47E00607844 /* MantaClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MantaClient.h; path = ../core/MantaClient.h; sourceTree = "<group>"; };
@@ -137,6 +140,7 @@
 		0867D691FE84028FC02AAC07 /* xsample */ = {
 			isa = PBXGroup;
 			children = (
+				DA13203A1D777B9500F841B9 /* manta.maxhelp */,
 				DA854A5D1B30D48B00607844 /* libstdc++.dylib */,
 				08FB77ACFE841707C02AAC07 /* Source */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
@@ -443,11 +447,11 @@
 		E9A5BC8F0A33819900AD9F03 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
-				FRAMEWORK_SEARCH_PATHS = "/Users/srussell/local/src/max-sdk-7.0.3/source/c74support/**";
+				FRAMEWORK_SEARCH_PATHS = "$(maxsdk)/**";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -468,10 +472,11 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = "-lflext-max_sd";
 				OTHER_REZFLAGS = "";
 				SECTORDER_FLAGS = "";
-				VALID_ARCHS = i386;
+				VALID_ARCHS = "x86_64 i386";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -479,17 +484,17 @@
 				);
 				WRAPPER_EXTENSION = mxo;
 				ZERO_LINK = YES;
-				maxsdk = "/Users/srussell/local/src/max-sdk-7.0.3/source/c74support";
+				maxsdk = "/usr/local/src/max-sdk-7.1.0/source/c74support";
 			};
 			name = Development;
 		};
 		E9A5BC900A33819900AD9F03 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "/Users/srussell/local/src/max-sdk-7.0.3/source/c74support/**";
+				FRAMEWORK_SEARCH_PATHS = "$(maxsdk)/**";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FLEXT_SYS=1",
@@ -509,10 +514,11 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = "-lflext-max_s";
 				OTHER_REZFLAGS = "";
 				SECTORDER_FLAGS = "";
-				VALID_ARCHS = i386;
+				VALID_ARCHS = "x86_64 i386";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -520,16 +526,16 @@
 				);
 				WRAPPER_EXTENSION = mxo;
 				ZERO_LINK = NO;
-				maxsdk = "/Users/srussell/local/src/max-sdk-7.0.3/source/c74support";
+				maxsdk = "/usr/local/src/max-sdk-7.1.0/source/c74support";
 			};
 			name = Deployment;
 		};
 		E9A5BC910A33819900AD9F03 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "libstdc++";
-				FRAMEWORK_SEARCH_PATHS = "/Users/srussell/local/src/max-sdk-7.0.3/source/c74support/**";
+				FRAMEWORK_SEARCH_PATHS = "$(maxsdk)/**";
 				GCC_PREPROCESSOR_DEFINITIONS = "FLEXT_SYS=1";
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -545,19 +551,20 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = manta;
 				SECTORDER_FLAGS = "";
-				VALID_ARCHS = i386;
+				VALID_ARCHS = "x86_64 i386";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
 				WRAPPER_EXTENSION = mxo;
-				maxsdk = "/Users/srussell/local/src/max-sdk-7.0.3/source/c74support";
+				maxsdk = "/usr/local/src/max-sdk-7.1.0/source/c74support";
 			};
 			name = Default;
 		};

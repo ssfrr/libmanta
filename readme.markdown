@@ -67,7 +67,7 @@ no other instruction.
    into /Library/Frameworks 
 3. in Terminal make sure you have xcode command line tools installed by typing 'xcode-select --install'
 4. in Terminal, navigate to MantaFlext/extern/flext in the libmanta directory
-5. './build.sh max gcc'   (it will say Error 1, but will create a config file)
+5. './build.sh max gcc'   (it will say Error 1, but will create a config file called "config-mac-max-pgg.txt")
 6. Edit buildsys/config-mac-max-gcc.txt and change:
     1. MAXSDKPATH to point to the subdirectory of the Max SDK you
        extracted in step 1 (should be the directory right above the
@@ -75,7 +75,7 @@ no other instruction.
     2. INSTPATH to point to where your Max externals live
     3. change the ARCH= line to read only ARCH=i386 x86_64
     4. change the "LDFLAGS" line to read: LDFLAGS += -mmacosx-version-min=10.6 $(shell cat $(MAXSDKPATH)/max-includes/c74_linker_flags.txt)
-7. './build.sh max gcc' (it will once again say Error 1, but has created a different config file)
+7. './build.sh max gcc' (it will once again say Error 1, but has created a different config file called "config.txt")
 8. Edit config.txt and comment out the line "SIMD=1"
 9. './build.sh max gcc' (yes, again)
 10. 'sudo ./build.sh max gcc install'
