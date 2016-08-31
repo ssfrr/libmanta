@@ -28,6 +28,23 @@ Build Instructions
 8. make
 9. You'll find an executable called MantaOSC in your current directory
 
+Building on Windows
+===================
+
+Building on windows is somewhat more complicated. For one we need `liblo`, the
+OSC library. There doesn't seem to be an easily-available DLL, so we need to
+build it:
+
+1. Install cygwin
+2. Install the mingw64-x86_64-* versions of gcc-core, gcc-g++, and winpthreads.
+3. Download the liblo source tarball
+4. from the liblo directory, configure for cross-compiling using
+    ./configure --host x86_64-w64-mingw32
+5. build with `make`.
+6. copy the resulting DLL (`src/.libs/liblo-7.dll`)
+7. copy the winpthread DLL (`/usr/x86_64-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll`)
+
+
 Usage
 =====
 
