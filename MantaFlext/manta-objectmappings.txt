@@ -1,0 +1,9 @@
+
+max oblist manta manta;
+max oblist manta manta.centroid;
+max oblist manta manta.maximum;
+max oblist manta manta.poly;
+max objectfile manta.centroid manta;
+max objectfile manta.maximum manta;
+max objectfile manta.poly manta;
+
