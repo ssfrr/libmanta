@@ -6,3 +6,4 @@ tests/build
 tags
 */tags
 *~
+*.xcscmblueprint
