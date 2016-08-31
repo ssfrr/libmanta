@@ -67,7 +67,7 @@ no other instruction.
    into /Library/Frameworks 
 3. in Terminal make sure you have xcode command line tools installed by typing 'xcode-select --install'
 4. in Terminal, navigate to MantaFlext/extern/flext in the libmanta directory
-5. './build.sh max gcc'   (it will say Error 1, but will create a config file called "config-mac-max-pgg.txt")
+5. './build.sh max gcc'   (it will say Error 1, but will create a config file called "config-mac-max-gcc.txt")
 6. Edit buildsys/config-mac-max-gcc.txt and change:
     1. MAXSDKPATH to point to the subdirectory of the Max SDK you
        extracted in step 1 (should be the directory right above the
