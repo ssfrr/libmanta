@@ -472,6 +472,7 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = "-lflext-max_sd";
 				OTHER_REZFLAGS = "";
 				SECTORDER_FLAGS = "";
@@ -513,6 +514,7 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = "-lflext-max_s";
 				OTHER_REZFLAGS = "";
 				SECTORDER_FLAGS = "";
@@ -549,6 +551,7 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
