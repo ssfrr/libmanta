@@ -8,15 +8,16 @@ libmanta is a library and set of example programs, and a PD/Max object for
 interfacing with the Snyderphonics Manta, a touch-sensitive usb controller with
 LED feedback.
 
-libmanta is currently in beta stage, and the examples are intended simply as
-starting points to show how the library may be used. The [manta] object for
-Pure Data and Max/MSP will be a user-facing release released in both source and
-binary forms.
+libmanta is intended for use by developers to build applications that talk to
+the Manta. The [manta] object for Pure Data and Max/MSP are user-facing
+release released in both source and binary forms.
 
-manta the pd/max object is built on an abstraction layer called flext by
+[manta] the pd/max object is built on an abstraction layer called flext by
 Thomas Grill. It allows an external to be compiled for both PD and Max and on
 OS X, Linux, and Windows. You will need to build and install flext using the
 included instructions before building and installing the external.
+
+MantaOSC is a simple command-line application that allows you to interface with your manta using Open Sound Control (OSC). See the [MantaOSC Readme](https://github.com/ssfrr/libmanta/blob/master/MantaOSC/README.markdown) for more details on building and running it.
 
 Documentation
 -------------
@@ -64,7 +65,7 @@ no other instruction.
 
 1. Download Max/MSP SDK from Cycling74.com and put it somewhere easy to find
 2. Place the MaxAPI.framework folder found in source/c74support/max-includes
-   into /Library/Frameworks 
+   into /Library/Frameworks
 3. in Terminal make sure you have xcode command line tools installed by typing 'xcode-select --install'
 4. in Terminal, navigate to MantaFlext/extern/flext in the libmanta directory
 5. './build.sh max gcc'   (it will say Error 1, but will create a config file called "config-mac-max-gcc.txt")

@@ -13,11 +13,14 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    SET(HIDAPI_SRC "../core/extern/hidapi/linux/hid.c")
    SET(SYSTEM_LIBS udev)
+ELSE()
+   SET(HIDAPI_SRC "../core/extern/hidapi/windows/hid.c")
+   SET(SYSTEM_LIBS setupapi)
 ENDIF()
 INCLUDE_DIRECTORIES("../core/extern/hidapi/hidapi")
 
 INSTALL(PROGRAMS build/MantaOSC DESTINATION bin)
-add_executable(MantaOSC MantaOSC.cpp 
+add_executable(MantaOSC MantaOSC.cpp
                         ../core/Manta.cpp
                         ../core/MantaUSB.cpp
                         ${HIDAPI_SRC})

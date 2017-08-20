@@ -2,21 +2,18 @@ This is an example program using libmanta to build a simple OSC router,
 which sends OSC mesages in response to manta touches and receives OSC
 messages to control the LEDs.
 
-
-This example project sometimes drifts out-of-date with the rest of the
-library, so if you have trouble building please file an issue on github
-issues at https://github.com/ssfrr/libmanta/issues
-
 Prerequisites
 =============
 
 * cmake
-* liblo-dev
-* libudev-dev
+* liblo-dev (linux/MacOS)
+* libudev-dev (linux/MacOS)
 
 
 Build Instructions
 ==================
+
+## Linux and MacOS
 
 1. git clone https://github.com/ssfrr/libmanta.git
 2. cd libmanta
@@ -27,6 +24,26 @@ Build Instructions
 7. cmake ..
 8. make
 9. You'll find an executable called MantaOSC in your current directory
+
+## Windows
+
+1. Install msys2 from http://www.msys2.org/. Follow the instructions on that page to make sure the system is up-to-date.
+2. Install the mingw64 toolchain and some more necessary packages by running
+`pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake base-devel`
+3. Make sure your shell is starting with the `MSYSTEM=MINGW64` environment variable set, which will set your paths to use the ming64 compiler. `which gcc` should show you `/mingw64/bin/gcc` or similar.
+4. Download a `PKGBUILD` file for `liblo`:
+    `wget https://raw.githubusercontent.com/guysherman/MINGW-packages/guypkgs/mingw-w64-liblo/PKGBUILD`
+5. from the folder with the `PKGBUILD` file, run `makepkg-mingw -si`. You might get some complaints about not having the i686 toolchain, but that's OK.
+6. from the `MantaOSC` directory (in this repository) create a build directory and `cd` into it, e.g. `mkdir build-win64; cd build-win64`
+7. Enter the build directory and run `cmake -G"MSYS Makefiles" ..`
+8. run `make`
+
+## Build Troubleshooting:
+
+###   file failed to open for writing (Invalid argument):
+
+This can happen while running `cmake` on Windows. I'm not sure if it's a path length issue or a windows/unix path issue, but moving the `libmanta` project directory to within my MSYS2 home directory solved it.
+
 
 Usage
 =====
