@@ -12,6 +12,7 @@
 #include "midimanager/RtMidiManager.h"
 #include <cstring>
 #include <stdio.h>
+#include <unistd.h>
 #include <iostream>
 
 static const char *strHeading = "Snyderphonics MantaMIDI\n\tThis software translates Manta USB/HID messages to MIDI.\n"

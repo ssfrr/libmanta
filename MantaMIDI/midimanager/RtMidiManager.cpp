@@ -49,10 +49,10 @@ void MidiReadThread( double deltatime, std::vector< unsigned char > *message, vo
     }
 
   //int index = manta->GetOptions()->GetPadFromMidi(second, resultColor);
-      
+
   /*if ( 0 == third )
     resultColor = Manta::Off;*/
-      
+
   if (padIndex >= 0)
   {
         manta->SetPadLED(resultColor, padIndex);
@@ -107,17 +107,8 @@ void RtMidiManager::SendMIDI(unsigned char data[], int nBytes)
 
 bool RtMidiManager::ChooseMidiPort()
 {
-  /*std::cout << "\nWould you like to open a virtual output port? [y/N] ";
-
+#ifdef _WIN32 // also includes 64-bit windows
   std::string keyHit;
-  std::getline( std::cin, keyHit );
-  if ( keyHit == "y" ) 
-  {*/
-      m_midiIn->openVirtualPort( "Manta" );
-      m_midiOut->openVirtualPort( "Manta" );
-      return true;
-      /*  }
-
   // Check ports for output
   std::string portName;
   unsigned int i = 0, nOutPorts = m_midiOut->getPortCount();
@@ -133,14 +124,14 @@ bool RtMidiManager::ChooseMidiPort()
   }
 
   if ( nOutPorts == 1 ) {
-    std::cout << "\nOpening " << m_midiOut->getPortName() << std::endl;
+    std::cout << "\nOpening " << m_midiOut->getPortName() << " for output" << std::endl;
   }
   else {
     for ( i=0; i<nOutPorts; i++ ) {
       portName = m_midiOut->getPortName(i);
       std::cout << "  Output port #" << i << ": " << portName << '\n';
     }
-    
+
     do {
       std::cout << "\nChoose a port number: ";
       std::cin >> i;
@@ -149,16 +140,16 @@ bool RtMidiManager::ChooseMidiPort()
 
   std::cout << "\n";
   m_midiOut->openPort( i );
-  
+
   if ( nInPorts == 1 ) {
-    std::cout << "\nOpening " << m_midiIn->getPortName() << std::endl;
+    std::cout << "\nOpening " << m_midiIn->getPortName() << " for input" << std::endl;
   }
   else {
     for ( i=0; i<nInPorts; i++ ) {
       portName = m_midiIn->getPortName(i);
-      std::cout << "  Output port #" << i << ": " << portName << '\n';
+      std::cout << "  Input port #" << i << ": " << portName << '\n';
     }
-    
+
     do {
       std::cout << "\nChoose a port number: ";
       std::cin >> i;
@@ -168,5 +159,12 @@ bool RtMidiManager::ChooseMidiPort()
   std::getline( std::cin, keyHit ); // used to clear out stdin
   m_midiIn->openPort( i );
 
-  return true;*/
+#else // not _WIN32
+
+  m_midiIn->openVirtualPort("Manta In");
+  m_midiOut->openVirtualPort("Manta Out");
+
+#endif
+
+  return true;
 }

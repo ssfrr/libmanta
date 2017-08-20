@@ -7,12 +7,14 @@ using namespace std;
 MantaMidiSettings::MantaMidiSettings()
 {
     m_pSettingsParser = new MantaSettingsParser(this);
+    strcpy(m_layoutPath, "");
     Reset();
 }
 
 MantaMidiSettings::MantaMidiSettings(int argc, char **argv)
 {
     m_pSettingsParser = new MantaSettingsParser(this);
+    strcpy(m_layoutPath, "");
     Reset();
 }
 
@@ -424,4 +426,3 @@ void MantaMidiSettings::PrintSettings()
 {
     m_pSettingsParser->PrintSettings();
 }
-
