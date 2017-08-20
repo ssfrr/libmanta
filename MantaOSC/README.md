@@ -1,6 +1,4 @@
-This is an example program using libmanta to build a simple OSC router,
-which sends OSC mesages in response to manta touches and receives OSC
-messages to control the LEDs.
+This is an example program using libmanta to build a simple OSC router, which sends OSC messages in response to manta touches and receives OSC messages to control the LEDs.
 
 Prerequisites
 =============
@@ -35,7 +33,7 @@ Build Instructions
     `wget https://raw.githubusercontent.com/guysherman/MINGW-packages/guypkgs/mingw-w64-liblo/PKGBUILD`
 5. from the folder with the `PKGBUILD` file, run `makepkg-mingw -si`. You might get some complaints about not having the i686 toolchain, but that's OK.
 6. from the `MantaOSC` directory (in this repository) create a build directory and `cd` into it, e.g. `mkdir build-win64; cd build-win64`
-7. Enter the build directory and run `cmake -G"MSYS Makefiles" ..`
+7. run `cmake -G"MSYS Makefiles" ..`
 8. run `make`
 
 ## Build Troubleshooting:
