@@ -17,7 +17,7 @@ Thomas Grill. It allows an external to be compiled for both PD and Max and on
 OS X, Linux, and Windows. You will need to build and install flext using the
 included instructions before building and installing the external.
 
-MantaOSC is a simple command-line application that allows you to interface with your manta using Open Sound Control (OSC). See the [MantaOSC Readme](https://github.com/ssfrr/libmanta/blob/master/MantaOSC/README.markdown) for more details on building and running it.
+MantaOSC is a simple command-line application that allows you to interface with your manta using Open Sound Control (OSC). See the [MantaOSC Readme](https://github.com/ssfrr/libmanta/blob/master/MantaOSC/README.md) for more details on building and running it.
 
 Documentation
 -------------
