@@ -80,7 +80,7 @@ void manta::Attach(int serialNumber)
          try
          {
             device->Connect(serialNumber);
-            post("manta: Connected to manta %d, attaching...", device->GetSerialNumber());
+            post("manta: Connected to manta %d", device->GetSerialNumber());
             device->AttachClient(this);
             device->ResendLEDState();
             ConnectedManta = device;

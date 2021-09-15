@@ -57,8 +57,8 @@
 		E9974EC207708C9300206F68 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = "~/Documents/Max 7/Library";
-			dstSubfolderSpec = 0;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
 				DA854A5F1B30D5E100607844 /* manta.mxo in CopyFiles */,
 				DA13203B1D777B9D00F841B9 /* manta.maxhelp in CopyFiles */,
@@ -96,7 +96,6 @@
 		DA854A541B30D07D00607844 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = ../../../../../../../System/Library/Frameworks/Accelerate.framework; sourceTree = "<group>"; };
 		DA854A571B30D30F00607844 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = ../../../../../../../System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<group>"; };
 		DA854A5A1B30D31D00607844 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = ../../../../../../../System/Library/Frameworks/IOKit.framework; sourceTree = "<group>"; };
-		DA854A5D1B30D48B00607844 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		E9974DFA0770750400206F68 /* MaxAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAPI.framework; path = /Library/Frameworks/MaxAPI.framework; sourceTree = "<absolute>"; };
 		E9974DFB0770750400206F68 /* MaxAudioAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAudioAPI.framework; path = /Library/Frameworks/MaxAudioAPI.framework; sourceTree = "<absolute>"; };
 		E9974E53077083C700206F68 /* manta.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = manta.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,7 +140,6 @@
 			isa = PBXGroup;
 			children = (
 				DA13203A1D777B9500F841B9 /* manta.maxhelp */,
-				DA854A5D1B30D48B00607844 /* libstdc++.dylib */,
 				08FB77ACFE841707C02AAC07 /* Source */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DDFF38A45A11DB9C8B /* Products */,
@@ -221,6 +219,7 @@
 			children = (
 			);
 			name = flext;
+			path = extern/flext;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,6 +295,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* xsample */;
@@ -447,8 +447,8 @@
 		E9A5BC8F0A33819900AD9F03 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LIBRARY = "libc++";
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(maxsdk)/**";
@@ -472,11 +472,11 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_LDFLAGS = "-lflext-max_sd";
 				OTHER_REZFLAGS = "";
 				SECTORDER_FLAGS = "";
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -484,15 +484,15 @@
 				);
 				WRAPPER_EXTENSION = mxo;
 				ZERO_LINK = YES;
-				maxsdk = "/usr/local/src/max-sdk-7.1.0/source/c74support";
+				maxsdk = "/Users/josnyder/Documents/Max\\ 8/Packages/max-sdk-8.0.3/source/c74support";
 			};
 			name = Development;
 		};
 		E9A5BC900A33819900AD9F03 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LIBRARY = "libc++";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(maxsdk)/**";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -514,11 +514,11 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_LDFLAGS = "-lflext-max_s";
 				OTHER_REZFLAGS = "";
 				SECTORDER_FLAGS = "";
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -526,15 +526,15 @@
 				);
 				WRAPPER_EXTENSION = mxo;
 				ZERO_LINK = NO;
-				maxsdk = "/usr/local/src/max-sdk-7.1.0/source/c74support";
+				maxsdk = "/Users/josnyder/Documents/Max\\ 8/Packages/max-sdk-8.0.3/source/c74support";
 			};
 			name = Deployment;
 		};
 		E9A5BC910A33819900AD9F03 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LIBRARY = "libc++";
 				FRAMEWORK_SEARCH_PATHS = "$(maxsdk)/**";
 				GCC_PREPROCESSOR_DEFINITIONS = "FLEXT_SYS=1";
 				GENERATE_PKGINFO_FILE = YES;
@@ -551,20 +551,20 @@
 					/usr/local/lib,
 				);
 				LIBRARY_STYLE = DYNAMIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = manta;
 				SECTORDER_FLAGS = "";
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
 				WRAPPER_EXTENSION = mxo;
-				maxsdk = "/usr/local/src/max-sdk-7.1.0/source/c74support";
+				maxsdk = "/Users/josnyder/Documents/Max\\ 8/Packages/max-sdk-8.0.3/source/c74support";
 			};
 			name = Default;
 		};
@@ -578,6 +578,7 @@
 					_DEBUG,
 					FLEXT_USESIMD,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				flext = extern/flext;
@@ -595,6 +596,7 @@
 					FLEXT_USESIMD,
 				);
 				GCC_STRICT_ALIASING = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				flext = extern/flext;
@@ -604,6 +606,7 @@
 		E9A5BC950A33819900AD9F03 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_LDFLAGS = "";
 				flext = extern/flext;
 			};

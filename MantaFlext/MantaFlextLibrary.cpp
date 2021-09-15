@@ -14,11 +14,7 @@ static void mantaLibSetup(void)
    FLEXT_SETUP(MantaFlextPoly);
    post("manta: MantaFlext V %02d.%02d",
          MANTAFLEXT_MAJOR_VERSION,MANTAFLEXT_MINOR_VERSION);
-   post("manta: PD / Max object by Spencer Russell");
-   post("manta: Centroid Algorithm by R. Luke Dubois");
-   post("manta: Velocity Algorithm by Angie Hugeback");
-   post("manta: Much thanks to Jeff Snyder at Snyderphonics");
-   post("manta: Built on Flext by Thomas Grill");
+   post("manta: PD / Max object by Spencer Russell, with Jeff Snyder, R. Luke Dubois, and Angie Hugeback. Using Flext by Thomas Grill");
 }
 
 FLEXT_LIB_SETUP(manta, mantaLibSetup)
